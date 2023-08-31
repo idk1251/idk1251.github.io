@@ -274,4 +274,81 @@
 </script>
 
 </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #212121;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .intro-text {
+    position: fixed;
+    top: 10vh;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.85); /* Darker grey-black background */
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    max-width: 500px;
+    color: #fff; /* White text color */
+    border: 2px solid transparent; /* Small border for gradient effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .intro-text p {
+    margin: 0;
+  }
+
+  .intro-text::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    bottom: -6px;
+    left: -6px;
+    background-image: linear-gradient(to right, #64ffda, #ff5252);
+    border-radius: inherit;
+    z-index: -1;
+  }
+
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 120px;
+  }
+
+  .picker-section {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    color: #fff;
+    animation: fadeUp 0.6s ease forwards;
+    opacity: 0;
+    margin-right: 20px;
+  }
+
+  /* Rest of your existing CSS styles... */
+</style>
+<title>Picker App</title>
+</head>
+<body>
+<div class="intro-text">
+  <p>Welcome to the PickCenter! This site allows you to pick usernames and rewards for your special events.</p>
+</div>
+
+</script>
+</body>
 </html>
