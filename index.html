@@ -311,13 +311,11 @@
             color: #fff;
             box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3); /* Larger shadow */
             position: relative;
-            transition: transform 0.2s ease-in-out;
+
         }
 
-        .intro-text:hover {
-            transform: scale(1.05);
-        }
 
+        
         .intro-text::before {
             content: '';
             position: absolute;
@@ -349,24 +347,39 @@
             box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
             width: 400px; /* Wider width */
             color: #fff;
-            animation: fadeUp 0.6s ease forwards;
+
             opacity: 0;
             margin-right: 40px; /* Increased margin-right */
         }
 
-        @keyframes fadeUp {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+
+        
     </style>
 </head>
 <body>
+  <div style="position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);">
+    <button id="copyLinkButton" style="background-color: #da149ef8; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer;">
+      Copy Share Link
+    </button>
+  </div>
+  
+  <script>
+    const copyLinkButton = document.getElementById('copyLinkButton');
+  
+    copyLinkButton.addEventListener('click', () => {
+      const linkToCopy = 'http://www.pickcenters.com/';
+      const tempInput = document.createElement('input');
+      tempInput.value = linkToCopy;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      copyLinkButton.textContent = 'Link Copied!';
+      setTimeout(() => {
+        copyLinkButton.textContent = 'Copy Share Link';
+      }, 2000);
+    });
+  </script>  
 <div class="intro-container">
     <div class="intro-text">
         <p>Welcome to the PickCenter! This site allows you to pick usernames and rewards for your special events.</p>
@@ -374,4 +387,3 @@
 </div>
 <!-- Add the rest of your HTML content here -->
 </body>
-</html>
