@@ -174,26 +174,8 @@
     font-size: 14px;
   }
 
-  #pickedUsername {
-    background-color: #00bfa5;
-    color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    display: none;
-    margin-top: 20px;
-  }
-
-  #pickedReward {
-    background-color: #ff1744;
-    color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    display: none;
-    margin-top: 20px;
-  }
-
+  #pickedUsername,
+  #pickedReward,
   #pickedNumber {
     background-color: #ffca28;
     color: #fff;
@@ -280,6 +262,8 @@
     const usernames = usernameList.querySelectorAll('li');
     if (usernames.length > 0) {
       usernameList.style.opacity = '0';
+      pickedUsername.textContent = '';
+      pickedUsername.style.display = 'none';
       setTimeout(() => {
         usernames.forEach(li => li.remove());
         usernameList.style.opacity = '1';
@@ -328,6 +312,8 @@
     const rewards = rewardList.querySelectorAll('li');
     if (rewards.length > 0) {
       rewardList.style.opacity = '0';
+      pickedReward.textContent = '';
+      pickedReward.style.display = 'none';
       setTimeout(() => {
         rewards.forEach(li => li.remove());
         rewardList.style.opacity = '1';
