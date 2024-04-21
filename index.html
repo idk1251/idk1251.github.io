@@ -79,19 +79,21 @@
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    border: none;
+    border: 2px solid #fff; /* Changed border width and color */
     background-color: #1e1e1e;
     color: #fff;
     font-size: 14px;
     transition: border-color 0.3s ease;
   }
 
-  #usernameInput {
-    border-bottom: 2px solid #64ffda;
+  #usernameInput,
+  #guessNumberInput { /* Changed border width and color for guess number input */
+    border-bottom: 2px solid #ffca28;
   }
 
-  #usernameInput:focus {
-    border-color: #00bfa5;
+  #usernameInput:focus,
+  #guessNumberInput:focus { /* Changed border color for focus state */
+    border-color: #ffb300;
   }
 
   #rewardNameInput,
@@ -102,14 +104,6 @@
   #rewardNameInput:focus,
   #rewardChanceInput:focus {
     border-color: #ff1744;
-  }
-
-  #guessNumberInput {
-    border-bottom: 2px solid #ffca28;
-  }
-
-  #guessNumberInput:focus {
-    border-color: #ffb300;
   }
 
   .picker-section button {
@@ -367,12 +361,16 @@
     const randomNumber = Math.floor(Math.random() * 10000) + 1; // Generate a random number between 1 and 10,000
     
     if (!isNaN(guessedNumber)) {
-      if (guessedNumber === randomNumber) {
-        pickedNumber.textContent = `Congratulations! You guessed the correct number: ${randomNumber}`;
+      if (guessedNumber >= 1 && guessedNumber <= 10000) { // Check if guessed number is within range
+        if (guessedNumber === randomNumber) {
+          pickedNumber.textContent = `Congratulations! You guessed the correct number: ${randomNumber}`;
+        } else {
+          pickedNumber.textContent = `Sorry, the correct number was: ${randomNumber}`;
+        }
+        pickedNumber.style.display = 'block';
       } else {
-        pickedNumber.textContent = `Sorry, the correct number was: ${randomNumber}`;
+        alert("Please enter a number between 1 and 10,000."); // Alert user if number is out of range
       }
-      pickedNumber.style.display = 'block';
     }
   });
 
