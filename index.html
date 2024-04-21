@@ -87,11 +87,13 @@
     transition: border-color 0.3s ease;
   }
 
-  #usernameInput {
+  #usernameInput,
+  #guessInput {
     border-bottom: 2px solid #64ffda;
   }
 
-  #usernameInput:focus {
+  #usernameInput:focus,
+  #guessInput:focus {
     border-color: #00bfa5;
   }
 
@@ -124,7 +126,8 @@
     background-color: #00bfa5;
   }
 
-  #usernames {
+  #usernames,
+  #guesses {
     margin-top: 20px;
     max-height: 150px;
     overflow-y: auto;
@@ -141,11 +144,13 @@
   }
 
   #rewards::-webkit-scrollbar,
-  #usernames::-webkit-scrollbar {
+  #usernames::-webkit-scrollbar,
+  #guesses::-webkit-scrollbar {
     width: 6px;
   }
 
-  #usernames::-webkit-scrollbar-thumb {
+  #usernames::-webkit-scrollbar-thumb,
+  #guesses::-webkit-scrollbar-thumb {
     background-color: #00bfa5;
     border-radius: 3px;
   }
@@ -156,7 +161,8 @@
   }
 
   #rewards::-webkit-scrollbar-track,
-  #usernames::-webkit-scrollbar-track {
+  #usernames::-webkit-scrollbar-track,
+  #guesses::-webkit-scrollbar-track {
     background-color: #1e1e1e;
   }
 
@@ -166,18 +172,10 @@
     font-size: 14px;
   }
 
-  #pickedUsername {
+  #pickedUsername,
+  #pickedReward,
+  #pickedGuess {
     background-color: #00bfa5;
-    color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    display: none;
-    margin-top: 20px;
-  }
-
-  #pickedReward {
-    background-color: #ff1744;
     color: #fff;
     padding: 10px;
     border-radius: 5px;
@@ -197,7 +195,7 @@
 <div class="intro-container">
     <div class="intro-text">
         <h1>Welcome to the Event Picker</h1>
-        <p>Effortlessly manage usernames and rewards for your special events.</p>
+        <p>Effortlessly manage usernames, rewards, and guesses for your special events.</p>
     </div>
 </div>
 
@@ -226,6 +224,18 @@
       <ul id="rewardList"></ul>
     </div>
     <div id="pickedReward"></div>
+  </div>
+  <div class="picker-section">
+    <h2 style="color: #536dfe;">Guess Number Picker</h2>
+    <input type="number" id="guessInput" placeholder="Enter a number">
+    <button id="addGuessButton" style="background-color: #536dfe;">Add Guess</button>
+    <button id="pickGuessButton" style="background-color: #536dfe;">Pick Guess</button>
+    <button id="resetGuessButton" style="background-color: #536dfe;">Reset</button>
+    <div id="guesses">
+      <h3 style="color: #304ffe;">Added Guesses</h3>
+      <ul id="guessList"></ul>
+    </div>
+    <div id="pickedGuess"></div>
   </div>
 </div>
 
@@ -332,6 +342,50 @@
         pickedReward.textContent = `Congratulations! You won: ${chosenReward}`;
         pickedReward.style.display = 'block';
       }
+    }
+  });
+</script>
+
+<script>
+  const guessInput = document.getElementById('guessInput');
+  const addGuessButton = document.getElementById('addGuessButton');
+  const pickGuessButton = document.getElementById('pickGuessButton');
+  const resetGuessButton = document.getElementById('resetGuessButton');
+  const guessList = document.getElementById('guessList');
+  const pickedGuess = document.getElementById('pickedGuess');
+
+  addGuessButton.addEventListener('click', () => {
+    const guess = guessInput.value.trim();
+    if (guess !== '') {
+      const li = document.createElement('li');
+      li.textContent = guess;
+      li.style.opacity = '0';
+      guessList.appendChild(li);
+      guessInput.value = '';
+      setTimeout(() => {
+        li.style.opacity = '1';
+      }, 50);
+    }
+  });
+
+  resetGuessButton.addEventListener('click', () => {
+    const guesses = guessList.querySelectorAll('li');
+    if (guesses.length > 0) {
+      guessList.style.opacity = '0';
+      setTimeout(() => {
+        guesses.forEach(li => li.remove());
+        guessList.style.opacity = '1';
+      }, 300);
+    }
+  });
+
+  pickGuessButton.addEventListener('click', () => {
+    const guesses = guessList.querySelectorAll('li');
+    if (guesses.length > 0) {
+      const randomIndex = Math.floor(Math.random() * guesses.length);
+      const chosenGuess = guesses[randomIndex].textContent;
+      pickedGuess.textContent = `Chosen Guess: ${chosenGuess}`;
+      pickedGuess.style.display = 'block';
     }
   });
 </script>
