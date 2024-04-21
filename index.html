@@ -1,144 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #212121;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-  }
-  .container {
-    display: flex;
-  }
-  .picker-section {
-    background-color: #1e1e1e;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    color: #fff;
-    animation: fadeUp 0.6s ease forwards;
-    opacity: 0;
-    margin-right: 20px;
-  }
-  @keyframes fadeUp {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  h2 {
-    margin: 0;
-    font-size: 24px;
-    margin-bottom: 15px;
-  }
-  input[type="text"],
-  input[type="number"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: none;
-    background-color: #1e1e1e;
-    color: #fff;
-    font-size: 14px;
-    transition: border-color 0.3s ease;
-  }
-  #usernameInput {
-    border-bottom: 2px solid #64ffda;
-  }
-  #usernameInput:focus {
-    border-color: #00bfa5;
-  }
-  #rewardNameInput,
-  #rewardChanceInput {
-    border-bottom: 2px solid #ff5252;
-  }
-  #rewardNameInput:focus,
-  #rewardChanceInput:focus {
-    border-color: #ff1744;
-  }
-  .picker-section button {
-    color: #212121;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 12px;
-    margin-bottom: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  .picker-section button:last-child {
-    margin-bottom: 0;
-  }
-  .picker-section button:hover {
-    background-color: #00bfa5;
-  }
-  #usernames {
-    margin-top: 20px;
-    max-height: 150px;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #00bfa5 #1e1e1e;
-  }
-  #rewards {
-    margin-top: 20px;
-    max-height: 150px;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #ff1744 #1e1e1e;
-  }
-  #rewards::-webkit-scrollbar, #usernames::-webkit-scrollbar {
-    width: 6px;
-  }
-  #usernames::-webkit-scrollbar-thumb {
-    background-color: #00bfa5;
-    border-radius: 3px;
-  }
-  #rewards::-webkit-scrollbar-thumb {
-    background-color: #ff1744;
-    border-radius: 3px;
-  }
-  #rewards::-webkit-scrollbar-track, #usernames::-webkit-scrollbar-track {
-    background-color: #1e1e1e;
-  }
-  ul {
-    list-style-type: none;
-    padding: 0;
-    font-size: 14px;
-  }
-  #pickedUsername {
-    background-color: #00bfa5;
-    color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    display: none;
-    margin-top: 20px;
-  }
-  #pickedReward {
-    background-color: #ff1744;
-    color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    display: none;
-    margin-top: 20px;
-  }
-  h3 {
-    margin: 0;
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-</style>
-<title>Picker App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Picker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #212121;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .intro-container {
+            position: absolute;
+            top: 10vh;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .intro-text {
+            background-color: rgba(0, 0, 0, 0.85);
+            padding: 40px; /* Increased padding */
+            text-align: center;
+            max-width: 600px; /* Wider max width */
+            color: #fff;
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3); /* Larger shadow */
+            position: relative;
+
+        }
+
+        .intro-text::before {
+            content: '';
+            position: absolute;
+            top: -10px; /* Increased border offset */
+            right: -10px; /* Increased border offset */
+            bottom: -10px; /* Increased border offset */
+            left: -10px; /* Increased border offset */
+            border: 10px solid transparent;
+            border-image: linear-gradient(to right, rgb(2, 171, 228), red);
+            border-image-slice: 1;
+        }
+
+        .intro-text p {
+            margin: 0;
+            font-size: 24px; /* Larger font size */
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin-top: 160px; /* Increased margin-top */
+        }
+
+        .picker-section {
+            background-color: #1e1e1e;
+            padding: 40px; /* Increased padding */
+            border-radius: 12px; /* Larger rounded corners */
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+            width: 400px; /* Wider width */
+            color: #fff;
+            opacity: 0;
+            margin-right: 40px; /* Increased margin-right */
+        }
+    </style>
 </head>
 <body>
+  <div style="position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);">
+    <button id="copyLinkButton" style="background-color: #da149ef8; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer;">
+      Copy Share Link
+    </button>
+  </div>
+  
+  <script>
+    const copyLinkButton = document.getElementById('copyLinkButton');
+  
+    copyLinkButton.addEventListener('click', () => {
+      const linkToCopy = 'http://www.pickcenters.com/';
+      const tempInput = document.createElement('input');
+      tempInput.value = linkToCopy;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      copyLinkButton.textContent = 'Link Copied!';
+      setTimeout(() => {
+        copyLinkButton.textContent = 'Copy Share Link';
+      }, 2000);
+    });
+  </script>  
+<div class="intro-container">
+    <div class="intro-text">
+        <p>Welcome to the Event Picker!</p>
+        <p>Use this tool to select usernames and rewards for your special events.</p>
+    </div>
+</div>
+
 <div class="container">
   <div class="picker-section">
     <h2 style="color: #64ffda;">Username Picker</h2>
@@ -166,6 +128,7 @@
     <div id="pickedReward"></div>
   </div>
 </div>
+
 <script>
   const usernameInput = document.getElementById('usernameInput');
   const addButton = document.getElementById('addButton');
@@ -273,223 +236,4 @@
   });
 </script>
 </body>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2671992756377613"
-     crossorigin="anonymous"></script>
-</script>
-</body>
 </html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Picker App</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #212121;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .intro-container {
-            position: absolute;
-            top: 10vh;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1;
-        }
-
-        .intro-text {
-            background-color: rgba(0, 0, 0, 0.85);
-            padding: 40px; /* Increased padding */
-            text-align: center;
-            max-width: 600px; /* Wider max width */
-            color: #fff;
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3); /* Larger shadow */
-            position: relative;
-
-        }
-
-
-        
-        .intro-text::before {
-            content: '';
-            position: absolute;
-            top: -10px; /* Increased border offset */
-            right: -10px; /* Increased border offset */
-            bottom: -10px; /* Increased border offset */
-            left: -10px; /* Increased border offset */
-            border: 10px solid transparent;
-            border-image: linear-gradient(to right, rgb(2, 171, 228), red);
-            border-image-slice: 1;
-        }
-
-        .intro-text p {
-            margin: 0;
-            font-size: 24px; /* Larger font size */
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            margin-top: 160px; /* Increased margin-top */
-        }
-
-        .picker-section {
-            background-color: #1e1e1e;
-            padding: 40px; /* Increased padding */
-            border-radius: 12px; /* Larger rounded corners */
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
-            width: 400px; /* Wider width */
-            color: #fff;
-
-            opacity: 0;
-            margin-right: 40px; /* Increased margin-right */
-        }
-
-
-        
-    </style>
-</head>
-<body>
-  <div style="position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);">
-    <button id="copyLinkButton" style="background-color: #da149ef8; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer;">
-      Copy Share Link
-    </button>
-  </div>
-  
-  <script>
-    const copyLinkButton = document.getElementById('copyLinkButton');
-  
-    copyLinkButton.addEventListener('click', () => {
-      const linkToCopy = 'http://www.pickcenters.com/';
-      const tempInput = document.createElement('input');
-      tempInput.value = linkToCopy;
-      document.body.appendChild(tempInput);
-      tempInput.select();
-      document.execCommand('copy');
-      document.body.removeChild(tempInput);
-      copyLinkButton.textContent = 'Link Copied!';
-      setTimeout(() => {
-        copyLinkButton.textContent = 'Copy Share Link';
-      }, 2000);
-    });
-  </script>  
-<div class="intro-container">
-    <div class="intro-text">
-        <p>Welcome to the PickCenter! This site allows you to pick usernames and rewards for your special events.</p>
-    </div>
-</div>
-<!-- Add the rest of your HTML content here -->
-</body>
-  <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Picker</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #212121;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .intro-container {
-            position: absolute;
-            top: 10vh;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1;
-        }
-
-        .intro-text {
-            background-color: rgba(0, 0, 0, 0.85);
-            padding: 40px; /* Increased padding */
-            text-align: center;
-            max-width: 600px; /* Wider max width */
-            color: #fff;
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3); /* Larger shadow */
-            position: relative;
-
-        }
-
-        .intro-text::before {
-            content: '';
-            position: absolute;
-            top: -10px; /* Increased border offset */
-            right: -10px; /* Increased border offset */
-            bottom: -10px; /* Increased border offset */
-            left: -10px; /* Increased border offset */
-            border: 10px solid transparent;
-            border-image: linear-gradient(to right, rgb(2, 171, 228), red);
-            border-image-slice: 1;
-        }
-
-        .intro-text p {
-            margin: 0;
-            font-size: 24px; /* Larger font size */
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            margin-top: 160px; /* Increased margin-top */
-        }
-
-        .picker-section {
-            background-color: #1e1e1e;
-            padding: 40px; /* Increased padding */
-            border-radius: 12px; /* Larger rounded corners */
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
-            width: 400px; /* Wider width */
-            color: #fff;
-            opacity: 0;
-            margin-right: 40px; /* Increased margin-right */
-        }
-    </style>
-</head>
-<body>
-  <div style="position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);">
-    <button id="copyLinkButton" style="background-color: #da149ef8; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer;">
-      Copy Share Link
-    </button>
-  </div>
-  
-  <script>
-    const copyLinkButton = document.getElementById('copyLinkButton');
-  
-    copyLinkButton.addEventListener('click', () => {
-      const linkToCopy = 'http://www.pickcenters.com/';
-      const tempInput = document.createElement('input');
-      tempInput.value = linkToCopy;
-      document.body.appendChild(tempInput);
-      tempInput.select();
-      document.execCommand('copy');
-      document.body.removeChild(tempInput);
-      copyLinkButton.textContent = 'Link Copied!';
-      setTimeout(() => {
-        copyLinkButton.textContent = 'Copy Share Link';
-      }, 2000);
-    });
-  </script>  
-<div class="intro-container">
-    <div class="intro-text">
-        <p>Welcome to the Event Picker!</p>
-        <p>Use this tool to select usernames and rewards for your special events.</p>
-    </div>
-</div>
-<!-- Add the rest of your HTML content here -->
-</body>
-</html>
-
