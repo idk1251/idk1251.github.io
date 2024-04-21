@@ -87,14 +87,30 @@
     transition: border-color 0.3s ease;
   }
 
-  #usernameInput,
-  #numberInput {
+  #usernameInput {
     border-bottom: 2px solid #64ffda;
   }
 
-  #usernameInput:focus,
-  #numberInput:focus {
+  #usernameInput:focus {
     border-color: #00bfa5;
+  }
+
+  #rewardNameInput,
+  #rewardChanceInput {
+    border-bottom: 2px solid #ff5252;
+  }
+
+  #rewardNameInput:focus,
+  #rewardChanceInput:focus {
+    border-color: #ff1744;
+  }
+
+  #guessNumberInput {
+    border-bottom: 2px solid #ffca28;
+  }
+
+  #guessNumberInput:focus {
+    border-color: #ffb300;
   }
 
   .picker-section button {
@@ -116,8 +132,7 @@
     background-color: #00bfa5;
   }
 
-  #usernames,
-  #numbers {
+  #usernames {
     margin-top: 20px;
     max-height: 150px;
     overflow-y: auto;
@@ -125,19 +140,31 @@
     scrollbar-color: #00bfa5 #1e1e1e;
   }
 
-  #usernames::-webkit-scrollbar,
-  #numbers::-webkit-scrollbar {
+  #rewards {
+    margin-top: 20px;
+    max-height: 150px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #ff1744 #1e1e1e;
+  }
+
+  #rewards::-webkit-scrollbar,
+  #usernames::-webkit-scrollbar {
     width: 6px;
   }
 
-  #usernames::-webkit-scrollbar-thumb,
-  #numbers::-webkit-scrollbar-thumb {
+  #usernames::-webkit-scrollbar-thumb {
     background-color: #00bfa5;
     border-radius: 3px;
   }
 
-  #usernames::-webkit-scrollbar-track,
-  #numbers::-webkit-scrollbar-track {
+  #rewards::-webkit-scrollbar-thumb {
+    background-color: #ff1744;
+    border-radius: 3px;
+  }
+
+  #rewards::-webkit-scrollbar-track,
+  #usernames::-webkit-scrollbar-track {
     background-color: #1e1e1e;
   }
 
@@ -147,10 +174,28 @@
     font-size: 14px;
   }
 
-  #pickedUsername,
-  #pickedReward,
-  #pickedNumber {
+  #pickedUsername {
     background-color: #00bfa5;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    display: none;
+    margin-top: 20px;
+  }
+
+  #pickedReward {
+    background-color: #ff1744;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    display: none;
+    margin-top: 20px;
+  }
+
+  #pickedNumber {
+    background-color: #ffca28;
     color: #fff;
     padding: 10px;
     border-radius: 5px;
@@ -170,7 +215,7 @@
 <div class="intro-container">
     <div class="intro-text">
         <h1>Welcome to the Event Picker</h1>
-        <p>Effortlessly manage usernames, rewards, and numbers for your special events.</p>
+        <p>Effortlessly manage usernames, rewards, and guess a number for your special events.</p>
     </div>
 </div>
 
@@ -201,15 +246,10 @@
     <div id="pickedReward"></div>
   </div>
   <div class="picker-section">
-    <h2 style="color: #00bfa5;">Number Picker</h2>
-    <input type="number" id="numberInput" placeholder="Enter a number between 1 and 100" min="1" max="100">
-    <button id="addNumberButton" style="background-color: #00bfa5;">Add Number</button>
-    <button id="pickNumberButton" style="background-color: #00bfa5;">Pick Number</button>
-    <button id="resetNumberButton" style="background-color: #00bfa5;">Reset</button>
-    <div id="numbers">
-      <h3 style="color: #64ffda;">Added Numbers</h3>
-      <ul id="numberList"></ul>
-    </div>
+    <h2 style="color: #ffca28;">Number Guesser</h2>
+    <input type="number" id="guessNumberInput" placeholder="Enter a number">
+    <button id="guessButton" style="background-color: #ffca28;">Guess</button>
+    <button id="resetGuessButton" style="background-color: #ffca28;">Reset</button>
     <div id="pickedNumber"></div>
   </div>
 </div>
@@ -322,46 +362,29 @@
 </script>
 
 <script>
-  const numberInput = document.getElementById('numberInput');
-  const addNumberButton = document.getElementById('addNumberButton');
-  const pickNumberButton = document.getElementById('pickNumberButton');
-  const resetNumberButton = document.getElementById('resetNumberButton');
-  const numberList = document.getElementById('numberList');
+  const guessNumberInput = document.getElementById('guessNumberInput');
+  const guessButton = document.getElementById('guessButton');
+  const resetGuessButton = document.getElementById('resetGuessButton');
   const pickedNumber = document.getElementById('pickedNumber');
 
-  addNumberButton.addEventListener('click', () => {
-    const number = parseInt(numberInput.value);
-    if (!isNaN(number) && number >= 1 && number <= 100) {
-      const li = document.createElement('li');
-      li.textContent = number;
-      li.style.opacity = '0';
-      numberList.appendChild(li);
-      numberInput.value = '';
-      setTimeout(() => {
-        li.style.opacity = '1';
-      }, 50);
-    }
-  });
-
-  resetNumberButton.addEventListener('click', () => {
-    const numbers = numberList.querySelectorAll('li');
-    if (numbers.length > 0) {
-      numberList.style.opacity = '0';
-      setTimeout(() => {
-        numbers.forEach(li => li.remove());
-        numberList.style.opacity = '1';
-      }, 300);
-    }
-  });
-
-  pickNumberButton.addEventListener('click', () => {
-    const numbers = numberList.querySelectorAll('li');
-    if (numbers.length > 0) {
-      const randomIndex = Math.floor(Math.random() * numbers.length);
-      const chosenNumber = numbers[randomIndex].textContent;
-      pickedNumber.textContent = `Chosen Number: ${chosenNumber}`;
+  guessButton.addEventListener('click', () => {
+    const guessedNumber = parseInt(guessNumberInput.value);
+    const randomNumber = Math.floor(Math.random() * 100) + 1; // Generate a random number between 1 and 100
+    
+    if (!isNaN(guessedNumber)) {
+      if (guessedNumber === randomNumber) {
+        pickedNumber.textContent = `Congratulations! You guessed the correct number: ${randomNumber}`;
+      } else {
+        pickedNumber.textContent = `Sorry, the correct number was: ${randomNumber}`;
+      }
       pickedNumber.style.display = 'block';
     }
+  });
+
+  resetGuessButton.addEventListener('click', () => {
+    guessNumberInput.value = '';
+    pickedNumber.textContent = '';
+    pickedNumber.style.display = 'none';
   });
 </script>
 </body>
