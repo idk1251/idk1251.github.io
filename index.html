@@ -3,237 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Picker</title>
+    <title>Event Planner</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #212121;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .intro-container {
-            position: absolute;
-            top: 10vh;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1;
-        }
-
-        .intro-text {
-            background-color: rgba(0, 0, 0, 0.85);
-            padding: 40px; /* Increased padding */
-            text-align: center;
-            max-width: 600px; /* Wider max width */
-            color: #fff;
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3); /* Larger shadow */
-            position: relative;
-
-        }
-
-        .intro-text::before {
-            content: '';
-            position: absolute;
-            top: -10px; /* Increased border offset */
-            right: -10px; /* Increased border offset */
-            bottom: -10px; /* Increased border offset */
-            left: -10px; /* Increased border offset */
-            border: 10px solid transparent;
-            border-image: linear-gradient(to right, rgb(2, 171, 228), red);
-            border-image-slice: 1;
-        }
-
-        .intro-text p {
-            margin: 0;
-            font-size: 24px; /* Larger font size */
+            padding: 0;
         }
 
         .container {
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            margin-top: 160px; /* Increased margin-top */
+            align-items: center;
+            height: 100vh;
         }
 
-        .picker-section {
-            background-color: #1e1e1e;
-            padding: 40px; /* Increased padding */
-            border-radius: 12px; /* Larger rounded corners */
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
-            width: 400px; /* Wider width */
+        .form-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            border-color: #007bff;
+        }
+
+        button {
+            background-color: #007bff;
             color: #fff;
-            opacity: 0;
-            margin-right: 40px; /* Increased margin-right */
+            border: none;
+            border-radius: 5px;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
-  <div style="position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);">
-    <button id="copyLinkButton" style="background-color: #da149ef8; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer;">
-      Copy Share Link
-    </button>
-  </div>
-  
-  <script>
-    const copyLinkButton = document.getElementById('copyLinkButton');
-  
-    copyLinkButton.addEventListener('click', () => {
-      const linkToCopy = 'http://www.pickcenters.com/';
-      const tempInput = document.createElement('input');
-      tempInput.value = linkToCopy;
-      document.body.appendChild(tempInput);
-      tempInput.select();
-      document.execCommand('copy');
-      document.body.removeChild(tempInput);
-      copyLinkButton.textContent = 'Link Copied!';
-      setTimeout(() => {
-        copyLinkButton.textContent = 'Copy Share Link';
-      }, 2000);
-    });
-  </script>  
-<div class="intro-container">
-    <div class="intro-text">
-        <p>Welcome to the Event Picker!</p>
-        <p>Use this tool to select usernames and rewards for your special events.</p>
-    </div>
-</div>
-
 <div class="container">
-  <div class="picker-section">
-    <h2 style="color: #64ffda;">Username Picker</h2>
-    <input type="text" id="usernameInput" placeholder="Enter a username">
-    <button id="addButton" style="background-color: #64ffda;">Add Username</button>
-    <button id="pickButton" style="background-color: #64ffda;">Pick Username</button>
-    <button id="resetButton" style="background-color: #64ffda;">Reset</button>
-    <div id="usernames">
-      <h3 style="color: #00bfa5;">Added Usernames</h3>
-      <ul id="usernameList"></ul>
+    <div class="form-container">
+        <h1>Event Planner</h1>
+        <div class="username-section">
+            <input type="text" id="usernameInput" placeholder="Enter a username">
+            <button id="addButton">Add Username</button>
+            <button id="pickButton">Pick Username</button>
+            <button id="resetButton">Reset</button>
+            <ul id="usernameList"></ul>
+            <div id="pickedUsername"></div>
+        </div>
+        <hr>
+        <div class="reward-section">
+            <input type="text" id="rewardNameInput" placeholder="Enter a reward">
+            <input type="number" id="rewardChanceInput" placeholder="%" min="0" max="100" step="10">
+            <button id="addRewardButton">Add Reward</button>
+            <button id="pickRewardButton">Pick Reward</button>
+            <button id="resetRewardButton">Reset</button>
+            <ul id="rewardList"></ul>
+            <div id="pickedReward"></div>
+        </div>
     </div>
-    <div id="pickedUsername"></div>
-  </div>
-  <div class="picker-section">
-    <h2 style="color: #ff5252;">Reward Picker</h2>
-    <input type="text" id="rewardNameInput" placeholder="Enter a reward">
-    <input type="number" id="rewardChanceInput" placeholder="%" min="0" max="100" step="10">
-    <button id="addRewardButton" style="background-color: #ff5252;">Add Reward</button>
-    <button id="pickRewardButton" style="background-color: #ff5252;">Pick Reward</button>
-    <button id="resetRewardButton" style="background-color: #ff5252;">Reset</button>
-    <div id="rewards">
-      <h3 style="color: #ff1744;">Added Rewards</h3>
-      <ul id="rewardList"></ul>
-    </div>
-    <div id="pickedReward"></div>
-  </div>
 </div>
 
 <script>
-  const usernameInput = document.getElementById('usernameInput');
-  const addButton = document.getElementById('addButton');
-  const pickButton = document.getElementById('pickButton');
-  const resetButton = document.getElementById('resetButton');
-  const usernameList = document.getElementById('usernameList');
-  const pickedUsername = document.getElementById('pickedUsername');
+    const usernameInput = document.getElementById('usernameInput');
+    const addButton = document.getElementById('addButton');
+    const pickButton = document.getElementById('pickButton');
+    const resetButton = document.getElementById('resetButton');
+    const usernameList = document.getElementById('usernameList');
+    const pickedUsername = document.getElementById('pickedUsername');
 
-  addButton.addEventListener('click', () => {
-    const username = usernameInput.value.trim();
-    if (username !== '') {
-      const li = document.createElement('li');
-      li.textContent = username;
-      li.style.opacity = '0';
-      usernameList.appendChild(li);
-      usernameInput.value = '';
-      setTimeout(() => {
-        li.style.opacity = '1';
-      }, 50);
-    }
-  });
+    addButton.addEventListener('click', () => {
+        const username = usernameInput.value.trim();
+        if (username !== '') {
+            const li = document.createElement('li');
+            li.textContent = username;
+            usernameList.appendChild(li);
+            usernameInput.value = '';
+        }
+    });
 
-  resetButton.addEventListener('click', () => {
-    const usernames = usernameList.querySelectorAll('li');
-    if (usernames.length > 0) {
-      usernameList.style.opacity = '0';
-      setTimeout(() => {
-        usernames.forEach(li => li.remove());
-        usernameList.style.opacity = '1';
-      }, 300);
-    }
-  });
+    resetButton.addEventListener('click', () => {
+        usernameList.innerHTML = '';
+        pickedUsername.textContent = '';
+    });
 
-  pickButton.addEventListener('click', () => {
-    const usernames = usernameList.querySelectorAll('li');
-    if (usernames.length > 0) {
-      const randomIndex = Math.floor(Math.random() * usernames.length);
-      const chosenUsername = usernames[randomIndex].textContent;
-      pickedUsername.textContent = `Chosen Username: ${chosenUsername}`;
-      pickedUsername.style.display = 'block';
-    }
-  });
+    pickButton.addEventListener('click', () => {
+        const usernames = usernameList.querySelectorAll('li');
+        if (usernames.length > 0) {
+            const randomIndex = Math.floor(Math.random() * usernames.length);
+            const chosenUsername = usernames[randomIndex].textContent;
+            pickedUsername.textContent = `Chosen Username: ${chosenUsername}`;
+        } else {
+            pickedUsername.textContent = 'No usernames added';
+        }
+    });
 </script>
 
 <script>
-  const rewardNameInput = document.getElementById('rewardNameInput');
-  const rewardChanceInput = document.getElementById('rewardChanceInput');
-  const addRewardButton = document.getElementById('addRewardButton');
-  const pickRewardButton = document.getElementById('pickRewardButton');
-  const resetRewardButton = document.getElementById('resetRewardButton');
-  const rewardList = document.getElementById('rewardList');
-  const pickedReward = document.getElementById('pickedReward');
+    const rewardNameInput = document.getElementById('rewardNameInput');
+    const rewardChanceInput = document.getElementById('rewardChanceInput');
+    const addRewardButton = document.getElementById('addRewardButton');
+    const pickRewardButton = document.getElementById('pickRewardButton');
+    const resetRewardButton = document.getElementById('resetRewardButton');
+    const rewardList = document.getElementById('rewardList');
+    const pickedReward = document.getElementById('pickedReward');
 
-  addRewardButton.addEventListener('click', () => {
-    const rewardName = rewardNameInput.value.trim();
-    const rewardChance = parseInt(rewardChanceInput.value);
-    
-    if (rewardName !== '' && !isNaN(rewardChance) && rewardChance >= 0 && rewardChance <= 100) {
-      const li = document.createElement('li');
-      li.textContent = `${rewardName} (${rewardChance}%)`;
-      li.style.opacity = '0';
-      rewardList.appendChild(li);
-      rewardNameInput.value = '';
-      rewardChanceInput.value = '';
-      setTimeout(() => {
-        li.style.opacity = '1';
-      }, 50);
-    }
-  });
+    addRewardButton.addEventListener('click', () => {
+        const rewardName = rewardNameInput.value.trim();
+        const rewardChance = parseInt(rewardChanceInput.value);
 
-  resetRewardButton.addEventListener('click', () => {
-    const rewards = rewardList.querySelectorAll('li');
-    if (rewards.length > 0) {
-      rewardList.style.opacity = '0';
-      setTimeout(() => {
-        rewards.forEach(li => li.remove());
-        rewardList.style.opacity = '1';
-      }, 300);
-    }
-  });
-
-  pickRewardButton.addEventListener('click', () => {
-    const rewards = rewardList.querySelectorAll('li');
-    if (rewards.length > 0) {
-      const rewardArray = Array.from(rewards);
-      const chances = rewardArray.map(reward => parseInt(reward.textContent.match(/\d+(?=%)/)[0]));
-      const totalChances = chances.reduce((sum, chance) => sum + chance, 0);
-      const randomValue = Math.random() * totalChances;
-      let accumulatedChances = 0;
-      let chosenReward = null;
-
-      for (let i = 0; i < rewardArray.length; i++) {
-        accumulatedChances += chances[i];
-        if (randomValue <= accumulatedChances) {
-          chosenReward = rewardArray[i].textContent.replace(/ \(\d+%\)/, '');
-          break;
+        if (rewardName !== '' && !isNaN(rewardChance) && rewardChance >= 0 && rewardChance <= 100) {
+            const li = document.createElement('li');
+            li.textContent = `${rewardName} (${rewardChance}%)`;
+            rewardList.appendChild(li);
+            rewardNameInput.value = '';
+            rewardChanceInput.value = '';
         }
-      }
+    });
 
-      if (chosenReward) {
-        pickedReward.textContent = `Congratulations! You won: ${chosenReward}`;
-        pickedReward.style.display = 'block';
-      }
-    }
-  });
+    resetRewardButton.addEventListener('click', () => {
+        rewardList.innerHTML = '';
+        pickedReward.textContent = '';
+    });
+
+    pickRewardButton.addEventListener('click', () => {
+        const rewards = rewardList.querySelectorAll('li');
+        if (rewards.length > 0) {
+            const randomIndex = Math.floor(Math.random() * rewards.length);
+            const chosenReward = rewards[randomIndex].textContent;
+            pickedReward.textContent = `Chosen Reward: ${chosenReward}`;
+        } else {
+            pickedReward.textContent = 'No rewards added';
+        }
+    });
 </script>
 </body>
 </html>
