@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Planner</title>
+    <title>Picker App</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
+            background-color: #212121;
             margin: 0;
             display: flex;
             flex-direction: column;
@@ -16,131 +16,114 @@
         }
 
         .intro-container {
-            margin-top: 80px;
-            text-align: center;
+            position: absolute;
+            top: 10vh;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
         }
 
         .intro-text {
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            color: #333;
-            font-size: 18px;
-            line-height: 1.6;
+            background-color: rgba(0, 0, 0, 0.85);
+            padding: 40px; /* Increased padding */
+            text-align: center;
+            max-width: 600px; /* Wider max width */
+            color: #fff;
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3); /* Larger shadow */
+            position: relative;
+
+        }
+
+        .intro-text::before {
+            content: '';
+            position: absolute;
+            top: -10px; /* Increased border offset */
+            right: -10px; /* Increased border offset */
+            bottom: -10px; /* Increased border offset */
+            left: -10px; /* Increased border offset */
+            border: 10px solid transparent;
+            border-image: linear-gradient(to right, rgb(2, 171, 228), red);
+            border-image-slice: 1;
+        }
+
+        .intro-text p {
+            margin: 0;
+            font-size: 24px; /* Larger font size */
         }
 
         .container {
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            margin-top: 40px;
+            margin-top: 160px; /* Increased margin-top */
         }
 
         .picker-section {
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 400px;
-            color: #333;
-            margin-right: 40px;
-        }
-
-        h2 {
-            margin-top: 0;
-            font-size: 24px;
-            color: #007bff;
-        }
-
-        input[type="text"],
-        input[type="number"] {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        input[type="text"]:focus,
-        input[type="number"]:focus {
-            outline: none;
-            border-color: #007bff;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
+            background-color: #1e1e1e;
+            padding: 40px; /* Increased padding */
+            border-radius: 12px; /* Larger rounded corners */
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+            width: 400px; /* Wider width */
             color: #fff;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
 
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        #pickedUsername,
-        #pickedReward {
-            margin-top: 20px;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 16px;
-            display: none;
-        }
-
-        #pickedUsername {
-            background-color: #64dd17;
-            color: #fff;
-        }
-
-        #pickedReward {
-            background-color: #ff1744;
-            color: #fff;
+            opacity: 0;
+            margin-right: 40px; /* Increased margin-right */
         }
     </style>
 </head>
 <body>
+  <div style="position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);">
+    <button id="copyLinkButton" style="background-color: #da149ef8; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer;">
+      Copy Share Link
+    </button>
+  </div>
+  
+  <script>
+    const copyLinkButton = document.getElementById('copyLinkButton');
+  
+    copyLinkButton.addEventListener('click', () => {
+      const linkToCopy = 'http://www.pickcenters.com/';
+      const tempInput = document.createElement('input');
+      tempInput.value = linkToCopy;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      copyLinkButton.textContent = 'Link Copied!';
+      setTimeout(() => {
+        copyLinkButton.textContent = 'Copy Share Link';
+      }, 2000);
+    });
+  </script>  
 <div class="intro-container">
     <div class="intro-text">
-        <h1>Welcome to the Event Planner</h1>
-        <p>This tool helps you manage usernames and rewards for your events in a professional manner.</p>
+        <h1>Welcome to the Event Picker!</h1>
+        <p>Choose and manage usernames and rewards for your events with ease.</p>
     </div>
 </div>
 
 <div class="container">
   <div class="picker-section">
-    <h2>Username Management</h2>
+    <h2 style="color: #64ffda;">Username Picker</h2>
     <input type="text" id="usernameInput" placeholder="Enter a username">
-    <button id="addButton">Add Username</button>
-    <button id="pickButton">Pick Username</button>
-    <button id="resetButton">Reset</button>
+    <button id="addButton" style="background-color: #64ffda;">Add Username</button>
+    <button id="pickButton" style="background-color: #64ffda;">Pick Username</button>
+    <button id="resetButton" style="background-color: #64ffda;">Reset</button>
     <div id="usernames">
-      <h3>Added Usernames</h3>
+      <h3 style="color: #00bfa5;">Added Usernames</h3>
       <ul id="usernameList"></ul>
     </div>
     <div id="pickedUsername"></div>
   </div>
   <div class="picker-section">
-    <h2>Reward Management</h2>
+    <h2 style="color: #ff5252;">Reward Picker</h2>
     <input type="text" id="rewardNameInput" placeholder="Enter a reward">
     <input type="number" id="rewardChanceInput" placeholder="%" min="0" max="100" step="10">
-    <button id="addRewardButton">Add Reward</button>
-    <button id="pickRewardButton">Pick Reward</button>
-    <button id="resetRewardButton">Reset</button>
+    <button id="addRewardButton" style="background-color: #ff5252;">Add Reward</button>
+    <button id="pickRewardButton" style="background-color: #ff5252;">Pick Reward</button>
+    <button id="resetRewardButton" style="background-color: #ff5252;">Reset</button>
     <div id="rewards">
-      <h3>Added Rewards</h3>
+      <h3 style="color: #ff1744;">Added Rewards</h3>
       <ul id="rewardList"></ul>
     </div>
     <div id="pickedReward"></div>
