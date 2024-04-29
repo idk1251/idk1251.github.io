@@ -12,47 +12,47 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Align intro text to the top */
+    justify-content: flex-start;
     min-height: 100vh;
     color: #fff;
   }
 
   .intro-container {
-    max-width: 600px;
-    text-align: center;
-    margin-bottom: 40px;
+    max-width: 800px; /* Adjusted width for better spacing */
     display: flex;
-    justify-content: space-between; /* Distribute borders evenly */
+    justify-content: space-between; /* Distribute boxes evenly */
+    margin-top: 40px; /* Increased margin from top */
   }
 
   .intro-text {
+    flex: 1; /* Each box takes up equal space */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
-    flex-grow: 1; /* Take up available space */
+    margin: 0 10px; /* Added margin between boxes */
   }
 
   .blue-border {
-    border: 10px solid #64ffda; /* Blue border */
+    border: 10px solid #64ffda;
   }
 
   .red-border {
-    border: 10px solid #ff5252; /* Red border */
+    border: 10px solid #ff5252;
   }
 
   .yellow-border {
-    border: 10px solid #ffca28; /* Yellow border */
+    border: 10px solid #ffca28;
   }
 
   .intro-text h1 {
     margin: 0 0 20px 0;
-    font-size: 24px; /* Smaller font size */
+    font-size: 24px;
     color: #fff;
   }
 
   .intro-text p {
     margin: 0;
-    font-size: 16px; /* Smaller font size */
+    font-size: 16px;
     line-height: 1.6;
     color: #fff;
   }
