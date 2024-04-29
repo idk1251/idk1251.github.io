@@ -55,8 +55,6 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Adjusted shadow */
-    border: 2px solid #424242; /* Set border color */
-    width: 300px;
     color: #fff;
     animation: fadeUp 0.6s ease forwards;
     opacity: 0;
@@ -84,13 +82,12 @@
     background-color: #1e1e1e;
     color: #fff;
     font-size: 14px;
-    border-bottom: 2px solid #ffca28; /* Yellow bottom border */
     transition: border-color 0.3s ease;
   }
 
   #usernameInput,
   #guessNumberInput {
-    border-bottom: 2px solid #64ffda; /* Username and number picker border color */
+    border-bottom: 2px solid #64ffda;
   }
 
   #usernameInput:focus,
@@ -100,7 +97,7 @@
 
   #rewardNameInput,
   #rewardChanceInput {
-    border-bottom: 2px solid #ff5252; /* Reward picker border color */
+    border-bottom: 2px solid #ff5252;
   }
 
   #rewardNameInput:focus,
@@ -182,6 +179,8 @@
 
   #pickedNumber {
     background-color: #ffca28;
+    color: #ffca28; /* Yellow text color for number picker */
+    border-bottom: 2px solid #ffca28; /* Yellow border for number picker input */
   }
 
   h3 {
@@ -200,7 +199,7 @@
 </div>
 
 <div class="container">
-  <div class="picker-section">
+  <div class="picker-section" style="border: 2px solid #424242;">
     <h2 style="color: #64ffda;">Username Picker</h2>
     <input type="text" id="usernameInput" placeholder="Enter a username">
     <button id="addButton" style="background-color: #64ffda;">Add Username</button>
@@ -212,7 +211,7 @@
     </div>
     <div id="pickedUsername"></div>
   </div>
-  <div class="picker-section">
+  <div class="picker-section" style="border: 2px solid #424242;">
     <h2 style="color: #ff5252;">Reward Picker</h2>
     <input type="text" id="rewardNameInput" placeholder="Enter a reward">
     <input type="number" id="rewardChanceInput" placeholder="%" min="0" max="100" step="10">
@@ -225,7 +224,7 @@
     </div>
     <div id="pickedReward"></div>
   </div>
-  <div class="picker-section">
+  <div class="picker-section" style="border: 2px solid #424242;">
     <h2 style="color: #ffca28;">Number Picker</h2>
     <input type="number" id="guessNumberInput" placeholder="Enter a number between 1 and 10,000">
     <button id="guessButton" style="background-color: #ffca28;">Guess</button>
