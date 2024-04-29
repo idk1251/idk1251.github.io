@@ -21,6 +21,9 @@
     max-width: 600px;
     text-align: center;
     margin-bottom: 40px;
+  }
+
+  .intro-text {
     background-color: #1e1e1e;
     padding: 40px;
     border-radius: 8px;
@@ -37,6 +40,7 @@
     margin: 0;
     font-size: 18px;
     line-height: 1.6;
+    color: #fff;
   }
 
   .container {
@@ -48,21 +52,187 @@
     margin-top: 20px;
   }
 
-  /* Rest of the CSS styles remain unchanged */
+  .picker-section {
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Applied shadow border */
+    width: 300px;
+    color: #fff;
+    animation: fadeUp 0.6s ease forwards;
+    opacity: 0;
+  }
 
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+
+  input[type="text"],
+  input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    background-color: #1e1e1e;
+    color: #fff;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+  }
+
+  #usernameInput,
+  #guessNumberInput {
+    border-bottom: 2px solid #64ffda;
+  }
+
+  #usernameInput:focus,
+  #guessNumberInput:focus {
+    border-color: #00bfa5;
+  }
+
+  #rewardNameInput,
+  #rewardChanceInput {
+    border-bottom: 2px solid #ff5252;
+  }
+
+  #rewardNameInput:focus,
+  #rewardChanceInput:focus {
+    border-color: #ff1744;
+  }
+
+  .picker-section button {
+    color: #212121;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .picker-section button:last-child {
+    margin-bottom: 0;
+  }
+
+  .picker-section button:hover {
+    background-color: #00bfa5;
+  }
+
+  #usernames,
+  #rewards {
+    margin-top: 20px;
+    max-height: 150px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #00bfa5 #1e1e1e;
+  }
+
+  #rewards::-webkit-scrollbar,
+  #usernames::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #usernames::-webkit-scrollbar-thumb {
+    background-color: #00bfa5;
+    border-radius: 3px;
+  }
+
+  #rewards::-webkit-scrollbar-thumb {
+    background-color: #ff1744;
+    border-radius: 3px;
+  }
+
+  #rewards::-webkit-scrollbar-track,
+  #usernames::-webkit-scrollbar-track {
+    background-color: #1e1e1e;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    font-size: 14px;
+  }
+
+  #pickedUsername,
+  #pickedReward,
+  #pickedNumber {
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    display: none;
+    margin-top: 20px;
+  }
+
+  #pickedUsername {
+    background-color: #64ffda;
+  }
+
+  #pickedReward {
+    background-color: #ff5252;
+  }
+
+  #pickedNumber {
+    background-color: #ffca28;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
 </style>
 </head>
 <body>
 <div class="intro-container">
-    <div class="intro-text">
-        <h1>Welcome to the Event Picker</h1>
-        <p>Effortlessly manage usernames, rewards, and guess a number between 1 and 10,000 for your special events.</p>
+    <div class="intro-text" style="background-color: #1e1e1e;">
+        <h1 style="color: #64ffda;">Welcome to the Event Picker</h1>
+        <p style="color: #fff;">Effortlessly manage usernames, rewards, and guess a number between 1 and 10,000 for your special events.</p>
     </div>
 </div>
 
-<!-- Rest of the HTML content remains unchanged -->
+<div class="container">
+  <div class="picker-section" style="background-color: #1e1e1e;">
+    <h2 style="color: #64ffda;">Username Picker</h2>
+    <input type="text" id="usernameInput" placeholder="Enter a username">
+    <button id="addButton" style="background-color: #64ffda;">Add Username</button>
+    <button id="pickButton" style="background-color: #64ffda;">Pick Username</button>
+    <button id="resetButton" style="background-color: #64ffda;">Reset</button>
+    <div id="usernames">
+      <h3 style="color: #00bfa5;">Added Usernames</h3>
+      <ul id="usernameList"></ul>
+    </div>
+    <div id="pickedUsername"></div>
+  </div>
+  <div class="picker-section" style="background-color: #1e1e1e;">
+    <h2 style="color: #ff5252;">Reward Picker</h2>
+    <input type="text" id="rewardNameInput" placeholder="Enter a reward">
+    <input type="number" id="rewardChanceInput" placeholder="%" min="0" max="100" step="10">
+    <button id="addRewardButton" style="background-color: #ff5252;">Add Reward</button>
+    <button id="pickRewardButton" style="background-color: #ff5252;">Pick Reward</button>
+    <button id="resetRewardButton" style="background-color: #ff5252;">Reset</button>
+    <div id="rewards">
+      <h3 style="color: #ff1744;">Added Rewards</h3>
+      <ul id="rewardList"></ul>
+    </div>
+    <div id="pickedReward"></div>
+  </div>
+  <div class="picker-section" style="background-color: #1e1e1e;">
+    <h2 style="color: #ffca28;">Number Picker</h2>
+    <input type="number" id="guessNumberInput" placeholder="Enter a number between 1 and 10,000" style="border-bottom: 2px solid #ffca28;">
+    <button id="guessButton" style="background-color: #ffca28;">Guess</button>
+    <button id="resetGuessButton" style="background-color: #ffca28;">Reset</button>
+    <div id="pickedNumber"></div>
+  </div>
+</div>
 
-<script>
 <script>
   const usernameInput = document.getElementById('usernameInput');
   const addButton = document.getElementById('addButton');
@@ -107,6 +277,8 @@
       pickedUsername.style.display = 'block';
     }
   });
+</script>
+
 <script>
   const rewardNameInput = document.getElementById('rewardNameInput');
   const rewardChanceInput = document.getElementById('rewardChanceInput');
@@ -170,31 +342,8 @@
       }
     }
   });
-<script>
-  const rewardNameInput = document.getElementById('rewardNameInput');
-  const rewardChanceInput = document.getElementById('rewardChanceInput');
-  const addRewardButton = document.getElementById('addRewardButton');
-  const pickRewardButton = document.getElementById('pickRewardButton');
-  const resetRewardButton = document.getElementById('resetRewardButton');
-  const rewardList = document.getElementById('rewardList');
-  const pickedReward = document.getElementById('pickedReward');
-
-  addRewardButton.addEventListener('click', () => {
-    // Functionality to add a reward
-  });
-
-  resetRewardButton.addEventListener('click', () => {
-    // Functionality to reset rewards
-  });
-
-  pickRewardButton.addEventListener('click', () => {
-    // Functionality to pick a reward
-  });
 </script>
 
-</script>
-
-<script>
 <script>
   const guessNumberInput = document.getElementById('guessNumberInput');
   const guessButton = document.getElementById('guessButton');
@@ -218,8 +367,5 @@
     pickedNumber.style.display = 'none';
   });
 </script>
-
-</script>
-
 </body>
 </html>
