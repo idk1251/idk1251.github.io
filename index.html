@@ -84,30 +84,16 @@
     color: #fff;
     font-size: 14px;
     transition: border-color 0.3s ease;
+    border-radius: 5px; /* Added border-radius */
   }
 
-  #usernameInput,
-  #guessNumberInput {
-    border-bottom: 2px solid #64ffda;
-  }
-
-  #usernameInput:focus,
-  #guessNumberInput:focus {
+  input[type="text"]:focus,
+  input[type="number"]:focus {
     border-color: #00bfa5;
   }
 
-  #rewardNameInput,
-  #rewardChanceInput {
-    border-bottom: 2px solid #ff5252;
-  }
-
-  #rewardNameInput:focus,
-  #rewardChanceInput:focus {
-    border-color: #ff1744;
-  }
-
   .picker-section button {
-    color: #212121;
+    color: #fff;
     border: none;
     border-radius: 5px;
     padding: 8px 12px;
@@ -115,6 +101,7 @@
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    background-color: #64ffda;
   }
 
   .picker-section button:last-child {
@@ -132,6 +119,7 @@
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #00bfa5 #1e1e1e;
+    border-radius: 5px; /* Added border-radius */
   }
 
   #rewards::-webkit-scrollbar,
@@ -160,9 +148,7 @@
     font-size: 14px;
   }
 
-  #pickedUsername,
-  #pickedReward,
-  #pickedNumber {
+  .picked-item {
     padding: 10px;
     border-radius: 5px;
     font-size: 14px;
@@ -170,22 +156,26 @@
     margin-top: 20px;
   }
 
-  #pickedUsername {
-    background-color: #64ffda;
-  }
-
-  #pickedReward {
-    background-color: #ff5252;
-  }
-
-  #pickedNumber {
-    background-color: #ffca28;
+  .picked-item.active {
+    display: block;
   }
 
   h3 {
     margin: 0;
     font-size: 18px;
     margin-bottom: 10px;
+  }
+
+  .picked-item.success {
+    background-color: #00bfa5;
+  }
+
+  .picked-item.error {
+    background-color: #ff1744;
+  }
+
+  .picked-item.warning {
+    background-color: #ffca28;
   }
 </style>
 </head>
@@ -199,36 +189,36 @@
 
 <div class="container">
   <div class="picker-section">
-    <h2 style="color: #64ffda;">Username Picker</h2>
+    <h2>Username Picker</h2>
     <input type="text" id="usernameInput" placeholder="Enter a username">
-    <button id="addButton" style="background-color: #64ffda;">Add Username</button>
-    <button id="pickButton" style="background-color: #64ffda;">Pick Username</button>
-    <button id="resetButton" style="background-color: #64ffda;">Reset</button>
+    <button id="addButton">Add Username</button>
+    <button id="pickButton">Pick Username</button>
+    <button id="resetButton">Reset</button>
     <div id="usernames">
-      <h3 style="color: #00bfa5;">Added Usernames</h3>
+      <h3>Added Usernames</h3>
       <ul id="usernameList"></ul>
     </div>
-    <div id="pickedUsername"></div>
+    <div id="pickedUsername" class="picked-item"></div>
   </div>
   <div class="picker-section">
-    <h2 style="color: #ff5252;">Reward Picker</h2>
+    <h2>Reward Picker</h2>
     <input type="text" id="rewardNameInput" placeholder="Enter a reward">
     <input type="number" id="rewardChanceInput" placeholder="%" min="0" max="100" step="10">
-    <button id="addRewardButton" style="background-color: #ff5252;">Add Reward</button>
-    <button id="pickRewardButton" style="background-color: #ff5252;">Pick Reward</button>
-    <button id="resetRewardButton" style="background-color: #ff5252;">Reset</button>
+    <button id="addRewardButton">Add Reward</button>
+    <button id="pickRewardButton">Pick Reward</button>
+    <button id="resetRewardButton">Reset</button>
     <div id="rewards">
-      <h3 style="color: #ff1744;">Added Rewards</h3>
+      <h3>Added Rewards</h3>
       <ul id="rewardList"></ul>
     </div>
-    <div id="pickedReward"></div>
+    <div id="pickedReward" class="picked-item"></div>
   </div>
   <div class="picker-section">
-    <h2 style="color: #ffca28;">Number Picker</h2>
+    <h2>Number Picker</h2>
     <input type="number" id="guessNumberInput" placeholder="Enter a number between 1 and 10,000" style="border-bottom: 2px solid #ffca28;">
-    <button id="guessButton" style="background-color: #ffca28;">Guess</button>
-    <button id="resetGuessButton" style="background-color: #ffca28;">Reset</button>
-    <div id="pickedNumber"></div>
+    <button id="guessButton">Guess</button>
+    <button id="resetGuessButton">Reset</button>
+    <div id="pickedNumber" class="picked-item"></div>
   </div>
 </div>
 
@@ -259,7 +249,7 @@
     if (usernames.length > 0) {
       usernameList.style.opacity = '0';
       pickedUsername.textContent = '';
-      pickedUsername.style.display = 'none';
+      pickedUsername.classList.remove('active');
       setTimeout(() => {
         usernames.forEach(li => li.remove());
         usernameList.style.opacity = '1';
@@ -273,7 +263,7 @@
       const randomIndex = Math.floor(Math.random() * usernames.length);
       const chosenUsername = usernames[randomIndex].textContent;
       pickedUsername.textContent = `Chosen Username: ${chosenUsername}`;
-      pickedUsername.style.display = 'block';
+      pickedUsername.classList.add('active');
     }
   });
 </script>
@@ -309,7 +299,7 @@
     if (rewards.length > 0) {
       rewardList.style.opacity = '0';
       pickedReward.textContent = '';
-      pickedReward.style.display = 'none';
+      pickedReward.classList.remove('active');
       setTimeout(() => {
         rewards.forEach(li => li.remove());
         rewardList.style.opacity = '1';
@@ -337,7 +327,7 @@
 
       if (chosenReward) {
         pickedReward.textContent = `Congratulations! You won: ${chosenReward}`;
-        pickedReward.style.display = 'block';
+        pickedReward.classList.add('active');
       }
     }
   });
@@ -356,14 +346,14 @@
     if (!isNaN(guessedNumber) && guessedNumber >= 1 && guessedNumber <= 10000) {
       const picked = Math.floor(Math.random() * guessedNumber) + 1; // Generate a random number between 1 and the guessed number
       pickedNumber.textContent = `Your picked number is: ${picked}`;
-      pickedNumber.style.display = 'block';
+      pickedNumber.classList.add('active');
     }
   });
 
   resetGuessButton.addEventListener('click', () => {
     guessNumberInput.value = '';
     pickedNumber.textContent = '';
-    pickedNumber.style.display = 'none';
+    pickedNumber.classList.remove('active');
   });
 </script>
 </body>
