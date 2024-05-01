@@ -17,14 +17,68 @@
     min-height: 100vh;
   }
 
+  .intro-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+    max-width: 1000px; /* Adjusted max-width */
+    width: 100%;
+  }
+
+  .intro-text {
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px; 
+    flex-basis: 20%; /* Adjusted flex-basis */
+    text-align: center; /* Centered text */
+  }
+
+  .blue-border {
+    border: 2px solid #64ffda; 
+  }
+
+  .red-border {
+    border: 2px solid #ff5252; 
+  }
+
+  .yellow-border {
+    border: 2px solid #ffca28; 
+  }
+
+  .orange-border {
+    border: 2px solid #ff9800;
+  }
+
+  .intro-text h1 {
+    margin: 0 0 10px 0;
+    font-size: 24px; 
+    color: #fff;
+  }
+
+  .intro-text p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #fff;
+  }
+
+  .discord-logo,
+  .temu-button {
+    width: 100px; /* Adjusted image width */
+    height: auto;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+
   .container {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
     gap: 20px;
     margin-top: 20px;
-    max-width: 1000px;
-    width: 100%;
   }
 
   .picker-section {
@@ -163,67 +217,6 @@
     font-size: 18px;
     margin-bottom: 10px;
   }
-
-  .intro-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    padding: 20px;
-    max-width: 1000px;
-    margin: auto;
-  }
-
-  .intro-text {
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
-    flex-basis: calc(25% - 20px); /* Adjusted flex-basis */
-    text-align: center;
-  }
-
-  .blue-border {
-    border: 2px solid #64ffda; 
-  }
-
-  .red-border {
-    border: 2px solid #ff5252; 
-  }
-
-  .yellow-border {
-    border: 2px solid #ffca28; 
-  }
-
-  .orange-border {
-    border: 2px solid #ff9800;
-  }
-
-  .intro-text h1 {
-    margin: 0 0 10px 0;
-    font-size: 24px; 
-    color: #fff;
-  }
-
-  .intro-text p {
-    margin: 0;
-    font-size: 14px;
-    line-height: 1.4;
-    color: #fff;
-  }
-
-  .discord-logo,
-  .temu-button {
-    width: 100px; /* Adjusted image width */
-    height: auto;
-    margin-top: 10px;
-    cursor: pointer;
-  }
 </style>
 </head>
 <body>
@@ -235,20 +228,6 @@
     <div class="intro-text red-border">
         <h1>Efficiency at Its Best</h1>
         <p>Experience efficient management of usernames, rewards, and guessing numbers with our Picker app. Try it now!</p>
-    </div>
-    <div class="intro-text yellow-border">
-        <h1>Contact us for Sponsorship</h1>
-        <p>If you're interested in sponsoring our event or collaborating with us, please join our Discord server or contact us via email for more information.</p>
-        <a href="https://discord.gg/7fmV8C7SxT" target="_blank">
-            <img src="https://cdn-icons-png.freepik.com/512/3670/3670157.png" alt="Discord Logo" class="discord-logo">
-        </a>
-    </div>
-    <div class="intro-text orange-border">
-        <h1>Temu Event</h1>
-        <p>Download our app now and get a $100 coupon for Temu! Join the event and start saving.</p>
-        <a href="https://temu.to/m/ujfj06atuvi" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/fr/thumb/a/a6/Temu_logo.svg/2048px-Temu_logo.svg.png" alt="Temu Logo" class="temu-button">
-        </a>
     </div>
 </div>
 
@@ -285,6 +264,23 @@
     <button id="resetGuessButton" style="background-color: #ffca28;">Reset</button>
     <div id="pickedNumber"></div>
   </div>
+</div>
+
+<div class="intro-container">
+    <div class="intro-text yellow-border">
+        <h1>Contact us for Sponsorship</h1>
+        <p>If you're interested in sponsoring our event or collaborating with us, please join our Discord server or contact us via email for more information.</p>
+        <a href="https://discord.gg/7fmV8C7SxT" target="_blank">
+            <img src="https://cdn-icons-png.freepik.com/512/3670/3670157.png" alt="Discord Logo" class="discord-logo">
+        </a>
+    </div>
+    <div class="intro-text orange-border">
+        <h1>Temu Event</h1>
+        <p>Download our app now and get a $100 coupon for Temu! Join the event and start saving.</p>
+        <a href="https://temu.to/m/ujfj06atuvi" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/fr/thumb/a/a6/Temu_logo.svg/2048px-Temu_logo.svg.png" alt="Temu Logo" class="temu-button">
+        </a>
+    </div>
 </div>
 <script>
   const usernameInput = document.getElementById('usernameInput');
