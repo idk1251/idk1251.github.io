@@ -10,14 +10,20 @@
     background-color: #212121;
     margin: 0;
     color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 100vh;
   }
 
   .intro-container {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    justify-content: flex-start;
     margin-top: 40px;
+    max-width: 1000px; /* Adjusted max-width */
+    width: 100%;
   }
 
   .intro-text {
@@ -25,7 +31,8 @@
     border-radius: 8px;
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
     margin-bottom: 20px; 
-    max-width: 400px; /* Adjusted max-width */
+    flex-basis: 25%; /* Adjusted flex-basis */
+    text-align: center; /* Centered text */
   }
 
   .blue-border {
@@ -222,6 +229,9 @@
         <h1>Efficiency at Its Best</h1>
         <p>Experience efficient management of usernames, rewards, and guessing numbers with our Picker app. Try it now!</p>
     </div>
+</div>
+
+<div class="intro-container">
     <div class="intro-text yellow-border">
         <h1>Contact us for Sponsorship</h1>
         <p>If you're interested in sponsoring our event or collaborating with us, please join our Discord server or contact us via email for more information.</p>
