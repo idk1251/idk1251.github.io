@@ -75,7 +75,10 @@
 <body>
 <div class="container">
   <div class="picker-section">
-    <h2>Username Picker</h2>
+    <h2>Welcome to Picker Center</h2>
+    <div class="intro-text blue-border">
+      <p>Effortlessly manage usernames, rewards, and guess a number between 1 and 10,000 for your special events.</p>
+    </div>
     <input type="text" id="usernameInput" placeholder="Enter a username">
     <button id="addButton">Add Username</button>
     <button id="pickButton">Pick Username</button>
@@ -86,7 +89,10 @@
     <div id="pickedUsername"></div>
   </div>
   <div class="picker-section">
-    <h2>Reward Picker</h2>
+    <h2>Efficiency at Its Best</h2>
+    <div class="intro-text red-border">
+      <p>Experience efficient management of usernames, rewards, and guessing numbers with our advanced tools. Try it now!</p>
+    </div>
     <input type="text" id="rewardNameInput" placeholder="Enter a reward">
     <input type="number" id="rewardChanceInput" placeholder="%" min="0" max="100" step="10">
     <button id="addRewardButton">Add Reward</button>
@@ -98,14 +104,15 @@
     <div id="pickedReward"></div>
   </div>
   <div class="picker-section">
-    <h2>Number Picker</h2>
-    <input type="number" id="guessNumberInput" placeholder="Enter a number between 1 and 10,000">
-    <button id="guessButton">Guess</button>
-    <button id="resetGuessButton">Reset</button>
-    <div id="pickedNumber"></div>
+    <h2>Temu Event</h2>
+    <div class="intro-text orange-border">
+      <p>Download the temu app (click on the temu icon) now and get a $100 coupon for Temu! Join the event and start spending your free $100.</p>
+      <a href="https://temu.to/m/ujfj06atuvi" target="_blank">
+          <img src="https://upload.wikimedia.org/wikipedia/fr/thumb/a/a6/Temu_logo.svg/2048px-Temu_logo.svg.png" alt="Temu Logo" class="temu-button">
+      </a>
+    </div>
   </div>
 </div>
-
 <script>
   const usernameInput = document.getElementById('usernameInput');
   const addButton = document.getElementById('addButton');
@@ -150,7 +157,9 @@
       pickedUsername.style.display = 'block';
     }
   });
+</script>
 
+<script>
   const rewardNameInput = document.getElementById('rewardNameInput');
   const rewardChanceInput = document.getElementById('rewardChanceInput');
   const addRewardButton = document.getElementById('addRewardButton');
@@ -213,7 +222,9 @@
       }
     }
   });
+</script>
 
+<script>
   const guessNumberInput = document.getElementById('guessNumberInput');
   const guessButton = document.getElementById('guessButton');
   const resetGuessButton = document.getElementById('resetGuessButton');
