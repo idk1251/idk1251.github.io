@@ -19,21 +19,23 @@
         }
 
         .container {
+            max-width: 1200px;
+            width: 90%;
             display: flex;
             justify-content: space-between;
-            width: 80%;
-            text-align: center;
+            background-color: #1c1c1c;
+            border: 5px solid #42a5f5;
             border-radius: 20px;
             box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
             overflow: hidden;
         }
 
-        .border-container {
+        .section {
             flex: 1;
             padding: 30px;
         }
 
-        .border-container:first-child {
+        .section:not(:last-child) {
             border-right: 5px solid #42a5f5;
         }
 
@@ -66,17 +68,9 @@
             border-color: #5f73bc;
         }
 
-        .requirements,
-        .clan-stats,
-        .warning,
-        .donate-section {
-            border: 3px solid #42a5f5;
-            border-radius: 20px;
-            margin-top: 20px;
-            text-align: left;
-            background-color: #1c1c1c;
-            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-            padding: 20px;
+        .requirements ul,
+        .warning ul {
+            padding-left: 20px;
         }
 
         .requirements h2,
@@ -96,7 +90,7 @@
 
 <body>
     <div class="container">
-        <div class="border-container">
+        <div class="section">
             <h1>Welcome to DEAL Clan!</h1>
             <p>We are a dedicated Pet Simulator 99 clan committed to excellence and teamwork. Our motto is "Together We Are Strong! Help Each Other!"</p>
             <h2>How to Join:</h2>
@@ -106,7 +100,7 @@
             </ol>
             <a href="https://discord.gg/xXrE6SXJ2P" class="discord-link">Join Our Discord Server</a>
         </div>
-        <div class="border-container">
+        <div class="section">
             <div class="requirements">
                 <h2>Requirements:</h2>
                 <ul>
@@ -123,9 +117,11 @@
             </div>
             <div class="warning">
                 <h2>Warning:</h2>
-                <p>- Inactive</p>
-                <p>- Failure to donate gems monthly</p>
-                <p>- Failure to participate in clan events and quests</p>
+                <ul>
+                    <li>Inactive</li>
+                    <li>Failure to donate gems monthly</li>
+                    <li>Failure to participate in clan events and quests</li>
+                </ul>
                 <p>If you fail to comply with these rules, you will be kicked from the clan.</p>
             </div>
             <div class="donate-section">
