@@ -68,7 +68,7 @@
             margin-right: 10px;
         }
 
-        .join-section {
+        .join-instructions {
             border: 3px solid #42a5f5;
             padding: 20px;
             border-radius: 20px;
@@ -78,17 +78,22 @@
             box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
         }
 
-        .join-section h2 {
+        .join-instructions h2 {
             color: #42a5f5;
             margin-bottom: 15px;
         }
 
-        .join-section ol {
+        .join-instructions ol {
             list-style-type: decimal;
             padding-left: 20px;
+            margin: 0;
         }
 
-        .stats-section {
+        .join-instructions li {
+            margin-bottom: 10px;
+        }
+
+        .clan-stats {
             border: 3px solid #42a5f5;
             padding: 20px;
             border-radius: 20px;
@@ -98,7 +103,7 @@
             box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
         }
 
-        .stats-section h2 {
+        .clan-stats h2 {
             color: #42a5f5;
             margin-bottom: 15px;
         }
@@ -124,9 +129,25 @@
 
         .donate-section img {
             border-radius: 50%;
-            margin-top: 15px;
-            width: 150px;
-            height: 150px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .donate-button {
+            background-color: #42a5f5;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            border: 3px solid #42a5f5;
+            font-size: 20px;
+            display: inline-block;
+        }
+
+        .donate-button:hover {
+            background-color: #1e88e5;
+            border-color: #1e88e5;
         }
     </style>
 </head>
@@ -135,27 +156,27 @@
     <div class="container">
         <h1>Welcome to DEAL Clan!</h1>
         <p>We are a dedicated Pet Simulator 99 clan committed to excellence and teamwork. Our motto is "Together We Are Strong! Help Each Other!"</p>
-        <p>To join our clan, please follow the steps below:</p>
-        <div class="join-section">
-            <h2>How to Join:</h2>
-            <ol>
-                <li>Join our Discord server by clicking on the Discord icon below.</li>
-                <li>Once in the server, open a ticket to join DEAL Clan.</li>
-                <li>Follow the instructions provided by our staff to complete the joining process.</li>
-            </ol>
-        </div>
+        <p>To join our clan, please click on the Discord icon below and join our server. Once in the server, open a ticket to join DEAL Clan.</p>
         <a href="https://discord.gg/xXrE6SXJ2P" class="discord-link">
             <img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" alt="Discord Icon">
             Join Our Discord Server
         </a>
-        <div class="stats-section">
+        <div class="join-instructions">
+            <h2>How to Join:</h2>
+            <ol>
+                <li>Join our Discord server using the link above.</li>
+                <li>Once inside the server, locate the "DEAL Clan Recruitment" channel.</li>
+                <li>Open a ticket in that channel and follow the instructions provided by our staff to join the clan.</li>
+            </ol>
+        </div>
+        <div class="clan-stats">
             <h2>Clan Stats:</h2>
             <p>We currently have 28 members out of 75 and are at clan level 4.</p>
         </div>
         <div class="donate-section">
             <h2>Donate Gems:</h2>
-            <p>If you'd like to contribute to our clan, you can donate gems to zirjagor in-game mailbox:</p>
-            <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D0CF562655F2C717A2B0D9A9104BF2E6-Png/150/150/AvatarHeadshot/Webp/noFilter" alt="Zirjagor Profile Pic">
+            <p>To support our clan, you can donate gems to <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D0CF562655F2C717A2B0D9A9104BF2E6-Png/150/150/AvatarHeadshot/Webp/noFilter" alt="Zirjagor Profile Pic" width="30" height="30"> zirjagor in-game. Consider it as a donation in the mailbox.</p>
+            <a href="#" class="donate-button">Donate Gems</a>
         </div>
     </div>
 </body>
