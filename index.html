@@ -20,25 +20,21 @@
 
         .container {
             display: flex;
-            flex-wrap: wrap;
             justify-content: space-between;
-            width: 90%;
-            background-color: #1c1c1c;
-            border: 5px solid #42a5f5;
-            padding: 30px;
+            width: 80%;
+            text-align: center;
             border-radius: 20px;
             box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
         }
 
-        .section {
-            width: 48%;
-            text-align: center;
-            background-color: #1c1c1c;
-            border: 3px solid #42a5f5;
-            padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+        .border-container {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .border-container:first-child {
+            border-right: 5px solid #42a5f5;
         }
 
         h1 {
@@ -51,12 +47,56 @@
             line-height: 1.6;
             margin: 10px 0;
         }
+
+        .discord-link {
+            display: inline-block;
+            margin-top: 30px;
+            text-decoration: none;
+            background-color: #7289da;
+            color: #ffffff;
+            padding: 15px 40px;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+            border: 2px solid #7289da;
+            font-size: 16px;
+        }
+
+        .discord-link:hover {
+            background-color: #5f73bc;
+            border-color: #5f73bc;
+        }
+
+        .requirements,
+        .clan-stats,
+        .warning,
+        .donate-section {
+            border: 3px solid #42a5f5;
+            border-radius: 20px;
+            margin-top: 20px;
+            text-align: left;
+            background-color: #1c1c1c;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+        }
+
+        .requirements h2,
+        .clan-stats h2,
+        .warning h2,
+        .donate-section h2 {
+            color: #42a5f5;
+            margin-bottom: 15px;
+        }
+
+        .clan-stats p,
+        .warning p {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="section">
+        <div class="border-container">
             <h1>Welcome to DEAL Clan!</h1>
             <p>We are a dedicated Pet Simulator 99 clan committed to excellence and teamwork. Our motto is "Together We Are Strong! Help Each Other!"</p>
             <h2>How to Join:</h2>
@@ -66,7 +106,7 @@
             </ol>
             <a href="https://discord.gg/xXrE6SXJ2P" class="discord-link">Join Our Discord Server</a>
         </div>
-        <div class="section">
+        <div class="border-container">
             <div class="requirements">
                 <h2>Requirements:</h2>
                 <ul>
@@ -88,8 +128,6 @@
                 <p>- Failure to participate in clan events and quests</p>
                 <p>If you fail to comply with these rules, you will be kicked from the clan.</p>
             </div>
-        </div>
-        <div class="section">
             <div class="donate-section">
                 <h2>Donate Gems:</h2>
                 <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D0CF562655F2C717A2B0D9A9104BF2E6-Png/150/150/AvatarHeadshot/Webp/noFilter" alt="Profile Pic">
