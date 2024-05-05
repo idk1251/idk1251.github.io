@@ -19,24 +19,24 @@
         }
 
         .container {
-            max-width: 1200px;
             width: 90%;
-            display: flex;
-            justify-content: space-between;
+            text-align: center;
             background-color: #1c1c1c;
             border: 5px solid #42a5f5;
             border-radius: 20px;
             box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: space-between;
             overflow: hidden;
         }
 
         .section {
-            flex: 1;
-            padding: 30px;
-        }
-
-        .section:not(:last-child) {
-            border-right: 5px solid #42a5f5;
+            width: 48%; /* Adjust the width as needed */
+            padding: 20px;
+            background-color: #1c1c1c;
+            border: 3px solid #42a5f5;
+            border-radius: 20px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
         }
 
         h1 {
@@ -68,11 +68,6 @@
             border-color: #5f73bc;
         }
 
-        .requirements ul,
-        .warning ul {
-            padding-left: 20px;
-        }
-
         .requirements h2,
         .clan-stats h2,
         .warning h2,
@@ -99,8 +94,6 @@
                 <li>Once in the server, open a ticket to join DEAL Clan.</li>
             </ol>
             <a href="https://discord.gg/xXrE6SXJ2P" class="discord-link">Join Our Discord Server</a>
-        </div>
-        <div class="section">
             <div class="requirements">
                 <h2>Requirements:</h2>
                 <ul>
@@ -109,6 +102,8 @@
                     <li>Must donate gems monthly</li>
                 </ul>
             </div>
+        </div>
+        <div class="section">
             <div class="clan-stats">
                 <h2>Clan Stats:</h2>
                 <p>28 / 75 members</p>
@@ -117,11 +112,9 @@
             </div>
             <div class="warning">
                 <h2>Warning:</h2>
-                <ul>
-                    <li>Inactive</li>
-                    <li>Failure to donate gems monthly</li>
-                    <li>Failure to participate in clan events and quests</li>
-                </ul>
+                <p>- Inactive</p>
+                <p>- Failure to donate gems monthly</p>
+                <p>- Failure to participate in clan events and quests</p>
                 <p>If you fail to comply with these rules, you will be kicked from the clan.</p>
             </div>
             <div class="donate-section">
