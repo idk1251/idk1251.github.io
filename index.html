@@ -6,7 +6,7 @@
     <title>DEAL Clan - Together We Are Strong!</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        /* General Styles */
+        /* Global Styles */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -14,67 +14,77 @@
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
+            background-color: #1f2a38;
+            color: #fff;
             line-height: 1.6;
         }
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 20px;
         }
-        h1, h2, h3, h4, h5, h6 {
-            margin-bottom: 20px;
-            font-weight: 700;
-            color: #333;
-        }
-        p {
-            margin-bottom: 20px;
-            color: #555;
-        }
-        /* Header Styles */
-        header {
-            text-align: center;
-            background-color: #343a40;
-            padding: 50px 0;
-            color: #fff;
-        }
-        header h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-        }
-        header p {
-            font-size: 18px;
-            margin-bottom: 40px;
-        }
-        /* Navigation Styles */
         nav {
             text-align: center;
             margin-bottom: 50px;
         }
-        nav a {
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+        }
+        nav ul li a {
             text-decoration: none;
-            color: #333;
+            color: #fff;
             padding: 10px 20px;
             border-radius: 5px;
-            background-color: #fff;
+            background-color: #343a40;
             margin: 0 5px;
             transition: all 0.3s ease;
-            font-size: 18px;
-            display: inline-block;
         }
-        nav a:hover {
+        nav ul li a:hover {
             background-color: #555;
-            color: #fff;
         }
-        /* Main Content Styles */
+        header {
+            background-color: #343a40;
+            padding: 20px 0;
+            text-align: center;
+        }
+        .hero-content {
+            text-align: center;
+        }
+        .hero-content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        .hero-content p {
+            font-size: 20px;
+        }
         section {
-            background-color: #fff;
-            padding: 50px;
-            border-radius: 10px;
-            margin-bottom: 50px;
-            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+            padding: 50px 0;
         }
+        section h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        section p {
+            margin-bottom: 20px;
+        }
+        section ul {
+            padding-left: 20px;
+        }
+        section ul li {
+            margin-bottom: 10px;
+        }
+        footer {
+            background-color: #343a40;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+        /* Discord Link Styles */
         .discord-link {
             text-align: center;
             margin-bottom: 40px;
@@ -89,11 +99,6 @@
         }
         .discord-link img:hover {
             transform: scale(1.1);
-        }
-        .discord-link p {
-            font-size: 18px;
-            color: #555;
-            margin-bottom: 20px;
         }
         .discord-link a {
             text-decoration: none;
@@ -111,35 +116,32 @@
             background-color: transparent;
             border-color: #fff;
         }
+        /* Donation Note Styles */
         .note {
             font-style: italic;
             color: #888;
             margin-top: 20px;
             font-size: 16px;
         }
-        /* Footer Styles */
-        footer {
-            text-align: center;
-            background-color: #343a40;
-            color: #fff;
-            padding: 20px 0;
-            border-top: 1px solid #666;
-        }
     </style>
 </head>
 <body>
     <header>
-        <h1>DEAL Clan</h1>
-        <p>Together We Are Strong!</p>
+        <nav>
+            <ul>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#join">Join Us</a></li>
+                <li><a href="#events">Events</a></li>
+                <li><a href="#donate">Donate</a></li>
+            </ul>
+        </nav>
+        <div class="hero-content">
+            <h1>DEAL Clan</h1>
+            <p>Together We Are Strong!</p>
+        </div>
     </header>
-    <nav>
-        <a href="#about">About Us</a>
-        <a href="#join">Join Us</a>
-        <a href="#events">Events</a>
-        <a href="#donate">Donate</a>
-    </nav>
-    <div class="container">
-        <section id="about">
+    <section id="about">
+        <div class="container">
             <h2>About Us</h2>
             <p>Welcome to the DEAL Clan, where strength is in unity! We are a thriving community within the Pet Simulator 99 world, dedicated to mutual growth and support. With a clan level of 4 and 28 members strong, we're making waves and climbing the ranks!</p>
             <h3>Membership Requirements:</h3>
@@ -148,27 +150,35 @@
                 <li>Attendance to all clan events and quests is mandatory</li>
                 <li>Monthly gem donations are required to support clan growth</li>
             </ul>
-        </section>
-        <section id="join">
+        </div>
+    </section>
+    <section id="join">
+        <div class="container">
             <h2>Join Us</h2>
             <div class="discord-link">
                 <img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" alt="Discord Icon">
                 <p>Click the Discord icon to join our server. Once you're in, open a ticket to join the clan.</p>
                 <a href="https://discord.gg/xXrE6SXJ2P">Join Our Discord</a>
             </div>
-        </section>
-        <section id="events">
+        </div>
+    </section>
+    <section id="events">
+        <div class="container">
             <h2>Events</h2>
             <p>Stay tuned for upcoming clan events and quests! We organize regular activities to foster teamwork and camaraderie among our members. Don't miss out on the fun and rewards!</p>
-        </section>
-        <section id="donate">
+        </div>
+    </section>
+    <section id="donate">
+        <div class="container">
             <h2>Donate</h2>
             <p>Help support the clan's growth by making a donation to username "zirjagor" in-game. Your contributions go a long way in strengthening our community and unlocking new opportunities for all members.</p>
             <p class="note">Note: Inactive members, non-donors, and those who neglect clan quests may be subject to removal from the clan to ensure the integrity and activity of our community.</p>
-        </section>
-    </div>
+        </div>
+    </section>
     <footer>
-        <p>&copy; 2024 DEAL Clan. All rights reserved.</p>
+        <div class="container">
+            <p>&copy; 2024 DEAL Clan. All rights reserved.</p>
+        </div>
     </footer>
 </body>
 </html>
