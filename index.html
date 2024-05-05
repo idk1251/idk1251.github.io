@@ -19,7 +19,8 @@
         }
 
         .container {
-            width: 70%;
+            max-width: 800px;
+            width: 90%;
             text-align: center;
             background-color: #1c1c1c;
             border: 5px solid #42a5f5;
@@ -67,7 +68,7 @@
             margin-right: 10px;
         }
 
-        .join-instructions {
+        .requirements {
             border: 3px solid #42a5f5;
             padding: 20px;
             border-radius: 20px;
@@ -77,18 +78,18 @@
             box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
         }
 
-        .join-instructions h2 {
+        .requirements h2 {
             color: #42a5f5;
             margin-bottom: 15px;
         }
 
-        .join-instructions ol {
-            list-style-type: decimal;
-            padding-left: 20px;
+        .requirements ul {
+            list-style-type: none;
+            padding: 0;
             margin: 0;
         }
 
-        .join-instructions li {
+        .requirements li {
             margin-bottom: 10px;
         }
 
@@ -107,6 +108,21 @@
             margin-bottom: 15px;
         }
 
+        .warning {
+            border: 3px solid #f44336;
+            padding: 20px;
+            border-radius: 20px;
+            margin-top: 40px;
+            text-align: left;
+            background-color: #1c1c1c;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+        }
+
+        .warning h2 {
+            color: #f44336;
+            margin-bottom: 15px;
+        }
+
         .donate-section {
             border: 3px solid #42a5f5;
             padding: 20px;
@@ -122,26 +138,27 @@
             margin-bottom: 15px;
         }
 
-        .donate-section p {
-            margin-bottom: 15px;
-        }
-
         .donate-section img {
             border-radius: 50%;
             margin-right: 10px;
             vertical-align: middle;
         }
 
+        .donate-section p {
+            margin-bottom: 10px;
+        }
+
         .donate-button {
+            display: inline-block;
+            margin-top: 20px;
             background-color: #42a5f5;
             color: #ffffff;
-            padding: 10px 20px;
+            padding: 15px 30px;
             border-radius: 25px;
             text-decoration: none;
             transition: background-color 0.3s ease;
             border: 3px solid #42a5f5;
             font-size: 20px;
-            display: inline-block;
         }
 
         .donate-button:hover {
@@ -155,27 +172,37 @@
     <div class="container">
         <h1>Welcome to DEAL Clan!</h1>
         <p>We are a dedicated Pet Simulator 99 clan committed to excellence and teamwork. Our motto is "Together We Are Strong! Help Each Other!"</p>
-        <p>To join our clan, please click on the Discord icon below and join our server. Once in the server, open a ticket to join DEAL Clan.</p>
+        <h2>How to Join:</h2>
+        <ol style="text-align: left;">
+            <li>Click on the Discord icon below and join our server.</li>
+            <li>Once in the server, open a ticket to join DEAL Clan.</li>
+        </ol>
         <a href="https://discord.gg/xXrE6SXJ2P" class="discord-link">
             <img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" alt="Discord Icon">
             Join Our Discord Server
         </a>
-        <div class="join-instructions">
-            <h2>How to Join:</h2>
-            <ol>
-                <li>Join our Discord server using the link above.</li>
-                <li>Once inside the server, locate the "DEAL Clan Recruitment" channel.</li>
-                <li>Open a ticket in that channel and follow the instructions provided by our staff to join the clan.</li>
-            </ol>
+        <div class="requirements">
+            <h2>Requirements:</h2>
+            <ul>
+                <li>Must be rank 10+ in Pet Simulator 99</li>
+                <li>Must attend all clan events and quests</li>
+                <li>Must donate gems monthly</li>
+            </ul>
         </div>
         <div class="clan-stats">
             <h2>Clan Stats:</h2>
-            <p>We currently have 28 members out of 75 and are at clan level 4.</p>
+            <p>We currently have 28 members out of 75 and are at clan level 4. To become an officer, you must donate a significant amount of gems or accumulate lots of clan points from quests.</p>
+        </div>
+        <div class="warning">
+            <h2>Warning:</h2>
+            <p>If you are inactive, don't donate gems, or fail to participate in clan quests, you will be kicked from the clan.</p>
         </div>
         <div class="donate-section">
             <h2>Donate Gems:</h2>
-            <p>To support our clan, you can donate gems to <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D0CF562655F2C717A2B0D9A9104BF2E6-Png/150/150/AvatarHeadshot/Webp/noFilter" alt="Zirjagor Profile Pic" width="30" height="30"> zirjagor in-game. Consider it as a donation in the mailbox.</p>
-            <a href="#" class="donate-button">Donate Gems</a>
+            <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D0CF562655F2C717A2B0D9A9104BF2E6-Png/150/150/AvatarHeadshot/Webp/noFilter" alt="Profile Pic">
+            <p>Username: zirjagor</p>
+            <p>Please mention it's a donation in the mailbox in-game.</p>
+            <a href="https://www.roblox.com/users/12345678/profile" class="donate-button">Donate Gems</a>
         </div>
     </div>
 </body>
