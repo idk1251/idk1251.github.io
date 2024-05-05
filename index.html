@@ -3,100 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEAL Clan - Pet Simulator 99</title>
+    <title>DEAL Clan - Together We Are Strong!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        /* General Styles */
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-bottom: 10px;
+        }
+        p {
+            margin-bottom: 20px;
+        }
+        /* Header Styles */
         header {
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
             text-align: center;
+            background-color: #343a40;
+            padding: 20px 0;
+            color: #fff;
         }
-
-        nav ul {
-            list-style-type: none;
-            padding: 0;
+        header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
         }
-
-        nav ul li {
-            display: inline;
-            margin-right: 20px;
+        /* Navigation Styles */
+        nav {
+            text-align: center;
+            margin-bottom: 30px;
         }
-
-        nav ul li a {
+        nav a {
             text-decoration: none;
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #fff;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+        nav a:hover {
+            background-color: #555;
             color: #fff;
         }
-
+        /* Main Content Styles */
         section {
-            padding: 50px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
         }
-
-        footer {
-            background-color: #333;
-            color: #fff;
+        .discord-link {
             text-align: center;
-            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .discord-link img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        .discord-link a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+        .discord-link a:hover {
+            color: #555;
+        }
+        .note {
+            font-style: italic;
+            color: #888;
+            margin-top: 20px;
+        }
+        /* Footer Styles */
+        footer {
+            text-align: center;
+            background-color: #343a40;
+            color: #fff;
+            padding: 20px 0;
+            border-top: 1px solid #666;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>DEAL Clan - Pet Simulator 99</h1>
-        <nav>
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#rules">Rules</a></li>
-                <li><a href="#join">Join Us</a></li>
-                <li><a href="#donate">Donate</a></li>
-            </ul>
-        </nav>
+        <h1>DEAL Clan</h1>
+        <p>Together We Are Strong!</p>
     </header>
-
-    <section id="about">
-        <h2>About Us</h2>
-        <p>Welcome to DEAL Clan in Pet Simulator 99! We're a strong community dedicated to helping each other grow and succeed in the game.</p>
-        <p>With 28 active members and counting, we're looking for dedicated players who want to be part of something bigger.</p>
-        <p>Our clan motto is: <em>"Together We Are Strong! Help Each Other!"</em></p>
-        <p>Zirjagor is the proud owner of the clan, leading us to greatness.</p>
-    </section>
-
-    <section id="rules">
-        <h2>Rules & Requirements</h2>
-        <ul>
-            <li>Must be rank 10+ in Pet Simulator 99.</li>
-            <li>Attendance to all clan events and quests is mandatory.</li>
-            <li>Monthly gem donations are required to support the clan's growth.</li>
-            <li>Inactive members or those who don't contribute will be swiftly kicked from the clan.</li>
-            <li>To become an officer, demonstrate dedication through significant gem donations or clan quest contributions.</li>
-        </ul>
-    </section>
-
-    <section id="join">
-        <h2>Join Us</h2>
-        <p>If you meet our requirements and are ready to join our clan, follow these steps:</p>
-        <ol>
-            <li>Click the Discord icon below to join our server:</li>
-            <li>Once in the server, open a ticket to join the DEAL Clan.</li>
-            <li>Our moderators will guide you through the process and welcome you to our community!</li>
-        </ol>
-        <a href="https://discord.gg/xXrE6SXJ2P" target="_blank">
-            <img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" alt="Discord Icon">
-        </a>
-    </section>
-
-    <section id="donate">
-        <h2>Support Us</h2>
-        <p>If you'd like to contribute to the clan's growth, you can donate gems to <strong>zirjagor</strong> in-game using the mailbox feature.</p>
-    </section>
-
+    <nav>
+        <a href="#about">About Us</a>
+        <a href="#join">Join Us</a>
+        <a href="#events">Events</a>
+        <a href="#donate">Donate</a>
+    </nav>
+    <div class="container">
+        <section id="about">
+            <h2>About Us</h2>
+            <p>Welcome to the DEAL Clan, where strength is in unity! We are a thriving community within the Pet Simulator 99 world, dedicated to mutual growth and support. With a clan level of 4 and 28 members strong, we're making waves and climbing the ranks!</p>
+            <h3>Membership Requirements:</h3>
+            <ul>
+                <li>Must be rank 10+</li>
+                <li>Attendance to all clan events and quests is mandatory</li>
+                <li>Monthly gem donations are required to support clan growth</li>
+            </ul>
+        </section>
+        <section id="join">
+            <h2>Join Us</h2>
+            <div class="discord-link">
+                <img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" alt="Discord Icon">
+                <p>Click the Discord icon to join our server. Once you're in, open a ticket to join the clan.</p>
+                <a href="https://discord.gg/xXrE6SXJ2P">Join Our Discord</a>
+            </div>
+        </section>
+        <section id="events">
+            <h2>Events</h2>
+            <p>Stay tuned for upcoming clan events and quests! We organize regular activities to foster teamwork and camaraderie among our members. Don't miss out on the fun and rewards!</p>
+        </section>
+        <section id="donate">
+            <h2>Donate</h2>
+            <p>Help support the clan's growth by making a donation to username "zirjagor" in-game. Your contributions go a long way in strengthening our community and unlocking new opportunities for all members.</p>
+            <p class="note">Note: Inactive members, non-donors, and those who neglect clan quests may be subject to removal from the clan to ensure the integrity and activity of our community.</p>
+        </section>
+    </div>
     <footer>
-        <p>Join our Discord server for giveaways, trading, events, and more!</p>
+        <p>&copy; 2024 DEAL Clan. All rights reserved.</p>
     </footer>
 </body>
 </html>
