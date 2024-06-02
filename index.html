@@ -388,39 +388,40 @@
     }
   });
 </script>
-
-<script>
-   <input type="number" id="guessNumberInput" placeholder="Enter a number between 1 and 25000000000">
+<body>
+  <input type="number" id="guessNumberInput" placeholder="Enter a number between 1 and 25000000000">
   <button id="guessButton">Guess</button>
   <button id="resetGuessButton">Reset</button>
   <div id="pickedNumber" style="display:none;"></div>
 
   <script>
-    const guessNumberInput = document.getElementById('guessNumberInput');
-    const guessButton = document.getElementById('guessButton');
-    const resetGuessButton = document.getElementById('resetGuessButton');
-    const pickedNumber = document.getElementById('pickedNumber');
+    document.addEventListener('DOMContentLoaded', (event) => {
+      const guessNumberInput = document.getElementById('guessNumberInput');
+      const guessButton = document.getElementById('guessButton');
+      const resetGuessButton = document.getElementById('resetGuessButton');
+      const pickedNumber = document.getElementById('pickedNumber');
 
-    guessButton.addEventListener('click', () => {
-      const guessedNumber = parseInt(guessNumberInput.value);
-      console.log('Guessed Number:', guessedNumber);
+      guessButton.addEventListener('click', () => {
+        const guessedNumber = parseInt(guessNumberInput.value);
+        console.log('Guessed Number:', guessedNumber);
 
-      if (!isNaN(guessedNumber) && guessedNumber >= 1 && guessedNumber <= 25000000000) {
-        const picked = Math.floor(Math.random() * guessedNumber) + 1;
-        console.log('Picked Number:', picked);
-        pickedNumber.textContent = `Your picked number is: ${picked}`;
-        pickedNumber.style.display = 'block';
-      } else {
-        console.log('Invalid number input');
-        pickedNumber.textContent = 'Please enter a valid number between 1 and 25000000000';
-        pickedNumber.style.display = 'block';
-      }
-    });
+        if (!isNaN(guessedNumber) && guessedNumber >= 1 && guessedNumber <= 25000000000) {
+          const picked = Math.floor(Math.random() * guessedNumber) + 1;
+          console.log('Picked Number:', picked);
+          pickedNumber.textContent = `Your picked number is: ${picked}`;
+          pickedNumber.style.display = 'block';
+        } else {
+          console.log('Invalid number input');
+          pickedNumber.textContent = 'Please enter a valid number between 1 and 25000000000';
+          pickedNumber.style.display = 'block';
+        }
+      });
 
-    resetGuessButton.addEventListener('click', () => {
-      guessNumberInput.value = '';
-      pickedNumber.textContent = '';
-      pickedNumber.style.display = 'none';
+      resetGuessButton.addEventListener('click', () => {
+        guessNumberInput.value = '';
+        pickedNumber.textContent = '';
+        pickedNumber.style.display = 'none';
+      });
     });
 </script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2671992756377613"
