@@ -389,7 +389,8 @@
   });
 </script>
 
-<script>  <input type="number" id="guessNumberInput" placeholder="Enter a number between 1 and 25000000000">
+<script>
+   <input type="number" id="guessNumberInput" placeholder="Enter a number between 1 and 25000000000">
   <button id="guessButton">Guess</button>
   <button id="resetGuessButton">Reset</button>
   <div id="pickedNumber" style="display:none;"></div>
@@ -402,12 +403,15 @@
 
     guessButton.addEventListener('click', () => {
       const guessedNumber = parseInt(guessNumberInput.value);
-      
+      console.log('Guessed Number:', guessedNumber);
+
       if (!isNaN(guessedNumber) && guessedNumber >= 1 && guessedNumber <= 25000000000) {
-        const picked = Math.floor(Math.random() * guessedNumber) + 1; // Generate a random number between 1 and the guessed number
+        const picked = Math.floor(Math.random() * guessedNumber) + 1;
+        console.log('Picked Number:', picked);
         pickedNumber.textContent = `Your picked number is: ${picked}`;
         pickedNumber.style.display = 'block';
       } else {
+        console.log('Invalid number input');
         pickedNumber.textContent = 'Please enter a valid number between 1 and 25000000000';
         pickedNumber.style.display = 'block';
       }
