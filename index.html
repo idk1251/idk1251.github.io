@@ -19,19 +19,9 @@
             margin: 0;
             text-align: center;
         }
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-        }
         .container {
             max-width: 600px;
-            padding: 60px; /* Increased padding for better spacing */
+            padding: 40px;
             border-radius: 12px;
             background: rgba(0, 0, 0, 0.75);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -41,17 +31,17 @@
             position: relative;
         }
         .logo {
-            width: 200px; /* Increased logo size */
-            margin-bottom: 40px; /* Increased margin for logo */
+            width: 250px; /* Increased logo size */
+            margin-bottom: 20px; /* Adjusted margin for logo */
         }
         h1 {
             font-size: 2.5em;
-            margin-bottom: 20px;
+            margin-bottom: 10px; /* Reduced margin below heading */
             color: #ffffff;
         }
         p {
             font-size: 1.2em;
-            margin-bottom: 30px;
+            margin-bottom: 20px; /* Adjusted margin below paragraph */
             color: #d1d1d1;
         }
         .discord-button {
@@ -71,11 +61,11 @@
     </style>
 </head>
 <body>
-    <div class="overlay"></div>
     <div class="container">
         <img src="https://cdn.discordapp.com/attachments/1183169740278083674/1253799571910299708/logo.webp" alt="Logo" class="logo">
         <h1>Coming Soon</h1>
-        <p>We are working very hard to bring you something amazing. Stay tuned!</p>
+        <p>We are working very hard to bring you something amazing.</p>
+        <p>Stay tuned!</p> <!-- Separate paragraph for "Stay tuned!" -->
         <a href="https://discord.gg/petbet" class="discord-button">Join our Discord for the latest updates</a>
     </div>
 </body>
