@@ -21,7 +21,7 @@
         }
         .container {
             max-width: 600px;
-            padding: 40px;
+            padding: 60px; /* Increased padding for better spacing */
             border-radius: 12px;
             background: rgba(0, 0, 0, 0.75);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -32,16 +32,16 @@
         }
         .logo {
             width: 250px; /* Increased logo size */
-            margin-bottom: 20px; /* Adjusted margin for logo */
+            margin-bottom: 40px; /* Increased margin for logo */
         }
         h1 {
             font-size: 2.5em;
-            margin-bottom: 10px; /* Reduced margin below heading */
+            margin-bottom: 20px;
             color: #ffffff;
         }
-        p {
+        .content {
             font-size: 1.2em;
-            margin-bottom: 20px; /* Adjusted margin below paragraph */
+            margin-bottom: 30px;
             color: #d1d1d1;
         }
         .discord-button {
@@ -53,6 +53,7 @@
             font-size: 1em;
             transition: background-color 0.3s, transform 0.3s;
             display: inline-block;
+            margin-top: 20px; /* Added margin to separate button from text */
         }
         .discord-button:hover {
             background-color: #4856c7;
@@ -64,8 +65,10 @@
     <div class="container">
         <img src="https://cdn.discordapp.com/attachments/1183169740278083674/1253799571910299708/logo.webp" alt="Logo" class="logo">
         <h1>Coming Soon</h1>
-        <p>We are working very hard to bring you something amazing.</p>
-        <p>Stay tuned!</p> <!-- Separate paragraph for "Stay tuned!" -->
+        <div class="content">
+            <p>We are working very hard to bring you something amazing.</p>
+            <p>Stay tuned!</p>
+        </div>
         <a href="https://discord.gg/petbet" class="discord-button">Join our Discord for the latest updates</a>
     </div>
 </body>
