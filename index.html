@@ -3,91 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PetBet - Coming Soon</title>
+    <title>Coming Soon</title>
     <style>
-        @keyframes glow {
-            0% {
-                box-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff, 0 0 30px #00aaff, 0 0 40px #00aaff, 0 0 50px #00aaff;
-            }
-            50% {
-                box-shadow: 0 0 20px #00aaff, 0 0 30px #00aaff, 0 0 40px #00aaff, 0 0 50px #00aaff, 0 0 60px #00aaff;
-            }
-            100% {
-                box-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff, 0 0 30px #00aaff, 0 0 40px #00aaff, 0 0 50px #00aaff;
-            }
-        }
-
         body {
+            background-color: #000814;
+            color: #fff;
+            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #ffffff;
             text-align: center;
-            overflow: hidden;
         }
         .container {
-            background-color: rgba(26, 26, 26, 0.9);
-            padding: 50px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             max-width: 600px;
-            width: 90%;
-            position: relative;
-            border: 2px solid #00aaff;
-            animation: glow 2s infinite alternate;
+            padding: 20px;
+            border-radius: 10px;
+            background: #001d3d;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
         .logo {
-            max-width: 100%;
-            height: auto;
+            width: 150px;
             margin-bottom: 20px;
-            border: 2px solid #00aaff;
-            border-radius: 10px;
         }
-        .message {
-            font-size: 1.8em;
-            margin: 20px 0;
-            color: #00aaff;
-            text-shadow: 0 0 10px rgba(0, 170, 255, 0.8);
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
         }
-        .button {
-            display: inline-block;
-            background-color: #00aaff;
-            color: #ffffff;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 8px;
+        p {
             font-size: 1.2em;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            border: 2px solid #004e92;
-            animation: glow 1.5s infinite alternate;
+            margin-bottom: 30px;
         }
-        .button:hover {
-            background-color: #008ecc;
-            box-shadow: 0 0 15px #00aaff, 0 0 25px #00aaff, 0 0 35px #00aaff;
+        .discord-button {
+            background-color: #5865F2;
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: background-color 0.3s;
         }
-        .container::after {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            right: -10px;
-            bottom: -10px;
-            background: linear-gradient(45deg, #00aaff, #004e92);
-            z-index: -1;
-            filter: blur(20px);
-            opacity: 0.8;
+        .discord-button:hover {
+            background-color: #4856c7;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <img src="logo.webp" alt="PetBet Logo" class="logo">
-        <p class="message">We are working very hard on the release of our site!</p>
-        <a href="https://discord.gg/petbet" class="button">Join our Discord</a>
+        <img src="https://cdn.discordapp.com/attachments/1183169740278083674/1253799571910299708/logo.webp?ex=66772b58&is=6675d9d8&hm=4596c85d380a70eb0c422bce7d8b1bd7da3f0704b6a04dd944dbee75a7f98e06" alt="Logo" class="logo">
+        <h1>Coming Soon</h1>
+        <p>We are working very hard to bring you something amazing. Stay tuned!</p>
+        <a href="https://discord.gg/petbet" class="discord-button">Join our Discord for the latest updates</a>
     </div>
 </body>
 </html>
