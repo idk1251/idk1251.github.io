@@ -18,7 +18,6 @@
             height: 100vh;
             margin: 0;
             text-align: center;
-            overflow: hidden;
         }
         .overlay {
             position: absolute;
@@ -26,18 +25,23 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
-            z-index: 1;
         }
-        .content {
+        .container {
+            max-width: 600px;
+            padding: 40px;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.75);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            overflow: hidden;
             position: relative;
-            z-index: 2;
-            padding: 20px;
         }
         .logo {
-            width: 150px;
+            width: 250px;
             margin-bottom: 20px;
         }
         h1 {
@@ -46,18 +50,19 @@
             color: #ffffff;
         }
         p {
-            font-size: 1.5em;
+            font-size: 1.2em;
             margin-bottom: 30px;
             color: #d1d1d1;
         }
         .discord-button {
             background-color: #5865F2;
             color: white;
-            padding: 15px 30px;
+            padding: 15px 25px;
             text-decoration: none;
             border-radius: 5px;
-            font-size: 1.2em;
+            font-size: 1em;
             transition: background-color 0.3s, transform 0.3s;
+            display: inline-block;
         }
         .discord-button:hover {
             background-color: #4856c7;
@@ -67,8 +72,8 @@
 </head>
 <body>
     <div class="overlay"></div>
-    <div class="content">
-        <img src="https://cdn.discordapp.com/attachments/1183169740278083674/1253799571910299708/logo.webp?ex=66772b58&is=6675d9d8&hm=4596c85d380a70eb0c422bce7d8b1bd7da3f0704b6a04dd944dbee75a7f98e06" alt="Logo" class="logo">
+    <div class="container">
+        <img src="https://cdn.discordapp.com/attachments/1183169740278083674/1253799571910299708/logo.webp" alt="Logo" class="logo">
         <h1>Coming Soon</h1>
         <p>We are working very hard to bring you something amazing. Stay tuned!</p>
         <a href="https://discord.gg/petbet" class="discord-button">Join our Discord for the latest updates</a>
