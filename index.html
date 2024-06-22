@@ -6,7 +6,10 @@
     <title>Coming Soon</title>
     <style>
         body {
-            background: linear-gradient(135deg, #000814, #001d3d);
+            background: url('https://media.discordapp.net/attachments/1253509183068835883/1253509269723287643/image.png?ex=66776e7a&is=66761cfa&hm=07636845735ff4a952ae6d4619fb8a9f9d74e9dc9772f0b21b0912b333d022b6&=&format=webp&quality=lossless&width=1179&height=663') no-repeat center center fixed;
+            background-size: cover;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
@@ -16,7 +19,18 @@
             margin: 0;
             text-align: center;
         }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
         .container {
+            position: relative;
             max-width: 600px;
             padding: 40px;
             border-radius: 12px;
@@ -24,7 +38,8 @@
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
         .container::before, .container::after {
             content: '';
@@ -77,6 +92,7 @@
     </style>
 </head>
 <body>
+    <div class="overlay"></div>
     <div class="container">
         <img src="https://cdn.discordapp.com/attachments/1183169740278083674/1253799571910299708/logo.webp?ex=66772b58&is=6675d9d8&hm=4596c85d380a70eb0c422bce7d8b1bd7da3f0704b6a04dd944dbee75a7f98e06" alt="Logo" class="logo">
         <h1>Coming Soon</h1>
