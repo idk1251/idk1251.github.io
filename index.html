@@ -9,15 +9,16 @@
         body {
             background: url('https://cdn.discordapp.com/attachments/1249374714842058846/1254427146269757471/lot-crystals-gemstones-dark-background-natural-minerals-such-as-agate-amber-amethyst-quartz-others-scattering-precious-stones-generative-ai_444390-20911.png?ex=667973d1&is=66782251&hm=d06180c663a78cdd3eeec8fa18a43341d173d3056007c7c32871353794ddce03&') no-repeat center center fixed;
             background-size: cover;
-            backdrop-filter: blur(5px);
+            filter: blur(5px); /* Apply blur to the entire background */
+            -webkit-filter: blur(5px); /* For compatibility with older browsers */
             color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             text-align: center; /* Center align text content */
             margin: 0;
-        }
-        .logo {
-            width: 200px; /* Adjust logo width as needed */
-            margin-bottom: 20px; /* Adjust margin as needed */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         h1 {
             font-size: 3em;
@@ -48,7 +49,6 @@
 </head>
 <body>
     <div class="container">
-        <img src="https://media.discordapp.net/attachments/1244344591600062507/1254104386532020264/Untitled-2.png?ex=6678eff9&is=66779e79&hm=0b7f7196960065b9a3154274db3ff681d890561d896174369c4ee97975ee127f&=&format=webp&quality=lossless&width=663&height=663" alt="Logo" class="logo">
         <h1>RaffleGem</h1>
         <div class="content">
             <p>Join our raffles and win 💎</p>
