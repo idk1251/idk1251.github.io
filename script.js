@@ -28,7 +28,7 @@ async function searchPet() {
         const imageData = await imageResponse.json();
 
         // Display the results
-        displayResults({ ...existsData, rap: rapData.rap, image: imageData.image });
+        displayResults({ name: petName, exists: existsData.exists, rap: rapData.rap, image: imageData.image });
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
     }
