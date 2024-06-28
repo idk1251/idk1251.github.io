@@ -1,34 +1,66 @@
-document.getElementById('searchForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const petType = document.getElementById('petType').value;
-    fetchPetValues(petType);
-});
-
-function fetchPetValues(petType) {
-    const apiUrl = `https://biggamesapi.io/api/collection/Pets`; // Replace with your API endpoint
-
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => filterPetsByType(data, petType))
-        .catch(error => console.error('Error fetching data:', error));
-}
-
-function filterPetsByType(data, petType) {
-    const resultsDiv = document.getElementById('results');
-    resultsDiv.innerHTML = '';
-
-    const filteredPets = data.filter(pet => pet.type === petType);
-
-    if (filteredPets.length === 0) {
-        resultsDiv.innerHTML = '<p>No results found.</p>';
+async function searchPet() {
+    const petName = document.getElementById('pet-name').value;
+    if (!petName) {
+        alert('Please enter a pet name.');
         return;
     }
 
-    const list = document.createElement('ul');
-    filteredPets.forEach(pet => {
-        const listItem = document.createElement('li');
-        listItem.textContent = `${pet.name}: ${pet.value}`;
-        list.appendChild(listItem);
-    });
-    resultsDiv.appendChild(list);
+    try {
+        // Fetch pet existence count
+        const existsResponse = await fetch(`YOUR_API_BASE_URL_HERE/api/exists?name=${encodeURIComponent(petName)}`);
+        if (!existsResponse.ok) {
+            throw new Error('Failed to fetch existence data');
+        }
+        const existsData = await existsResponse.json();
+
+        // Fetch pet RAP value
+        const rapResponse = await fetch(`YOUR_API_BASE_URL_HERE/api/rap?name=${encodeURIComponent(petName)}`);
+        if (!rapResponse.ok) {
+            throw new Error('Failed to fetch RAP data');
+        }
+        const rapData = await rapResponse.json();
+
+        // Fetch pet image
+        const imageResponse = await fetch(`YOUR_API_BASE_URL_HERE/api/image?name=${encodeURIComponent(petName)}`);
+        if (!imageResponse.ok) {
+            throw new Error('Failed to fetch image data');
+        }
+        const imageData = await imageResponse.json();
+
+        // Display the results
+        displayResults({ ...existsData, rap: rapData.rap, image: imageData.image });
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+    }
+}
+
+function displayResults(data) {
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = '';
+
+    if (data) {
+        const petDiv = document.createElement('div');
+        petDiv.classList.add('pet');
+
+        const petImage = document.createElement('img');
+        petImage.src = data.image;
+
+        const petName = document.createElement('h2');
+        petName.textContent = data.name;
+
+        const petRap = document.createElement('p');
+        petRap.textContent = `RAP: ${data.rap}`;
+
+        const petExists = document.createElement('p');
+        petExists.textContent = `Exists: ${data.exists}`;
+
+        petDiv.appendChild(petImage);
+        petDiv.appendChild(petName);
+        petDiv.appendChild(petRap);
+        petDiv.appendChild(petExists);
+
+        resultsDiv.appendChild(petDiv);
+    } else {
+        resultsDiv.textContent = 'No results found';
+    }
 }
