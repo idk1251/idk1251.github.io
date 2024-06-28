@@ -3,22 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PS99 Pet Value Search</title>
+    <title>Titanic Pets Search</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Search for Pet Values in PS99</h1>
-    <form id="searchForm">
-        <label for="petType">Pet Type:</label>
-        <select id="petType">
-            <option value="Huge">Huge</option>
-            <option value="Titanic">Titanic</option>
-            <option value="Exclusive">Exclusive</option>
-        </select>
-        <button type="submit">Search</button>
-    </form>
-    <div id="results"></div>
-
+    <div class="container">
+        <h1>Search Titanic's Huge or Exclusive Pets</h1>
+        <input type="text" id="pet-name" placeholder="Enter pet name...">
+        <button onclick="searchPet()">Search</button>
+        <div id="results"></div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
-
