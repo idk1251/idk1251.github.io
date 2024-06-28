@@ -3,77 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RaffleGem | Test your luck!</title>
-    <link rel="icon" href="https://media.discordapp.net/attachments/1244344591600062507/1254104386532020264/Untitled-2.png?ex=6678eff9&is=66779e79&hm=0b7f7196960065b9a3154274db3ff681d890561d896174369c4ee97975ee127f&=&format=webp&quality=lossless&width=663&height=663" type="image/png">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-align: center;
-            overflow: hidden; /* Prevent scrollbars */
-        }
-        .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fstock.adobe.com%2Fsearch%2Fimages%3Fk%3Dbackgrounds&psig=AOvVaw25ZgIQtTimURbj-djvySkM&ust=1719565779674000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCPDVge63-4YDFQAAAAAdAAAAABAE') no-repeat center center fixed;
-            background-size: cover;
-            filter: blur(5px); /* Apply blur to the entire background */
-            -webkit-filter: blur(5px); /* For compatibility with older browsers */
-            z-index: -1; /* Send it to the back */
-        }
-        .container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            padding: 20px;
-            position: relative;
-            z-index: 1; /* Ensure content is above blurred background */
-        }
-        .logo {
-            width: 200px; /* Adjust logo width as needed */
-            margin-bottom: 20px; /* Adjust margin as needed */
-        }
-        h1 {
-            font-size: 4em;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            color: #ffffff; /* Ensure text is visible against the blur */
-        }
-.content {
-            font-size: 2em;
-            margin-bottom: 30px;
-            color: #f7f7f7; /* Adjust content text color */
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* Content text shadow */
-        }
-        .discord-button {
-            background-color: #5865F2;
-            color: white;
-            padding: 20px 30px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 2em;
-            transition: background-color 0.3s, transform 0.3s;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* Button text shadow */
-        }
-        .discord-button:hover {
-            background-color: #4856c7;
-            transform: scale(1.05);
-        }
-    </style>
+    <title>PS99 Pet Value Search</title>
 </head>
 <body>
-    <div class="background"></div> <!-- This div creates the blurred background -->
-    <div class="container">
-        <h1>RaffleGem</h1>
-        <div class="content">
-            <p>Join our raffles and win 💎 for PS99!</p>
-        </div>
-        <a href="https://discord.gg/nXGqvC8h" class="discord-button">Join our discord!</a>
-    </div>
+    <h1>Search for Pet Values in PS99</h1>
+    <form id="searchForm">
+        <label for="petType">Pet Type:</label>
+        <select id="petType">
+            <option value="Huge">Huge</option>
+            <option value="Titanic">Titanic</option>
+            <option value="Exclusive">Exclusive</option>
+        </select>
+        <button type="submit">Search</button>
+    </form>
+    <div id="results"></div>
+
+    <script src="script.js"></script>
 </body>
 </html>
+
