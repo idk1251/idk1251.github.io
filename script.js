@@ -7,21 +7,21 @@ async function searchPet() {
 
     try {
         // Fetch pet existence count
-        const existsResponse = await fetch(`YOUR_API_BASE_URL_HERE/api/exists?name=${encodeURIComponent(petName)}`);
+        const existsResponse = await fetch(`https://biggamesapi.io/api/exists?name=${encodeURIComponent(petName)}`);
         if (!existsResponse.ok) {
             throw new Error('Failed to fetch existence data');
         }
         const existsData = await existsResponse.json();
 
         // Fetch pet RAP value
-        const rapResponse = await fetch(`YOUR_API_BASE_URL_HERE/api/rap?name=${encodeURIComponent(petName)}`);
+        const rapResponse = await fetch(`https://biggamesapi.io/api/rap?name=${encodeURIComponent(petName)}`);
         if (!rapResponse.ok) {
             throw new Error('Failed to fetch RAP data');
         }
         const rapData = await rapResponse.json();
 
         // Fetch pet image
-        const imageResponse = await fetch(`YOUR_API_BASE_URL_HERE/api/image?name=${encodeURIComponent(petName)}`);
+        const imageResponse = await fetch(`https://biggamesapi.io/api/image?name=${encodeURIComponent(petName)}`);
         if (!imageResponse.ok) {
             throw new Error('Failed to fetch image data');
         }
