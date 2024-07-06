@@ -1,59 +1,58 @@
-const settings = {
-    difficulty: 'Easy',
-    betAmount: 10,
-    rowAmount: 10,
-    balance: 1000000
-};
+let balance = 1000000;
+let difficulty = 'easy';
+let betAmount = 10;
+let rows = 10;
 
-document.getElementById('easy').addEventListener('click', () => settings.difficulty = 'Easy');
-document.getElementById('normal').addEventListener('click', () => settings.difficulty = 'Normal');
-document.getElementById('hard').addEventListener('click', () => settings.difficulty = 'Hard');
-
-document.getElementById('bet-amount').addEventListener('change', (e) => settings.betAmount = parseInt(e.target.value));
-document.getElementById('half').addEventListener('click', () => {
-    settings.betAmount = Math.max(1, settings.betAmount / 2);
-    document.getElementById('bet-amount').value = settings.betAmount;
-});
-document.getElementById('double').addEventListener('click', () => {
-    settings.betAmount *= 2;
-    document.getElementById('bet-amount').value = settings.betAmount;
-});
-document.getElementById('max').addEventListener('click', () => {
-    settings.betAmount = settings.balance;
-    document.getElementById('bet-amount').value = settings.betAmount;
-});
-
-document.getElementById('row-amount').addEventListener('change', (e) => settings.rowAmount = parseInt(e.target.value));
-
-document.getElementById('start-game').addEventListener('click', () => {
-    startGame();
-});
-
-function startGame() {
-    const board = document.getElementById('plinko-board');
-    board.innerHTML = '';
-
-    const numRows = settings.rowAmount;
-    const numPins = numRows * (numRows + 1) / 2;
-
-    for (let i = 0; i < numPins; i++) {
-        const pin = document.createElement('div');
-        pin.className = 'pin';
-        board.appendChild(pin);
-    }
-
-    const slots = [0.5, 1, 1.1, 1.4, 3, 8.9];
-    slots.forEach((multiplier, index) => {
-        const slot = document.createElement('div');
-        slot.className = 'slot';
-        slot.style.left = `${index * 60}px`;
-        slot.innerText = `${multiplier}x`;
-        board.appendChild(slot);
-    });
-
-    document.getElementById('balance').innerText = `Balance: ${settings.balance}`;
+function updateBalance() {
+    document.getElementById('balance').innerText = balance.toLocaleString();
 }
 
-// Initialize game on page load
-startGame();
+function setDifficulty(level) {
+    difficulty = level;
+    console.log(`Difficulty set to ${level}`);
+}
 
+function halveBet() {
+    betAmount = Math.max(1, betAmount / 2);
+    document.getElementById('bet-amount').value = betAmount;
+}
+
+function doubleBet() {
+    betAmount *= 2;
+    document.getElementById('bet-amount').value = betAmount;
+}
+
+function maxBet() {
+    betAmount = balance;
+    document.getElementById('bet-amount').value = betAmount;
+}
+
+function setRows(rowCount) {
+    rows = rowCount;
+    console.log(`Rows set to ${rows}`);
+}
+
+function startNewGame() {
+    const gameBoard = document.getElementById('game-board');
+    gameBoard.innerHTML = '';
+    generatePlinkoBoard();
+    console.log('New game started');
+}
+
+function generatePlinkoBoard() {
+    const gameBoard = document.getElementById('game-board');
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j <= i; j++) {
+            const dot = document.createElement('div');
+            dot.className = 'dot';
+            dot.style.left = `${(gameBoard.clientWidth / (i + 1)) * j}px`;
+            dot.style.top = `${(gameBoard.clientHeight / rows) * i}px`;
+            gameBoard.appendChild(dot);
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateBalance();
+    generatePlinkoBoard();
+});
