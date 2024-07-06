@@ -13,19 +13,20 @@
                 Balance: <span id="balance">1,000,000</span>
             </div>
             <div class="difficulty">
-                Difficulty:
+                <label>Difficulty:</label>
                 <button onclick="setDifficulty('easy')">Easy</button>
                 <button onclick="setDifficulty('normal')">Normal</button>
                 <button onclick="setDifficulty('hard')">Hard</button>
             </div>
             <div class="bet">
-                Bet: <input type="number" id="bet-amount" value="10">
-                <button onclick="halveBet()">1/2</button>
-                <button onclick="doubleBet()">2x</button>
-                <button onclick="maxBet()">Max</button>
+                <label>Bet:</label>
+                <input type="number" id="bet-amount" value="10">
+                <button onclick="adjustBet('half')">1/2</button>
+                <button onclick="adjustBet('double')">2x</button>
+                <button onclick="adjustBet('max')">Max</button>
             </div>
             <div class="rows">
-                Amount of rows:
+                <label>Amount of rows:</label>
                 <button onclick="setRows(8)">8</button>
                 <button onclick="setRows(10)">10</button>
                 <button onclick="setRows(12)">12</button>
