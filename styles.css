@@ -1,7 +1,7 @@
 body {
-    background-color: #1b1e38;
-    color: white;
     font-family: Arial, sans-serif;
+    background-color: #1b1c36;
+    color: white;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -9,61 +9,46 @@ body {
     margin: 0;
 }
 
-#game-container {
+.container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 90%;
 }
 
-#settings {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
+.settings-panel {
+    background-color: #2d2e4a;
+    padding: 20px;
+    border-radius: 8px;
+    margin-right: 20px;
 }
 
-#settings div {
-    margin-bottom: 10px;
-}
-
-button, input, select {
-    margin: 5px;
-    padding: 5px 10px;
-    background-color: #2d3055;
+.settings-panel button {
+    background-color: #3b3c5a;
     color: white;
     border: none;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 4px;
     cursor: pointer;
 }
 
-button:hover, input:hover, select:hover {
-    background-color: #3f416c;
+.settings-panel button:hover {
+    background-color: #4b4c7a;
 }
 
-#plinko-board {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.game-board {
+    background-color: #2d2e4a;
     width: 600px;
     height: 600px;
-    background-color: #292c4b;
-    border: 2px solid #3f416c;
+    border-radius: 8px;
     position: relative;
 }
 
-.pin {
+.dot {
     width: 10px;
     height: 10px;
     background-color: white;
     border-radius: 50%;
     position: absolute;
 }
-
-.slot {
-    width: 60px;
-    height: 20px;
-    background-color: #3f416c;
-    position: absolute;
-    bottom: 0;
-    text-align: center;
-    line-height: 20px;
-}
-
