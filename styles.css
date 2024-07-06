@@ -1,1 +1,69 @@
+body {
+    background-color: #1b1e38;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+#game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#settings {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+#settings div {
+    margin-bottom: 10px;
+}
+
+button, input, select {
+    margin: 5px;
+    padding: 5px 10px;
+    background-color: #2d3055;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover, input:hover, select:hover {
+    background-color: #3f416c;
+}
+
+#plinko-board {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 600px;
+    height: 600px;
+    background-color: #292c4b;
+    border: 2px solid #3f416c;
+    position: relative;
+}
+
+.pin {
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.slot {
+    width: 60px;
+    height: 20px;
+    background-color: #3f416c;
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    line-height: 20px;
+}
 
