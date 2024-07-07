@@ -20,7 +20,6 @@
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      width: 100%;
       height: 100%;
       padding: 20px;
       box-sizing: border-box;
@@ -110,7 +109,6 @@
   <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
-
     const DECIMAL_MULTIPLIER = 10000;
     const WIDTH = canvas.width;
     const HEIGHT = canvas.height;
@@ -123,46 +121,40 @@
     let difficulty = 'easy'; // Default difficulty
     const obstacles = [];
     let sinks = [];
-
-    // Multipliers based on difficulty
+    
     const difficultyMultipliers = {
       easy: [5, 2, 1.5, 1.2, 1, 0.5, 1, 1.2, 1.5, 2, 5],
       normal: [8, 3, 1.8, 1.4, 1, 0.5, 1, 1.4, 1.8, 3, 8],
       hard: [10, 4, 2, 1.6, 1, 0.5, 1, 1.6, 2, 4, 10]
     };
-
+    
     function pad(n) {
       return n * DECIMAL_MULTIPLIER;
     }
-
+    
     function unpad(n) {
       return Math.floor(n / DECIMAL_MULTIPLIER);
     }
-
+    
     function createObstacles() {
-      obstacles.length = 0; // Clear existing obstacles
+      obstacles.length = 0;
       for (let row = 2; row < rows; row++) {
         const numObstacles = row + 1;
         const y = 0 + row * 35;
         const spacing = 36;
         for (let col = 0; col < numObstacles; col++) {
           const x = WIDTH / 2 - spacing * (row / 2 - col);
-          obstacles.push({
-            x: pad(x),
-            y: pad(y),
-            radius: obstacleRadius
-          });
+          obstacles.push({ x: pad(x), y: pad(y), radius: obstacleRadius });
         }
       }
     }
-
+    
     function createSinks() {
-      sinks = []; // Reset sinks array
+      sinks = [];
       const sinkWidth = 36;
       const sinkMultipliers = difficultyMultipliers[difficulty];
       const numSinks = sinkMultipliers.length;
       const totalSinkWidth = numSinks * sinkWidth;
-
       const startX = WIDTH / 2 - totalSinkWidth / 2 + obstacleRadius;
       const startY = HEIGHT - 240;
       for (let i = 0; i < numSinks; i++) {
@@ -170,16 +162,10 @@
         const y = startY;
         const width = sinkWidth;
         const height = width;
-        sinks.push({
-          x,
-          y,
-          width,
-          height,
-          multiplier: sinkMultipliers[i]
-        });
+        sinks.push({ x, y, width, height, multiplier: sinkMultipliers[i] });
       }
     }
-
+    
     class Ball {
       constructor(x, y, radius, color) {
         this.x = x;
@@ -190,7 +176,7 @@
         this.vy = 0;
         this.stopped = false;
       }
-
+    
       draw() {
         ctx.beginPath();
         ctx.arc(unpad(this.x), unpad(this.y), this.radius, 0, Math.PI * 2);
@@ -198,40 +184,28 @@
         ctx.fill();
         ctx.closePath();
       }
-
+    
       update() {
         if (this.stopped) return;
-
-        // Change the velocity, change the positions
-        this.vy += 0.2; // Adjust gravity as needed
-        this.x += this.vx; // x = x1 + v
+        this.vy += 0.2;
+        this.x += this.vx;
         this.y += this.vy;
-
-        // Collision with obstacles
+    
         obstacles.forEach(obstacle => {
           const dist = Math.hypot(this.x - obstacle.x, this.y - obstacle.y);
           if (dist < pad(this.radius + obstacle.radius)) {
-            // Calculate collision angle
             const angle = Math.atan2(this.y - obstacle.y, this.x - obstacle.x);
-            // Reflect velocity
             const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
-            this.vx = (Math.cos(angle) * speed * 0.4); // Adjust horizontal friction
-            this.vy = Math.sin(angle) * speed * 0.8; // Adjust vertical friction
-
-            // Adjust position to prevent sticking
+            this.vx = (Math.cos(angle) * speed * 0.4);
+            this.vy = Math.sin(angle) * speed * 0.8;
             const overlap = this.radius + obstacle.radius - unpad(dist);
             this.x += pad(Math.cos(angle) * overlap);
             this.y += pad(Math.sin(angle) * overlap);
           }
         });
-
-        // Collision with sinks
+    
         sinks.forEach(sink => {
-          if (
-            unpad(this.x) > sink.x - sink.width / 2 &&
-            unpad(this.x) < sink.x + sink.width / 2 &&
-            unpad(this.y) + this.radius > sink.y - sink.height / 2
-          ) {
+          if (unpad(this.x) > sink.x - sink.width / 2 && unpad(this.x) < sink.x + sink.width / 2 && unpad(this.y) + this.radius > sink.y - sink.height / 2) {
             this.vx = 0;
             this.vy = 0;
             this.stopped = true;
@@ -239,15 +213,14 @@
             updateBalance();
           }
         });
-
-        // Stop ball if it hits the bottom
+    
         if (this.y > HEIGHT - unpad(ballRadius)) {
           this.vy = 0;
           this.stopped = true;
         }
       }
     }
-
+    
     function drawObstacles() {
       ctx.fillStyle = '#fff';
       obstacles.forEach(obstacle => {
@@ -257,7 +230,7 @@
         ctx.closePath();
       });
     }
-
+    
     function drawSinks() {
       ctx.fillStyle = 'green';
       sinks.forEach(sink => {
@@ -268,39 +241,38 @@
         ctx.fillStyle = 'green';
       });
     }
-
+    
     function addBall() {
-      if (balance < betAmount) return; // Prevent adding ball if balance is below bet amount
+      if (balance < betAmount) return;
       const newBall = new Ball(pad(WIDTH / 2 + 13), pad(50), ballRadius, 'red');
       balls.push(newBall);
-      balance -= betAmount; // Decrease balance by bet amount
+      balance -= betAmount;
       updateBalance();
     }
-
+    
     function updateBalance() {
       document.getElementById('balance').innerText = 'Balance: $' + balance.toFixed(2);
     }
-
+    
     document.getElementById('add-ball').addEventListener('click', addBall);
-
+    
     document.getElementById('bet-amount').addEventListener('change', (e) => {
       betAmount = parseFloat(e.target.value);
     });
-
+    
     document.getElementById('rows').addEventListener('change', (e) => {
       rows = parseInt(e.target.value);
       createObstacles();
       createSinks();
     });
-
-    // Listen for difficulty change
+    
     document.querySelectorAll('input[name="difficulty"]').forEach(radio => {
       radio.addEventListener('change', (e) => {
         difficulty = e.target.value;
         createSinks();
       });
     });
-
+    
     function draw() {
       ctx.clearRect(0, 0, WIDTH, HEIGHT);
       drawObstacles();
@@ -310,12 +282,12 @@
         ball.update();
       });
     }
-
+    
     function update() {
       draw();
       requestAnimationFrame(update);
     }
-
+    
     createObstacles();
     createSinks();
     update();
