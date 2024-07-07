@@ -32,7 +32,6 @@
       justify-content: space-between;
       align-items: flex-start;
       width: 80%;
-      max-width: 1200px;
       margin-bottom: 20px;
     }
 
@@ -327,7 +326,7 @@
     }
     
     function update() {
-      adjustCanvasSize(); // Ensure canvas size is adjusted on update
+      adjustCanvasSize();
       draw();
       requestAnimationFrame(update);
     }
