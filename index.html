@@ -29,8 +29,9 @@
 
     .container {
       display: flex;
-      justify-content: center;
-      align-items: center;
+      justify-content: space-between;
+      align-items: flex-start;
+      width: 80%;
       margin-bottom: 20px;
     }
 
@@ -38,15 +39,17 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-right: 20px;
       background-color: #1a1a2e;
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      width: 30%;
+      min-width: 300px;
     }
 
     .control-section {
       margin-bottom: 10px;
+      width: 100%;
     }
 
     .control-section label {
@@ -74,6 +77,8 @@
       color: #fff;
       font-weight: bold;
       transition: background-color 0.3s;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     #balance:hover,
@@ -81,10 +86,17 @@
       background-color: #1a1a2e;
     }
 
+    #gameCanvasContainer {
+      position: relative;
+      width: 70%;
+      min-width: 600px;
+    }
+
     canvas {
       background-color: #0f3460;
       border: 2px solid #fff;
       border-radius: 10px;
+      width: 100%;
     }
   </style>
 </head>
@@ -120,15 +132,18 @@
       <div id="balance">Balance: $100</div>
       <div id="add-ball">Start New Game</div>
     </div>
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+    <div id="gameCanvasContainer">
+      <canvas id="gameCanvas" width="800" height="600"></canvas>
+    </div>
   </div>
 
   <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const DECIMAL_MULTIPLIER = 10000;
-    const WIDTH = canvas.width;
-    const HEIGHT = canvas.height;
+    let WIDTH = canvas.width;
+    let HEIGHT = canvas.height;
     const ballRadius = 7;
     const obstacleRadius = 4;
     let balls = [];
@@ -153,12 +168,22 @@
       return Math.floor(n / DECIMAL_MULTIPLIER);
     }
     
+    function adjustCanvasSize() {
+      const minCanvasHeight = 400; // Minimum canvas height to maintain
+      const rowHeight = minCanvasHeight / rows;
+      HEIGHT = rows * rowHeight;
+      canvas.height = HEIGHT;
+    }
+    
     function createObstacles() {
       obstacles.length = 0;
+      adjustCanvasSize();
+      const minCanvasHeight = 400; // Minimum canvas height to maintain
+      const rowHeight = minCanvasHeight / rows;
       for (let row = 2; row < rows; row++) {
         const numObstacles = row + 1;
-        const y = 0 + row * 35;
-        const spacing = 36;
+        const y = 0 + row * rowHeight;
+        const spacing = rowHeight + 1;
         for (let col = 0; col < numObstacles; col++) {
           const x = WIDTH / 2 - spacing * (row / 2 - col);
           obstacles.push({ x: pad(x), y: pad(y), radius: obstacleRadius });
@@ -301,6 +326,7 @@
     }
     
     function update() {
+      adjustCanvasSize(); // Ensure canvas size is adjusted on update
       draw();
       requestAnimationFrame(update);
     }
