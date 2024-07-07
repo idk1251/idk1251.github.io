@@ -125,14 +125,10 @@
     let balance = 100;
     let betAmount = 10;
     let rows = 10;
-    let difficulty = 'easy'; // Default difficulty
-    const obstacles = [];
+    let difficulty = 'easy';
+    let obstacles = [];
     let sinks = [];
-    let sinkMultipliers = {
-      'easy': [3, 2, 1, 1, 1, 0.5, 1, 1, 1.5, 2, 3],
-      'normal': [8, 3, 1.4, 1.1, 1, 0.5, 1, 1.1, 1.4, 3, 8],
-      'hard': [15, 8, 3, 2, 1.5, 1, 1, 1.5, 2, 3, 5]
-    };
+    let sinkMultipliers = [];
 
     function pad(n) {
       return n * DECIMAL_MULTIPLIER;
@@ -142,8 +138,22 @@
       return Math.floor(n / DECIMAL_MULTIPLIER);
     }
 
+    function setDifficulty() {
+      switch (difficulty) {
+        case 'easy':
+          sinkMultipliers = [5, 2, 1.5, 1, 0.5, 1, 1.5, 2, 5];
+          break;
+        case 'normal':
+          sinkMultipliers = [8, 3, 1.4, 1.1, 1, 0.5, 1, 1.1, 1.4, 3, 8];
+          break;
+        case 'hard':
+          sinkMultipliers = [10, 5, 2, 1.5, 1, 0.5, 1, 1.5, 2, 5, 10];
+          break;
+      }
+    }
+
     function createObstacles() {
-      obstacles.length = 0; // Clear existing obstacles
+      obstacles = []; // Clear existing obstacles
       for (let row = 2; row < rows; row++) {
         const numObstacles = row + 1;
         const y = 0 + row * 35;
@@ -162,7 +172,7 @@
     function createSinks() {
       sinks = []; // Reset sinks array
       const sinkWidth = 36;
-      const numSinks = sinkMultipliers[difficulty].length;
+      const numSinks = sinkMultipliers.length;
       const totalSinkWidth = numSinks * sinkWidth;
 
       const startX = WIDTH / 2 - totalSinkWidth / 2 + obstacleRadius;
@@ -177,7 +187,7 @@
           y,
           width,
           height,
-          multiplier: sinkMultipliers[difficulty][i]
+          multiplier: sinkMultipliers[i]
         });
       }
     }
@@ -266,14 +276,14 @@
         ctx.fillRect(sink.x - sink.width / 2, sink.y - sink.height / 2, sink.width, sink.height);
         ctx.fillStyle = '#fff';
         ctx.font = '12px Arial';
-        ctx.fillText(sink.multiplier + 'x', sink.x - sink.width / 4, sink.y + 5);
+        ctx.fillText(sink.multiplier + 'x', sink.x - 10, sink.y + 5);
         ctx.fillStyle = 'green';
       });
     }
 
     function addBall() {
       if (balance < betAmount) return; // Prevent adding ball if balance is below bet amount
-      const newBall = new Ball(pad(WIDTH / 2 + 13), pad(50), ballRadius, 'red');
+      const newBall = new Ball(pad(WIDTH / 2), pad(50), ballRadius, 'red');
       balls.push(newBall);
       balance -= betAmount; // Decrease balance by bet amount
       updateBalance();
@@ -283,15 +293,19 @@
       document.getElementById('balance').innerText = 'Balance: $' + balance.toFixed(2);
     }
 
-    function updateDifficulty() {
-      if (document.getElementById('easy').checked) {
-        difficulty = 'easy';
-      } else if (document.getElementById('normal').checked) {
-        difficulty = 'normal';
-      } else if (document.getElementById('hard').checked) {
-        difficulty = 'hard';
-      }
-      createSinks();
+    function clearCanvas() {
+      ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    }
+
+    function update() {
+      clearCanvas();
+      drawObstacles();
+      drawSinks();
+      balls.forEach(ball => {
+        ball.draw();
+        ball.update();
+      });
+      requestAnimationFrame(update);
     }
 
     document.getElementById('add-ball').addEventListener('click', addBall);
@@ -306,25 +320,16 @@
       createSinks();
     });
 
-    document.querySelectorAll('input[name="difficulty"]').forEach(radio => {
-      radio.addEventListener('change', updateDifficulty);
+    document.querySelectorAll('input[name="difficulty"]').forEach(input => {
+      input.addEventListener('change', (e) => {
+        difficulty = e.target.value;
+        setDifficulty();
+        createSinks();
+      });
     });
 
-    function draw() {
-      ctx.clearRect(0, 0, WIDTH, HEIGHT);
-      drawObstacles();
-      drawSinks();
-      balls.forEach(ball => {
-        ball.draw();
-        ball.update();
-      });
-    }
-
-    function update() {
-      draw();
-      requestAnimationFrame(update);
-    }
-
+    // Initialize sinks and difficulty on page load
+    setDifficulty();
     createObstacles();
     createSinks();
     update();
