@@ -25,62 +25,68 @@
       margin-bottom: 20px;
     }
 
-    #controls > div {
-      margin: 10px 0;
-    }
-
-    #controls button {
-      background-color: #16213e;
-      padding: 10px;
-      cursor: pointer;
-      border-radius: 5px;
-      text-align: center;
-      width: 150px;
-      border: none;
-      color: white;
-    }
-
-    #controls select, #controls input {
-      background-color: #16213e;
-      padding: 10px;
-      color: white;
-      border: none;
-      border-radius: 5px;
-    }
-
     canvas {
       background-color: #0f3460;
       border: 2px solid #fff;
       border-radius: 10px;
     }
 
-    #balance {
+    .control-section {
+      margin-bottom: 10px;
+    }
+
+    .control-section label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .control-section input,
+    .control-section select {
+      width: 100%;
+      padding: 5px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    #balance,
+    #add-ball {
       margin: 10px;
-      background-color: #16213e;
-      padding: 10px;
+      padding: 10px 20px;
       cursor: pointer;
       border-radius: 5px;
       text-align: center;
-      width: 150px;
+      background-color: #16213e;
+    }
+
+    #balance {
+      background-color: #0f3460;
+    }
+
+    #add-ball:hover,
+    #balance:hover {
+      background-color: #1a1a2e;
     }
   </style>
 </head>
 
 <body>
   <div id="controls">
-    <div id="difficulty">
-      <label>Difficulty:</label>
-      <button onclick="setDifficulty('easy')">Easy</button>
-      <button onclick="setDifficulty('normal')">Normal</button>
-      <button onclick="setDifficulty('hard')">Hard</button>
+    <div class="control-section">
+      <label>Difficulty</label>
+      <div>
+        <input type="radio" id="easy" name="difficulty" value="easy" checked> Easy
+        <input type="radio" id="normal" name="difficulty" value="normal"> Normal
+        <input type="radio" id="hard" name="difficulty" value="hard"> Hard
+      </div>
     </div>
-    <div id="bet">
-      <label>Bet Amount:</label>
-      <input type="number" id="betAmount" value="10" min="1">
+    <div class="control-section">
+      <label for="bet-amount">Bet Amount</label>
+      <input type="number" id="bet-amount" value="10" min="1" max="100">
     </div>
-    <div id="rows">
-      <label>Amount of rows:</label>
-      <select id="numRows">
+    <div class="control-section">
+      <label for="rows">Amount of Rows</label>
+      <select id="rows">
         <option value="8">8</option>
         <option value="10" selected>10</option>
         <option value="12">12</option>
@@ -88,33 +94,29 @@
         <option value="16">16</option>
       </select>
     </div>
-    <button id="startGame" onclick="startNewGame()">Start new game</button>
     <div id="balance">Balance: $100</div>
-    <button id="add-ball">Add Ball</button>
+    <div id="add-ball">Start New Game</div>
   </div>
+  <canvas id="gameCanvas" width="800" height="600"></canvas>
 
-  <canvas id="gameCanvas" width="800" height="800"></canvas>
-  
   <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
 
     const DECIMAL_MULTIPLIER = 10000;
-
-    const WIDTH = 800;
-    const HEIGHT = 800;
+    const WIDTH = canvas.width;
+    const HEIGHT = canvas.height;
     const ballRadius = 7;
     const obstacleRadius = 4;
-    const defaultGravity = 0.2;
+    const baseGravity = 0.2;
     const horizontalFriction = 0.4;
     const verticalFriction = 0.8;
     let balls = [];
     let balance = 100;
     let betAmount = 10;
-    let gravity = pad(defaultGravity);
-    let numRows = 10;
-    let obstacles = [];
-    let sinks = [];
+    let rows = 10;
+    const obstacles = [];
+    const sinks = [];
     const sinkMultipliers = [8.9, 3, 1.4, 1.1, 1, 0.5, 1, 1.1, 1.4, 3, 8.9];
 
     function pad(n) {
@@ -125,42 +127,38 @@
       return Math.floor(n / DECIMAL_MULTIPLIER);
     }
 
-    function setDifficulty(difficulty) {
-      switch (difficulty) {
-        case 'easy':
-          gravity = pad(0.2);
-          break;
-        case 'normal':
-          gravity = pad(0.4);
-          break;
-        case 'hard':
-          gravity = pad(0.6);
-          break;
-      }
-    }
-
     function createObstacles() {
-      obstacles = [];
-      for (let row = 2; row < numRows; row++) {
+      obstacles.length = 0; // Clear existing obstacles
+      for (let row = 2; row < rows; row++) {
         const numObstacles = row + 1;
         const y = 0 + row * 35;
         const spacing = 36;
         for (let col = 0; col < numObstacles; col++) {
           const x = WIDTH / 2 - spacing * (row / 2 - col);
-          obstacles.push({ x: pad(x), y: pad(y), radius: obstacleRadius });
+          obstacles.push({
+            x: pad(x),
+            y: pad(y),
+            radius: obstacleRadius
+          });
         }
       }
     }
 
     function createSinks() {
-      sinks = [];
+      sinks.length = 0; // Clear existing sinks
       const sinkWidth = 36;
-      for (let i = 0; i < 11; i++) {
-        const x = WIDTH / 2 + (i - 5.5) * sinkWidth + obstacleRadius;
+      for (let i = 0; i < sinkMultipliers.length; i++) {
+        const x = WIDTH / 2 + (i - sinkMultipliers.length / 2) * (sinkWidth) + obstacleRadius;
         const y = HEIGHT - 240;
         const width = sinkWidth;
         const height = width;
-        sinks.push({ x, y, width, height, multiplier: sinkMultipliers[i % sinkMultipliers.length] });
+        sinks.push({
+          x,
+          y,
+          width,
+          height,
+          multiplier: sinkMultipliers[i]
+        });
       }
     }
 
@@ -187,7 +185,7 @@
         if (this.stopped) return;
 
         // change the velocity, change the positions
-        this.vy = this.vy + gravity;
+        this.vy = this.vy + baseGravity;
         this.x += this.vx; // x = x1 + v
         this.y += this.vy;
 
@@ -223,11 +221,17 @@
             updateBalance();
           }
         });
+
+        // Stop ball if it hits the bottom
+        if (this.y > HEIGHT - unpad(ballRadius)) {
+          this.vy = 0;
+          this.stopped = true;
+        }
       }
     }
 
     function drawObstacles() {
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = '#fff';
       obstacles.forEach(obstacle => {
         ctx.beginPath();
         ctx.arc(unpad(obstacle.x), unpad(obstacle.y), obstacle.radius, 0, Math.PI * 2);
@@ -239,17 +243,17 @@
     function drawSinks() {
       ctx.fillStyle = 'green';
       sinks.forEach(sink => {
-        ctx.fillRect(sink.x, sink.y - sink.height / 2, sink.width - obstacleRadius * 2, sink.height);
+        ctx.fillRect(sink.x - sink.width / 2, sink.y - sink.height / 2, sink.width, sink.height);
         ctx.fillStyle = '#fff';
         ctx.font = '12px Arial';
-        ctx.fillText(sink.multiplier + 'x', sink.x + 8, sink.y - 10);
+        ctx.fillText(sink.multiplier + 'x', sink.x - sink.width / 4, sink.y + 5);
         ctx.fillStyle = 'green';
       });
     }
 
     function addBall() {
       if (balance < betAmount) return; // Prevent adding ball if balance is below bet amount
-      const newBall = new Ball(pad(WIDTH / 2 + 13), pad(50), ballRadius, 'red');
+      const newBall = new Ball(pad(WIDTH / 2), pad(50), ballRadius, 'red');
       balls.push(newBall);
       balance -= betAmount; // Decrease balance by bet amount
       updateBalance();
@@ -259,17 +263,16 @@
       document.getElementById('balance').innerText = 'Balance: $' + balance.toFixed(2);
     }
 
-    function startNewGame() {
-      betAmount = parseFloat(document.getElementById('betAmount').value);
-      numRows = parseInt(document.getElementById('numRows').value);
-      balance = 100;
-      balls = [];
-      updateBalance();
-      createObstacles();
-      createSinks();
-    }
-
     document.getElementById('add-ball').addEventListener('click', addBall);
+
+    document.getElementById('bet-amount').addEventListener('change', (e) => {
+      betAmount = parseFloat(e.target.value);
+    });
+
+    document.getElementById('rows').addEventListener('change', (e) => {
+      rows = parseInt(e.target.value);
+      createObstacles();
+    });
 
     function draw() {
       ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -286,7 +289,8 @@
       requestAnimationFrame(update);
     }
 
-    startNewGame(); // Initialize the game with default settings
+    createObstacles();
+    createSinks();
     update();
   </script>
 </body>
