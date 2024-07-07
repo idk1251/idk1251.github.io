@@ -121,7 +121,6 @@ function dropBall() {
 function calculateWinnings(ballLeftPosition) {
     const gameBoard = document.getElementById('game-board');
     const width = gameBoard.clientWidth;
-    const slotWidth = 50;
     const slotIndex = Math.floor(ballLeftPosition / (width / slots.length));
     const winnings = betAmount * slots[slotIndex];
     balance += winnings;
