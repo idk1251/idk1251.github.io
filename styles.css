@@ -1,1 +1,45 @@
+body {
+    font-family: sans-serif;
+}
+
+.container {
+    display: flex;
+}
+
+.controls {
+    width: 200px;
+    padding: 10px;
+}
+
+.buttons, .risk-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+#plinko-board {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    background-color: #3a3a3a;
+}
+
+.buckets, .percents {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+}
+
+.chip {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: blue;
+}
 
