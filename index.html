@@ -126,7 +126,7 @@
     let betAmount = 10;
     let rows = 10;
     const obstacles = [];
-    const sinks = [];
+    let sinks = [];
     const sinkMultipliers = [8.9, 3, 1.4, 1.1, 1, 0.5, 1, 1.1, 1.4, 3, 8.9];
 
     function pad(n) {
@@ -155,11 +155,16 @@
     }
 
     function createSinks() {
-      sinks.length = 0; // Clear existing sinks
+      sinks = []; // Reset sinks array
       const sinkWidth = 36;
-      for (let i = 0; i < sinkMultipliers.length; i++) {
-        const x = WIDTH / 2 + (i - sinkMultipliers.length / 2) * (sinkWidth) + obstacleRadius;
-        const y = HEIGHT - 240;
+      const numSinks = sinkMultipliers.length;
+      const totalSinkWidth = numSinks * sinkWidth;
+
+      const startX = WIDTH / 2 - totalSinkWidth / 2 + obstacleRadius;
+      const startY = HEIGHT - 240;
+      for (let i = 0; i < numSinks; i++) {
+        const x = startX + i * sinkWidth;
+        const y = startY;
         const width = sinkWidth;
         const height = width;
         sinks.push({
@@ -282,6 +287,7 @@
     document.getElementById('rows').addEventListener('change', (e) => {
       rows = parseInt(e.target.value);
       createObstacles();
+      createSinks();
     });
 
     function draw() {
