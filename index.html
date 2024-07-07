@@ -10,32 +10,39 @@
       color: #fff;
       font-family: Arial, sans-serif;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      justify-content: center;
       height: 100vh;
       margin: 0;
+    }
+
+    header {
+      width: 100%;
+      background-color: #1a1a2e;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 24px;
+      border-bottom: 2px solid #fff;
+      margin-bottom: 20px;
     }
 
     .container {
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      height: 100%;
-      padding: 20px;
-      box-sizing: border-box;
+      align-items: center;
+      margin-bottom: 20px;
     }
 
     #controls {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
       margin-right: 20px;
-    }
-
-    canvas {
-      background-color: #0f3460;
-      border: 2px solid #fff;
+      background-color: #1a1a2e;
+      padding: 20px;
       border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     }
 
     .control-section {
@@ -45,12 +52,13 @@
     .control-section label {
       display: block;
       margin-bottom: 5px;
+      color: #fff;
     }
 
     .control-section input,
     .control-section select {
       width: 100%;
-      padding: 5px;
+      padding: 8px;
       border-radius: 5px;
       border: none;
     }
@@ -58,24 +66,33 @@
     #balance,
     #add-ball {
       margin-top: 20px;
-      padding: 10px 20px;
+      padding: 12px 20px;
       cursor: pointer;
       border-radius: 5px;
       text-align: center;
-      background-color: #16213e;
-    }
-
-    #balance {
       background-color: #0f3460;
+      color: #fff;
+      font-weight: bold;
+      transition: background-color 0.3s;
     }
 
-    #add-ball:hover,
-    #balance:hover {
+    #balance:hover,
+    #add-ball:hover {
       background-color: #1a1a2e;
+    }
+
+    canvas {
+      background-color: #0f3460;
+      border: 2px solid #fff;
+      border-radius: 10px;
     }
   </style>
 </head>
 <body>
+  <header>
+    Plinko Game
+  </header>
+
   <div class="container">
     <div id="controls">
       <div class="control-section">
