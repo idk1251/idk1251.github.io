@@ -7,43 +7,37 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <div class="sidebar">
-            <div class="mode">
-                <button class="active">Manual</button>
-                <button>Auto</button>
-            </div>
-            <div class="settings">
-                <div class="difficulty">
-                    <h3>Difficulty</h3>
-                    <button class="active">Easy</button>
-                    <button>Normal</button>
-                    <button>Hard</button>
-                </div>
-                <div class="bet">
-                    <h3>Bet</h3>
-                    <input type="number" value="10">
-                    <div class="bet-buttons">
-                        <button>1/2</button>
-                        <button>2x</button>
-                        <button>Max</button>
-                    </div>
-                </div>
-                <div class="rows">
-                    <h3>Amount of rows</h3>
-                    <button data-rows="8">8</button>
-                    <button class="active" data-rows="10">10</button>
-                    <button data-rows="12">12</button>
-                    <button data-rows="14">14</button>
-                    <button data-rows="16">16</button>
-                </div>
-                <button class="start-game">Start new game</button>
+    <div class="sidebar">
+        <div>
+            <button id="manualBtn">Manual</button>
+            <button id="autoBtn">Auto</button>
+        </div>
+        <div>
+            <h3>Difficulty</h3>
+            <button id="easyBtn">Easy</button>
+            <button id="normalBtn">Normal</button>
+            <button id="hardBtn">Hard</button>
+        </div>
+        <div>
+            <h3>Bet</h3>
+            <input type="number" id="betInput" value="10">
+            <div>
+                <button id="halfBtn">1/2</button>
+                <button id="doubleBtn">2x</button>
+                <button id="maxBtn">Max</button>
             </div>
         </div>
-        <div class="game-board">
-            <canvas id="gameCanvas"></canvas>
+        <div>
+            <h3>Amount of rows</h3>
+            <button id="rows8Btn">8</button>
+            <button id="rows10Btn">10</button>
+            <button id="rows12Btn">12</button>
+            <button id="rows14Btn">14</button>
+            <button id="rows16Btn">16</button>
         </div>
+        <button id="startGameBtn">Start new game</button>
     </div>
+    <canvas id="gameCanvas"></canvas>
     <script src="game.js"></script>
 </body>
 </html>
