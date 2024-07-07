@@ -1,84 +1,75 @@
 body {
+    margin: 0;
     font-family: Arial, sans-serif;
     background-color: #1a1a2e;
     color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
 }
 
 .container {
     display: flex;
-    flex-direction: row;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 300px;
+    padding: 20px;
+    background-color: #0f3460;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.mode button, .difficulty button, .bet button, .rows button, .start-game {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #e94560;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button.active {
+    background-color: #16213e;
 }
 
 .settings {
-    display: flex;
-    flex-direction: column;
+    flex: 1;
+}
+
+.game-board {
+    flex: 1;
     padding: 20px;
-    background-color: #162447;
-    border-radius: 10px;
-    margin-right: 20px;
-}
-
-.settings label {
-    margin-bottom: 5px;
-}
-
-.settings input, .settings button, .difficulty-button {
-    margin-bottom: 10px;
-    padding: 5px;
-    border: none;
-    border-radius: 5px;
-}
-
-.settings button, .difficulty-button {
-    background-color: #1f4068;
-    color: #fff;
-    cursor: pointer;
-}
-
-.settings button.active, .difficulty-button.active {
-    background-color: #e43f5a;
-}
-
-.plinko-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.plinko-board {
-    width: 500px;
-    height: 600px;
-    background-color: #0f3460;
-    border-radius: 10px;
-    display: grid;
-    grid-template-columns: repeat(9, 1fr);
-    grid-template-rows: repeat(var(--rows, 10), 1fr);
-    gap: 5px;
-    position: relative;
-}
-
-.multiplier {
-    width: 50px;
-    height: 30px;
-    background-color: #e43f5a;
-    border-radius: 5px;
+    background-color: #1a1a2e;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 5px;
 }
 
-#multipliers {
-    display: flex;
-    justify-content: space-between;
-    width: 500px;
+.game-board::before {
+    content: '';
+    display: block;
+    width: 100%;
+    padding-top: 100%;
+    position: relative;
 }
 
-.balance {
-    margin-bottom: 20px;
+.game-board-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: 5px;
+}
+
+.game-board-grid div {
+    width: 100%;
+    height: 100%;
+    background-color: #16213e;
+    border-radius: 50%;
 }
