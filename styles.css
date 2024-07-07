@@ -29,6 +29,13 @@ body {
     margin-bottom: 8px;
 }
 
+.settings-panel .difficulty-buttons,
+.settings-panel .bet-buttons,
+.settings-panel .row-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
 .settings-panel button, .settings-panel input {
     background-color: #3b3c5a;
     color: white;
@@ -38,9 +45,38 @@ body {
     border-radius: 4px;
     cursor: pointer;
     width: 100%;
+    text-align: center;
 }
 
 .settings-panel button:hover, .settings-panel input:hover {
+    background-color: #4b4c7a;
+}
+
+.settings-panel .difficulty-button,
+.settings-panel .row-buttons button,
+.settings-panel .bet-buttons button {
+    width: 30%;
+    margin: 5px 0;
+}
+
+.settings-panel .difficulty-button.active,
+.settings-panel .row-buttons button.active {
+    background-color: #4b4c7a;
+}
+
+.settings-panel .start-button {
+    background-color: #3b3c5a;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+}
+
+.settings-panel .start-button:hover {
     background-color: #4b4c7a;
 }
 
@@ -74,4 +110,13 @@ body {
 
 .slot p {
     margin: 0;
+}
+
+.bet-amount {
+    width: calc(100% - 40px);
+    margin-right: 10px;
+}
+
+.balance {
+    margin-bottom: 20px;
 }
