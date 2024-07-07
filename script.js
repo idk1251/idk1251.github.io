@@ -16,15 +16,23 @@ document.querySelectorAll('.rows button').forEach(button => {
     button.addEventListener('click', () => {
         document.querySelector('.rows .active').classList.remove('active');
         button.classList.add('active');
+        updateGrid(parseInt(button.getAttribute('data-rows')));
     });
 });
 
-// Optionally, add grid generation logic if needed
-const gameBoardGrid = document.querySelector('.game-board-grid');
-const rows = 10;
-const columns = 10;
-
-for (let i = 0; i < rows * columns; i++) {
-    const gridElement = document.createElement('div');
-    gameBoardGrid.appendChild(gridElement);
+function updateGrid(rows) {
+    const gameBoardGrid = document.querySelector('.game-board-grid');
+    gameBoardGrid.innerHTML = '';
+    gameBoardGrid.style.gridTemplateColumns = `repeat(${rows}, 1fr)`;
+    gameBoardGrid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+    
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j <= i; j++) {
+            const gridElement = document.createElement('div');
+            gameBoardGrid.appendChild(gridElement);
+        }
+    }
 }
+
+// Initialize the grid with default rows (10)
+updateGrid(10);
