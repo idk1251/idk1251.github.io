@@ -20,19 +20,18 @@ document.querySelectorAll('.rows button').forEach(button => {
     });
 });
 
+const gameBoardGrid = document.querySelector('.game-board-grid');
+
 function updateGrid(rows) {
-    const gameBoardGrid = document.querySelector('.game-board-grid');
-    gameBoardGrid.innerHTML = '';
+    gameBoardGrid.innerHTML = ''; // Clear existing grid
     gameBoardGrid.style.gridTemplateColumns = `repeat(${rows}, 1fr)`;
     gameBoardGrid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
-    
-    for (let i = 0; i < rows; i++) {
-        for (let j = 0; j <= i; j++) {
-            const gridElement = document.createElement('div');
-            gameBoardGrid.appendChild(gridElement);
-        }
+
+    for (let i = 0; i < rows * rows; i++) {
+        const gridElement = document.createElement('div');
+        gameBoardGrid.appendChild(gridElement);
     }
 }
 
-// Initialize the grid with default rows (10)
+// Initialize the grid with default value
 updateGrid(10);
