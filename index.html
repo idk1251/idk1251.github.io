@@ -11,18 +11,27 @@
       color: #fff;
       font-family: Arial, sans-serif;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
       margin: 0;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      width: 100%;
+      height: 100%;
+      padding: 20px;
+      box-sizing: border-box;
     }
 
     #controls {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      margin-bottom: 20px;
+      align-items: flex-start;
+      margin-right: 20px;
     }
 
     canvas {
@@ -44,14 +53,13 @@
     .control-section select {
       width: 100%;
       padding: 5px;
-      margin-bottom: 10px;
       border-radius: 5px;
       border: none;
     }
 
     #balance,
     #add-ball {
-      margin: 10px;
+      margin-top: 20px;
       padding: 10px 20px;
       cursor: pointer;
       border-radius: 5px;
@@ -71,33 +79,35 @@
 </head>
 
 <body>
-  <div id="controls">
-    <div class="control-section">
-      <label>Difficulty</label>
-      <div>
-        <input type="radio" id="easy" name="difficulty" value="easy" checked> Easy
-        <input type="radio" id="normal" name="difficulty" value="normal"> Normal
-        <input type="radio" id="hard" name="difficulty" value="hard"> Hard
+  <div class="container">
+    <div id="controls">
+      <div class="control-section">
+        <label>Difficulty</label>
+        <div>
+          <input type="radio" id="easy" name="difficulty" value="easy" checked> Easy
+          <input type="radio" id="normal" name="difficulty" value="normal"> Normal
+          <input type="radio" id="hard" name="difficulty" value="hard"> Hard
+        </div>
       </div>
+      <div class="control-section">
+        <label for="bet-amount">Bet Amount</label>
+        <input type="number" id="bet-amount" value="10" min="1" max="100">
+      </div>
+      <div class="control-section">
+        <label for="rows">Amount of Rows</label>
+        <select id="rows">
+          <option value="8">8</option>
+          <option value="10" selected>10</option>
+          <option value="12">12</option>
+          <option value="14">14</option>
+          <option value="16">16</option>
+        </select>
+      </div>
+      <div id="balance">Balance: $100</div>
+      <div id="add-ball">Start New Game</div>
     </div>
-    <div class="control-section">
-      <label for="bet-amount">Bet Amount</label>
-      <input type="number" id="bet-amount" value="10" min="1" max="100">
-    </div>
-    <div class="control-section">
-      <label for="rows">Amount of Rows</label>
-      <select id="rows">
-        <option value="8">8</option>
-        <option value="10" selected>10</option>
-        <option value="12">12</option>
-        <option value="14">14</option>
-        <option value="16">16</option>
-      </select>
-    </div>
-    <div id="balance">Balance: $100</div>
-    <div id="add-ball">Start New Game</div>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
   </div>
-  <canvas id="gameCanvas" width="800" height="600"></canvas>
 
   <script>
     const canvas = document.getElementById('gameCanvas');
