@@ -112,6 +112,15 @@ body {
     margin: 0;
 }
 
+.ball {
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+}
+
 .bet-amount {
     width: calc(100% - 40px);
     margin-right: 10px;
