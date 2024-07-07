@@ -87,6 +87,7 @@ const obstacles = [];
 const multis = [];
 
 function init() {
+    createGrid(10); // Default to 10 rows
     for (let i = 0; i < 10; i++) {
         obstacles.push(new Obstacle(Math.random() * canvas.width, Math.random() * canvas.height, 20));
     }
@@ -98,8 +99,24 @@ function init() {
 
 let ball;
 
+function createGrid(rows) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const dotSpacing = canvas.height / (rows + 1);
+    const cols = Math.floor(canvas.width / dotSpacing);
+    for (let i = 1; i <= rows; i++) {
+        for (let j = 1; j <= cols; j++) {
+            ctx.beginPath();
+            ctx.arc(j * dotSpacing, i * dotSpacing, 5, 0, Math.PI * 2, false);
+            ctx.fillStyle = 'white';
+            ctx.fill();
+            ctx.closePath();
+        }
+    }
+}
+
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    createGrid(document.querySelector('.rows .active').getAttribute('data-rows')); // Redraw grid based on selected rows
     obstacles.forEach(obstacle => obstacle.draw());
     multis.forEach(multi => multi.draw());
     ball.update();
@@ -129,11 +146,10 @@ document.querySelectorAll('.rows button').forEach(button => {
     button.addEventListener('click', () => {
         document.querySelector('.rows .active').classList.remove('active');
         button.classList.add('active');
-        updateGrid(parseInt(button.getAttribute('data-rows')));
+        createGrid(parseInt(button.getAttribute('data-rows')));
     });
 });
 
-function updateGrid(rows) {
-    console.log(`Rows selected: ${rows}`);
-    // Update the game logic based on the number of rows selected
-}
+document.querySelector('.start-game').addEventListener('click', () => {
+    init(); // Reinitialize the game
+});
