@@ -134,7 +134,7 @@
     </div>
 
     <div id="gameCanvasContainer">
-      <canvas id="gameCanvas"></canvas>
+      <canvas id="gameCanvas" width="800" height="600"></canvas>
     </div>
   </div>
 
@@ -326,7 +326,7 @@
     }
     
     function update() {
-      adjustCanvasSize();
+      adjustCanvasSize(); // Ensure canvas size is adjusted on update
       draw();
       requestAnimationFrame(update);
     }
