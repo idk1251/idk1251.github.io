@@ -14,26 +14,32 @@
             </div>
             <div class="difficulty">
                 <label>Difficulty:</label>
-                <button onclick="setDifficulty('easy')">Easy</button>
-                <button onclick="setDifficulty('normal')">Normal</button>
-                <button onclick="setDifficulty('hard')">Hard</button>
+                <div class="difficulty-buttons">
+                    <button class="difficulty-button active" onclick="setDifficulty('easy')">Easy</button>
+                    <button class="difficulty-button" onclick="setDifficulty('normal')">Normal</button>
+                    <button class="difficulty-button" onclick="setDifficulty('hard')">Hard</button>
+                </div>
             </div>
             <div class="bet">
                 <label>Bet:</label>
                 <input type="number" id="bet-amount" value="10">
-                <button onclick="adjustBet('half')">1/2</button>
-                <button onclick="adjustBet('double')">2x</button>
-                <button onclick="adjustBet('max')">Max</button>
+                <div class="bet-buttons">
+                    <button onclick="adjustBet('half')">1/2</button>
+                    <button onclick="adjustBet('double')">2x</button>
+                    <button onclick="adjustBet('max')">Max</button>
+                </div>
             </div>
             <div class="rows">
                 <label>Amount of rows:</label>
-                <button onclick="setRows(8)">8</button>
-                <button onclick="setRows(10)">10</button>
-                <button onclick="setRows(12)">12</button>
-                <button onclick="setRows(14)">14</button>
-                <button onclick="setRows(16)">16</button>
+                <div class="row-buttons">
+                    <button onclick="setRows(8)">8</button>
+                    <button class="active" onclick="setRows(10)">10</button>
+                    <button onclick="setRows(12)">12</button>
+                    <button onclick="setRows(14)">14</button>
+                    <button onclick="setRows(16)">16</button>
+                </div>
             </div>
-            <button onclick="startNewGame()">Start new game</button>
+            <button class="start-button" onclick="startNewGame()">Start new game</button>
         </div>
         <div class="game-board" id="game-board">
             <!-- Plinko board will be dynamically generated here -->
