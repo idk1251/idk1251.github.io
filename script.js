@@ -9,6 +9,10 @@ function updateBalance() {
 
 function setDifficulty(level) {
     difficulty = level;
+    document.querySelectorAll('.difficulty-button').forEach(button => {
+        button.classList.remove('active');
+    });
+    document.querySelector(`.difficulty-button[onclick="setDifficulty('${level}')"]`).classList.add('active');
     console.log(`Difficulty set to ${level}`);
 }
 
@@ -25,6 +29,10 @@ function adjustBet(action) {
 
 function setRows(rowCount) {
     rows = rowCount;
+    document.querySelectorAll('.row-buttons button').forEach(button => {
+        button.classList.remove('active');
+    });
+    document.querySelector(`.row-buttons button[onclick="setRows(${rowCount})"]`).classList.add('active');
     console.log(`Rows set to ${rows}`);
 }
 
