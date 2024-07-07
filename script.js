@@ -27,9 +27,13 @@ function updateGrid(rows) {
     gameBoardGrid.style.gridTemplateColumns = `repeat(${rows}, 1fr)`;
     gameBoardGrid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
 
-    for (let i = 0; i < rows * rows; i++) {
-        const gridElement = document.createElement('div');
-        gameBoardGrid.appendChild(gridElement);
+    for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < rows; col++) {
+            const gridElement = document.createElement('div');
+            if ((row + col) % 2 === 0) { // Adjust the condition to match the dot pattern in the image
+                gameBoardGrid.appendChild(gridElement);
+            }
+        }
     }
 }
 
