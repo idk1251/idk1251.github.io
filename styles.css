@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #0e163a;
+    background-color: #1a1a2e;
     color: #fff;
     display: flex;
     justify-content: center;
@@ -9,29 +9,76 @@ body {
     margin: 0;
 }
 
-#game-container {
-    text-align: center;
+.container {
+    display: flex;
+    flex-direction: row;
 }
 
-#controls {
-    margin-bottom: 20px;
+.settings {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #162447;
+    border-radius: 10px;
+    margin-right: 20px;
 }
 
-#plinko-board {
+.settings label {
+    margin-bottom: 5px;
+}
+
+.settings input, .settings button, .difficulty-button {
+    margin-bottom: 10px;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+}
+
+.settings button, .difficulty-button {
+    background-color: #1f4068;
+    color: #fff;
+    cursor: pointer;
+}
+
+.settings button.active, .difficulty-button.active {
+    background-color: #e43f5a;
+}
+
+.plinko-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.plinko-board {
+    width: 500px;
+    height: 600px;
+    background-color: #0f3460;
+    border-radius: 10px;
     display: grid;
-    justify-content: center;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(var(--rows, 10), 1fr);
     gap: 5px;
+    position: relative;
 }
 
-.plinko-row {
+.multiplier {
+    width: 50px;
+    height: 30px;
+    background-color: #e43f5a;
+    border-radius: 5px;
     display: flex;
     justify-content: center;
-    gap: 5px;
+    align-items: center;
+    margin: 5px;
 }
 
-.plinko-cell {
-    width: 20px;
-    height: 20px;
-    background-color: #fff;
-    border-radius: 50%;
+#multipliers {
+    display: flex;
+    justify-content: space-between;
+    width: 500px;
+}
+
+.balance {
+    margin-bottom: 20px;
 }
