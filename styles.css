@@ -40,54 +40,14 @@ button.active {
 
 .game-board {
     flex: 1;
-    padding: 20px;
-    background-color: #1a1a2e;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
+    background-color: #1a1a2e;
 }
 
-.game-board::before {
-    content: '';
-    display: block;
-    width: 100%;
-    padding-top: 100%;
-    position: relative;
-}
-
-.game-board-grid {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: grid;
-    gap: 10px;
-}
-
-.game-board-grid div {
-    width: 15px;
-    height: 15px;
-    background-color: #fff;
-    border-radius: 50%;
-    opacity: 0.5;
-}
-
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
-
-    .sidebar {
-        width: 100%;
-        height: auto;
-    }
-
-    .game-board {
-        width: 100%;
-        height: 100%;
-    }
+canvas {
+    background-color: #16213e;
 }
 
 button {
@@ -109,4 +69,20 @@ input[type=number] {
 .bet-buttons {
     display: flex;
     gap: 10px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+    }
+
+    .game-board {
+        width: 100%;
+        height: 100%;
+    }
 }
