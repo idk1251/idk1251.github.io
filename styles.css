@@ -47,7 +47,8 @@ button.active {
 }
 
 canvas {
-    background-color: #16213e;
+    background-color: #1a1a2e;
+    border: 1px solid #16213e;
 }
 
 button {
