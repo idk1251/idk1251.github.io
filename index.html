@@ -6,334 +6,169 @@
   <title>Plinko Game</title>
   <style>
     body {
-      background-color: #1a1a2e;
-      color: #fff;
       font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
       margin: 0;
     }
-
-    header {
-      width: 100%;
-      background-color: #1a1a2e;
-      text-align: center;
-      padding: 10px 0;
-      font-size: 24px;
-      border-bottom: 2px solid #fff;
-      margin-bottom: 20px;
-    }
-
-    .container {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      width: 80%;
-      margin-bottom: 20px;
-    }
-
-    #controls {
+    .plinko-container {
+      background-color: #3498db;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
       display: flex;
       flex-direction: column;
       align-items: center;
-      background-color: #1a1a2e;
+    }
+    .score-display {
+      margin-top: 20px;
+      font-size: 24px;
+      color: white;
+    }
+    .plinko-board {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .plinko-slot {
+      background-color: #f39c12;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+    .plinko-slot:nth-child(even) {
+      background-color: #e74c3c;
+    }
+    .plinko-controls {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    .button {
+      padding: 10px 20px;
+      background-color: #2ecc71;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+    .button:hover {
+      background-color: #27ae60;
+    }
+    .scoreboard-container {
+      background-color: #e67e22;
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-      width: 30%;
-      min-width: 300px;
-    }
-
-    .control-section {
-      margin-bottom: 10px;
-      width: 100%;
-    }
-
-    .control-section label {
-      display: block;
-      margin-bottom: 5px;
-      color: #fff;
-    }
-
-    .control-section input,
-    .control-section select {
-      width: 100%;
-      padding: 8px;
-      border-radius: 5px;
-      border: none;
-    }
-
-    #balance,
-    #add-ball {
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
       margin-top: 20px;
-      padding: 12px 20px;
-      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 300px;
+    }
+    .scoreboard-title {
+      font-size: 20px;
+      color: white;
+      margin-bottom: 10px;
+    }
+    .scoreboard-list {
+      list-style-type: none;
+      padding: 0;
+      width: 100%;
+    }
+    .scoreboard-item {
+      background-color: #f1c40f;
+      color: #333;
+      padding: 10px;
+      margin-bottom: 5px;
       border-radius: 5px;
-      text-align: center;
-      background-color: #0f3460;
-      color: #fff;
-      font-weight: bold;
-      transition: background-color 0.3s;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    #balance:hover,
-    #add-ball:hover {
-      background-color: #1a1a2e;
-    }
-
-    #gameCanvasContainer {
-      position: relative;
-      width: 70%;
-      min-width: 600px;
-    }
-
-    canvas {
-      background-color: #0f3460;
-      border: 2px solid #fff;
-      border-radius: 10px;
-      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
   </style>
 </head>
 <body>
-  <header>
-    Plinko Game
-  </header>
-
-  <div class="container">
-    <div id="controls">
-      <div class="control-section">
-        <label>Difficulty</label>
-        <div>
-          <input type="radio" id="easy" name="difficulty" value="easy" checked> Easy
-          <input type="radio" id="normal" name="difficulty" value="normal"> Normal
-          <input type="radio" id="hard" name="difficulty" value="hard"> Hard
-        </div>
-      </div>
-      <div class="control-section">
-        <label for="bet-amount">Bet Amount</label>
-        <input type="number" id="bet-amount" value="10" min="1" max="100">
-      </div>
-      <div class="control-section">
-        <label for="rows">Amount of Rows</label>
-        <select id="rows">
-          <option value="8">8</option>
-          <option value="10" selected>10</option>
-          <option value="12">12</option>
-          <option value="14">14</option>
-          <option value="16">16</option>
-        </select>
-      </div>
-      <div id="balance">Balance: $100.00</div>
-      <div id="add-ball">Start New Game</div>
+  <div class="plinko-container">
+    <h1>Plinko Game</h1>
+    <div class="score-display" id="scoreDisplay">Score: 0</div>
+    <div class="plinko-board" id="plinkoBoard">
+      <!-- Slots will be dynamically generated here -->
     </div>
-
-    <div id="gameCanvasContainer">
-      <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div class="plinko-controls">
+      <button class="button" onclick="dropPlinko('left')">Drop Left</button>
+      <button class="button" onclick="dropPlinko('right')">Drop Right</button>
     </div>
   </div>
 
+  <div class="scoreboard-container">
+    <h2 class="scoreboard-title">Scoreboard</h2>
+    <ul class="scoreboard-list" id="scoreboardList">
+      <!-- Scoreboard items will be dynamically generated here -->
+    </ul>
+  </div>
+
   <script>
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-    const DECIMAL_MULTIPLIER = 10000;
-    let WIDTH = canvas.width;
-    let HEIGHT = canvas.height;
-    const ballRadius = 7;
-    const obstacleRadius = 4;
-    let balls = [];
-    let balance = 100;
-    let betAmount = 10;
-    let rows = 10;
-    let difficulty = 'easy'; // Default difficulty
-    const obstacles = [];
-    let sinks = [];
-    
-    const difficultyMultipliers = {
-      easy: [5, 2, 1.5, 1.2, 1, 0.5, 1, 1.2, 1.5, 2, 5],
-      normal: [8, 3, 1.8, 1.4, 1, 0.5, 1, 1.4, 1.8, 3, 8],
-      hard: [10, 4, 2, 1.6, 1, 0.5, 1, 1.6, 2, 4, 10]
-    };
-    
-    function pad(n) {
-      return n * DECIMAL_MULTIPLIER;
-    }
-    
-    function unpad(n) {
-      return Math.floor(n / DECIMAL_MULTIPLIER);
-    }
-    
-    function adjustCanvasSize() {
-      const minCanvasHeight = 400; // Minimum canvas height to maintain
-      const rowHeight = minCanvasHeight / rows;
-      HEIGHT = rows * rowHeight;
-      canvas.height = HEIGHT;
-    }
-    
-    function createObstacles() {
-      obstacles.length = 0;
-      adjustCanvasSize();
-      const minCanvasHeight = 400; // Minimum canvas height to maintain
-      const rowHeight = minCanvasHeight / rows;
-      for (let row = 2; row < rows; row++) {
-        const numObstacles = row + 1;
-        const y = 0 + row * rowHeight;
-        const spacing = rowHeight + 1;
-        for (let col = 0; col < numObstacles; col++) {
-          const x = WIDTH / 2 - spacing * (row / 2 - col);
-          obstacles.push({ x: pad(x), y: pad(y), radius: obstacleRadius });
-        }
+    const plinkoBoard = document.getElementById('plinkoBoard');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const scoreboardList = document.getElementById('scoreboardList');
+    let score = 0;
+    let totalPlays = 0;
+
+    // Function to generate Plinko slots dynamically
+    function generatePlinkoSlots() {
+      for (let i = 0; i < 7; i++) {
+        const slot = document.createElement('div');
+        slot.classList.add('plinko-slot');
+        slot.innerText = Math.random() >= 0.5 ? '100' : '0'; // Randomly assigns slot values
+        plinkoBoard.appendChild(slot);
       }
     }
-    
-    function createSinks() {
-      sinks = [];
-      const sinkWidth = 36;
-      const sinkMultipliers = difficultyMultipliers[difficulty];
-      const numSinks = sinkMultipliers.length;
-      const totalSinkWidth = numSinks * sinkWidth;
-      const startX = WIDTH / 2 - totalSinkWidth / 2 + obstacleRadius;
-      const startY = HEIGHT - 240;
-      for (let i = 0; i < numSinks; i++) {
-        const x = startX + i * sinkWidth;
-        const y = startY;
-        const width = sinkWidth;
-        const height = width;
-        sinks.push({ x, y, width, height, multiplier: sinkMultipliers[i] });
+
+    // Function to simulate dropping Plinko chip
+    function dropPlinko(direction) {
+      // Clear existing slots
+      while (plinkoBoard.firstChild) {
+        plinkoBoard.removeChild(plinkoBoard.firstChild);
       }
+      
+      // Re-generate slots
+      generatePlinkoSlots();
+
+      // Calculate score based on dropped direction
+      const dropIndex = direction === 'left' ? 0 : 6;
+      const slots = plinkoBoard.children;
+      const slotValue = parseInt(slots[dropIndex].innerText);
+      score += slotValue;
+      scoreDisplay.innerText = `Score: ${score}`;
+
+      // Update scoreboard
+      totalPlays++;
+      updateScoreboard(score, totalPlays);
     }
-    
-    class Ball {
-      constructor(x, y, radius, color) {
-        this.x = x;
-        this.y = y;
-        this.radius = radius;
-        this.color = color;
-        this.vx = 0;
-        this.vy = 0;
-        this.stopped = false;
-      }
-    
-      draw() {
-        ctx.beginPath();
-        ctx.arc(unpad(this.x), unpad(this.y), this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.fill();
-        ctx.closePath();
-      }
-    
-      update() {
-        if (this.stopped) return;
-        this.vy += 0.2;
-        this.x += this.vx;
-        this.y += this.vy;
-    
-        obstacles.forEach(obstacle => {
-          const dist = Math.hypot(this.x - obstacle.x, this.y - obstacle.y);
-          if (dist < pad(this.radius + obstacle.radius)) {
-            const angle = Math.atan2(this.y - obstacle.y, this.x - obstacle.x);
-            const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
-            this.vx = (Math.cos(angle) * speed * 0.4);
-            this.vy = Math.sin(angle) * speed * 0.8;
-            const overlap = this.radius + obstacle.radius - unpad(dist);
-            this.x += pad(Math.cos(angle) * overlap);
-            this.y += pad(Math.sin(angle) * overlap);
-          }
-        });
-    
-        sinks.forEach(sink => {
-          if (unpad(this.x) > sink.x - sink.width / 2 && unpad(this.x) < sink.x + sink.width / 2 && unpad(this.y) + this.radius > sink.y - sink.height / 2) {
-            this.vx = 0;
-            this.vy = 0;
-            this.stopped = true;
-            balance += betAmount * sink.multiplier;
-            updateBalance();
-          }
-        });
-    
-        if (this.y > HEIGHT - unpad(ballRadius)) {
-          this.vy = 0;
-          this.stopped = true;
-        }
-      }
+
+    // Function to update the scoreboard
+    function updateScoreboard(score, totalPlays) {
+      const newItem = document.createElement('li');
+      newItem.classList.add('scoreboard-item');
+      newItem.innerHTML = `
+        <span>Game ${totalPlays}</span>
+        <span>Score: ${score}</span>
+      `;
+      scoreboardList.appendChild(newItem);
     }
-    
-    function drawObstacles() {
-      ctx.fillStyle = '#fff';
-      obstacles.forEach(obstacle => {
-        ctx.beginPath();
-        ctx.arc(unpad(obstacle.x), unpad(obstacle.y), obstacle.radius, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.closePath();
-      });
-    }
-    
-    function drawSinks() {
-      ctx.fillStyle = 'green';
-      sinks.forEach(sink => {
-        ctx.fillRect(sink.x - sink.width / 2, sink.y - sink.height / 2, sink.width, sink.height);
-        ctx.fillStyle = '#fff';
-        ctx.font = '12px Arial';
-        ctx.fillText(sink.multiplier + 'x', sink.x - sink.width / 4, sink.y - 10);
-        ctx.fillStyle = 'green';
-      });
-    }
-    
-    function addBall() {
-      if (balance < betAmount) return;
-      const newBall = new Ball(pad(WIDTH / 2 + 13), pad(50), ballRadius, 'red');
-      balls.push(newBall);
-      balance -= betAmount;
-      updateBalance();
-    }
-    
-    function updateBalance() {
-      document.getElementById('balance').innerText = 'Balance: $' + balance.toFixed(2);
-    }
-    
-    document.getElementById('add-ball').addEventListener('click', addBall);
-    
-    document.getElementById('bet-amount').addEventListener('change', (e) => {
-      betAmount = parseFloat(e.target.value);
-    });
-    
-    document.getElementById('rows').addEventListener('change', (e) => {
-      rows = parseInt(e.target.value);
-      createObstacles();
-      createSinks();
-    });
-    
-    document.querySelectorAll('input[name="difficulty"]').forEach(radio => {
-      radio.addEventListener('change', (e) => {
-        difficulty = e.target.value;
-        createSinks();
-      });
-    });
-    
-    function draw() {
-      ctx.clearRect(0, 0, WIDTH, HEIGHT);
-      drawObstacles();
-      drawSinks();
-      balls.forEach(ball => {
-        ball.draw();
-        ball.update();
-      });
-    }
-    
-    function update() {
-      adjustCanvasSize(); // Ensure canvas size is adjusted on update
-      draw();
-      requestAnimationFrame(update);
-    }
-    
-    createObstacles();
-    createSinks();
-    update();
+
+    // Initial setup
+    generatePlinkoSlots();
   </script>
 </body>
 </html>
