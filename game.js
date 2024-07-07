@@ -1,7 +1,11 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
+const sidebarWidth = 200;
+let numRows = 10;
+let obstacles = [];
+let multis = [];
 
-canvas.width = window.innerWidth - 320;  // Adjust for sidebar width
+canvas.width = window.innerWidth - sidebarWidth;
 canvas.height = window.innerHeight;
 
 class Obstacle {
@@ -83,40 +87,35 @@ class Ball {
     }
 }
 
-const obstacles = [];
-const multis = [];
-
-function init() {
-    createGrid(10); // Default to 10 rows
-    for (let i = 0; i < 10; i++) {
-        obstacles.push(new Obstacle(Math.random() * canvas.width, Math.random() * canvas.height, 20));
+function generateObstacles() {
+    obstacles = [];
+    for (let i = 0; i < numRows * numRows; i++) {
+        const x = (canvas.width / numRows) * (i % numRows) + (canvas.width / numRows) / 2;
+        const y = (canvas.height / numRows) * Math.floor(i / numRows) + (canvas.height / numRows) / 2;
+        obstacles.push(new Obstacle(x, y, 5));
     }
-    for (let i = 0; i < 5; i++) {
-        multis.push(new Multi(Math.random() * canvas.width, Math.random() * canvas.height, 'blue', 2));
-    }
-    ball = new Ball(canvas.width / 2, canvas.height / 2);
 }
 
-let ball;
-
-function createGrid(rows) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const dotSpacing = canvas.height / (rows + 1);
-    const cols = Math.floor(canvas.width / dotSpacing);
-    for (let i = 1; i <= rows; i++) {
-        for (let j = 1; j <= cols; j++) {
-            ctx.beginPath();
-            ctx.arc(j * dotSpacing, i * dotSpacing, 5, 0, Math.PI * 2, false);
-            ctx.fillStyle = 'white';
-            ctx.fill();
-            ctx.closePath();
-        }
+function generateMultis() {
+    multis = [];
+    const colors = ['#ff5f5f', '#ff9f5f', '#ffdf5f', '#5fff5f', '#5fffbf', '#5f9fff', '#bf5fff', '#ff5fbf'];
+    for (let i = 0; i < numRows; i++) {
+        const x = (canvas.width / numRows) * i + (canvas.width / numRows) / 2;
+        const y = canvas.height - 20;
+        multis.push(new Multi(x, y, colors[i % colors.length], 1 + i * 0.1));
     }
+}
+
+const ball = new Ball(canvas.width / 2, canvas.height / 2);
+
+function init() {
+    generateObstacles();
+    generateMultis();
+    animate();
 }
 
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    createGrid(document.querySelector('.rows .active').getAttribute('data-rows')); // Redraw grid based on selected rows
     obstacles.forEach(obstacle => obstacle.draw());
     multis.forEach(multi => multi.draw());
     ball.update();
@@ -124,32 +123,11 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
+document.getElementById('rows8Btn').addEventListener('click', () => { numRows = 8; init(); });
+document.getElementById('rows10Btn').addEventListener('click', () => { numRows = 10; init(); });
+document.getElementById('rows12Btn').addEventListener('click', () => { numRows = 12; init(); });
+document.getElementById('rows14Btn').addEventListener('click', () => { numRows = 14; init(); });
+document.getElementById('rows16Btn').addEventListener('click', () => { numRows = 16; init(); });
+document.getElementById('startGameBtn').addEventListener('click', init);
+
 init();
-animate();
-
-// Sidebar Interactions
-document.querySelectorAll('.mode button').forEach(button => {
-    button.addEventListener('click', () => {
-        document.querySelector('.mode .active').classList.remove('active');
-        button.classList.add('active');
-    });
-});
-
-document.querySelectorAll('.difficulty button').forEach(button => {
-    button.addEventListener('click', () => {
-        document.querySelector('.difficulty .active').classList.remove('active');
-        button.classList.add('active');
-    });
-});
-
-document.querySelectorAll('.rows button').forEach(button => {
-    button.addEventListener('click', () => {
-        document.querySelector('.rows .active').classList.remove('active');
-        button.classList.add('active');
-        createGrid(parseInt(button.getAttribute('data-rows')));
-    });
-});
-
-document.querySelector('.start-game').addEventListener('click', () => {
-    init(); // Reinitialize the game
-});
