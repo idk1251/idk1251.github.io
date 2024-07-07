@@ -125,9 +125,14 @@
     let balance = 100;
     let betAmount = 10;
     let rows = 10;
+    let difficulty = 'easy'; // Default difficulty
     const obstacles = [];
     let sinks = [];
-    const sinkMultipliers = [8.9, 3, 1.4, 1.1, 1, 0.5, 1, 1.1, 1.4, 3, 8.9];
+    let sinkMultipliers = {
+      'easy': [3, 2, 1, 1, 1, 0.5, 1, 1, 1.5, 2, 3],
+      'normal': [8, 3, 1.4, 1.1, 1, 0.5, 1, 1.1, 1.4, 3, 8],
+      'hard': [15, 8, 3, 2, 1.5, 1, 1, 1.5, 2, 3, 5]
+    };
 
     function pad(n) {
       return n * DECIMAL_MULTIPLIER;
@@ -157,7 +162,7 @@
     function createSinks() {
       sinks = []; // Reset sinks array
       const sinkWidth = 36;
-      const numSinks = sinkMultipliers.length;
+      const numSinks = sinkMultipliers[difficulty].length;
       const totalSinkWidth = numSinks * sinkWidth;
 
       const startX = WIDTH / 2 - totalSinkWidth / 2 + obstacleRadius;
@@ -172,7 +177,7 @@
           y,
           width,
           height,
-          multiplier: sinkMultipliers[i]
+          multiplier: sinkMultipliers[difficulty][i]
         });
       }
     }
@@ -268,7 +273,7 @@
 
     function addBall() {
       if (balance < betAmount) return; // Prevent adding ball if balance is below bet amount
-      const newBall = new Ball(pad(WIDTH / 2), pad(50), ballRadius, 'red');
+      const newBall = new Ball(pad(WIDTH / 2 + 13), pad(50), ballRadius, 'red');
       balls.push(newBall);
       balance -= betAmount; // Decrease balance by bet amount
       updateBalance();
@@ -276,6 +281,17 @@
 
     function updateBalance() {
       document.getElementById('balance').innerText = 'Balance: $' + balance.toFixed(2);
+    }
+
+    function updateDifficulty() {
+      if (document.getElementById('easy').checked) {
+        difficulty = 'easy';
+      } else if (document.getElementById('normal').checked) {
+        difficulty = 'normal';
+      } else if (document.getElementById('hard').checked) {
+        difficulty = 'hard';
+      }
+      createSinks();
     }
 
     document.getElementById('add-ball').addEventListener('click', addBall);
@@ -288,6 +304,10 @@
       rows = parseInt(e.target.value);
       createObstacles();
       createSinks();
+    });
+
+    document.querySelectorAll('input[name="difficulty"]').forEach(radio => {
+      radio.addEventListener('change', updateDifficulty);
     });
 
     function draw() {
