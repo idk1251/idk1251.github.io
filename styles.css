@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #1b1c36;
-    color: white;
+    background-color: #0e163a;
+    color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -9,124 +9,29 @@ body {
     margin: 0;
 }
 
-.container {
+#game-container {
+    text-align: center;
+}
+
+#controls {
+    margin-bottom: 20px;
+}
+
+#plinko-board {
+    display: grid;
+    justify-content: center;
+    gap: 5px;
+}
+
+.plinko-row {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 90%;
+    justify-content: center;
+    gap: 5px;
 }
 
-.settings-panel {
-    background-color: #2d2e4a;
-    padding: 20px;
-    border-radius: 8px;
-    margin-right: 20px;
-    width: 200px;
-}
-
-.settings-panel label {
-    display: block;
-    margin-bottom: 8px;
-}
-
-.settings-panel .difficulty-buttons,
-.settings-panel .bet-buttons,
-.settings-panel .row-buttons {
-    display: flex;
-    justify-content: space-between;
-}
-
-.settings-panel button, .settings-panel input {
-    background-color: #3b3c5a;
-    color: white;
-    border: none;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-    text-align: center;
-}
-
-.settings-panel button:hover, .settings-panel input:hover {
-    background-color: #4b4c7a;
-}
-
-.settings-panel .difficulty-button,
-.settings-panel .row-buttons button,
-.settings-panel .bet-buttons button {
-    width: 30%;
-    margin: 5px 0;
-}
-
-.settings-panel .difficulty-button.active,
-.settings-panel .row-buttons button.active {
-    background-color: #4b4c7a;
-}
-
-.settings-panel .start-button {
-    background-color: #3b3c5a;
-    color: white;
-    border: none;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-    text-align: center;
-}
-
-.settings-panel .start-button:hover {
-    background-color: #4b4c7a;
-}
-
-.game-board {
-    background-color: #2d2e4a;
-    width: 600px;
-    height: 600px;
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
-}
-
-.dot {
-    width: 10px;
-    height: 10px;
-    background-color: white;
-    border-radius: 50%;
-    position: absolute;
-}
-
-.slot {
-    position: absolute;
-    bottom: 0;
-    width: 50px;
-    height: 30px;
-    background-color: #3b3c5a;
-    color: white;
-    text-align: center;
-    line-height: 30px;
-    border-radius: 4px;
-}
-
-.slot p {
-    margin: 0;
-}
-
-.ball {
+.plinko-cell {
     width: 20px;
     height: 20px;
-    background-color: red;
+    background-color: #fff;
     border-radius: 50%;
-    position: absolute;
-    top: 0;
-}
-
-.bet-amount {
-    width: calc(100% - 40px);
-    margin-right: 10px;
-}
-
-.balance {
-    margin-bottom: 20px;
 }
