@@ -1,174 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plinko Game</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .plinko-container {
-      background-color: #3498db;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .score-display {
-      margin-top: 20px;
-      font-size: 24px;
-      color: white;
-    }
-    .plinko-board {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 10px;
-      margin-top: 20px;
-    }
-    .plinko-slot {
-      background-color: #f39c12;
-      height: 50px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 50%;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    }
-    .plinko-slot:nth-child(even) {
-      background-color: #e74c3c;
-    }
-    .plinko-controls {
-      margin-top: 20px;
-      display: flex;
-      gap: 10px;
-    }
-    .button {
-      padding: 10px 20px;
-      background-color: #2ecc71;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background-color 0.3s ease;
-    }
-    .button:hover {
-      background-color: #27ae60;
-    }
-    .scoreboard-container {
-      background-color: #e67e22;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-      margin-top: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 300px;
-    }
-    .scoreboard-title {
-      font-size: 20px;
-      color: white;
-      margin-bottom: 10px;
-    }
-    .scoreboard-list {
-      list-style-type: none;
-      padding: 0;
-      width: 100%;
-    }
-    .scoreboard-item {
-      background-color: #f1c40f;
-      color: #333;
-      padding: 10px;
-      margin-bottom: 5px;
-      border-radius: 5px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plinko Game UI</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="plinko-container">
-    <h1>Plinko Game</h1>
-    <div class="score-display" id="scoreDisplay">Score: 0</div>
-    <div class="plinko-board" id="plinkoBoard">
-      <!-- Slots will be dynamically generated here -->
+    <div class="fixed-container">
+        <div class="game__sidebar">
+            <div class="game-navigation">
+                <div class="game-navigation__item game-navigation__item--active">MANUAL</div>
+                <div class="game-navigation__item">AUTOMATIC</div>
+            </div>
+            <div class="game__sidebar-content">
+                <div class="bet-amount">
+                    <span class="bet-amount-text">Bet Amount</span>
+                    <div class="bet-input-container">
+                        <div class="currency">
+                            <!-- SVG icon -->
+                        </div>
+                        <input type="text" class="bet-input" value="5">
+                        <button class="clear-button">CLEAR</button>
+                    </div>
+                    <div class="slider-wrap">
+                        <input type="range" min="5" max="400">
+                    </div>
+                    <div class="amount-buttons">
+                        <button class="amount-button">1/2</button>
+                        <button class="amount-button">2X</button>
+                        <button class="amount-button">MIN</button>
+                        <button class="amount-button">MAX</button>
+                    </div>
+                </div>
+                <div class="rows">
+                    <span class="rows-text">Rows</span>
+                    <select class="rows-select">
+                        <option>16</option>
+                        <option>15</option>
+                        <option>14</option>
+                        <option>13</option>
+                        <option>12</option>
+                        <option>11</option>
+                        <option>10</option>
+                        <option>9</option>
+                        <option>8</option>
+                    </select>
+                </div>
+                <div class="risk">
+                    <span class="risk-text">Risk</span>
+                    <div class="risk-buttons">
+                        <button class="risk-button active">LOW</button>
+                        <button class="risk-button">MEDIUM</button>
+                        <button class="risk-button">HIGH</button>
+                    </div>
+                    <div class="risk-dots">
+                        <span class="dot dot-low"></span>
+                        <span class="dot dot-medium"></span>
+                        <span class="dot dot-high"></span>
+                    </div>
+                </div>
+                <div class="place-bet">
+                    <button class="place-bet-button">Place Bet</button>
+                </div>
+            </div>
+        </div>
+        <div class="game__content">
+            <div class="game__animation">
+                <div id="plinko">
+                    <canvas id="defaultCanvas0" class="p5Canvas" width="592" height="675"></canvas>
+                </div>
+                <div class="payout">
+                    <div class="payout__tile payout__tile--rare" tooltip="0.0122%" flow="down">
+                        <div class="rarity-line rarity-line--rare"></div>
+                        <div class="payout__tile-multiplier">7.58x</div>
+                    </div>
+                    <!-- Additional payout tiles -->
+                </div>
+            </div>
+            <div class="history"></div>
+        </div>
     </div>
-    <div class="plinko-controls">
-      <button class="button" onclick="dropPlinko('left')">Drop Left</button>
-      <button class="button" onclick="dropPlinko('right')">Drop Right</button>
-    </div>
-  </div>
-
-  <div class="scoreboard-container">
-    <h2 class="scoreboard-title">Scoreboard</h2>
-    <ul class="scoreboard-list" id="scoreboardList">
-      <!-- Scoreboard items will be dynamically generated here -->
-    </ul>
-  </div>
-
-  <script>
-    const plinkoBoard = document.getElementById('plinkoBoard');
-    const scoreDisplay = document.getElementById('scoreDisplay');
-    const scoreboardList = document.getElementById('scoreboardList');
-    let score = 0;
-    let totalPlays = 0;
-
-    // Function to generate Plinko slots dynamically
-    function generatePlinkoSlots() {
-      for (let i = 0; i < 7; i++) {
-        const slot = document.createElement('div');
-        slot.classList.add('plinko-slot');
-        slot.innerText = Math.random() >= 0.5 ? '100' : '0'; // Randomly assigns slot values
-        plinkoBoard.appendChild(slot);
-      }
-    }
-
-    // Function to simulate dropping Plinko chip
-    function dropPlinko(direction) {
-      // Clear existing slots
-      while (plinkoBoard.firstChild) {
-        plinkoBoard.removeChild(plinkoBoard.firstChild);
-      }
-      
-      // Re-generate slots
-      generatePlinkoSlots();
-
-      // Calculate score based on dropped direction
-      const dropIndex = direction === 'left' ? 0 : 6;
-      const slots = plinkoBoard.children;
-      const slotValue = parseInt(slots[dropIndex].innerText);
-      score += slotValue;
-      scoreDisplay.innerText = `Score: ${score}`;
-
-      // Update scoreboard
-      totalPlays++;
-      updateScoreboard(score, totalPlays);
-    }
-
-    // Function to update the scoreboard
-    function updateScoreboard(score, totalPlays) {
-      const newItem = document.createElement('li');
-      newItem.classList.add('scoreboard-item');
-      newItem.innerHTML = `
-        <span>Game ${totalPlays}</span>
-        <span>Score: ${score}</span>
-      `;
-      scoreboardList.appendChild(newItem);
-    }
-
-    // Initial setup
-    generatePlinkoSlots();
-  </script>
+    <script src="script.js"></script>
 </body>
 </html>
