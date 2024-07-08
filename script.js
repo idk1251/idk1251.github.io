@@ -40,4 +40,3 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('Bet placed with amount: ' + betInput.value);
     });
 });
-
