@@ -1,45 +1,193 @@
 body {
-    font-family: sans-serif;
-}
-
-.container {
+    background-color: #13132b;
+    font-family: Arial, sans-serif;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-.controls {
-    width: 200px;
+.fixed-container {
+    width: 1134px;
+    margin: 0 auto;
+    display: flex;
+    gap: 32px;
+    background-color: #1a1a2e;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+@media (max-width: 1599px) {
+    .fixed-container {
+        width: 900px;
+    }
+}
+
+@media (max-width: 1100px) {
+    .fixed-container {
+        width: 100%;
+        padding: 0 8px;
+    }
+}
+
+.game__sidebar {
+    width: 300px;
+    background-color: #212b46;
+    padding: 20px;
+    border-radius: 10px;
+    color: #fff;
+}
+
+.game-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.game-navigation__item {
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.game-navigation__item--active {
+    background-color: #ffaf40;
+}
+
+.bet-amount, .rows, .risk, .place-bet {
+    margin-bottom: 20px;
+}
+
+.bet-amount-text, .rows-text, .risk-text {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.bet-input-container {
+    display: flex;
+    align-items: center;
+    background-color: #2b3554;
     padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
 
-.buttons, .risk-buttons {
+.bet-input {
+    flex: 1;
+    margin: 0 10px;
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    text-align: center;
+    font-size: 16px;
+}
+
+.clear-button {
+    background-color: #ffaf40;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.slider-wrap {
+    margin-bottom: 10px;
+}
+
+.amount-buttons, .risk-buttons {
     display: flex;
     justify-content: space-between;
 }
 
-#plinko-board {
-    position: relative;
-    width: 400px;
-    height: 400px;
-    background-color: #3a3a3a;
+.amount-button, .risk-button {
+    flex: 1;
+    background-color: #2b3554;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    margin-right: 5px;
 }
 
-.buckets, .percents {
-    position: absolute;
-    bottom: 0;
+.amount-button:last-child, .risk-button:last-child {
+    margin-right: 0;
+}
+
+.risk-button.active {
+    background-color: #ffaf40;
+}
+
+.rows-select {
     width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #2b3554;
+    color: #fff;
+}
+
+.risk-dots {
     display: flex;
     justify-content: space-around;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    text-align: center;
+    margin-top: 10px;
 }
 
-.chip {
-    position: absolute;
+.dot {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: blue;
 }
 
+.dot-low {
+    background-color: yellow;
+}
+
+.dot-medium {
+    background-color: green;
+}
+
+.dot-high {
+    background-color: red;
+}
+
+.place-bet-button {
+    width: 100%;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #6c63ff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.game__content {
+    flex: 1;
+    background-color: #1a1a2e;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.game__animation {
+    position: relative;
+}
+
+.payout {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 20px;
+}
