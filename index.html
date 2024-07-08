@@ -3,49 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plinko Game</title>
+    <title>Plinko Game UI</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <div class="sidebar">
-            <div class="tabs">
-                <div class="tab active">Manual</div>
-                <div class="tab">Automatic</div>
+    <div class="fixed-container">
+        <div class="game__sidebar">
+            <div class="game-navigation">
+                <div class="game-navigation__item game-navigation__item--active">MANUAL</div>
+                <div class="game-navigation__item">AUTOMATIC</div>
             </div>
-            <div class="bet-amount">
-                <label for="bet-amount">Bet Amount</label>
-                <input type="number" id="bet-amount" value="5">
-                <button class="clear-button">Clear</button>
-            </div>
-            <div class="slider-container">
-                <input type="range" min="1" max="100" value="5" class="slider" id="bet-slider">
-                <div class="slider-buttons">
-                    <button class="slider-button">1/2</button>
-                    <button class="slider-button">2X</button>
-                    <button class="slider-button">Min</button>
-                    <button class="slider-button">Max</button>
+            <div class="game__sidebar-content">
+                <div class="bet-amount">
+                    <span class="bet-amount-text">Bet Amount</span>
+                    <div class="bet-input-container">
+                        <div class="currency">
+                            <!-- SVG icon -->
+                        </div>
+                        <input type="text" class="bet-input" value="5">
+                        <button class="clear-button">CLEAR</button>
+                    </div>
+                    <div class="slider-wrap">
+                        <input type="range" min="5" max="400">
+                    </div>
+                    <div class="amount-buttons">
+                        <button class="amount-button">1/2</button>
+                        <button class="amount-button">2X</button>
+                        <button class="amount-button">MIN</button>
+                        <button class="amount-button">MAX</button>
+                    </div>
+                </div>
+                <div class="rows">
+                    <span class="rows-text">Rows</span>
+                    <select class="rows-select">
+                        <option>16</option>
+                        <option>15</option>
+                        <option>14</option>
+                        <option>13</option>
+                        <option>12</option>
+                        <option>11</option>
+                        <option>10</option>
+                        <option>9</option>
+                        <option>8</option>
+                    </select>
+                </div>
+                <div class="risk">
+                    <span class="risk-text">Risk</span>
+                    <div class="risk-buttons">
+                        <button class="risk-button active">LOW</button>
+                        <button class="risk-button">MEDIUM</button>
+                        <button class="risk-button">HIGH</button>
+                    </div>
+                    <div class="risk-dots">
+                        <span class="dot dot-low"></span>
+                        <span class="dot dot-medium"></span>
+                        <span class="dot dot-high"></span>
+                    </div>
+                </div>
+                <div class="place-bet">
+                    <button class="place-bet-button">Place Bet</button>
                 </div>
             </div>
-            <div class="rows">
-                <label for="rows">Rows</label>
-                <input type="number" id="rows" value="13">
-            </div>
-            <div class="risk-level">
-                <label>Risk</label>
-                <div class="risk-buttons">
-                    <button class="risk-button active">Low</button>
-                    <button class="risk-button">Medium</button>
-                    <button class="risk-button">High</button>
-                </div>
-            </div>
-            <button class="place-bet-button">Place Bet</button>
         </div>
-        <div class="game-content">
-            <div class="game-animation">
-                <div id="plinko"></div>
+        <div class="game__content">
+            <div class="game__animation">
+                <div id="plinko">
+                    <canvas id="defaultCanvas0" class="p5Canvas" width="592" height="675"></canvas>
+                </div>
                 <div class="payout">
-                    <!-- Payout tiles will be added dynamically based on rows -->
+                    <div class="payout__tile payout__tile--rare" tooltip="0.0122%" flow="down">
+                        <div class="rarity-line rarity-line--rare"></div>
+                        <div class="payout__tile-multiplier">7.58x</div>
+                    </div>
+                    <!-- Additional payout tiles -->
                 </div>
             </div>
             <div class="history"></div>
