@@ -1,31 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dice Game</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <h1>Dice Game</h1>
-    </header>
-    <main>
-        <div class="dice-container">
-            <div class="dice" id="dice">?</div>
-            <button id="roll-button">Roll</button>
-        </div>
-        <div class="result">
-            <p id="result-text">Result: </p>
-        </div>
-        <div class="betting">
-            <input type="number" id="bet-amount" placeholder="Enter bet amount">
-            <button id="place-bet">Place Bet</button>
-        </div>
-        <div class="balance">
-            <p>Balance: <span id="user-balance">$100</span></p>
-        </div>
-    </main>
-    <script src="script.js"></script>
-</body>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/src/assets/img/icon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet"> 
+    <title>Plinko</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
