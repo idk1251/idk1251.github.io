@@ -11,18 +11,24 @@
         color: white;
         margin: 0;
         padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
     }
     .content {
         display: flex;
         flex-direction: column;
         align-items: center;
         padding: 20px;
+        width: 90%;
+        max-width: 730px;
+        background-color: #2a2a2a;
+        border-radius: 15px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     }
     .game-sidebar {
-        display: flex;
-        flex-direction: column;
         width: 100%;
-        max-width: 730px;
         margin-bottom: 20px;
     }
     .tabs-wrapper {
@@ -41,6 +47,7 @@
         background-color: #333;
         color: white;
         cursor: pointer;
+        transition: background-color 0.3s;
     }
     .tabs-wrapper button.active,
     .tabs-wrapper button:hover {
@@ -53,6 +60,7 @@
         background-color: #333;
         border-radius: 10px;
         padding: 10px;
+        width: 100%;
     }
     .input-wrap input {
         flex: 1;
@@ -69,6 +77,7 @@
     .input-button-wrap {
         display: flex;
         justify-content: space-around;
+        width: 100%;
     }
     .input-button-wrap button {
         flex: 1;
@@ -81,6 +90,7 @@
         background-color: #444;
         color: white;
         cursor: pointer;
+        transition: background-color 0.3s;
     }
     .input-button-wrap button:hover {
         background-color: #555;
@@ -104,6 +114,7 @@
         flex-wrap: wrap;
         justify-content: space-around;
         margin-bottom: 20px;
+        width: 100%;
     }
     .past-bets button {
         margin: 5px;
@@ -114,16 +125,17 @@
         background-color: #555;
         color: white;
         cursor: pointer;
+        transition: background-color 0.3s;
     }
     .past-bets button:hover {
         background-color: #666;
     }
     .game-content {
         width: 100%;
-        max-width: 730px;
     }
     .slider {
         margin-bottom: 20px;
+        position: relative;
     }
     .classic-slider {
         width: 100%;
@@ -135,6 +147,23 @@
     }
     .classic-slider:hover {
         opacity: 1;
+    }
+    .slider-thumb {
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #4caf50;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 16px;
+        color: black;
+        font-weight: bold;
+        transition: left 0.2s;
     }
     .labels {
         display: flex;
@@ -192,6 +221,7 @@
     <div class="game-content">
         <div class="slider">
             <input type="range" min="2" max="98" class="classic-slider" data-testid="dice-slider">
+            <div class="slider-thumb" id="slider-thumb">50</div>
         </div>
         <div class="labels">
             <span>Multiplier</span>
@@ -212,6 +242,28 @@
     document.querySelector('.bet-button').addEventListener('click', function() {
         let dice = document.getElementById('dice');
         dice.style.transform = 'rotate(' + (Math.floor(Math.random() * 360)) + 'deg)';
+    });
+
+    const slider = document.querySelector('.classic-slider');
+    const thumb = document.getElementById('slider-thumb');
+
+    slider.addEventListener('input', function() {
+        const value = slider.value;
+        thumb.style.left = `calc(${value}% - ${thumb.clientWidth / 2}px)`;
+        thumb.textContent = value;
+    });
+
+    window.addEventListener('resize', function() {
+        thumb.style.left = `calc(${slider.value}% - ${thumb.clientWidth / 2}px)`;
+    });
+
+    document.querySelector('.tabs-wrapper').addEventListener('click', function(e) {
+        if (e.target.tagName === 'BUTTON') {
+            document.querySelectorAll('.tabs-wrapper button').forEach(button => {
+                button.classList.remove('active');
+            });
+            e.target.classList.add('active');
+        }
     });
 </script>
 
