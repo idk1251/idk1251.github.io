@@ -9,13 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const betButton = document.getElementById('betButton');
     const halfBetButton = document.getElementById('halfBet');
     const doubleBetButton = document.getElementById('doubleBet');
+    const resultsContainer = document.getElementById('resultsContainer');
 
     function calculateProfit() {
         const betAmount = parseFloat(betAmountInput.value);
-        const winChance = parseFloat(winChanceInput.value);
         const multiplier = parseFloat(multiplierInput.value);
-
-        if (betAmount && winChance && multiplier) {
+        if (betAmount && multiplier) {
             const profit = betAmount * (multiplier - 1);
             profitInput.value = profit.toFixed(8);
         } else {
@@ -48,8 +47,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     betButton.addEventListener('click', () => {
-        // Here you would handle the bet placement and result
-        alert('Bet placed!');
+        const result = Math.random() * 100;
+        const rollOver = parseFloat(rollOverInput.value);
+
+        const resultDiv = document.createElement('div');
+        resultDiv.textContent = result.toFixed(2);
+
+        if (result > rollOver) {
+            resultDiv.style.backgroundColor = '#48BB78'; // Win
+        } else {
+            resultDiv.style.backgroundColor = '#E53E3E'; // Lose
+        }
+
+        resultsContainer.prepend(resultDiv);
     });
 
     // Initialize with default values
