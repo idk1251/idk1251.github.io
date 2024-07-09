@@ -1,8 +1,8 @@
 /* styles.css */
 body {
     font-family: Arial, sans-serif;
-    background-color: #2C3E50;
-    color: #ecf0f1;
+    background-color: #1A202C;
+    color: #FFFFFF;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,14 +11,14 @@ body {
 }
 
 #app {
-    background-color: #34495e;
+    background-color: #2D3748;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    width: 300px;
+    width: 400px;
 }
 
-.controls, .game {
+.controls, .game, .results {
     margin-bottom: 20px;
 }
 
@@ -28,26 +28,48 @@ body {
 }
 
 .controls input, .settings input {
-    width: 100%;
+    width: calc(100% - 30px);
     padding: 5px;
     margin-bottom: 10px;
     border: none;
     border-radius: 5px;
+    background-color: #4A5568;
+    color: #FFFFFF;
+}
+
+.bet-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bet-buttons button {
+    flex: 1;
+    margin-right: 5px;
+    padding: 5px;
+    background-color: #3182CE;
+    border: none;
+    border-radius: 5px;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+.bet-buttons button:last-child {
+    margin-right: 0;
 }
 
 #betButton {
     width: 100%;
     padding: 10px;
-    background-color: #27ae60;
+    background-color: #38A169;
     border: none;
     border-radius: 5px;
-    color: #ecf0f1;
+    color: #FFFFFF;
     font-size: 16px;
     cursor: pointer;
 }
 
 #betButton:hover {
-    background-color: #2ecc71;
+    background-color: #48BB78;
 }
 
 #sliderContainer {
@@ -59,16 +81,22 @@ body {
     width: 100%;
 }
 
-button {
-    padding: 5px 10px;
-    margin-right: 5px;
-    background-color: #3498db;
-    border: none;
-    border-radius: 5px;
-    color: #ecf0f1;
-    cursor: pointer;
+#sliderLabels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
 }
 
-button:hover {
-    background-color: #2980b9;
+.results {
+    background-color: #2C5282;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.results div {
+    background-color: #4FD1C5;
+    color: #1A202C;
+    padding: 5px;
+    border-radius: 3px;
+    margin-bottom: 5px;
 }
