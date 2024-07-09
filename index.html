@@ -1,271 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Betting UI</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #1b1b1b;
-        color: #eaeaea;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
-    .content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 20px;
-        width: 90%;
-        max-width: 730px;
-        background-color: #242424;
-        border-radius: 15px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-    }
-    .game-sidebar {
-        width: 100%;
-        margin-bottom: 20px;
-    }
-    .tabs-wrapper {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-    }
-    .tabs-wrapper button {
-        flex: 1;
-        padding: 15px;
-        margin: 5px;
-        font-size: 16px;
-        font-weight: bold;
-        border: none;
-        border-radius: 10px;
-        background-color: #333;
-        color: white;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-    .tabs-wrapper button.active,
-    .tabs-wrapper button:hover {
-        background-color: #444;
-    }
-    .input-wrap {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-        background-color: #333;
-        border-radius: 10px;
-        padding: 10px;
-        width: 100%;
-    }
-    .input-wrap input {
-        flex: 1;
-        padding: 10px;
-        font-size: 16px;
-        color: white;
-        background-color: transparent;
-        border: none;
-        outline: none;
-    }
-    .input-wrap svg {
-        margin-left: 10px;
-    }
-    .input-button-wrap {
-        display: flex;
-        justify-content: space-around;
-        width: 100%;
-    }
-    .input-button-wrap button {
-        flex: 1;
-        padding: 10px;
-        margin: 5px;
-        font-size: 16px;
-        font-weight: bold;
-        border: none;
-        border-radius: 10px;
-        background-color: #444;
-        color: white;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-    .input-button-wrap button:hover {
-        background-color: #555;
-    }
-    .bet-button {
-        padding: 15px 30px;
-        font-size: 18px;
-        font-weight: bold;
-        border: none;
-        border-radius: 10px;
-        background-color: #4caf50;
-        color: black;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-    .bet-button:hover {
-        background-color: #45a049;
-    }
-    .past-bets {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        margin-bottom: 20px;
-        width: 100%;
-    }
-    .past-bets button {
-        margin: 5px;
-        padding: 10px;
-        font-size: 16px;
-        border: none;
-        border-radius: 10px;
-        background-color: #555;
-        color: white;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-    .past-bets button:hover {
-        background-color: #666;
-    }
-    .game-content {
-        width: 100%;
-    }
-    .slider {
-        margin-bottom: 20px;
-        position: relative;
-    }
-    .classic-slider {
-        width: 100%;
-        height: 8px;
-        background-color: #444;
-        outline: none;
-        opacity: 0.7;
-        transition: opacity 0.2s;
-    }
-    .classic-slider:hover {
-        opacity: 1;
-    }
-    .slider-thumb {
-        position: absolute;
-        top: -15px;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: #4caf50;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 16px;
-        color: black;
-        font-weight: bold;
-        transition: left 0.2s;
-    }
-    .labels {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-    .labels span {
-        font-size: 16px;
-    }
-    .currency-conversion {
-        display: flex;
-        justify-content: space-between;
-    }
-    .dice {
-        margin: 0 auto;
-        font-size: 48px;
-        transition: transform 0.5s ease;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Game</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<div class="content">
-    <div class="game-sidebar">
-        <div class="tabs-wrapper">
-            <button class="active" data-testid="manual-tab">Manual</button>
-            <button data-testid="auto-tab">Auto</button>
-            <button data-testid="advanced-tab">Advanced</button>
+    <header>
+        <h1>Dice Game</h1>
+    </header>
+    <main>
+        <div class="dice-container">
+            <div class="dice" id="dice">?</div>
+            <button id="roll-button">Roll</button>
         </div>
-
-        <label class="input-wrap">
-            <input type="number" step="0.01" placeholder="Enter Bet Amount" data-testid="input-game-amount">
-            <div class="input-button-wrap">
-                <button data-testid="amount-halve">½</button>
-                <button data-testid="amount-double">2×</button>
-            </div>
-        </label>
-
-        <div class="input-wrap">
-            <input type="text" readonly placeholder="Profit on Win" data-testid="profit-input">
+        <div class="result">
+            <p id="result-text">Result: </p>
         </div>
-
-        <button class="bet-button" data-testid="bet-button">Bet</button>
-    </div>
-
-    <div class="past-bets">
-        <button class="button-tag" data-past-bet-id="9c71b41c-46c8-439d-a2a5-efc5f71dd3d7">98.50</button>
-        <button class="button-tag" data-past-bet-id="7e90d6c0-dfc7-491a-a3c7-aed815bdcdd0">52.30</button>
-        <button class="button-tag" data-past-bet-id="495d5c54-8947-43f5-b0f9-7831beca30ac">55.48</button>
-        <button class="button-tag" data-past-bet-id="f0cedf79-1e60-4eb1-8226-b3844f1490f5">58.46</button>
-        <button class="button-tag" data-past-bet-id="9aa8ecf0-844a-461c-996a-284fdbf01d42">10.20</button>
-    </div>
-
-    <div class="game-content">
-        <div class="slider">
-            <input type="range" min="2" max="98" class="classic-slider" data-testid="dice-slider">
-            <div class="slider-thumb" id="slider-thumb">50</div>
+        <div class="betting">
+            <input type="number" id="bet-amount" placeholder="Enter bet amount">
+            <button id="place-bet">Place Bet</button>
         </div>
-        <div class="labels">
-            <span>Multiplier</span>
-            <span>Win Chance</span>
+        <div class="balance">
+            <p>Balance: <span id="user-balance">$100</span></p>
         </div>
-        <label class="input-wrap">
-            <input type="number" min="1.0102" max="9900" placeholder="Multiplier" data-testid="payout">
-        </label>
-        <label class="input-wrap">
-            <input type="number" min="0.01" max="98" placeholder="Win Chance" data-testid="chance">
-        </label>
-    </div>
-
-    <div class="dice" id="dice">🎲</div>
-</div>
-
-<script>
-    document.querySelector('.bet-button').addEventListener('click', function() {
-        let dice = document.getElementById('dice');
-        dice.style.transform = 'rotate(' + (Math.floor(Math.random() * 360)) + 'deg)';
-    });
-
-    const slider = document.querySelector('.classic-slider');
-    const thumb = document.getElementById('slider-thumb');
-
-    slider.addEventListener('input', function() {
-        const value = slider.value;
-        thumb.style.left = `calc(${value}% - ${thumb.clientWidth / 2}px)`;
-        thumb.textContent = value;
-    });
-
-    window.addEventListener('resize', function() {
-        thumb.style.left = `calc(${slider.value}% - ${thumb.clientWidth / 2}px)`;
-    });
-
-    document.querySelector('.tabs-wrapper').addEventListener('click', function(e) {
-        if (e.target.tagName === 'BUTTON') {
-            document.querySelectorAll('.tabs-wrapper button').forEach(button => {
-                button.classList.remove('active');
-            });
-            e.target.classList.add('active');
-        }
-    });
-</script>
-
+    </main>
+    <script src="script.js"></script>
 </body>
 </html>
