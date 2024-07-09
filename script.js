@@ -1,42 +1,59 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Implement slider functionality
-    const slider = document.querySelector('.slider-wrap input');
-    const betInput = document.querySelector('.bet-input');
-    slider.addEventListener('input', function() {
-        betInput.value = slider.value;
-    });
+let balance = 1000000;
+let gameInterval;
+let difficultySpeeds = {
+    easy: 3000,
+    normal: 2000,
+    hard: 1000
+};
 
-    // Implement button functionalities
-    const clearButton = document.querySelector('.clear-button');
-    clearButton.addEventListener('click', function() {
-        betInput.value = '';
-        slider.value = 5; // reset slider to minimum
-    });
-
-    // Add event listeners to amount buttons
-    document.querySelectorAll('.amount-button').forEach(button => {
-        button.addEventListener('click', function() {
-            const currentValue = parseFloat(betInput.value);
-            if (this.textContent === '1/2') betInput.value = currentValue / 2;
-            if (this.textContent === '2X') betInput.value = currentValue * 2;
-            if (this.textContent === 'MIN') betInput.value = slider.min;
-            if (this.textContent === 'MAX') betInput.value = slider.max;
-            slider.value = betInput.value;
-        });
-    });
-
-    // Toggle active class for risk buttons
-    const riskButtons = document.querySelectorAll('.risk-button');
-    riskButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            riskButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-        });
-    });
-
-    // Place Bet button functionality
-    const placeBetButton = document.querySelector('.place-bet-button');
-    placeBetButton.addEventListener('click', function() {
-        alert('Bet placed with amount: ' + betInput.value);
-    });
+document.addEventListener('DOMContentLoaded', () => {
+    updateBalance();
 });
+
+function updateBalance() {
+    document.getElementById('balance').innerText = `Balance: $${balance.toLocaleString()}`;
+}
+
+function startGame(difficulty) {
+    clearInterval(gameInterval);
+    document.querySelectorAll('.chicken').forEach(chicken => chicken.remove());
+    gameInterval = setInterval(() => {
+        let chicken = document.createElement('img');
+        chicken.src = "https://play-lh.googleusercontent.com/vDQFHtxOHFl5Q39BtHt3R0PQBRB2RGPMGUgYc7T6yGiBN1NKB-j26SGk4IHZ9Tzo5pnH=w240-h480-rw";
+        chicken.className = 'chicken';
+        chicken.style.left = `${Math.floor(Math.random() * 560)}px`;
+        document.getElementById('game-area').appendChild(chicken);
+        moveChicken(chicken, difficulty);
+    }, difficultySpeeds[difficulty]);
+}
+
+function moveChicken(chicken, difficulty) {
+    let speed = difficultySpeeds[difficulty];
+    let interval = setInterval(() => {
+        let top = parseInt(chicken.style.top) || -40;
+        if (top > 400) {
+            clearInterval(interval);
+            chicken.remove();
+            updateBalance();
+        } else {
+            chicken.style.top = `${top + 5}px`;
+            checkCollision(chicken, interval);
+        }
+    }, 50);
+}
+
+function checkCollision(chicken, interval) {
+    let car = document.getElementById('car');
+    let carRect = car.getBoundingClientRect();
+    let chickenRect = chicken.getBoundingClientRect();
+
+    if (!(carRect.right < chickenRect.left || 
+          carRect.left > chickenRect.right || 
+          carRect.bottom < chickenRect.top || 
+          carRect.top > chickenRect.bottom)) {
+        clearInterval(interval);
+        chicken.remove();
+        balance -= 100;
+        updateBalance();
+    }
+}
