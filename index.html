@@ -3,82 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plinko Game UI</title>
+    <title>Mission Uncrossable</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="fixed-container">
-        <div class="game__sidebar">
-            <div class="game-navigation">
-                <div class="game-navigation__item game-navigation__item--active">MANUAL</div>
-                <div class="game-navigation__item">AUTOMATIC</div>
-            </div>
-            <div class="game__sidebar-content">
-                <div class="bet-amount">
-                    <span class="bet-amount-text">Bet Amount</span>
-                    <div class="bet-input-container">
-                        <div class="currency">
-                            <!-- SVG icon -->
-                        </div>
-                        <input type="text" class="bet-input" value="5">
-                        <button class="clear-button">CLEAR</button>
-                    </div>
-                    <div class="slider-wrap">
-                        <input type="range" min="5" max="400">
-                    </div>
-                    <div class="amount-buttons">
-                        <button class="amount-button">1/2</button>
-                        <button class="amount-button">2X</button>
-                        <button class="amount-button">MIN</button>
-                        <button class="amount-button">MAX</button>
-                    </div>
-                </div>
-                <div class="rows">
-                    <span class="rows-text">Rows</span>
-                    <select class="rows-select">
-                        <option>16</option>
-                        <option>15</option>
-                        <option>14</option>
-                        <option>13</option>
-                        <option>12</option>
-                        <option>11</option>
-                        <option>10</option>
-                        <option>9</option>
-                        <option>8</option>
-                    </select>
-                </div>
-                <div class="risk">
-                    <span class="risk-text">Risk</span>
-                    <div class="risk-buttons">
-                        <button class="risk-button active">LOW</button>
-                        <button class="risk-button">MEDIUM</button>
-                        <button class="risk-button">HIGH</button>
-                    </div>
-                    <div class="risk-dots">
-                        <span class="dot dot-low"></span>
-                        <span class="dot dot-medium"></span>
-                        <span class="dot dot-high"></span>
-                    </div>
-                </div>
-                <div class="place-bet">
-                    <button class="place-bet-button">Place Bet</button>
-                </div>
-            </div>
+    <div id="game-container">
+        <div id="balance">Balance: $1,000,000</div>
+        <div id="difficulty">
+            <button onclick="startGame('easy')">Easy</button>
+            <button onclick="startGame('normal')">Normal</button>
+            <button onclick="startGame('hard')">Hard</button>
         </div>
-        <div class="game__content">
-            <div class="game__animation">
-                <div id="plinko">
-                    <canvas id="defaultCanvas0" class="p5Canvas" width="592" height="675"></canvas>
-                </div>
-                <div class="payout">
-                    <div class="payout__tile payout__tile--rare" tooltip="0.0122%" flow="down">
-                        <div class="rarity-line rarity-line--rare"></div>
-                        <div class="payout__tile-multiplier">7.58x</div>
-                    </div>
-                    <!-- Additional payout tiles -->
-                </div>
-            </div>
-            <div class="history"></div>
+        <div id="game-area">
+            <img id="car" src="https://www.agcaddesigns.com/uploads/9/8/3/9/983924/topview-mercedez-bens-architecture-cutout-car-auto_orig.png" alt="Car">
+            <img class="chicken" src="https://play-lh.googleusercontent.com/vDQFHtxOHFl5Q39BtHt3R0PQBRB2RGPMGUgYc7T6yGiBN1NKB-j26SGk4IHZ9Tzo5pnH=w240-h480-rw" alt="Chicken">
         </div>
     </div>
     <script src="script.js"></script>
