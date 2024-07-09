@@ -1,59 +1,58 @@
-let balance = 1000000;
-let gameInterval;
-let difficultySpeeds = {
-    easy: 3000,
-    normal: 2000,
-    hard: 1000
-};
-
+// script.js
 document.addEventListener('DOMContentLoaded', () => {
-    updateBalance();
-});
+    const betAmountInput = document.getElementById('betAmount');
+    const profitInput = document.getElementById('profit');
+    const slider = document.getElementById('slider');
+    const multiplierInput = document.getElementById('multiplier');
+    const rollOverInput = document.getElementById('rollOver');
+    const winChanceInput = document.getElementById('winChance');
+    const betButton = document.getElementById('betButton');
+    const halfBetButton = document.getElementById('halfBet');
+    const doubleBetButton = document.getElementById('doubleBet');
 
-function updateBalance() {
-    document.getElementById('balance').innerText = `Balance: $${balance.toLocaleString()}`;
-}
+    function calculateProfit() {
+        const betAmount = parseFloat(betAmountInput.value);
+        const winChance = parseFloat(winChanceInput.value);
+        const multiplier = parseFloat(multiplierInput.value);
 
-function startGame(difficulty) {
-    clearInterval(gameInterval);
-    document.querySelectorAll('.chicken').forEach(chicken => chicken.remove());
-    gameInterval = setInterval(() => {
-        let chicken = document.createElement('img');
-        chicken.src = "https://play-lh.googleusercontent.com/vDQFHtxOHFl5Q39BtHt3R0PQBRB2RGPMGUgYc7T6yGiBN1NKB-j26SGk4IHZ9Tzo5pnH=w240-h480-rw";
-        chicken.className = 'chicken';
-        chicken.style.left = `${Math.floor(Math.random() * 560)}px`;
-        document.getElementById('game-area').appendChild(chicken);
-        moveChicken(chicken, difficulty);
-    }, difficultySpeeds[difficulty]);
-}
-
-function moveChicken(chicken, difficulty) {
-    let speed = difficultySpeeds[difficulty];
-    let interval = setInterval(() => {
-        let top = parseInt(chicken.style.top) || -40;
-        if (top > 400) {
-            clearInterval(interval);
-            chicken.remove();
-            updateBalance();
+        if (betAmount && winChance && multiplier) {
+            const profit = betAmount * (multiplier - 1);
+            profitInput.value = profit.toFixed(8);
         } else {
-            chicken.style.top = `${top + 5}px`;
-            checkCollision(chicken, interval);
+            profitInput.value = '0.00';
         }
-    }, 50);
-}
-
-function checkCollision(chicken, interval) {
-    let car = document.getElementById('car');
-    let carRect = car.getBoundingClientRect();
-    let chickenRect = chicken.getBoundingClientRect();
-
-    if (!(carRect.right < chickenRect.left || 
-          carRect.left > chickenRect.right || 
-          carRect.bottom < chickenRect.top || 
-          carRect.top > chickenRect.bottom)) {
-        clearInterval(interval);
-        chicken.remove();
-        balance -= 100;
-        updateBalance();
     }
-}
+
+    function updateMultiplierAndChance() {
+        const rollOver = parseFloat(rollOverInput.value);
+        const winChance = 100 - rollOver;
+        const multiplier = 100 / winChance;
+
+        winChanceInput.value = winChance.toFixed(4);
+        multiplierInput.value = multiplier.toFixed(4);
+
+        calculateProfit();
+    }
+
+    rollOverInput.addEventListener('input', updateMultiplierAndChance);
+    betAmountInput.addEventListener('input', calculateProfit);
+
+    halfBetButton.addEventListener('click', () => {
+        betAmountInput.value = (parseFloat(betAmountInput.value) / 2).toFixed(8);
+        calculateProfit();
+    });
+
+    doubleBetButton.addEventListener('click', () => {
+        betAmountInput.value = (parseFloat(betAmountInput.value) * 2).toFixed(8);
+        calculateProfit();
+    });
+
+    betButton.addEventListener('click', () => {
+        // Here you would handle the bet placement and result
+        alert('Bet placed!');
+    });
+
+    // Initialize with default values
+    rollOverInput.value = 50;
+    updateMultiplierAndChance();
+});
