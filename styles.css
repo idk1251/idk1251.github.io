@@ -1,193 +1,47 @@
 body {
-    background-color: #13132b;
-    font-family: Arial, sans-serif;
-    color: #ffffff;
-    margin: 0;
-    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
 }
 
-.fixed-container {
-    width: 1134px;
-    margin: 0 auto;
-    display: flex;
-    gap: 32px;
-    background-color: #1a1a2e;
-    padding: 20px;
-    border-radius: 10px;
-}
-
-@media (max-width: 1599px) {
-    .fixed-container {
-        width: 900px;
-    }
-}
-
-@media (max-width: 1100px) {
-    .fixed-container {
-        width: 100%;
-        padding: 0 8px;
-    }
-}
-
-.game__sidebar {
-    width: 300px;
-    background-color: #212b46;
-    padding: 20px;
-    border-radius: 10px;
-    color: #fff;
-}
-
-.game-navigation {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.game-navigation__item {
-    cursor: pointer;
-    padding: 10px 20px;
-    border-radius: 5px;
-    color: #fff;
-    font-weight: bold;
-}
-
-.game-navigation__item--active {
-    background-color: #ffaf40;
-}
-
-.bet-amount, .rows, .risk, .place-bet {
-    margin-bottom: 20px;
-}
-
-.bet-amount-text, .rows-text, .risk-text {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-.bet-input-container {
-    display: flex;
-    align-items: center;
-    background-color: #2b3554;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-}
-
-.bet-input {
-    flex: 1;
-    margin: 0 10px;
-    background-color: transparent;
-    border: none;
-    color: #fff;
+#game-container {
     text-align: center;
-    font-size: 16px;
 }
 
-.clear-button {
-    background-color: #ffaf40;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    color: #fff;
-}
-
-.slider-wrap {
+#balance {
+    font-size: 24px;
     margin-bottom: 10px;
 }
 
-.amount-buttons, .risk-buttons {
-    display: flex;
-    justify-content: space-between;
-}
-
-.amount-button, .risk-button {
-    flex: 1;
-    background-color: #2b3554;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    color: #fff;
-    cursor: pointer;
-    margin-right: 5px;
-}
-
-.amount-button:last-child, .risk-button:last-child {
-    margin-right: 0;
-}
-
-.risk-button.active {
-    background-color: #ffaf40;
-}
-
-.rows-select {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
-    background-color: #2b3554;
-    color: #fff;
-}
-
-.risk-dots {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 10px;
-}
-
-.dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-}
-
-.dot-low {
-    background-color: yellow;
-}
-
-.dot-medium {
-    background-color: green;
-}
-
-.dot-high {
-    background-color: red;
-}
-
-.place-bet-button {
-    width: 100%;
-    padding: 15px;
-    border-radius: 5px;
-    background-color: #6c63ff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
+#difficulty button {
+    margin: 5px;
+    padding: 10px 20px;
     font-size: 16px;
-    font-weight: bold;
 }
 
-.game__content {
-    flex: 1;
-    background-color: #1a1a2e;
-    border-radius: 10px;
-    padding: 20px;
-}
-
-.game__animation {
+#game-area {
     position: relative;
+    width: 600px;
+    height: 400px;
+    border: 1px solid #000;
+    background-color: #fff;
+    overflow: hidden;
 }
 
-.payout {
+#car {
     position: absolute;
+    width: 60px;
+    height: auto;
     bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding: 0 20px;
+    left: 270px;
+}
+
+.chicken {
+    position: absolute;
+    width: 40px;
+    height: auto;
+    top: -40px;
 }
