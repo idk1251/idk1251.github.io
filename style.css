@@ -42,7 +42,7 @@ body {
     background-color: #4e7eab;
 }
 
-.bet-amount, .mines-selection {
+.bet-amount, .mines-selection, .info {
     margin-bottom: 20px;
 }
 
@@ -80,9 +80,10 @@ label {
     color: #ffffff;
 }
 
-#bet-button {
+#bet-button, #random-tile-button, #cashout-button {
     width: 100%;
     padding: 15px;
+    margin-bottom: 10px;
     background-color: #00c853;
     border: none;
     color: #ffffff;
