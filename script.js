@@ -1,4 +1,3 @@
-// script.js
 document.addEventListener('DOMContentLoaded', () => {
     const minefield = document.getElementById('minefield');
     const betButton = document.getElementById('bet-button');
@@ -8,10 +7,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const mineCountDisplay = document.getElementById('mine-count');
     const gemCountDisplay = document.getElementById('gem-count');
     const totalProfitDisplay = document.getElementById('total-profit');
+    const balanceDisplay = document.getElementById('balance');
+    const betAmountInput = document.getElementById('bet-amount-input');
+    const halfButton = document.getElementById('half-button');
+    const doubleButton = document.getElementById('double-button');
     let mines = [];
     let revealedCells = 0;
-    let betAmount = 0.0;
-    let totalCells = 25;
+    let betAmount = 0;
+    let balance = 1000000;
+    const totalCells = 25;
 
     function initializeMinefield() {
         minefield.innerHTML = '';
@@ -43,17 +47,25 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Game over! You hit a mine.');
             initializeMinefield();
             revealedCells = 0;
-            totalProfitDisplay.textContent = '0.00000000 LTC';
+            totalProfitDisplay.textContent = '0.00';
+            betButton.style.display = 'block';
+            cashoutButton.style.display = 'none';
+            randomTileButton.style.display = 'none';
         } else {
             cell.innerHTML = '💎';
             cell.classList.add('revealed');
             revealedCells++;
             let profitMultiplier = (revealedCells + 1) / (totalCells - mines.length);
-            totalProfitDisplay.textContent = (betAmount * profitMultiplier).toFixed(8) + ' LTC';
+            totalProfitDisplay.textContent = (betAmount * profitMultiplier).toFixed(2);
             if (revealedCells === totalCells - mines.length) {
                 alert('Congratulations! You won.');
                 initializeMinefield();
                 revealedCells = 0;
+                balance += parseFloat(totalProfitDisplay.textContent);
+                balanceDisplay.textContent = balance.toFixed(2);
+                betButton.style.display = 'block';
+                cashoutButton.style.display = 'none';
+                randomTileButton.style.display = 'none';
             }
         }
     }
@@ -67,10 +79,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     betButton.addEventListener('click', () => {
-        betAmount = parseFloat(document.getElementById('bet-amount-input').value);
+        betAmount = parseFloat(betAmountInput.value);
+        if (betAmount < 1 || betAmount > 1000 || betAmount > balance) {
+            alert('Invalid bet amount.');
+            return;
+        }
+        balance -= betAmount;
+        balanceDisplay.textContent = balance.toFixed(2);
         placeMines();
         initializeMinefield();
-        totalProfitDisplay.textContent = (betAmount * 1.0).toFixed(8) + ' LTC';
+        totalProfitDisplay.textContent = (betAmount * 1.0).toFixed(2);
+        betButton.style.display = 'none';
+        cashoutButton.style.display = 'block';
+        randomTileButton.style.display = 'block';
     });
 
     randomTileButton.addEventListener('click', () => {
@@ -78,11 +99,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     cashoutButton.addEventListener('click', () => {
-        alert('You cashed out with a profit of ' + totalProfitDisplay.textContent);
+        alert(`You cashed out ${totalProfitDisplay.textContent} units.`);
+        balance += parseFloat(totalProfitDisplay.textContent);
+        balanceDisplay.textContent = balance.toFixed(2);
         initializeMinefield();
         revealedCells = 0;
-        totalProfitDisplay.textContent = '0.00000000 LTC';
+        betButton.style.display = 'block';
+        cashoutButton.style.display = 'none';
+        randomTileButton.style.display = 'none';
     });
 
-    initializeMinefield();
+    halfButton.addEventListener('click', () => {
+        betAmountInput.value = Math.floor(betAmountInput.value / 2);
+    });
+
+    doubleButton.addEventListener('click', () => {
+        betAmountInput.value = Math.min(betAmountInput.value * 2, 1000);
+    });
+
+    initializeMinefield(); // Initialize minefield grid on page load
 });
