@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < totalCells; i++) {
             const cell = document.createElement('div');
             cell.classList.add('mine-cell');
+            cell.dataset.index = i;
             cell.addEventListener('click', () => revealCell(i));
             minefield.appendChild(cell);
         }
@@ -41,31 +42,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function revealCell(index) {
-        const cell = minefield.children[index];
+        const cell = minefield.querySelector(`[data-index="${index}"]`);
         if (mines.includes(index)) {
             cell.innerHTML = '💣';
-            alert('Game over! You hit a mine.');
-            initializeMinefield();
-            revealedCells = 0;
-            totalProfitDisplay.textContent = '0.00';
-            betButton.style.display = 'block';
-            cashoutButton.style.display = 'none';
-            randomTileButton.style.display = 'none';
+            cell.style.backgroundColor = '#d32f2f'; // Red background for mine
+            setTimeout(() => {
+                alert('Game over! You hit a mine.');
+                initializeMinefield();
+                revealedCells = 0;
+                totalProfitDisplay.textContent = '0.00';
+                betButton.style.display = 'block';
+                cashoutButton.style.display = 'none';
+                randomTileButton.style.display = 'none';
+                cell.style.backgroundColor = '#263547'; // Reset cell background
+            }, 500);
         } else {
             cell.innerHTML = '💎';
             cell.classList.add('revealed');
+            cell.style.backgroundColor = '#4e7eab'; // Blue background for gem
             revealedCells++;
             let profitMultiplier = (revealedCells + 1) / (totalCells - mines.length);
             totalProfitDisplay.textContent = (betAmount * profitMultiplier).toFixed(2);
             if (revealedCells === totalCells - mines.length) {
-                alert('Congratulations! You won.');
-                initializeMinefield();
-                revealedCells = 0;
-                balance += parseFloat(totalProfitDisplay.textContent);
-                balanceDisplay.textContent = balance.toFixed(2);
-                betButton.style.display = 'block';
-                cashoutButton.style.display = 'none';
-                randomTileButton.style.display = 'none';
+                setTimeout(() => {
+                    alert('Congratulations! You won.');
+                    initializeMinefield();
+                    revealedCells = 0;
+                    balance += parseFloat(totalProfitDisplay.textContent);
+                    balanceDisplay.textContent = balance.toFixed(2);
+                    betButton.style.display = 'block';
+                    cashoutButton.style.display = 'none';
+                    randomTileButton.style.display = 'none';
+                    // Reset all cell backgrounds
+                    document.querySelectorAll('.mine-cell').forEach(cell => {
+                        cell.style.backgroundColor = '#263547';
+                    });
+                }, 500);
             }
         }
     }
