@@ -106,6 +106,8 @@ label {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    font-size: 24px;
+    color: #ffffff;
 }
 
 .mine-cell.revealed {
