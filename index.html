@@ -1,1 +1,29 @@
-<iframe src="https://www.tiktok.com/@isabeelmoore/video/7389591053357157665?is_from_webapp=1&sender_device=pc&web_id=7341425139533678112?lang=en-US" width="320" height="560" frameborder="0"></iframe>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TikTok Videos</title>
+  <style>
+    .video-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .video-container iframe {
+      flex: 1 1 calc(33% - 20px); /* Adjust the percentage and gap as needed */
+      max-width: 320px;
+      height: 560px;
+    }
+  </style>
+</head>
+<body>
+  <div class="video-container">
+    <iframe src="https://www.tiktok.com/@isabeelmoore/video/7389591053357157665?lang=en-US" width="320" height="560" frameborder="0"></iframe>
+    <iframe src="https://www.tiktok.com/@username/video/1234567890123456789?lang=en-US" width="320" height="560" frameborder="0"></iframe>
+    <iframe src="https://www.tiktok.com/@username/video/9876543210987654321?lang=en-US" width="320" height="560" frameborder="0"></iframe>
+    <!-- Repeat for each video -->
+  </div>
+</body>
+</html>
+
