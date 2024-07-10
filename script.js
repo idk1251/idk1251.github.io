@@ -29,20 +29,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function revealCell(index) {
+        const cell = minefield.children[index];
         if (mines.includes(index)) {
+            cell.innerHTML = '💣';
             alert('Game over! You hit a mine.');
             initializeMinefield();
             revealedCells = 0;
         } else {
-            const cell = minefield.children[index];
-            if (!cell.classList.contains('revealed')) {
-                cell.classList.add('revealed');
-                revealedCells++;
-                if (revealedCells === totalCells - mines.length) {
-                    alert('Congratulations! You won.');
-                    initializeMinefield();
-                    revealedCells = 0;
-                }
+            cell.innerHTML = '💎';
+            cell.classList.add('revealed');
+            revealedCells++;
+            if (revealedCells === totalCells - mines.length) {
+                alert('Congratulations! You won.');
+                initializeMinefield();
+                revealedCells = 0;
             }
         }
     }
