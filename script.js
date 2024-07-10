@@ -1,88 +1,46 @@
-// script.js
-document.addEventListener('DOMContentLoaded', () => {
-    const minefield = document.getElementById('minefield');
-    const betButton = document.getElementById('bet-button');
-    const randomTileButton = document.getElementById('random-tile-button');
-    const cashoutButton = document.getElementById('cashout-button');
-    const minesSelect = document.getElementById('mines-select');
-    const mineCountDisplay = document.getElementById('mine-count');
-    const gemCountDisplay = document.getElementById('gem-count');
-    const totalProfitDisplay = document.getElementById('total-profit');
-    let mines = [];
-    let revealedCells = 0;
-    let betAmount = 0.0;
-    let totalCells = 25;
-
-    function initializeMinefield() {
-        minefield.innerHTML = '';
-        for (let i = 0; i < totalCells; i++) {
-            const cell = document.createElement('div');
-            cell.classList.add('mine-cell');
-            cell.addEventListener('click', () => revealCell(i));
-            minefield.appendChild(cell);
-        }
-    }
-
-    function placeMines() {
-        mines = [];
-        const mineCount = parseInt(minesSelect.value);
-        mineCountDisplay.textContent = mineCount;
-        gemCountDisplay.textContent = totalCells - mineCount;
-        while (mines.length < mineCount) {
-            const minePosition = Math.floor(Math.random() * totalCells);
-            if (!mines.includes(minePosition)) {
-                mines.push(minePosition);
-            }
-        }
-    }
-
-    function revealCell(index) {
-        const cell = minefield.children[index];
-        if (mines.includes(index)) {
-            cell.innerHTML = '💣';
-            alert('Game over! You hit a mine.');
-            initializeMinefield();
-            revealedCells = 0;
-            totalProfitDisplay.textContent = '0.00000000 LTC';
-        } else {
-            cell.innerHTML = '💎';
-            cell.classList.add('revealed');
-            revealedCells++;
-            let profitMultiplier = (revealedCells + 1) / (totalCells - mines.length);
-            totalProfitDisplay.textContent = (betAmount * profitMultiplier).toFixed(8) + ' LTC';
-            if (revealedCells === totalCells - mines.length) {
-                alert('Congratulations! You won.');
-                initializeMinefield();
-                revealedCells = 0;
-            }
-        }
-    }
-
-    function pickRandomTile() {
-        let randomIndex;
-        do {
-            randomIndex = Math.floor(Math.random() * totalCells);
-        } while (minefield.children[randomIndex].classList.contains('revealed'));
-        revealCell(randomIndex);
-    }
-
-    betButton.addEventListener('click', () => {
-        betAmount = parseFloat(document.getElementById('bet-amount-input').value);
-        placeMines();
-        initializeMinefield();
-        totalProfitDisplay.textContent = (betAmount * 1.0).toFixed(8) + ' LTC';
-    });
-
-    randomTileButton.addEventListener('click', () => {
-        pickRandomTile();
-    });
-
-    cashoutButton.addEventListener('click', () => {
-        alert('You cashed out with a profit of ' + totalProfitDisplay.textContent);
-        initializeMinefield();
-        revealedCells = 0;
-        totalProfitDisplay.textContent = '0.00000000 LTC';
-    });
-
-    initializeMinefield();
-});
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mine Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="control-panel">
+            <div class="mode-switch">
+                <button id="manual-button" class="mode-button active">Manual</button>
+                <button id="auto-button" class="mode-button">Auto</button>
+            </div>
+            <div class="bet-amount">
+                <label for="bet-amount-input">Bet Amount</label>
+                <input type="number" id="bet-amount-input" value="0.00">
+                <button id="half-button">½</button>
+                <button id="double-button">2×</button>
+            </div>
+            <div class="mines-selection">
+                <label for="mines-select">Mines</label>
+                <select id="mines-select">
+                    <option value="3">3</option>
+                    <option value="5">5</option>
+                    <option value="7">7</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+            <div class="info">
+                <div>Mines: <span id="mine-count">3</span></div>
+                <div>Gems: <span id="gem-count">22</span></div>
+                <div>Total profit (1.00x): <span id="total-profit">0.00000000 LTC</span></div>
+            </div>
+            <button id="bet-button">Bet</button>
+            <button id="random-tile-button">Pick random tile</button>
+            <button id="cashout-button">Cashout</button>
+        </div>
+        <div id="minefield">
+            <!-- 25 grid cells will be generated by JavaScript -->
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
