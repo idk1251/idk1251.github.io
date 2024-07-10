@@ -23,18 +23,26 @@
         <section id="limbo">
             <h2>Limbo</h2>
             <div class="game-container">
-                <div id="limbo-game" class="game"></div>
-                <button onclick="startLimbo()">Start Limbo</button>
-                <div id="limbo-result" class="game-result"></div>
+                <div id="limbo-game" class="game">
+                    <p>Multiplier: <span id="limbo-multiplier">1.00</span>x</p>
+                    <div class="line-container">
+                        <div class="line"></div>
+                    </div>
+                    <button id="limbo-cashout-btn" onclick="cashout()">Cash Out</button>
+                    <div id="limbo-result" class="game-result"></div>
+                </div>
             </div>
         </section>
         
         <section id="dice">
             <h2>Dice Game</h2>
             <div class="game-container">
-                <div id="dice-game" class="game"></div>
-                <button onclick="startDice()">Start Dice Game</button>
-                <div id="dice-result" class="game-result"></div>
+                <div id="dice-game" class="game">
+                    <label for="bet">Enter your bet amount:</label>
+                    <input type="number" id="bet" min="1" step="1">
+                    <button onclick="rollDice()">Roll Dice</button>
+                    <div id="dice-result" class="game-result"></div>
+                </div>
             </div>
         </section>
     </main>
