@@ -1,136 +1,86 @@
 body {
-    margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #121b2b;
-    color: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
 }
 
-#game-container {
-    display: flex;
-    border: 2px solid #4e7eab;
-    border-radius: 10px;
-    overflow: hidden;
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
 }
 
-#control-panel {
-    width: 250px;
-    padding: 20px;
-    background-color: #192231;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
 }
 
-.mode-switch {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 20px;
+section {
+    margin-bottom: 2rem;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.mode-button {
-    width: 48%;
-    padding: 10px;
-    background-color: #263547;
-    border: none;
-    color: #ffffff;
-    cursor: pointer;
-    border-radius: 4px;
+.game-container {
+    text-align: center;
 }
 
-.mode-button.active {
-    background-color: #4e7eab;
-}
-
-.bet-amount, .mines-selection, .info {
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-#bet-amount-input {
-    width: calc(100% - 60px);
-    padding: 10px;
-    margin-right: 10px;
-    background-color: #263547;
-    border: none;
-    border-radius: 4px;
-    color: #ffffff;
-}
-
-#half-button, #double-button {
-    width: 25px;
-    padding: 10px;
-    background-color: #263547;
-    border: none;
-    color: #ffffff;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-#mines-select {
-    width: 100%;
-    padding: 10px;
-    background-color: #263547;
-    border: none;
-    border-radius: 4px;
-    color: #ffffff;
-}
-
-#bet-button, #random-tile-button, #cashout-button {
-    width: 100%;
-    padding: 15px;
-    margin-bottom: 10px;
-    background-color: #00c853;
-    border: none;
-    color: #ffffff;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-#minefield {
+.board {
     display: grid;
-    grid-template-columns: repeat(5, 60px);
-    grid-template-rows: repeat(5, 60px);
-    gap: 5px;
-    padding: 20px;
-    margin: 20px;
-    background-color: #263547;
-    border: 2px solid #4e7eab;
-    border-radius: 10px;
+    grid-template-columns: repeat(10, 30px); /* Adjust grid size as needed */
+    gap: 2px;
+    background-color: #bbb;
+    padding: 5px;
+    border-radius: 5px;
 }
 
-.mine-cell {
-    width: 60px;
-    height: 60px;
-    background-color: #263547;
-    border-radius: 4px;
+.board div {
+    width: 30px;
+    height: 30px;
+    background-color: #ccc;
+    border: 1px solid #aaa;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    font-size: 24px;
-    color: #ffffff;
-    transform: scale(0.9);
-    transition: transform 0.2s ease;
+    font-size: 0;
 }
 
-.mine-cell.revealed {
-    background-color: #4e7eab;
-    transform: scale(1);
+.game-result {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
-/* Animations */
-@keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
+button:hover {
+    background-color: #0056b3;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #333;
+    color: #fff;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
