@@ -8,15 +8,25 @@
 body {
     font-family: 'Roboto', sans-serif;
     background-color: #121212;
-    color: #121212;
-    line-height: 1.2;
-    margin: 0; /* Reset default body margin */
+    color: #e0e0e0;
+    line-height: 1.6;
 }
 
 header {
     background-color: #000; /* Black background */
-    padding: 10px 0; /* Adjusted padding to make the header smaller */
+    padding: 0;
     text-align: center; /* Center align the header content */
+}
+
+.top-bar {
+    background-color: #000; /* Black background */
+    color: #fff; /* White text */
+    padding: 10px 0; /* Adjusted padding */
+}
+
+.top-bar p {
+    margin: 0;
+    font-size: 14px; /* Adjusted font size */
 }
 
 .navbar {
@@ -24,17 +34,12 @@ header {
     flex-direction: column;
     align-items: center; /* Center align horizontally */
     justify-content: center; /* Center align vertically */
-    margin-bottom: 10px; /* Reduced margin at the bottom */
+    background-color: #000; /* Black background */
+    padding: 10px 0; /* Adjusted padding */
 }
 
 .centered-text {
     text-align: center; /* Center align the text */
-}
-
-.navbar h1 {
-    font-size: 20px; /* Smaller font size */
-    color: #000; /* Black text color */
-    margin-top: 5px; /* Adjusted top margin */
 }
 
 .navbar ul {
@@ -43,13 +48,13 @@ header {
 }
 
 .navbar ul li {
-    margin-right: 10px; /* Reduced margin */
+    margin-right: 20px;
 }
 
 .navbar ul li a {
-    color: #000; /* Black text color */
+    color: #fff;
     text-decoration: none;
-    font-size: 1rem; /* Smaller font size */
+    font-size: 1.2rem;
     transition: color 0.3s ease;
 }
 
@@ -58,7 +63,7 @@ header {
 }
 
 main {
-    margin-top: 40px; /* Adjust based on navbar height */
+    margin-top: 10px; /* Adjust based on navbar height */
 }
 
 .section {
