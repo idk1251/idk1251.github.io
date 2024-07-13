@@ -9,7 +9,7 @@ body {
     font-family: 'Roboto', sans-serif;
     background-color: #121212;
     color: #121212;
-    line-height: 0.2;
+    line-height: 1;
     margin: 0; /* Reset default body margin */
 }
 
