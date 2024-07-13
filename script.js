@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', () => {
             const clipboardText = button.getAttribute('data-clipboard');
             navigator.clipboard.writeText(clipboardText).then(() => {
+                alert('Address copied to clipboard!');
             }, () => {
                 alert('Failed to copy address.');
             });
@@ -43,13 +44,4 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.style.display = "none";
         }
     };
-
-    // Form submission (dummy action)
-    const contactForm = document.getElementById("contact-form");
-    contactForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        // Perform form submission action (e.g., send data to server)
-        alert('Message sent successfully!');
-        contactForm.reset();
-    });
 });
