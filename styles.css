@@ -13,7 +13,7 @@ body {
 }
 
 header {
-    background-color: #f0f0f0;
+    background-color: #000; /* Black background */
     padding: 20px 0;
     text-align: center; /* Center align the header content */
 }
@@ -32,8 +32,9 @@ header {
 }
 
 .navbar h1 {
-    font-size: 1.8rem; /* Increased font size for the header */
-    transition: font-size 0.3s ease;
+    font-size: 24px; /* Adjusted font size */
+    color: #fff; /* White text color */
+    margin-top: 10px; /* Adjusted top margin */
 }
 
 .navbar ul {
@@ -43,7 +44,6 @@ header {
 
 .navbar ul li {
     margin-right: 20px;
-    transition: margin-right 0.3s ease;
 }
 
 .navbar ul li a {
