@@ -1,42 +1,60 @@
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f0f4f8;
-    color: #333;
+    font-family: 'Roboto', sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+    transition: background-color 0.5s ease;
 }
 
 .container {
-    background: white;
+    background: #1e1e1e;
     padding: 30px 50px;
     border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     text-align: center;
     max-width: 800px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.container:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
 }
 
 h1 {
-    color: #4CAF50;
+    color: #4caf50;
     margin-bottom: 20px;
+    font-size: 2.5em;
+    transition: color 0.3s ease;
+}
+
+h1:hover {
+    color: #66bb6a;
 }
 
 p {
-    font-size: 18px;
+    font-size: 1.2em;
     margin-bottom: 20px;
 }
 
 .quotes {
     margin: 20px 0;
     font-style: italic;
-    color: #555;
+    color: #bdbdbd;
+    transition: color 0.3s ease;
+}
+
+.quotes:hover {
+    color: #e0e0e0;
 }
 
 blockquote {
     margin: 10px 0;
-    font-size: 16px;
+    font-size: 1.1em;
 }
 
 .crypto-container {
@@ -47,34 +65,62 @@ blockquote {
 }
 
 .crypto-address {
-    background: #f9f9f9;
+    background: #2c2c2c;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     width: 250px;
     margin: 10px;
     text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.crypto-address:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
 }
 
 .crypto-address h2 {
     margin-bottom: 10px;
-    color: #333;
+    color: #4caf50;
 }
 
 .crypto-address p {
     word-break: break-all;
     margin-bottom: 10px;
-    color: #666;
+    color: #81c784;
 }
 
 .crypto-address img {
     width: 100px;
     height: 100px;
+    transition: transform 0.3s ease;
+}
+
+.crypto-address img:hover {
+    transform: rotate(10deg);
 }
 
 footer {
     margin-top: 30px;
-    font-size: 16px;
-    color: #777;
+    font-size: 1.1em;
+    color: #bdbdbd;
+    transition: color 0.3s ease;
 }
 
+footer:hover {
+    color: #e0e0e0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 1s ease-in-out;
+}
