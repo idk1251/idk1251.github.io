@@ -1,1 +1,80 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background: white;
+    padding: 30px 50px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 800px;
+}
+
+h1 {
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.quotes {
+    margin: 20px 0;
+    font-style: italic;
+    color: #555;
+}
+
+blockquote {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.crypto-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.crypto-address {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    width: 250px;
+    margin: 10px;
+    text-align: center;
+}
+
+.crypto-address h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.crypto-address p {
+    word-break: break-all;
+    margin-bottom: 10px;
+    color: #666;
+}
+
+.crypto-address img {
+    width: 100px;
+    height: 100px;
+}
+
+footer {
+    margin-top: 30px;
+    font-size: 16px;
+    color: #777;
+}
 
