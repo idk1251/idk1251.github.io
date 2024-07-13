@@ -25,18 +25,18 @@ body {
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
 }
 
-h1 {
+header h1 {
     color: #4caf50;
     margin-bottom: 20px;
     font-size: 2.5em;
     transition: color 0.3s ease;
 }
 
-h1:hover {
+header h1:hover {
     color: #66bb6a;
 }
 
-p {
+header p {
     font-size: 1.2em;
     margin-bottom: 20px;
 }
@@ -99,6 +99,21 @@ blockquote {
 
 .crypto-address img:hover {
     transform: rotate(10deg);
+}
+
+.copy-btn {
+    background: #4caf50;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 10px;
+}
+
+.copy-btn:hover {
+    background: #66bb6a;
 }
 
 footer {
