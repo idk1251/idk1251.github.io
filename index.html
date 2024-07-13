@@ -1,229 +1,85 @@
-/* Reset and base styles */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Donations</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container centered-text">
+                <h1>Welcome! I'm dedicated to bringing work, love, kindness for you!</h1>
+                <ul>
+                    <!-- You can add more sections or links here as needed -->
+                </ul>
+            </div>
+        </nav>
+    </header>
 
-body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #121212;
-    color: #e0e0e0;
-    line-height: 1.6;
-}
+    <main>
+        <section id="about" class="section about">
+            <div class="container">
+                <h2> </h2>
+                <p> </p>
 
-header {
-    background-color: #000; /* Black background */
-    padding: 20px 0;
-    text-align: center; /* Center align the header content */
-}
+                <div class="quotes">
+                    <blockquote>"The best way to predict the future is to create it." – Peter Drucker</blockquote>
+                    <blockquote>"An investment in knowledge pays the best interest." – Benjamin Franklin</blockquote>
+                    <blockquote>"Do not save what is left after spending, but spend what is left after saving." – Warren Buffett</blockquote>
+                </div>
+            </div>
+        </section>
 
-.navbar {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center align horizontally */
-    justify-content: center; /* Center align vertically */
-    height: 200px; /* Set a fixed height to control vertical centering */
-    margin-bottom: 20px; /* Add some margin at the bottom */
-}
+        <section id="donate" class="section donate">
+            <div class="container">
+                <h2>Support me with Crypto Donations (discord: S6)</h2>
 
-.centered-text {
-    text-align: center; /* Center align the text */
-}
+                <div class="crypto-container">
+                    <div class="crypto-address" data-crypto="BTC">
+                        <h3>Bitcoin (BTC)</h3>
+                        <div class="address-container">
+                            <p class="address">bc1q6w98k259drnsmcaq4ujwz9u3tluzdvypj60729</p>
+                            <button class="copy-btn" data-clipboard="bc1q6w98k259drnsmcaq4ujwz9u3tluzdvypj60729">Copy</button>
+                        </div>
+                        <img src="qr_btc.png" alt="BTC QR Code" class="qr-img" data-modal="qr_btc.png">
+                    </div>
 
-.navbar h1 {
-    font-size: 24px; /* Adjusted font size */
-    color: #fff; /* White text color */
-    margin-top: 10px; /* Adjusted top margin */
-}
+                    <div class="crypto-address" data-crypto="ETH">
+                        <h3>Ethereum (ETH)</h3>
+                        <div class="address-container">
+                            <p class="address">0x1E99CE07F50B6749f1d5cEC360f0faAd738E1DEb</p>
+                            <button class="copy-btn" data-clipboard="0x1E99CE07F50B6749f1d5cEC360f0faAd738E1DEb">Copy</button>
+                        </div>
+                        <img src="qr_eth.png" alt="ETH QR Code" class="qr-img" data-modal="qr_eth.png">
+                    </div>
 
-.navbar ul {
-    list-style-type: none;
-    display: flex;
-}
+                    <div class="crypto-address" data-crypto="LTC">
+                        <h3>Litecoin (LTC)</h3>
+                        <div class="address-container">
+                            <p class="address">LVghbfTm5ZuRpHgLhUwWvR6YG5svRDUSrk</p>
+                            <button class="copy-btn" data-clipboard="LVghbfTm5ZuRpHgLhUwWvR6YG5svRDUSrk">Copy</button>
+                        </div>
+                        <img src="qr_ltc.png" alt="LTC QR Code" class="qr-img" data-modal="qr_ltc.png">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
-.navbar ul li {
-    margin-right: 20px;
-}
+    <footer>
+        <div class="container">
+            <p>Thank you for your support!</p>
+        </div>
+    </footer>
 
-.navbar ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.2rem;
-    transition: color 0.3s ease;
-}
+    <div id="modal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modal-img" alt="Modal Image">
+    </div>
 
-.navbar ul li a:hover {
-    color: #4caf50;
-}
-
-main {
-    margin-top: 80px; /* Adjust based on navbar height */
-}
-
-.section {
-    padding: 50px 0;
-    text-align: center;
-}
-
-.about {
-    background-color: #2c2c2c;
-    color: #bdbdbd;
-    padding: 50px 0; /* Increased padding for sections */
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.about h2 {
-    margin-bottom: 20px;
-    color: #4caf50;
-    font-size: 2.5rem; /* Increased font size for section headers */
-    transition: color 0.3s ease, font-size 0.3s ease;
-}
-
-.about p {
-    font-size: 1.2rem; /* Increased font size for paragraph text */
-}
-
-.quotes {
-    margin-top: 30px;
-}
-
-.quotes blockquote {
-    font-size: 1.2rem; /* Increased font size for blockquotes */
-    transition: font-size 0.3s ease;
-}
-
-.donate {
-    background-color: #383838;
-    color: #e0e0e0;
-    padding: 50px 0; /* Increased padding for sections */
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.donate h2 {
-    margin-bottom: 20px;
-    color: #4caf50;
-    font-size: 2.5rem; /* Increased font size for section headers */
-    transition: color 0.3s ease, font-size 0.3s ease;
-}
-
-.crypto-container {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    margin-top: 30px;
-}
-
-.crypto-address {
-    background: #2c2c2c;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    width: 300px; /* Increased width for crypto address boxes */
-    margin: 20px;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-}
-
-.crypto-address:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-}
-
-.crypto-address h3 {
-    margin-bottom: 10px;
-    color: #4caf50;
-    font-size: 1.8rem; /* Increased font size for crypto currency headers */
-    transition: color 0.3s ease, font-size 0.3s ease;
-}
-
-.address-container {
-    position: relative;
-    margin-bottom: 10px;
-}
-
-.crypto-address .address {
-    word-break: break-all;
-    color: #81c784;
-    font-size: 1.2rem; /* Increased font size for crypto addresses */
-    transition: font-size 0.3s ease;
-}
-
-.copy-btn {
-    background-color: #4caf50;
-    border: none;
-    color: white;
-    padding: 8px 16px; /* Increased padding for copy buttons */
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.copy-btn:hover {
-    background-color: #66bb6a;
-}
-
-.copy-btn:active {
-    background-color: #388e3c;
-}
-
-.qr-img {
-    width: 120px; /* Increased size for QR code images */
-    height: 120px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.qr-img:hover {
-    transform: scale(1.1); /* Slightly increased hover effect */
-}
-
-footer {
-    background-color: #1e1e1e;
-    color: #bdbdbd;
-    padding: 20px 0; /* Increased padding for footer */
-    text-align: center;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.9);
-}
-
-.modal-content {
-    margin: auto;
-    display: block;
-    max-width: 80%;
-    max-height: 80%;
-    transition: opacity 0.3s ease;
-}
-
-.close {
-    position: absolute;
-    top: 15px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 2rem; /* Increased font size for close button */
-    font-weight: bold;
-    transition: 0.3s;
-    cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-    color: #bbb;
-    text-decoration: none;
-    cursor: pointer;
-}
+    <script src="script.js"></script>
+</body>
+</html>
