@@ -9,39 +9,45 @@
 </head>
 <body>
     <div class="container fade-in">
-        <h1>Support My Hard Work with Crypto Donations</h1>
-        <p>I work hard to bring value, and I appreciate any support you can give!</p>
-
-        <div class="quotes">
+        <header>
+            <h1>Support My Hard Work with Crypto Donations</h1>
+            <p>I work hard to bring value, and I appreciate any support you can give!</p>
+        </header>
+        
+        <section class="quotes">
             <blockquote>"The best way to predict the future is to create it." – Peter Drucker</blockquote>
             <blockquote>"An investment in knowledge pays the best interest." – Benjamin Franklin</blockquote>
             <blockquote>"Do not save what is left after spending, but spend what is left after saving." – Warren Buffett</blockquote>
-        </div>
+        </section>
 
-        <div class="crypto-container">
+        <section class="crypto-container">
             <div class="crypto-address">
                 <h2>Bitcoin (BTC)</h2>
-                <p>bc1q6w98k259drnsmcaq4ujwz9u3tluzdvypj60729</p>
+                <p id="btc-address">bc1q6w98k259drnsmcaq4ujwz9u3tluzdvypj60729</p>
                 <img src="qr_btc.png" alt="BTC QR Code">
+                <button class="copy-btn" data-clipboard-target="#btc-address">Copy Address</button>
             </div>
             
             <div class="crypto-address">
                 <h2>Ethereum (ETH)</h2>
-                <p>0x1E99CE07F50B6749f1d5cEC360f0faAd738E1DEb</p>
+                <p id="eth-address">0x1E99CE07F50B6749f1d5cEC360f0faAd738E1DEb</p>
                 <img src="qr_eth.png" alt="ETH QR Code">
+                <button class="copy-btn" data-clipboard-target="#eth-address">Copy Address</button>
             </div>
             
             <div class="crypto-address">
                 <h2>Litecoin (LTC)</h2>
-                <p>LVghbfTm5ZuRpHgLhUwWvR6YG5svRDUSrk</p>
+                <p id="ltc-address">LVghbfTm5ZuRpHgLhUwWvR6YG5svRDUSrk</p>
                 <img src="qr_ltc.png" alt="LTC QR Code">
+                <button class="copy-btn" data-clipboard-target="#ltc-address">Copy Address</button>
             </div>
-        </div>
+        </section>
 
         <footer>
             <p>Thank you for your support!</p>
         </footer>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
