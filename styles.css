@@ -14,19 +14,8 @@ body {
 
 header {
     background-color: #000; /* Black background */
-    padding: 0;
+    padding: 20px 0;
     text-align: center; /* Center align the header content */
-}
-
-.top-bar {
-    background-color: #000; /* Black background */
-    color: #fff; /* White text */
-    padding: 10px 0; /* Adjusted padding */
-}
-
-.top-bar p {
-    margin: 0;
-    font-size: 14px; /* Adjusted font size */
 }
 
 .navbar {
@@ -34,12 +23,18 @@ header {
     flex-direction: column;
     align-items: center; /* Center align horizontally */
     justify-content: center; /* Center align vertically */
-    background-color: #000; /* Black background */
-    padding: 10px 0; /* Adjusted padding */
+    height: 200px; /* Set a fixed height to control vertical centering */
+    margin-bottom: 20px; /* Add some margin at the bottom */
 }
 
 .centered-text {
     text-align: center; /* Center align the text */
+}
+
+.navbar h1 {
+    font-size: 24px; /* Adjusted font size */
+    color: #fff; /* White text color */
+    margin-top: 10px; /* Adjusted top margin */
 }
 
 .navbar ul {
@@ -63,7 +58,7 @@ header {
 }
 
 main {
-    margin-top: 10px; /* Adjust based on navbar height */
+    margin-top: 80px; /* Adjust based on navbar height */
 }
 
 .section {
