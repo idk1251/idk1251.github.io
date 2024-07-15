@@ -2,10 +2,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const quotes = document.querySelectorAll('.quote');
     let index = 0;
 
-    setInterval(() => {
+    function showQuote() {
         quotes.forEach((quote, i) => {
-            quote.style.display = i === index ? 'block' : 'none';
+            quote.style.opacity = i === index ? '1' : '0';
         });
         index = (index + 1) % quotes.length;
-    }, 5000);
+    }
+
+    setInterval(showQuote, 5000);
+    showQuote();
 });
