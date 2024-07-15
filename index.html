@@ -3,83 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Donations</title>
+    <title>Crypto Donation</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="container centered-text">
-                <h1>Welcome! I'm dedicated to bringing work, love, kindness for you!</h1>
-                <ul>
-                    <!-- You can add more sections or links here as needed -->
-                </ul>
-            </div>
-        </nav>
-    </header>
-
-    <main>
-        <section id="about" class="section about">
-            <div class="container">
-                <h2> </h2>
-                <p> </p>
-
-                <div class="quotes">
-                    <blockquote>"The best way to predict the future is to create it." – Peter Drucker</blockquote>
-                    <blockquote>"An investment in knowledge pays the best interest." – Benjamin Franklin</blockquote>
-                    <blockquote>"Do not save what is left after spending, but spend what is left after saving." – Warren Buffett</blockquote>
-                </div>
-            </div>
-        </section>
-
-        <section id="donate" class="section donate">
-            <div class="container">
-                <h2>Support me with Crypto Donations (discord: S6)</h2>
-
-                <div class="crypto-container">
-                    <div class="crypto-address" data-crypto="BTC">
-                        <h3>Bitcoin (BTC)</h3>
-                        <div class="address-container">
-                            <p class="address">bc1q6w98k259drnsmcaq4ujwz9u3tluzdvypj60729</p>
-                            <button class="copy-btn" data-clipboard="bc1q6w98k259drnsmcaq4ujwz9u3tluzdvypj60729">Copy</button>
-                        </div>
-                        <img src="qr_btc.png" alt="BTC QR Code" class="qr-img" data-modal="qr_btc.png">
-                    </div>
-
-                    <div class="crypto-address" data-crypto="ETH">
-                        <h3>Ethereum (ETH)</h3>
-                        <div class="address-container">
-                            <p class="address">0x1E99CE07F50B6749f1d5cEC360f0faAd738E1DEb</p>
-                            <button class="copy-btn" data-clipboard="0x1E99CE07F50B6749f1d5cEC360f0faAd738E1DEb">Copy</button>
-                        </div>
-                        <img src="qr_eth.png" alt="ETH QR Code" class="qr-img" data-modal="qr_eth.png">
-                    </div>
-
-                    <div class="crypto-address" data-crypto="LTC">
-                        <h3>Litecoin (LTC)</h3>
-                        <div class="address-container">
-                            <p class="address">LVghbfTm5ZuRpHgLhUwWvR6YG5svRDUSrk</p>
-                            <button class="copy-btn" data-clipboard="LVghbfTm5ZuRpHgLhUwWvR6YG5svRDUSrk">Copy</button>
-                        </div>
-                        <img src="qr_ltc.png" alt="LTC QR Code" class="qr-img" data-modal="qr_ltc.png">
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>Thank you for your support!</p>
+    <div class="container">
+        <h1 class="title">Support Us with Crypto Donations</h1>
+        <div class="quotes">
+            <p class="quote">"The future of money is digital currency." - Bill Gates</p>
+            <p class="quote">"Bitcoin is the beginning of something great: a currency without a government, something necessary and imperative." - Nassim Taleb</p>
+            <p class="quote">"Blockchain is the tech. Bitcoin is merely the first mainstream manifestation of its potential." - Marc Kenigsberg</p>
         </div>
-    </footer>
-
-    <div id="modal" class="modal">
-        <span class="close">&times;</span>
-        <img class="modal-content" id="modal-img" alt="Modal Image">
+        <div class="donation-section">
+            <div class="donation">
+                <h2>Bitcoin (BTC)</h2>
+                <img src="qr_btc.png" alt="Bitcoin QR Code">
+                <p>Address: bc1q6w98k259drnsmcaq4ujwz9u3tluzdvypj60729</p>
+            </div>
+            <div class="donation">
+                <h2>Ethereum (ETH)</h2>
+                <img src="qr_eth.png" alt="Ethereum QR Code">
+                <p>Address: 0x1E99CE07F50B6749f1d5cEC360f0faAd738E1DEb</p>
+            </div>
+            <div class="donation">
+                <h2>Litecoin (LTC)</h2>
+                <img src="qr_ltc.png" alt="Litecoin QR Code">
+                <p>Address: LVghbfTm5ZuRpHgLhUwWvR6YG5svRDUSrk</p>
+            </div>
+        </div>
     </div>
-
-    <script src="script.js"></script>
+    <script src="scripts.js"></script>
 </body>
 </html>
