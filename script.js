@@ -9,4 +9,3 @@ document.addEventListener('DOMContentLoaded', () => {
         index = (index + 1) % quotes.length;
     }, 5000);
 });
-
