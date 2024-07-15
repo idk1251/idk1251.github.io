@@ -13,7 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     showQuote();
 });
 
-function copyToClipboard(text) {
+function copyToClipboard(elementId) {
+    const text = document.getElementById(elementId).innerText;
     navigator.clipboard.writeText(text).then(() => {
         alert('Address copied to clipboard');
     }).catch(err => {
