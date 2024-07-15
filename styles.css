@@ -16,7 +16,8 @@ body {
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    max-width: 600px;
+    max-width: 90%;
+    width: 600px;
     animation: fadeIn 1.5s ease-in-out;
 }
 
@@ -49,6 +50,7 @@ body {
     margin: 1rem 0;
     color: #0ff;
     text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+    width: 100%;
 }
 
 .donation h2 {
@@ -69,6 +71,21 @@ body {
 
 .donation img:hover {
     transform: scale(1.1);
+}
+
+.copy-btn {
+    background-color: #ff0;
+    color: #000;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.copy-btn:hover {
+    background-color: #fff700;
 }
 
 @keyframes fadeIn {
