@@ -12,3 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(showQuote, 5000);
     showQuote();
 });
+
+function copyAddress(id) {
+    const address = document.getElementById(id).textContent;
+    navigator.clipboard.writeText(address).then(() => {
+        alert('Address copied to clipboard!');
+    }).catch(err => {
+        console.error('Could not copy text: ', err);
+    });
+}
