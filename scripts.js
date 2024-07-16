@@ -28,24 +28,27 @@ function selectCrypto(crypto) {
   let info = '';
   if (crypto === 'BTC') {
     info = `
-      <h2>Bitcoin (BTC)</h2>
+      <h2>Bitcoin (BTC) <img src="btc_logo.png" alt="BTC Logo" class="crypto-logo"></h2>
       <p>Please send Bitcoin to the following address:</p>
-      <p class="address">bc1qsdfmw4n8mzh0fg</p>
-      <button onclick="copyText('bc1qsdfmw4n8mzh0fg')">Copy</button>
+      <p class="address">bc1q6w98k259drnsmcaq4ujwz9u3tluzdvypj60729</p>
+      <img src="qr_btc.png" alt="BTC QR Code" class="qr-code">
+      <button onclick="copyText('bc1q6w98k259drnsmcaq4ujwz9u3tluzdvypj60729')">Copy</button>
     `;
   } else if (crypto === 'ETH') {
     info = `
-      <h2>Ethereum (ETH)</h2>
+      <h2>Ethereum (ETH) <img src="eth_logo.png" alt="ETH Logo" class="crypto-logo"></h2>
       <p>Please send Ethereum to the following address:</p>
-      <p class="address">0x9nfp47wn8fn47</p>
-      <button onclick="copyText('0x9nfp47wn8fn47')">Copy</button>
+      <p class="address">0x1E99CE07F50B6749f1d5cEC360f0faAd738E1DEb</p>
+      <img src="qr_eth.png" alt="ETH QR Code" class="qr-code">
+      <button onclick="copyText('0x1E99CE07F50B6749f1d5cEC360f0faAd738E1DEb')">Copy</button>
     `;
-  } else if (crypto === 'USDT') {
+  } else if (crypto === 'LTC') {
     info = `
-      <h2>Tether (USDT)</h2>
-      <p>Please send Tether to the following address:</p>
-      <p class="address">T9nb47nf8w4</p>
-      <button onclick="copyText('T9nb47nf8w4')">Copy</button>
+      <h2>Litecoin (LTC) <img src="ltc_logo.png" alt="LTC Logo" class="crypto-logo"></h2>
+      <p>Please send Litecoin to the following address:</p>
+      <p class="address">LVghbfTm5ZuRpHgLhUwWvR6YG5svRDUSrk</p>
+      <img src="qr_ltc.png" alt="LTC QR Code" class="qr-code">
+      <button onclick="copyText('LVghbfTm5ZuRpHgLhUwWvR6YG5svRDUSrk')">Copy</button>
     `;
   }
   details.innerHTML = info;
