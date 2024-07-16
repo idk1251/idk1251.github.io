@@ -1,1 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Website</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container" id="question-container">
+        <div class="question" id="question-0">
+            <h1>How was your day?</h1>
+            <button class="answer-button" onclick="nextQuestion(1)">Good</button>
+            <button class="answer-button" onclick="nextQuestion(1)">Okay</button>
+            <button class="answer-button" onclick="nextQuestion(1)">Bad</button>
+        </div>
+        <div class="question" id="question-1" style="display: none;">
+            <h1>What's one thing that made you smile today?</h1>
+            <button class="answer-button" onclick="nextQuestion(2)">A friend</button>
+            <button class="answer-button" onclick="nextQuestion(2)">A pet</button>
+            <button class="answer-button" onclick="nextQuestion(2)">Something else</button>
+        </div>
+        <div class="question" id="question-2" style="display: none;">
+            <h1>What's a recent accomplishment you're proud of?</h1>
+            <button class="answer-button" onclick="nextQuestion(3)">Work</button>
+            <button class="answer-button" onclick="nextQuestion(3)">Personal</button>
+            <button class="answer-button" onclick="nextQuestion(3)">Other</button>
+        </div>
+        <div class="question" id="question-3" style="display: none;">
+            <h1>What's one thing you're looking forward to?</h1>
+            <button class="answer-button" onclick="nextQuestion('donation')">Event</button>
+            <button class="answer-button" onclick="nextQuestion('donation')">Vacation</button>
+            <button class="answer-button" onclick="nextQuestion('donation')">Other</button>
+        </div>
+    </div>
+    <div class="container" id="donation-container" style="display: none;">
+        <h1>Choose your cryptocurrency to donate:</h1>
+        <div class="crypto-option" onclick="showQR('btc')">
+            <img src="btc_logo.png" alt="Bitcoin">
+            <p>Bitcoin</p>
+        </div>
+        <div class="crypto-option" onclick="showQR('ltc')">
+            <img src="ltc_logo.png" alt="Litecoin">
+            <p>Litecoin</p>
+        </div>
+        <div class="crypto-option" onclick="showQR('eth')">
+            <img src="eth_logo.png" alt="Ethereum">
+            <p>Ethereum</p>
+        </div>
+    </div>
+    <div class="container" id="qr-container" style="display: none;">
+        <h1 id="crypto-title">Donate with </h1>
+        <img id="qr-code" src="" alt="QR Code">
+        <p id="crypto-address"></p>
+        <button onclick="copyAddress()">Copy Address</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
 
