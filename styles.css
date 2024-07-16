@@ -1,140 +1,73 @@
 body {
-    font-family: 'Orbitron', sans-serif;
-    background: linear-gradient(135deg, #000428, #004e92);
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    color: #fff;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #0d0d0d;
+  color: #f0f0f0;
+  margin: 0;
+  padding: 20px;
 }
 
 .container {
-    text-align: center;
-    background: rgba(0, 0, 0, 0.8);
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    max-width: 1000px;
-    width: 90%;
-    margin: 1rem;
-    animation: fadeIn 1.5s ease-in-out;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-.title {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    color: #0ff;
-    text-shadow: 0 0 8px rgba(0, 255, 255, 0.8);
+.buttons {
+  margin-bottom: 20px;
 }
 
-.quotes {
-    margin-bottom: 2rem;
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-.quote {
-    font-style: italic;
-    color: #0ff;
-    margin: 0.5rem 0;
-    opacity: 0;
-    animation: fadeQuote 3s ease-in-out infinite;
+.qr-container {
+  position: relative;
 }
 
-.donation-section {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+.crypto-info {
+  display: none;
+  margin-top: 20px;
+  opacity: 0;
+  transition: opacity 300ms ease-in-out;
 }
 
-.donation {
-    margin: 1rem;
-    padding: 1rem;
-    color: #0ff;
-    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    width: 250px;
+.crypto-info.show {
+  display: block;
+  opacity: 1;
 }
 
-.donation h2 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    color: #ff0;
-    text-shadow: 0 0 5px rgba(255, 255, 0, 0.8);
+.fixed {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 13, 13, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
 }
 
-.donation img {
-    width: 150px;
-    height: 150px;
-    margin-bottom: 0.5rem;
-    border: 2px solid #ff0;
-    border-radius: 10px;
-    transition: transform 0.3s ease-in-out;
+.modal {
+  background: #141414;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 500px;
+  width: 90%;
+  text-align: left;
 }
 
-.donation img:hover {
-    transform: scale(1.1);
+.modal h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
 }
 
-.copy-btn {
-    background-color: #ff0;
-    color: #000;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-    margin-top: 0.5rem;
+.modal p {
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 
-.copy-btn:hover {
-    background-color: #cc0;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes fadeQuote {
-    0%, 100% {
-        opacity: 0;
-    }
-    50% {
-        opacity: 1;
-    }
-}
-
-@media (min-width: 768px) {
-    .container {
-        padding: 3rem;
-    }
-    
-    .donation {
-        margin: 1.5rem;
-    }
-}
-
-@media (min-width: 1200px) {
-    .container {
-        max-width: 1200px;
-    }
-
-    .title {
-        font-size: 3rem;
-    }
-
-    .donation h2 {
-        font-size: 2rem;
-    }
-
-    .donation img {
-        width: 200px;
-        height: 200px;
-    }
+.modal .buttons {
+  text-align: right;
 }
