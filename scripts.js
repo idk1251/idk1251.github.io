@@ -1,123 +1,63 @@
-document.addEventListener("DOMContentLoaded", function() {
-  const app = document.getElementById("app");
-  const qrCodes = {
-    btc: "qr_btc.png",
-    eth: "qr_eth.png",
-    ltc: "qr_ltc.png"
-  };
+let introductionStep = 1;
 
-  const addresses = {
-    btc: "bc1q6w98k259drnsmcaq4ujwz9u3tluzdvypj60729",
-    eth: "0x1E99CE07F50B6749f1d5cEC360f0faAd738E1DEb",
-    ltc: "LVghbfTm5ZuRpHgLhUwWvR6YG5svRDUSrk"
-  };
-
-  const modalContent = [
-    {
-      title: "Hey! How are you doing today?",
-      buttons: ["Good", "Bad"]
-    },
-    {
-      title: "Welcome!",
-      text: "This website is designed by me (discord: s6eg4se54g), I have worked very hard on this website for my donators!",
-      buttons: ["Next"]
-    },
-    {
-      title: "Donations are welcome!",
-      text: "Donations will help me in education and my own life decisions!",
-      buttons: ["Next"]
-    },
-    {
-      title: "Oh, I'm sorry to hear that!",
-      text: "I hope your day gets better. Please let me know if there's anything I can do to help.",
-      buttons: ["Okay"]
-    }
-  ];
-
-  let step = 0;
-
-  function showModal() {
-    const modal = document.createElement("div");
-    modal.className = "fixed";
-
-    const content = document.createElement("div");
-    content.className = "modal";
-
-    const title = document.createElement("h1");
-    title.textContent = modalContent[step].title;
-    content.appendChild(title);
-
-    if (modalContent[step].text) {
-      const text = document.createElement("p");
-      text.textContent = modalContent[step].text;
-      content.appendChild(text);
-    }
-
-    const buttonContainer = document.createElement("div");
-    buttonContainer.className = "buttons";
-
-    modalContent[step].buttons.forEach(buttonText => {
-      const button = document.createElement("button");
-      button.textContent = buttonText;
-      button.addEventListener("click", handleModalButton);
-      buttonContainer.appendChild(button);
-    });
-
-    content.appendChild(buttonContainer);
-    modal.appendChild(content);
-    app.appendChild(modal);
-  }
-
-  function handleModalButton(event) {
-    if (step === 0 && event.target.textContent === "Bad") {
-      step = 3;
-    } else {
-      step++;
-    }
-
-    if (step >= modalContent.length) {
-      document.querySelector(".fixed").remove();
-    } else {
-      document.querySelector(".fixed").remove();
-      showModal();
-    }
-  }
-
-  function showCrypto(crypto) {
-    const qrContainer = document.querySelector(".qr-container");
-    const cryptoInfos = document.querySelectorAll(".crypto-info");
-
-    cryptoInfos.forEach(info => {
-      info.classList.remove("show");
-    });
-
-    const selectedCryptoInfo = document.getElementById(crypto);
-    selectedCryptoInfo.classList.add("show");
-  }
-
-  app.innerHTML = `
-    <div class="container">
-      <div class="buttons">
-        <button onclick="showCrypto('btc')">BTC</button>
-        <button onclick="showCrypto('eth')">ETH</button>
-        <button onclick="showCrypto('ltc')">LTC</button>
-      </div>
-      <div class="qr-container">
-        <div class="crypto-info" id="btc">
-          <img src="${qrCodes.btc}" alt="BTC QR Code">
-          <p>${addresses.btc}</p>
-        </div>
-        <div class="crypto-info" id="eth">
-          <img src="${qrCodes.eth}" alt="ETH QR Code">
-          <p>${addresses.eth}</p>
-        </div>
-        <div class="crypto-info" id="ltc">
-          <img src="${qrCodes.ltc}" alt="LTC QR Code">
-          <p>${addresses.ltc}</p>
-        </div>
-      </div>
-    </div>
-  `;
-
-  showModal();
+document.addEventListener('DOMContentLoaded', (event) => {
+  showStep(introductionStep);
 });
+
+function showStep(step) {
+  document.querySelectorAll('.step').forEach((el) => el.classList.remove('active'));
+  document.getElementById(`step${step}`).classList.add('active');
+}
+
+function nextStep(step) {
+  introductionStep = step;
+  showStep(step);
+}
+
+function badStep() {
+  introductionStep = 4;
+  showStep(4);
+}
+
+function closeIntroduction() {
+  document.getElementById('introduction').style.display = 'none';
+}
+
+function selectCrypto(crypto) {
+  const details = document.getElementById('crypto-details');
+  let info = '';
+  if (crypto === 'BTC') {
+    info = `
+      <h2>Bitcoin (BTC)</h2>
+      <p>Please send Bitcoin to the following address:</p>
+      <p class="address">bc1qsdfmw4n8mzh0fg</p>
+      <button onclick="copyText('bc1qsdfmw4n8mzh0fg')">Copy</button>
+    `;
+  } else if (crypto === 'ETH') {
+    info = `
+      <h2>Ethereum (ETH)</h2>
+      <p>Please send Ethereum to the following address:</p>
+      <p class="address">0x9nfp47wn8fn47</p>
+      <button onclick="copyText('0x9nfp47wn8fn47')">Copy</button>
+    `;
+  } else if (crypto === 'USDT') {
+    info = `
+      <h2>Tether (USDT)</h2>
+      <p>Please send Tether to the following address:</p>
+      <p class="address">T9nb47nf8w4</p>
+      <button onclick="copyText('T9nb47nf8w4')">Copy</button>
+    `;
+  }
+  details.innerHTML = info;
+  document.getElementById('crypto-info').style.display = 'block';
+}
+
+function closeCryptoInfo() {
+  document.getElementById('crypto-info').style.display = 'none';
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    alert('Address copied to clipboard');
+  });
+}
