@@ -42,7 +42,6 @@
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
             max-width: 500px;
             width: 100%;
-            margin: 0 auto;
             position: relative;
             z-index: 2;
             text-align: center;
@@ -183,7 +182,7 @@
         }
 
         .gui {
-            position: fixed;
+            position: absolute;
             top: 50%;
             transform: translateY(-50%);
             width: 250px;
@@ -193,6 +192,8 @@
             background-color: rgba(28, 31, 38, 0.9);
             color: #ffffff;
             text-align: left;
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
         .gui.normal-mode {
@@ -201,11 +202,11 @@
         }
 
         .gui.left {
-            left: 20px;
+            left: calc(50% - 275px);
         }
 
         .gui.right {
-            right: 20px;
+            right: calc(50% - 275px);
         }
 
         .gui h2 {
@@ -215,7 +216,7 @@
 
         .gui p {
             margin: 5px 0;
-            font-size: 1em;
+            font-size: 0.9em;
         }
     </style>
 </head>
@@ -277,9 +278,11 @@
             let days = 0;
             let balance = initialBalance;
             let dailyBalances = [];
+            let previousBalance = balance;
 
             while (balance < goalBalance) {
-                dailyBalances.push(balance);
+                dailyBalances.push({ day: days + 1, balance: balance, profit: balance - previousBalance });
+                previousBalance = balance;
                 balance *= (1 + dailyInterestRate);
                 days++;
             }
@@ -288,9 +291,9 @@
             let first30DaysBalances = dailyBalances.slice(0, 30);
             let last30DaysBalances = dailyBalances.slice(-30);
 
-            document.getElementById('first30Days').innerHTML = first30DaysBalances.map(b => `<p>${formatNumber(b.toFixed(2))} gems</p>`).join('');
+            document.getElementById('first30Days').innerHTML = first30DaysBalances.map(b => `<p>Day ${b.day}: ${formatNumber(b.balance.toFixed(2))} gems | +${formatNumber(b.profit.toFixed(2))} gems</p>`).join('');
             if (dailyBalances.length > 30) {
-                document.getElementById('last30Days').innerHTML = last30DaysBalances.map(b => `<p>${formatNumber(b.toFixed(2))} gems</p>`).join('');
+                document.getElementById('last30Days').innerHTML = last30DaysBalances.map(b => `<p>Day ${b.day}: ${formatNumber(b.balance.toFixed(2))} gems | +${formatNumber(b.profit.toFixed(2))} gems</p>`).join('');
             } else {
                 document.getElementById('last30Days').innerHTML = '<p>Not enough data to show last 30 days.</p>';
             }
