@@ -41,7 +41,6 @@
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
             max-width: 400px;
             width: 100%;
-            margin: 0 auto;
             position: relative;
             z-index: 2;
             display: flex;
@@ -182,8 +181,17 @@
             }
         }
 
+        .flex-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 80px); /* Adjust height as needed */
+            gap: 20px; /* Space between GUIs */
+            overflow: hidden;
+            margin-top: 30px; /* Space above the container */
+        }
+
         .gui {
-            position: absolute;
             width: 250px;
             height: 400px;
             overflow-y: auto;
@@ -193,25 +201,12 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
             padding: 10px;
             box-sizing: border-box;
-            top: 50%;
-            transform: translateY(-50%);
+            flex: 1;
         }
 
         .gui.night-mode {
             background: rgba(40, 44, 52, 0.8);
             border: 1px solid #555;
-        }
-
-        #guiLeft {
-            left: 20px;
-        }
-
-        #guiRight {
-            right: 20px;
-        }
-
-        .profit {
-            color: green;
         }
 
         /* Custom Scrollbar Styles */
@@ -251,28 +246,30 @@
     <h1>EXP Bank Calculator</h1>
     <button class="mode-toggle" onclick="toggleMode()">Switch to Night Mode</button>
 
-    <div class="container normal-mode">
-        <label for="initialBalance">Balance (Gems): </label>
-        <input type="text" id="initialBalance" value="1,000" class="normal-mode">
+    <div class="flex-container">
+        <div class="container normal-mode">
+            <label for="initialBalance">Balance (Gems): </label>
+            <input type="text" id="initialBalance" value="1,000" class="normal-mode">
 
-        <label for="goalBalance">Goal Balance (Gems): </label>
-        <input type="text" id="goalBalance" value="5,000" class="normal-mode">
+            <label for="goalBalance">Goal Balance (Gems): </label>
+            <input type="text" id="goalBalance" value="5,000" class="normal-mode">
 
-        <button onclick="calculateDays()">Calculate Days</button>
+            <button onclick="calculateDays()">Calculate Days</button>
 
-        <div id="result">Enter values and click "Calculate Days" to see the results.</div>
+            <div id="result">Enter values and click "Calculate Days" to see the results.</div>
 
-        <button id="donateButton" onclick="openDonatePopup()">Donate</button>
-    </div>
+            <button id="donateButton" onclick="openDonatePopup()">Donate</button>
+        </div>
 
-    <div id="guiLeft" class="gui normal-mode">
-        <h2>First 30 Days</h2>
-        <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
-    </div>
+        <div id="guiLeft" class="gui normal-mode">
+            <h2>First 30 Days</h2>
+            <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
+        </div>
 
-    <div id="guiRight" class="gui normal-mode">
-        <h2>Last 30 Days</h2>
-        <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
+        <div id="guiRight" class="gui normal-mode">
+            <h2>Last 30 Days</h2>
+            <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
+        </div>
     </div>
 
     <div id="donatePopup" class="normal-mode">
@@ -300,16 +297,21 @@
             let goalBalance = parseInput(document.getElementById('goalBalance').value);
             let dailyInterestRate = 0.009;
 
+            if (isNaN(initialBalance) || isNaN(goalBalance)) {
+                alert('Please enter valid numbers.');
+                return;
+            }
+
             let days = 0;
-            let balance = initialBalance;
+            let currentBalance = initialBalance;
             let dailyBalances = [];
 
-            while (balance < goalBalance) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
+            while (currentBalance < goalBalance) {
+                let profit = currentBalance * dailyInterestRate;
+                currentBalance += profit;
                 dailyBalances.push({
                     day: days + 1,
-                    balance: balance,
+                    balance: currentBalance,
                     profit: profit
                 });
                 days++;
@@ -338,6 +340,14 @@
             `;
         }
 
+        // Function to toggle night mode
+        function toggleMode() {
+            let body = document.body;
+            let isNightMode = body.classList.toggle('night-mode');
+            document.querySelectorAll('.normal-mode').forEach(el => el.classList.toggle('night-mode', isNightMode));
+            document.querySelectorAll('.mode-toggle').forEach(el => el.classList.toggle('night-mode', isNightMode));
+        }
+
         // Function to open the donate popup
         function openDonatePopup() {
             document.getElementById('donatePopup').style.display = 'block';
@@ -348,53 +358,23 @@
             document.getElementById('donatePopup').style.display = 'none';
         }
 
-        // Function to toggle between normal and night modes
-        function toggleMode() {
-            let body = document.body;
-            let container = document.querySelector('.container');
-            let inputs = document.querySelectorAll('input[type="text"]');
-            let donatePopup = document.getElementById('donatePopup');
-            let modeToggle = document.querySelector('.mode-toggle');
-            let first30DaysGui = document.getElementById('guiLeft');
-            let last30DaysGui = document.getElementById('guiRight');
-
-            if (body.classList.contains('normal-mode')) {
-                body.classList.replace('normal-mode', 'night-mode');
-                container.classList.replace('normal-mode', 'night-mode');
-                donatePopup.classList.replace('normal-mode', 'night-mode');
-                modeToggle.classList.add('night-mode');
-                modeToggle.textContent = 'Switch to Normal Mode';
-                inputs.forEach(input => input.classList.replace('normal-mode', 'night-mode'));
-                first30DaysGui.classList.replace('normal-mode', 'night-mode');
-                last30DaysGui.classList.replace('normal-mode', 'night-mode');
-            } else {
-                body.classList.replace('night-mode', 'normal-mode');
-                container.classList.replace('night-mode', 'normal-mode');
-                donatePopup.classList.replace('night-mode', 'normal-mode');
-                modeToggle.classList.remove('night-mode');
-                modeToggle.textContent = 'Switch to Night Mode';
-                inputs.forEach(input => input.classList.replace('night-mode', 'normal-mode'));
-                first30DaysGui.classList.replace('night-mode', 'normal-mode');
-                last30DaysGui.classList.replace('night-mode', 'normal-mode');
-            }
-        }
-
-        // Function to generate random falling gems
-        function generateFallingGems() {
-            const gemCount = 20;
-            const fallingGemsContainer = document.querySelector('.falling-gems');
+        // Function to create falling gems
+        function createFallingGems() {
+            let gemCount = 50;
+            let container = document.querySelector('.falling-gems');
 
             for (let i = 0; i < gemCount; i++) {
                 let gem = document.createElement('div');
                 gem.className = 'gem';
                 gem.style.left = `${Math.random() * 100}vw`;
-                gem.style.animationDuration = `${Math.random() * 5 + 5}s`;
-                gem.style.animationDelay = `${Math.random() * 2}s`;
-                fallingGemsContainer.appendChild(gem);
+                gem.style.animationDuration = `${Math.random() * 3 + 3}s`;
+                gem.style.animationDelay = `${Math.random() * 10}s`;
+                container.appendChild(gem);
             }
         }
 
-        generateFallingGems();
+        // Initialize the falling gems
+        createFallingGems();
 
         // Automatically format input fields with commas as the user types
         document.getElementById('initialBalance').addEventListener('input', function(e) {
