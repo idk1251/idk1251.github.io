@@ -323,12 +323,12 @@
 
             // Display the balance for the first 30 days
             let first30Days = dailyBalances.slice(0, 30);
-            let first30DaysHtml = first30Days.map(item => `Day ${item.day}: ${formatNumber(item.balance.toFixed(0))} | <span class="profit">+${formatNumber(item.profit.toFixed(0))}</span>`).join('<br>');
+            let first30DaysHtml = first30Days.map(item => `Day ${item.day}: ${formatNumber(item.balance)} | <span class="profit">+${formatNumber(item.profit)}</span>`).join('<br>');
             document.getElementById('first30Days').innerHTML = first30DaysHtml;
 
             // Display the balance for the last 30 days
             let last30Days = dailyBalances.slice(-30);
-            let last30DaysHtml = last30Days.map(item => `Day ${item.day}: ${formatNumber(item.balance.toFixed(0))} | <span class="profit">+${formatNumber(item.profit.toFixed(0))}</span>`).join('<br>');
+            let last30DaysHtml = last30Days.map(item => `Day ${item.day}: ${formatNumber(item.balance)} | <span class="profit">+${formatNumber(item.profit)}</span>`).join('<br>');
             document.getElementById('last30Days').innerHTML = last30DaysHtml;
 
             // Display the total days needed in years, months, and days
