@@ -16,6 +16,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            position: relative;
         }
 
         /* Normal Mode Styles */
@@ -153,7 +154,7 @@
         }
 
         .falling-gems {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
@@ -281,15 +282,16 @@
 
         // Function to generate random falling gems
         function generateFallingGems() {
-            const gemCount = 20;
+            const gemCount = 100; // Increase number of gems for more intense effect
             const fallingGemsContainer = document.querySelector('.falling-gems');
 
             for (let i = 0; i < gemCount; i++) {
                 let gem = document.createElement('div');
                 gem.className = 'gem';
                 gem.style.left = `${Math.random() * 100}vw`;
+                gem.style.top = `${Math.random() * -100}vh`; // Start from above the screen
                 gem.style.animationDuration = `${Math.random() * 5 + 5}s`;
-                gem.style.animationDelay = `${Math.random() * 2}s`;
+                gem.style.animationDelay = `${Math.random() * 10}s`;
                 fallingGemsContainer.appendChild(gem);
             }
         }
