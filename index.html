@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gems Growth Calculator</title>
+</head>
+<body>
+    <h1>Gems Growth Calculator</h1>
+    <label for="initialBalance">Initial Balance (Gems): </label>
+    <input type="number" id="initialBalance" value="1000"><br><br>
+
+    <label for="goalBalance">Goal Balance (Gems): </label>
+    <input type="number" id="goalBalance" value="5000"><br><br>
+
+    <button onclick="calculateDays()">Calculate Days</button>
+
+    <h2>Results</h2>
+    <p id="result">Enter values and click "Calculate Days" to see the results.</p>
+
+    <script>
+        function calculateDays() {
+            // Get user inputs
+            let initialBalance = parseFloat(document.getElementById('initialBalance').value);
+            let goalBalance = parseFloat(document.getElementById('goalBalance').value);
+            let dailyInterestRate = 0.009; // 0.9% daily interest rate
+
+            // Initialize variables
+            let days = 0;
+            let balance = initialBalance;
+
+            // Calculate number of days
+            while (balance < goalBalance) {
+                balance *= (1 + dailyInterestRate);
+                days++;
+            }
+
+            // Display results
+            document.getElementById('result').innerText = `It will take approximately ${days} days to reach your goal of ${goalBalance} gems from an initial balance of ${initialBalance} gems.`;
+        }
+    </script>
+</body>
+</html>
