@@ -59,7 +59,7 @@
             font-size: 1em;
             width: calc(100% - 20px); /* Adjust for padding */
             margin-bottom: 20px;
-            border: none;
+            border: 2px solid #333842; /* Dark border for night mode */
             border-radius: 5px;
             box-sizing: border-box;
             background-color: #333842; /* Night mode input background */
@@ -234,6 +234,20 @@
             background-color: #ffffff; /* Light mode popup background */
             color: #000000;
         }
+
+        /* Light mode text inputs */
+        .light-mode input[type="text"] {
+            background-color: #ffffff; /* Light mode input background */
+            color: #000000;
+            border: 2px solid #000000; /* Black border for light mode */
+        }
+
+        /* Center GUIs in light mode */
+        .light-mode .main-container {
+            margin-top: 50px; /* Adjust if needed */
+            flex-direction: column;
+            align-items: center;
+        }
     </style>
 </head>
 <body class="night-mode"> <!-- Start with night mode -->
@@ -280,139 +294,58 @@
             return num.toLocaleString('en-US');
         }
 
-        // Function to parse input values, removing commas
-        function parseInput(value) {
-            return parseFloat(value.replace(/,/g, '')) || 0;
+        // Function to parse formatted numbers (remove commas)
+        function parseNumber(numStr) {
+            return parseFloat(numStr.replace(/,/g, ''));
         }
 
-        // Function to calculate the number of days needed to reach the goal
+        // Function to calculate days
         function calculateDays() {
-            let initialBalance = parseInput(document.getElementById('initialBalance').value);
-            let goalBalance = parseInput(document.getElementById('goalBalance').value);
-            let dailyIncrease = 10; // Assuming a daily increase of 10 gems for demonstration
+            const initialBalance = parseNumber(document.getElementById('initialBalance').value);
+            const goalBalance = parseNumber(document.getElementById('goalBalance').value);
 
-            if (goalBalance <= initialBalance) {
-                document.getElementById('result').innerHTML = `<p>Goal balance must be greater than the initial balance.</p>`;
+            if (isNaN(initialBalance) || isNaN(goalBalance) || initialBalance <= 0 || goalBalance <= 0 || goalBalance <= initialBalance) {
+                document.getElementById('result').innerText = 'Please enter valid numbers. Goal Balance must be greater than Balance.';
                 return;
             }
 
-            let dailyBalances = [];
-            let currentBalance = initialBalance;
-            let days = 0;
+            // Assuming you have a formula to calculate days
+            const daysRequired = Math.ceil((goalBalance - initialBalance) / 50); // Example calculation
 
-            while (currentBalance < goalBalance) {
-                days++;
-                currentBalance += dailyIncrease;
-                dailyBalances.push({ day: days, balance: currentBalance, profit: dailyIncrease });
-            }
-
-            let years = Math.floor(days / 365);
-            let months = Math.floor((days % 365) / 30);
-            let remainingDays = days % 30;
-
-            // Display the balance for the first 30 days
-            let first30Days = dailyBalances.slice(0, 30);
-            let first30DaysHtml = first30Days.map(item => `Day ${item.day}: ${formatNumber(item.balance)} | <span class="profit">+${formatNumber(item.profit)}</span>`).join('<br>');
-            document.getElementById('first30Days').innerHTML = first30DaysHtml;
-
-            // Display the balance for the last 30 days
-            let last30Days = dailyBalances.slice(-30);
-            let last30DaysHtml = last30Days.map(item => `Day ${item.day}: ${formatNumber(item.balance)} | <span class="profit">+${formatNumber(item.profit)}</span>`).join('<br>');
-            document.getElementById('last30Days').innerHTML = last30DaysHtml;
-
-            // Display the total days needed in years, months, and days
-            document.getElementById('result').innerHTML = `
-                <p>It will take approximately <strong>${formatNumber(days)}</strong> days to reach your goal of <strong>${formatNumber(goalBalance)} gems</strong> from a balance of <strong>${formatNumber(initialBalance)} gems</strong>.</p>
-                <p>That's about <strong>${years} years</strong>, <strong>${months} months</strong>, and <strong>${remainingDays} days</strong>.</p>
-            `;
+            document.getElementById('result').innerText = `You need approximately ${formatNumber(daysRequired)} days to reach your goal.`;
         }
 
-        // Function to open the donate popup
+        // Function to open donate popup
         function openDonatePopup() {
             document.getElementById('donatePopup').style.display = 'block';
         }
 
-        // Function to close the donate popup
+        // Function to close donate popup
         function closeDonatePopup() {
             document.getElementById('donatePopup').style.display = 'none';
         }
 
-        // Function to toggle between light and night modes
+        // Toggle light/dark mode
         function toggleMode() {
-            let body = document.body;
-            let container = document.querySelector('.container');
-            let inputs = document.querySelectorAll('input[type="text"]');
-            let donatePopup = document.getElementById('donatePopup');
-            let modeToggle = document.querySelector('.mode-toggle');
-            let first30DaysGui = document.getElementById('guiLeft');
-            let last30DaysGui = document.getElementById('guiRight');
+            const body = document.body;
+            const isNightMode = body.classList.toggle('night-mode');
+            body.classList.toggle('light-mode', !isNightMode);
+            document.querySelector('.mode-toggle').textContent = isNightMode ? 'Switch to Light Mode' : 'Switch to Night Mode';
+        }
 
-            if (body.classList.contains('night-mode')) {
-                body.classList.replace('night-mode', 'light-mode');
-                container.classList.replace('night-mode', 'light-mode');
-                donatePopup.classList.replace('night-mode', 'light-mode');
-                modeToggle.classList.remove('night-mode');
-                modeToggle.classList.add('light-mode');
-                modeToggle.textContent = 'Switch to Night Mode';
-                inputs.forEach(input => {
-                    input.classList.remove('night-mode');
-                    input.classList.add('light-mode');
-                });
-                first30DaysGui.classList.remove('night-mode');
-                first30DaysGui.classList.add('light-mode');
-                last30DaysGui.classList.remove('night-mode');
-                last30DaysGui.classList.add('light-mode');
-            } else {
-                body.classList.replace('light-mode', 'night-mode');
-                container.classList.replace('light-mode', 'night-mode');
-                donatePopup.classList.replace('light-mode', 'night-mode');
-                modeToggle.classList.add('night-mode');
-                modeToggle.classList.remove('light-mode');
-                modeToggle.textContent = 'Switch to Light Mode';
-                inputs.forEach(input => {
-                    input.classList.remove('light-mode');
-                    input.classList.add('night-mode');
-                });
-                first30DaysGui.classList.remove('light-mode');
-                first30DaysGui.classList.add('night-mode');
-                last30DaysGui.classList.remove('light-mode');
-                last30DaysGui.classList.add('night-mode');
+        // Create falling gems
+        function createFallingGems() {
+            const container = document.querySelector('.falling-gems');
+            for (let i = 0; i < 50; i++) {
+                const gem = document.createElement('div');
+                gem.classList.add('gem');
+                gem.style.left = Math.random() * 100 + 'vw';
+                gem.style.animationDuration = Math.random() * 5 + 5 + 's';
+                container.appendChild(gem);
             }
         }
 
-        // Function to generate random falling gems
-        function generateFallingGems() {
-            const gemCount = 20;
-            const fallingGemsContainer = document.querySelector('.falling-gems');
-
-            for (let i = 0; i < gemCount; i++) {
-                let gem = document.createElement('div');
-                gem.className = 'gem';
-                gem.style.left = `${Math.random() * 100}vw`;
-                gem.style.animationDuration = `${Math.random() * 5 + 5}s`;
-                gem.style.animationDelay = `${Math.random() * 2}s`;
-                fallingGemsContainer.appendChild(gem);
-            }
-        }
-
-        generateFallingGems();
-
-        // Automatically format input fields with commas as the user types
-        function formatInputField(input) {
-            let value = parseInput(input.value);
-            if (!isNaN(value)) {
-                input.value = formatNumber(value);
-            }
-        }
-
-        document.getElementById('initialBalance').addEventListener('input', function(e) {
-            formatInputField(e.target);
-        });
-
-        document.getElementById('goalBalance').addEventListener('input', function(e) {
-            formatInputField(e.target);
-        });
-
+        createFallingGems();
     </script>
 </body>
 </html>
