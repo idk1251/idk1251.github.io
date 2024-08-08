@@ -196,10 +196,12 @@
 
     <script>
         function formatNumber(num) {
-            return Math.round(num).toLocaleString();
+            // Format number with commas
+            return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         }
 
         function parseInput(value) {
+            // Parse input with commas removed
             return parseFloat(value.replace(/,/g, ''));
         }
 
@@ -248,22 +250,6 @@
         function closeDonatePopup() {
             document.getElementById('donatePopup').style.display = 'none';
         }
-
-        function generateFallingGems() {
-            const gemCount = 20;
-            const fallingGemsContainer = document.querySelector('.falling-gems');
-
-            for (let i = 0; i < gemCount; i++) {
-                let gem = document.createElement('div');
-                gem.className = 'gem';
-                gem.style.left = `${Math.random() * 100}vw`;
-                gem.style.animationDuration = `${Math.random() * 5 + 5}s`;
-                gem.style.animationDelay = `${Math.random() * 2}s`;
-                fallingGemsContainer.appendChild(gem);
-            }
-        }
-
-        generateFallingGems();
 
         document.getElementById('initialBalance').addEventListener('input', function(e) {
             let value = parseInput(e.target.value);
