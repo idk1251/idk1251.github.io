@@ -193,6 +193,8 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
             padding: 10px;
             box-sizing: border-box;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         .gui.night-mode {
@@ -201,17 +203,11 @@
         }
 
         #guiLeft {
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            margin-left: 20px;
+            left: 20px;
         }
 
         #guiRight {
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            margin-right: 20px;
+            right: 20px;
         }
 
         .profit {
@@ -327,12 +323,12 @@
 
             // Display the balance for the first 30 days
             let first30Days = dailyBalances.slice(0, 30);
-            let first30DaysHtml = first30Days.map(item => `Day ${item.day}: ${formatNumber(item.balance.toFixed(2))} | <span class="profit">+${formatNumber(item.profit.toFixed(2))}</span>`).join('<br>');
+            let first30DaysHtml = first30Days.map(item => `Day ${item.day}: ${formatNumber(item.balance.toFixed(0))} | <span class="profit">+${formatNumber(item.profit.toFixed(0))}</span>`).join('<br>');
             document.getElementById('first30Days').innerHTML = first30DaysHtml;
 
             // Display the balance for the last 30 days
             let last30Days = dailyBalances.slice(-30);
-            let last30DaysHtml = last30Days.map(item => `Day ${item.day}: ${formatNumber(item.balance.toFixed(2))} | <span class="profit">+${formatNumber(item.profit.toFixed(2))}</span>`).join('<br>');
+            let last30DaysHtml = last30Days.map(item => `Day ${item.day}: ${formatNumber(item.balance.toFixed(0))} | <span class="profit">+${formatNumber(item.profit.toFixed(0))}</span>`).join('<br>');
             document.getElementById('last30Days').innerHTML = last30DaysHtml;
 
             // Display the total days needed in years, months, and days
