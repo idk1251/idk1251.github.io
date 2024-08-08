@@ -282,12 +282,12 @@
     <script>
         // Function to format numbers with commas
         function formatNumber(num) {
-            return Math.round(num).toLocaleString();
+            return num.toLocaleString();
         }
 
         // Function to parse input values, removing commas
         function parseInput(value) {
-            return parseFloat(value.replace(/,/g, ''));
+            return parseFloat(value.replace(/,/g, '')) || 0;
         }
 
         // Function to calculate the number of days needed to reach the goal
@@ -388,19 +388,21 @@
         generateFallingGems();
 
         // Automatically format input fields with commas as the user types
-        document.getElementById('initialBalance').addEventListener('input', function(e) {
-            let value = parseInput(e.target.value);
+        function formatInputField(input) {
+            let value = parseInput(input.value);
             if (!isNaN(value)) {
-                e.target.value = formatNumber(value);
+                input.value = formatNumber(value);
             }
+        }
+
+        document.getElementById('initialBalance').addEventListener('input', function(e) {
+            formatInputField(e.target);
         });
 
         document.getElementById('goalBalance').addEventListener('input', function(e) {
-            let value = parseInput(e.target.value);
-            if (!isNaN(value)) {
-                e.target.value = formatNumber(value);
-            }
+            formatInputField(e.target);
         });
+
     </script>
 </body>
 </html>
