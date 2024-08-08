@@ -137,10 +137,11 @@
             background-color: #f1f1f1;
             border: none;
             border-radius: 5px;
-            padding: 10px;
+            padding: 5px 10px;
             cursor: pointer;
             z-index: 2;
             transition: background-color 0.3s, color 0.3s;
+            font-size: 0.9em;
         }
 
         .mode-toggle.night-mode {
@@ -181,7 +182,7 @@
     <button class="mode-toggle" onclick="toggleMode()">Switch to Night Mode</button>
 
     <div class="container normal-mode">
-        <label for="initialBalance">Initial Balance (Gems): </label>
+        <label for="initialBalance">Balance (Gems): </label>
         <input type="text" id="initialBalance" value="1,000" class="normal-mode">
 
         <label for="goalBalance">Goal Balance (Gems): </label>
@@ -233,8 +234,7 @@
             remainingDays = remainingDays % 30;
 
             document.getElementById('result').innerHTML = `
-                <p>With a daily compound interest rate of <strong>0.9%</strong>:</p>
-                <p>It will take approximately <strong>${formatNumber(days)} days</strong> to reach your goal of <strong>${formatNumber(goalBalance)} gems</strong> from an initial balance of <strong>${formatNumber(initialBalance)} gems</strong>.</p>
+                <p>It will take approximately <strong>${formatNumber(days)} days</strong> to reach your goal of <strong>${formatNumber(goalBalance)} gems</strong> from a balance of <strong>${formatNumber(initialBalance)} gems</strong>.</p>
                 <p>That's about <strong>${formatNumber(years)} years</strong>, <strong>${formatNumber(months)} months</strong>, and <strong>${formatNumber(remainingDays)} days</strong>.</p>
             `;
         }
