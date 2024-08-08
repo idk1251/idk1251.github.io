@@ -25,9 +25,10 @@
         .main-container {
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             gap: 20px;
             margin-top: 30px;
+            flex-wrap: nowrap;
         }
 
         .container {
@@ -39,18 +40,25 @@
             width: 100%;
             position: relative;
             z-index: 2;
+            flex: 1;
+            text-align: center;
+        }
+
+        .container label, .container input, .container button {
+            display: block;
+            width: 100%;
+            margin: 0 auto;
         }
 
         label {
             font-size: 1.1em;
             margin-bottom: 10px;
-            display: block;
         }
 
         input[type="text"] {
             padding: 10px;
             font-size: 1em;
-            width: 100%;
+            width: calc(100% - 20px); /* Adjust for padding */
             margin-bottom: 20px;
             border: none;
             border-radius: 5px;
@@ -67,9 +75,8 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            width: 100%;
-            margin-bottom: 20px;
             transition: background-color 0.3s;
+            margin-bottom: 20px;
         }
 
         button:hover {
@@ -159,7 +166,7 @@
         }
 
         .gui {
-            width: 250px;
+            width: 300px;
             height: 400px;
             overflow-y: auto;
             border: 1px solid #555;
@@ -212,6 +219,11 @@
     <button class="mode-toggle" onclick="toggleMode()">Switch to Normal Mode</button>
 
     <div class="main-container">
+        <div id="guiLeft" class="gui">
+            <h2>First 30 Days</h2>
+            <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
+        </div>
+
         <div class="container">
             <label for="initialBalance">Balance (Gems): </label>
             <input type="text" id="initialBalance" value="1,000">
@@ -226,16 +238,9 @@
             <button id="donateButton" onclick="openDonatePopup()">Donate</button>
         </div>
 
-        <div class="gui-container">
-            <div id="guiLeft" class="gui">
-                <h2>First 30 Days</h2>
-                <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
-            </div>
-
-            <div id="guiRight" class="gui">
-                <h2>Last 30 Days</h2>
-                <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
-            </div>
+        <div id="guiRight" class="gui">
+            <h2>Last 30 Days</h2>
+            <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
     </div>
 
@@ -279,11 +284,9 @@
                 dailyBalances.push({ day: ++days, balance: balance, profit: profit });
             }
 
-            // Calculate years, months, and remaining days
             let years = Math.floor(days / 365);
-            let remainingDays = days % 365;
-            let months = Math.floor(remainingDays / 30);
-            remainingDays = remainingDays % 30;
+            let months = Math.floor((days % 365) / 30);
+            let remainingDays = days % 30;
 
             // Display the balance for the first 30 days
             let first30Days = dailyBalances.slice(0, 30);
