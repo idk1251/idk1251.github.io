@@ -7,34 +7,53 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #282c34;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            height: 100vh;
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+            overflow: hidden;
         }
+
+        /* Normal Mode Styles */
+        body.normal-mode {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        /* Night Mode Styles */
+        body.night-mode {
+            background-color: #282c34;
+            color: #ffffff;
+        }
+
         h1 {
             color: #61dafb;
             margin-bottom: 20px;
+            text-align: center;
         }
+
         .container {
-            background-color: #1c1f26;
+            background-color: rgba(28, 31, 38, 0.9);
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
             max-width: 400px;
             width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
         }
+
+        .container.normal-mode {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
         label {
             font-size: 1.1em;
             margin-bottom: 10px;
             display: block;
         }
+
         input[type="text"] {
             padding: 10px;
             font-size: 1em;
@@ -46,6 +65,12 @@
             background-color: #333842;
             color: #ffffff;
         }
+
+        input.normal-mode {
+            background-color: #f1f1f1;
+            color: #000000;
+        }
+
         button {
             padding: 10px 20px;
             font-size: 1em;
@@ -56,49 +81,111 @@
             cursor: pointer;
             width: 100%;
             margin-bottom: 20px;
+            transition: background-color 0.3s;
         }
+
         button:hover {
             background-color: #53c1e0;
         }
-        #result {
-            margin-top: 20px;
-            font-size: 1.2em;
-            color: #61dafb;
-        }
+
         #donateButton {
             background-color: #ff4757;
         }
+
         #donateButton:hover {
             background-color: #e73b4d;
         }
+
+        #result {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
         #donatePopup {
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: #1c1f26;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
             text-align: center;
+            z-index: 10;
         }
+
+        #donatePopup.normal-mode {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        #donatePopup.night-mode {
+            background-color: #1c1f26;
+            color: #ffffff;
+        }
+
         #closePopup {
             margin-top: 20px;
-            background-color: #61dafb;
-            color: #282c34;
             width: 100%;
+        }
+
+        /* Night Mode Toggle Button */
+        .mode-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #f1f1f1;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 2;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .mode-toggle.night-mode {
+            background-color: #333842;
+            color: #ffffff;
+        }
+
+        .falling-gems {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .gem {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/2/21/Simple_gem.png') no-repeat center center;
+            background-size: contain;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
         }
     </style>
 </head>
-<body>
+<body class="normal-mode">
     <h1>EXP Bank Calculator</h1>
-    <div class="container">
+    <button class="mode-toggle" onclick="toggleMode()">Switch to Night Mode</button>
+
+    <div class="container normal-mode">
         <label for="initialBalance">Initial Balance (Gems): </label>
-        <input type="text" id="initialBalance" value="1,000">
+        <input type="text" id="initialBalance" value="1,000" class="normal-mode">
 
         <label for="goalBalance">Goal Balance (Gems): </label>
-        <input type="text" id="goalBalance" value="5,000">
+        <input type="text" id="goalBalance" value="5,000" class="normal-mode">
 
         <button onclick="calculateDays()">Calculate Days</button>
 
@@ -107,11 +194,13 @@
         <button id="donateButton" onclick="openDonatePopup()">Donate</button>
     </div>
 
-    <div id="donatePopup">
+    <div id="donatePopup" class="normal-mode">
         <h2>Donate Here:</h2>
         <p>/gift @s6eg4se54g</p>
-        <button id="closePopup" onclick="closeDonatePopup()">Close</button>
+        <button id="closePopup" onclick="closeDonatePopup()" class="normal-mode">Close</button>
     </div>
+
+    <div class="falling-gems"></div>
 
     <script>
         // Function to format numbers with commas
@@ -124,29 +213,25 @@
             return parseFloat(value.replace(/,/g, ''));
         }
 
+        // Function to calculate the number of days needed to reach the goal
         function calculateDays() {
-            // Get user inputs and parse them
             let initialBalance = parseInput(document.getElementById('initialBalance').value);
             let goalBalance = parseInput(document.getElementById('goalBalance').value);
-            let dailyInterestRate = 0.009; // 0.9% daily interest rate
+            let dailyInterestRate = 0.009;
 
-            // Initialize variables
             let days = 0;
             let balance = initialBalance;
 
-            // Calculate number of days
             while (balance < goalBalance) {
                 balance *= (1 + dailyInterestRate);
                 days++;
             }
 
-            // Convert days into years, months, days
             let years = Math.floor(days / 365);
             let remainingDays = days % 365;
             let months = Math.floor(remainingDays / 30);
             remainingDays = remainingDays % 30;
 
-            // Display results with formatted numbers
             document.getElementById('result').innerHTML = `
                 <p>With a daily compound interest rate of <strong>0.9%</strong>:</p>
                 <p>It will take approximately <strong>${formatNumber(days)} days</strong> to reach your goal of <strong>${formatNumber(goalBalance)} gems</strong> from an initial balance of <strong>${formatNumber(initialBalance)} gems</strong>.</p>
@@ -154,13 +239,57 @@
             `;
         }
 
+        // Function to open the donate popup
         function openDonatePopup() {
             document.getElementById('donatePopup').style.display = 'block';
         }
 
+        // Function to close the donate popup
         function closeDonatePopup() {
             document.getElementById('donatePopup').style.display = 'none';
         }
+
+        // Function to toggle between normal and night modes
+        function toggleMode() {
+            let body = document.body;
+            let container = document.querySelector('.container');
+            let inputs = document.querySelectorAll('input[type="text"]');
+            let donatePopup = document.getElementById('donatePopup');
+            let modeToggle = document.querySelector('.mode-toggle');
+
+            if (body.classList.contains('normal-mode')) {
+                body.classList.replace('normal-mode', 'night-mode');
+                container.classList.replace('normal-mode', 'night-mode');
+                donatePopup.classList.replace('normal-mode', 'night-mode');
+                modeToggle.classList.add('night-mode');
+                modeToggle.textContent = 'Switch to Normal Mode';
+                inputs.forEach(input => input.classList.replace('normal-mode', 'night-mode'));
+            } else {
+                body.classList.replace('night-mode', 'normal-mode');
+                container.classList.replace('night-mode', 'normal-mode');
+                donatePopup.classList.replace('night-mode', 'normal-mode');
+                modeToggle.classList.remove('night-mode');
+                modeToggle.textContent = 'Switch to Night Mode';
+                inputs.forEach(input => input.classList.replace('night-mode', 'normal-mode'));
+            }
+        }
+
+        // Function to generate random falling gems
+        function generateFallingGems() {
+            const gemCount = 20;
+            const fallingGemsContainer = document.querySelector('.falling-gems');
+
+            for (let i = 0; i < gemCount; i++) {
+                let gem = document.createElement('div');
+                gem.className = 'gem';
+                gem.style.left = `${Math.random() * 100}vw`;
+                gem.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                gem.style.animationDelay = `${Math.random() * 2}s`;
+                fallingGemsContainer.appendChild(gem);
+            }
+        }
+
+        generateFallingGems();
 
         // Automatically format input fields with commas as the user types
         document.getElementById('initialBalance').addEventListener('input', function(e) {
