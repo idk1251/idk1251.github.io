@@ -178,10 +178,9 @@
             }
         }
 
-        /* Flexbox container for GUI elements */
         .gui-container {
             display: flex;
-            justify-content: center;
+            justify-content: space-around;
             align-items: flex-start;
             gap: 20px;
             margin-top: 30px;
@@ -282,7 +281,7 @@
     <script>
         // Function to format numbers with commas
         function formatNumber(num) {
-            return num.toLocaleString();
+            return num.toLocaleString('en-US');
         }
 
         // Function to parse input values, removing commas
@@ -294,7 +293,12 @@
         function calculateDays() {
             let initialBalance = parseInput(document.getElementById('initialBalance').value);
             let goalBalance = parseInput(document.getElementById('goalBalance').value);
-            let dailyInterestRate = 0.009;
+            let dailyInterestRate = 0.01; // Assuming a 1% daily interest rate
+
+            if (initialBalance <= 0 || goalBalance <= 0 || initialBalance >= goalBalance) {
+                alert('Please ensure initial balance and goal balance are greater than 0, and goal balance is greater than initial balance.');
+                return;
+            }
 
             let days = 0;
             let balance = initialBalance;
@@ -406,3 +410,4 @@
     </script>
 </body>
 </html>
+
