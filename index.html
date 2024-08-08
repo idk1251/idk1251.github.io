@@ -5,249 +5,235 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EXP Bank Calculator</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-            transition: background-color 0.3s, color 0.3s;
-            overflow: hidden;
-            background-color: #282c34; /* Default night mode background */
-            color: #ffffff; /* Default night mode text color */
-        }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    transition: background-color 0.3s, color 0.3s;
+    overflow: hidden;
+    background-color: #282c34; /* Default night mode background */
+    color: #ffffff; /* Default night mode text color */
+}
 
-        h1 {
-            color: #61dafb;
-            margin-bottom: 20px;
-            text-align: center;
-        }
+h1 {
+    color: #61dafb;
+    margin-bottom: 20px;
+    text-align: center;
+}
 
-        .main-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            margin-top: 30px;
-            flex-wrap: nowrap;
-            position: relative;
-        }
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 30px;
+    flex-wrap: nowrap;
+    position: relative;
+}
 
-        .container {
-            background-color: rgba(40, 44, 52, 0.9); /* Night mode background */
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
-            max-width: 400px;
-            width: 100%;
-            text-align: center;
-            flex: 1;
-        }
+.container {
+    background-color: rgba(40, 44, 52, 0.9); /* Night mode background */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    flex: 1;
+}
 
-        .container label, .container input, .container button {
-            display: block;
-            width: 100%;
-            margin: 0 auto;
-        }
+.container label, .container input, .container button {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+}
 
-        label {
-            font-size: 1.1em;
-            margin-bottom: 10px;
-        }
+label {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
 
-        input[type="text"] {
-            padding: 10px;
-            font-size: 1em;
-            width: calc(100% - 20px); /* Adjust for padding */
-            margin-bottom: 20px;
-            border: 2px solid #333842; /* Dark border for night mode */
-            border-radius: 5px;
-            box-sizing: border-box;
-            background-color: #333842; /* Night mode input background */
-            color: #ffffff;
-        }
+input[type="text"] {
+    padding: 10px;
+    font-size: 1em;
+    width: calc(100% - 20px); /* Adjust for padding */
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #333842; /* Night mode input background */
+    color: #ffffff;
+}
 
-        button {
-            padding: 10px 20px;
-            font-size: 1em;
-            background-color: #61dafb;
-            color: #282c34;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-bottom: 20px;
-        }
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #61dafb;
+    color: #282c34;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 20px;
+}
 
-        button:hover {
-            background-color: #53c1e0;
-        }
+button:hover {
+    background-color: #53c1e0;
+}
 
-        #donateButton {
-            background-color: #ff4757;
-        }
+#donateButton {
+    background-color: #ff4757;
+}
 
-        #donateButton:hover {
-            background-color: #e73b4d;
-        }
+#donateButton:hover {
+    background-color: #e73b4d;
+}
 
-        #result {
-            margin-top: 20px;
-            font-size: 1.2em;
-        }
+#result {
+    margin-top: 20px;
+    font-size: 1.2em;
+}
 
-        #donatePopup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
-            text-align: center;
-            z-index: 10;
-            background-color: #1c1f26; /* Night mode popup background */
-            color: #ffffff;
-        }
+#donatePopup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    z-index: 10;
+    background-color: #1c1f26; /* Night mode popup background */
+    color: #ffffff;
+}
 
-        #closePopup {
-            margin-top: 20px;
-            width: 100%;
-        }
+#closePopup {
+    margin-top: 20px;
+    width: 100%;
+}
 
-        .mode-toggle {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: #f1f1f1;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
-            z-index: 2;
-            transition: background-color 0.3s, color 0.3s;
-            font-size: 0.9em;
-        }
+.mode-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #f1f1f1;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    z-index: 2;
+    transition: background-color 0.3s, color 0.3s;
+    font-size: 0.9em;
+}
 
-        .mode-toggle.night-mode {
-            background-color: #333842;
-            color: #ffffff;
-        }
+.mode-toggle.night-mode {
+    background-color: #333842;
+    color: #ffffff;
+}
 
-        .falling-gems {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 1;
-        }
+.falling-gems {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+}
 
-        .gem {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background: url('https://upload.wikimedia.org/wikipedia/commons/2/21/Simple_gem.png') no-repeat center center;
-            background-size: contain;
-            opacity: 0.8;
-            animation: fall linear infinite;
-        }
+.gem {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: url('https://upload.wikimedia.org/wikipedia/commons/2/21/Simple_gem.png') no-repeat center center;
+    background-size: contain;
+    opacity: 0.8;
+    animation: fall linear infinite;
+}
 
-        @keyframes fall {
-            to {
-                transform: translateY(100vh) rotate(360deg);
-            }
-        }
+@keyframes fall {
+    to {
+        transform: translateY(100vh) rotate(360deg);
+    }
+}
 
-        .gui {
-            width: 300px;
-            height: 400px;
-            overflow-y: auto;
-            border: 1px solid #555;
-            border-radius: 10px;
-            background: rgba(40, 44, 52, 0.8); /* Night mode background */
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            padding: 10px;
-            box-sizing: border-box;
-        }
+.gui {
+    width: 300px;
+    height: 400px;
+    overflow-y: auto;
+    border: 1px solid #555;
+    border-radius: 10px;
+    background: rgba(40, 44, 52, 0.8); /* Night mode background */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    box-sizing: border-box;
+}
 
-        .profit {
-            color: #00c853; /* Greener color */
-        }
+.profit {
+    color: #00c853; /* Greener color */
+}
 
-        /* Custom Scrollbar Styles */
-        .gui::-webkit-scrollbar {
-            width: 12px;
-        }
+/* Custom Scrollbar Styles */
+.gui::-webkit-scrollbar {
+    width: 12px;
+}
 
-        .gui::-webkit-scrollbar-thumb {
-            background-color: #888;
-            border-radius: 10px;
-        }
+.gui::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
 
-        .gui::-webkit-scrollbar-thumb:hover {
-            background-color: #555;
-        }
+.gui::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
 
-        .gui {
-            scrollbar-width: thin;
-            scrollbar-color: #888 #f1f1f1;
-        }
+.gui {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+}
 
-        .gui::-moz-scrollbar {
-            width: 12px;
-        }
+.gui::-moz-scrollbar {
+    width: 12px;
+}
 
-        .gui::-moz-scrollbar-thumb {
-            background-color: #888;
-            border-radius: 10px;
-        }
+.gui::-moz-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
 
-        .gui::-moz-scrollbar-thumb:hover {
-            background-color: #555;
-        }
+.gui::-moz-scrollbar-thumb:hover {
+    background-color: #555;
+}
 
-        /* Light Mode */
-        .light-mode {
-            background-color: #ffffff;
-            color: #000000;
-        }
+/* Light Mode */
+.light-mode {
+    background-color: #ffffff;
+    color: #000000;
+}
 
-        .light-mode .container {
-            background-color: rgba(255, 255, 255, 0.9); /* Light mode background */
-            color: #000000;
-        }
+.light-mode .container {
+    background-color: rgba(255, 255, 255, 0.9); /* Light mode background */
+    color: #000000;
+}
 
-        .light-mode .gui {
-            background: rgba(255, 255, 255, 0.8); /* Light mode background */
-            color: #000000;
-        }
+.light-mode .gui {
+    background: rgba(255, 255, 255, 0.8); /* Light mode background */
+    color: #000000;
+}
 
-        .light-mode .mode-toggle {
-            background-color: #333;
-            color: #ffffff;
-        }
+.light-mode .mode-toggle {
+    background-color: #333;
+    color: #ffffff;
+}
 
-        .light-mode #donatePopup {
-            background-color: #ffffff; /* Light mode popup background */
-            color: #000000;
-        }
-
-        /* Light mode text inputs */
-        .light-mode input[type="text"] {
-            background-color: #ffffff; /* Light mode input background */
-            color: #000000;
-            border: 2px solid #000000; /* Black border for light mode */
-        }
-
-        /* Center GUIs in light mode */
-        .light-mode .main-container {
-            margin-top: 50px; /* Adjust if needed */
-            flex-direction: column;
-            align-items: center;
-        }
+.light-mode #donatePopup {
+    background-color: #ffffff; /* Light mode popup background */
+    color: #000000;
+}
     </style>
 </head>
 <body class="night-mode"> <!-- Start with night mode -->
@@ -294,58 +280,140 @@
             return num.toLocaleString('en-US');
         }
 
-        // Function to parse formatted numbers (remove commas)
-        function parseNumber(numStr) {
-            return parseFloat(numStr.replace(/,/g, ''));
+        // Function to parse input values, removing commas
+        function parseInput(value) {
+            return parseFloat(value.replace(/,/g, '')) || 0;
         }
 
-        // Function to calculate days
+        // Function to calculate the number of days needed to reach the goal
         function calculateDays() {
-            const initialBalance = parseNumber(document.getElementById('initialBalance').value);
-            const goalBalance = parseNumber(document.getElementById('goalBalance').value);
+            let initialBalance = parseInput(document.getElementById('initialBalance').value);
+            let goalBalance = parseInput(document.getElementById('goalBalance').value);
+            let dailyIncrease = 10; // Assuming a daily increase of 10 gems for demonstration
 
-            if (isNaN(initialBalance) || isNaN(goalBalance) || initialBalance <= 0 || goalBalance <= 0 || goalBalance <= initialBalance) {
-                document.getElementById('result').innerText = 'Please enter valid numbers. Goal Balance must be greater than Balance.';
+            if (goalBalance <= initialBalance) {
+                document.getElementById('result').innerHTML = <p>Goal balance must be greater than the initial balance.</p>;
                 return;
             }
 
-            // Assuming you have a formula to calculate days
-            const daysRequired = Math.ceil((goalBalance - initialBalance) / 50); // Example calculation
+            let dailyBalances = [];
+            let currentBalance = initialBalance;
+            let days = 0;
 
-            document.getElementById('result').innerText = `You need approximately ${formatNumber(daysRequired)} days to reach your goal.`;
+            while (currentBalance < goalBalance) {
+                days++;
+                currentBalance += dailyIncrease;
+                dailyBalances.push({ day: days, balance: currentBalance, profit: dailyIncrease });
+            }
+
+            let years = Math.floor(days / 365);
+            let months = Math.floor((days % 365) / 30);
+            let remainingDays = days % 30;
+
+            // Display the balance for the first 30 days
+            let first30Days = dailyBalances.slice(0, 30);
+            let first30DaysHtml = first30Days.map(item => Day ${item.day}: ${formatNumber(item.balance)} | <span class="profit">+${formatNumber(item.profit)}</span>).join('<br>');
+            document.getElementById('first30Days').innerHTML = first30DaysHtml;
+
+            // Display the balance for the last 30 days
+            let last30Days = dailyBalances.slice(-30);
+            let last30DaysHtml = last30Days.map(item => Day ${item.day}: ${formatNumber(item.balance)} | <span class="profit">+${formatNumber(item.profit)}</span>).join('<br>');
+            document.getElementById('last30Days').innerHTML = last30DaysHtml;
+
+            // Display the total days needed in years, months, and days
+            document.getElementById('result').innerHTML = 
+                <p>It will take approximately <strong>${formatNumber(days)}</strong> days to reach your goal of <strong>${formatNumber(goalBalance)} gems</strong> from a balance of <strong>${formatNumber(initialBalance)} gems</strong>.</p>
+                <p>That's about <strong>${years} years</strong>, <strong>${months} months</strong>, and <strong>${remainingDays} days</strong>.</p>
+            ;
         }
 
-        // Function to open donate popup
+        // Function to open the donate popup
         function openDonatePopup() {
             document.getElementById('donatePopup').style.display = 'block';
         }
 
-        // Function to close donate popup
+        // Function to close the donate popup
         function closeDonatePopup() {
             document.getElementById('donatePopup').style.display = 'none';
         }
 
-        // Toggle light/dark mode
-        function toggleMode() {
-            const body = document.body;
-            const isNightMode = body.classList.toggle('night-mode');
-            body.classList.toggle('light-mode', !isNightMode);
-            document.querySelector('.mode-toggle').textContent = isNightMode ? 'Switch to Light Mode' : 'Switch to Night Mode';
-        }
+// Function to toggle between light and night modes
+function toggleMode() {
+    let body = document.body;
+    let container = document.querySelector('.container');
+    let inputs = document.querySelectorAll('input[type="text"]');
+    let donatePopup = document.getElementById('donatePopup');
+    let modeToggle = document.querySelector('.mode-toggle');
+    let first30DaysGui = document.getElementById('guiLeft');
+    let last30DaysGui = document.getElementById('guiRight');
 
-        // Create falling gems
-        function createFallingGems() {
-            const container = document.querySelector('.falling-gems');
-            for (let i = 0; i < 50; i++) {
-                const gem = document.createElement('div');
-                gem.classList.add('gem');
-                gem.style.left = Math.random() * 100 + 'vw';
-                gem.style.animationDuration = Math.random() * 5 + 5 + 's';
-                container.appendChild(gem);
+    if (body.classList.contains('night-mode')) {
+        body.classList.replace('night-mode', 'light-mode');
+        container.classList.replace('night-mode', 'light-mode');
+        donatePopup.classList.replace('night-mode', 'light-mode');
+        modeToggle.classList.remove('night-mode');
+        modeToggle.classList.add('light-mode');
+        modeToggle.textContent = 'Switch to Night Mode';
+        inputs.forEach(input => {
+            input.classList.remove('night-mode');
+            input.classList.add('light-mode');
+        });
+        first30DaysGui.classList.remove('night-mode');
+        first30DaysGui.classList.add('light-mode');
+        last30DaysGui.classList.remove('night-mode');
+        last30DaysGui.classList.add('light-mode');
+    } else {
+        body.classList.replace('light-mode', 'night-mode');
+        container.classList.replace('light-mode', 'night-mode');
+        donatePopup.classList.replace('light-mode', 'night-mode');
+        modeToggle.classList.add('night-mode');
+        modeToggle.classList.remove('light-mode');
+        modeToggle.textContent = 'Switch to Light Mode';
+        inputs.forEach(input => {
+            input.classList.remove('light-mode');
+            input.classList.add('night-mode');
+        });
+        first30DaysGui.classList.remove('light-mode');
+        first30DaysGui.classList.add('night-mode');
+        last30DaysGui.classList.remove('light-mode');
+        last30DaysGui.classList.add('night-mode');
+    }
+}
+
+
+        // Function to generate random falling gems
+        function generateFallingGems() {
+            const gemCount = 20;
+            const fallingGemsContainer = document.querySelector('.falling-gems');
+
+            for (let i = 0; i < gemCount; i++) {
+                let gem = document.createElement('div');
+                gem.className = 'gem';
+                gem.style.left = ${Math.random() * 100}vw;
+                gem.style.animationDuration = ${Math.random() * 5 + 5}s;
+                gem.style.animationDelay = ${Math.random() * 2}s;
+                fallingGemsContainer.appendChild(gem);
             }
         }
 
-        createFallingGems();
+        generateFallingGems();
+
+        // Automatically format input fields with commas as the user types
+        function formatInputField(input) {
+            let value = parseInput(input.value);
+            if (!isNaN(value)) {
+                input.value = formatNumber(value);
+            }
+        }
+
+        document.getElementById('initialBalance').addEventListener('input', function(e) {
+            formatInputField(e.target);
+        });
+
+        document.getElementById('goalBalance').addEventListener('input', function(e) {
+            formatInputField(e.target);
+        });
+
     </script>
 </body>
 </html>
