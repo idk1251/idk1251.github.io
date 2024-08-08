@@ -11,13 +11,13 @@
             padding: 0;
             box-sizing: border-box;
             transition: background-color 0.3s, color 0.3s;
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: #1e1e1e;
+            color: #d1d1d1;
             overflow-x: hidden;
         }
 
         .container {
-            background-color: #ffffff;
+            background-color: #333842;
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -25,11 +25,6 @@
             margin: 50px auto;
             text-align: center;
             position: relative;
-        }
-
-        .container.night-mode {
-            background-color: #1e1e1e;
-            color: #d1d1d1;
         }
 
         h1 {
@@ -45,11 +40,6 @@
             border: none;
             border-radius: 5px;
             box-sizing: border-box;
-            background-color: #f1f1f1;
-            color: #333;
-        }
-
-        input.night-mode {
             background-color: #333842;
             color: #ffffff;
         }
@@ -95,12 +85,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             text-align: center;
             z-index: 10;
-            background-color: #ffffff;
-            color: #000000;
-        }
-
-        #donatePopup.night-mode {
-            background-color: #1e1e1e;
+            background-color: #333842;
             color: #d1d1d1;
         }
 
@@ -113,7 +98,7 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            background-color: #f1f1f1;
+            background-color: #333842;
             border: none;
             border-radius: 5px;
             padding: 5px 10px;
@@ -124,8 +109,8 @@
         }
 
         .mode-toggle.night-mode {
-            background-color: #333842;
-            color: #ffffff;
+            background-color: #1e1e1e;
+            color: #d1d1d1;
         }
 
         .guis-container {
@@ -139,53 +124,16 @@
             width: 300px;
             height: 400px;
             overflow-y: auto;
-            border: 1px solid #ccc;
+            border: 1px solid #555;
             border-radius: 10px;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(40, 44, 52, 0.8);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             padding: 15px;
             box-sizing: border-box;
         }
 
-        .gui.night-mode {
-            background: rgba(40, 44, 52, 0.8);
-            border: 1px solid #555;
-        }
-
         .profit {
-            color: green;
-        }
-
-        /* Custom Scrollbar Styles */
-        .gui::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        .gui::-webkit-scrollbar-thumb {
-            background-color: #888;
-            border-radius: 10px;
-        }
-
-        .gui::-webkit-scrollbar-thumb:hover {
-            background-color: #555;
-        }
-
-        .gui {
-            scrollbar-width: thin;
-            scrollbar-color: #888 #f1f1f1;
-        }
-
-        .gui::-moz-scrollbar {
-            width: 12px;
-        }
-
-        .gui::-moz-scrollbar-thumb {
-            background-color: #888;
-            border-radius: 10px;
-        }
-
-        .gui::-moz-scrollbar-thumb:hover {
-            background-color: #555;
+            color: #00ff00;
         }
 
         .falling-gems {
@@ -216,16 +164,16 @@
         }
     </style>
 </head>
-<body class="normal-mode">
+<body class="night-mode">
     <h1>EXP Bank Calculator</h1>
-    <button class="mode-toggle" onclick="toggleMode()">Switch to Night Mode</button>
+    <button class="mode-toggle" onclick="toggleMode()">Switch to Light Mode</button>
 
-    <div class="container normal-mode">
+    <div class="container night-mode">
         <label for="initialBalance">Balance (Gems): </label>
-        <input type="text" id="initialBalance" value="1,000" class="normal-mode">
+        <input type="text" id="initialBalance" value="1,000" class="night-mode">
 
         <label for="goalBalance">Goal Balance (Gems): </label>
-        <input type="text" id="goalBalance" value="5,000" class="normal-mode">
+        <input type="text" id="goalBalance" value="5,000" class="night-mode">
 
         <button onclick="calculateDays()">Calculate Days</button>
 
@@ -235,21 +183,21 @@
     </div>
 
     <div class="guis-container">
-        <div id="guiLeft" class="gui normal-mode">
+        <div id="guiLeft" class="gui night-mode">
             <h2>First 30 Days</h2>
             <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div id="guiRight" class="gui normal-mode">
+        <div id="guiRight" class="gui night-mode">
             <h2>Last 30 Days</h2>
             <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
     </div>
 
-    <div id="donatePopup" class="normal-mode">
+    <div id="donatePopup" class="night-mode">
         <h2>Donate Here:</h2>
         <p>/gift @s6eg4se54g</p>
-        <button id="closePopup" onclick="closeDonatePopup()" class="normal-mode">Close</button>
+        <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
     </div>
 
     <div class="falling-gems"></div>
@@ -317,15 +265,7 @@
             let modeToggle = document.querySelector('.mode-toggle');
             let guis = document.querySelectorAll('.gui');
 
-            if (body.classList.contains('normal-mode')) {
-                body.classList.replace('normal-mode', 'night-mode');
-                container.classList.replace('normal-mode', 'night-mode');
-                donatePopup.classList.replace('normal-mode', 'night-mode');
-                modeToggle.classList.add('night-mode');
-                modeToggle.textContent = 'Switch to Normal Mode';
-                inputs.forEach(input => input.classList.replace('normal-mode', 'night-mode'));
-                guis.forEach(gui => gui.classList.replace('normal-mode', 'night-mode'));
-            } else {
+            if (body.classList.contains('night-mode')) {
                 body.classList.replace('night-mode', 'normal-mode');
                 container.classList.replace('night-mode', 'normal-mode');
                 donatePopup.classList.replace('night-mode', 'normal-mode');
@@ -333,6 +273,14 @@
                 modeToggle.textContent = 'Switch to Night Mode';
                 inputs.forEach(input => input.classList.replace('night-mode', 'normal-mode'));
                 guis.forEach(gui => gui.classList.replace('night-mode', 'normal-mode'));
+            } else {
+                body.classList.replace('normal-mode', 'night-mode');
+                container.classList.replace('normal-mode', 'night-mode');
+                donatePopup.classList.replace('normal-mode', 'night-mode');
+                modeToggle.classList.add('night-mode');
+                modeToggle.textContent = 'Switch to Light Mode';
+                inputs.forEach(input => input.classList.replace('normal-mode', 'night-mode'));
+                guis.forEach(gui => gui.classList.replace('normal-mode', 'night-mode'));
             }
         }
 
