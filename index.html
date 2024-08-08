@@ -3,20 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gems Growth Calculator</title>
+    <title>EXP Bank Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        label {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+        input[type="number"] {
+            padding: 10px;
+            font-size: 1em;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        #donateButton {
+            margin-top: 30px;
+            background-color: #f44336;
+        }
+        #donatePopup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+        }
+        #closePopup {
+            display: block;
+            margin-top: 10px;
+            background-color: #4CAF50;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Gems Growth Calculator</h1>
+    <h1>EXP Bank Calculator</h1>
     <label for="initialBalance">Initial Balance (Gems): </label>
-    <input type="number" id="initialBalance" value="1000"><br><br>
+    <input type="number" id="initialBalance" value="1000"><br>
 
     <label for="goalBalance">Goal Balance (Gems): </label>
-    <input type="number" id="goalBalance" value="5000"><br><br>
+    <input type="number" id="goalBalance" value="5000"><br>
 
     <button onclick="calculateDays()">Calculate Days</button>
 
-    <h2>Results</h2>
-    <p id="result">Enter values and click "Calculate Days" to see the results.</p>
+    <div id="result">Enter values and click "Calculate Days" to see the results.</div>
+
+    <button id="donateButton" onclick="openDonatePopup()">Donate</button>
+
+    <div id="donatePopup">
+        <h2>Donate Here:</h2>
+        <p>/gift @s6eg4se54g</p>
+        <button id="closePopup" onclick="closeDonatePopup()">Close</button>
+    </div>
 
     <script>
         function calculateDays() {
@@ -35,8 +113,26 @@
                 days++;
             }
 
+            // Convert days into years, months, days, and hours
+            let years = Math.floor(days / 365);
+            let remainingDays = days % 365;
+            let months = Math.floor(remainingDays / 30);
+            remainingDays = remainingDays % 30;
+            let hours = remainingDays * 24;
+
             // Display results
-            document.getElementById('result').innerText = `It will take approximately ${days} days to reach your goal of ${goalBalance} gems from an initial balance of ${initialBalance} gems.`;
+            document.getElementById('result').innerHTML = `
+                It will take approximately <strong>${days} days</strong> to reach your goal of <strong>${goalBalance} gems</strong> from an initial balance of <strong>${initialBalance} gems</strong>.<br>
+                That is roughly <strong>${years} years</strong>, <strong>${months} months</strong>, <strong>${remainingDays} days</strong>, and <strong>${hours} hours</strong>.
+            `;
+        }
+
+        function openDonatePopup() {
+            document.getElementById('donatePopup').style.display = 'block';
+        }
+
+        function closeDonatePopup() {
+            document.getElementById('donatePopup').style.display = 'none';
         }
     </script>
 </body>
