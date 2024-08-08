@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXP Bank Calculator</title>
+    <title>EXP Balance Calculator</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -11,7 +11,7 @@
             padding: 0;
             box-sizing: border-box;
             transition: background-color 0.3s, color 0.3s;
-            background-color: #1e1e1e;
+            background-color: #1e1e1e; /* Default to night mode */
             color: #d1d1d1;
             overflow-x: hidden;
         }
@@ -37,7 +37,7 @@
             font-size: 1em;
             width: 100%;
             margin-bottom: 20px;
-            border: none;
+            border: 1px solid #555;
             border-radius: 5px;
             box-sizing: border-box;
             background-color: #333842;
@@ -49,7 +49,7 @@
             font-size: 1em;
             background-color: #007bff;
             color: #ffffff;
-            border: none;
+            border: 1px solid #0056b3;
             border-radius: 5px;
             cursor: pointer;
             width: 100%;
@@ -63,6 +63,7 @@
 
         #donateButton {
             background-color: #ff4757;
+            border: 1px solid #e73b4d;
         }
 
         #donateButton:hover {
@@ -92,25 +93,7 @@
         #closePopup {
             margin-top: 20px;
             width: 100%;
-        }
-
-        .mode-toggle {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: #333842;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
-            z-index: 2;
-            transition: background-color 0.3s, color 0.3s;
-            font-size: 0.9em;
-        }
-
-        .mode-toggle.night-mode {
-            background-color: #1e1e1e;
-            color: #d1d1d1;
+            border: 1px solid #555;
         }
 
         .guis-container {
@@ -165,8 +148,7 @@
     </style>
 </head>
 <body class="night-mode">
-    <h1>EXP Bank Calculator</h1>
-    <button class="mode-toggle" onclick="toggleMode()">Switch to Light Mode</button>
+    <h1>EXP Balance Calculator</h1>
 
     <div class="container night-mode">
         <label for="initialBalance">Balance (Gems): </label>
@@ -255,33 +237,6 @@
 
         function closeDonatePopup() {
             document.getElementById('donatePopup').style.display = 'none';
-        }
-
-        function toggleMode() {
-            let body = document.body;
-            let container = document.querySelector('.container');
-            let inputs = document.querySelectorAll('input[type="text"]');
-            let donatePopup = document.getElementById('donatePopup');
-            let modeToggle = document.querySelector('.mode-toggle');
-            let guis = document.querySelectorAll('.gui');
-
-            if (body.classList.contains('night-mode')) {
-                body.classList.replace('night-mode', 'normal-mode');
-                container.classList.replace('night-mode', 'normal-mode');
-                donatePopup.classList.replace('night-mode', 'normal-mode');
-                modeToggle.classList.remove('night-mode');
-                modeToggle.textContent = 'Switch to Night Mode';
-                inputs.forEach(input => input.classList.replace('night-mode', 'normal-mode'));
-                guis.forEach(gui => gui.classList.replace('night-mode', 'normal-mode'));
-            } else {
-                body.classList.replace('normal-mode', 'night-mode');
-                container.classList.replace('normal-mode', 'night-mode');
-                donatePopup.classList.replace('normal-mode', 'night-mode');
-                modeToggle.classList.add('night-mode');
-                modeToggle.textContent = 'Switch to Light Mode';
-                inputs.forEach(input => input.classList.replace('normal-mode', 'night-mode'));
-                guis.forEach(gui => gui.classList.replace('normal-mode', 'night-mode'));
-            }
         }
 
         function generateFallingGems() {
