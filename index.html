@@ -179,6 +179,36 @@
                 transform: translateY(100vh) rotate(360deg);
             }
         }
+
+        /* GUI Styles */
+        .gui {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 200px;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            background-color: rgba(28, 31, 38, 0.9);
+            color: #ffffff;
+        }
+
+        .gui.normal-mode {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #000000;
+        }
+
+        .gui.left {
+            left: 20px;
+        }
+
+        .gui.right {
+            right: 20px;
+        }
+
+        .gui h2 {
+            margin-top: 0;
+        }
     </style>
 </head>
 <body class="normal-mode">
@@ -207,6 +237,16 @@
         <button id="closePopup" onclick="closeDonatePopup()" class="normal-mode">Close</button>
     </div>
 
+    <div class="gui left normal-mode" id="guiLeft">
+        <h2>First 30 Days Balance</h2>
+        <div id="first30Days"></div>
+    </div>
+
+    <div class="gui right normal-mode" id="guiRight">
+        <h2>Last 30 Days Balance</h2>
+        <div id="last30Days"></div>
+    </div>
+
     <div class="falling-gems"></div>
 
     <script>
@@ -228,10 +268,24 @@
 
             let days = 0;
             let balance = initialBalance;
+            let dailyBalances = [];
 
             while (balance < goalBalance) {
+                dailyBalances.push(balance);
                 balance *= (1 + dailyInterestRate);
                 days++;
+            }
+
+            // Fill balances for the last 30 days if days are more than 30
+            if (days > 30) {
+                let first30DaysBalances = dailyBalances.slice(0, 30);
+                let last30DaysBalances = dailyBalances.slice(-30);
+                
+                document.getElementById('first30Days').innerHTML = first30DaysBalances.map(b => `<p>${formatNumber(b.toFixed(2))} gems</p>`).join('');
+                document.getElementById('last30Days').innerHTML = last30DaysBalances.map(b => `<p>${formatNumber(b.toFixed(2))} gems</p>`).join('');
+            } else {
+                document.getElementById('first30Days').innerHTML = dailyBalances.map(b => `<p>${formatNumber(b.toFixed(2))} gems</p>`).join('');
+                document.getElementById('last30Days').innerHTML = '<p>Not enough data to show last 30 days.</p>';
             }
 
             let years = Math.floor(days / 365);
@@ -262,6 +316,8 @@
             let inputs = document.querySelectorAll('input[type="text"]');
             let donatePopup = document.getElementById('donatePopup');
             let modeToggle = document.querySelector('.mode-toggle');
+            let guiLeft = document.getElementById('guiLeft');
+            let guiRight = document.getElementById('guiRight');
 
             if (body.classList.contains('normal-mode')) {
                 body.classList.replace('normal-mode', 'night-mode');
@@ -270,6 +326,8 @@
                 modeToggle.classList.add('night-mode');
                 modeToggle.textContent = 'Switch to Normal Mode';
                 inputs.forEach(input => input.classList.replace('normal-mode', 'night-mode'));
+                guiLeft.classList.replace('normal-mode', 'night-mode');
+                guiRight.classList.replace('normal-mode', 'night-mode');
             } else {
                 body.classList.replace('night-mode', 'normal-mode');
                 container.classList.replace('night-mode', 'normal-mode');
@@ -277,6 +335,8 @@
                 modeToggle.classList.remove('night-mode');
                 modeToggle.textContent = 'Switch to Night Mode';
                 inputs.forEach(input => input.classList.replace('night-mode', 'normal-mode'));
+                guiLeft.classList.replace('night-mode', 'normal-mode');
+                guiRight.classList.replace('night-mode', 'normal-mode');
             }
         }
 
@@ -315,3 +375,4 @@
     </script>
 </body>
 </html>
+
