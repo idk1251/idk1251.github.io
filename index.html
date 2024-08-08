@@ -10,18 +10,14 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: background-color 0.3s, color 0.3s;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             position: relative;
-        }
-
-        body.normal-mode {
             background-color: #ffffff;
-            color: #000000;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         body.night-mode {
@@ -32,25 +28,23 @@
         h1 {
             color: #61dafb;
             margin-bottom: 20px;
-            text-align: center;
         }
 
         .container {
-            background-color: rgba(28, 31, 38, 0.9);
+            background-color: rgba(255, 255, 255, 0.9);
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
             max-width: 500px;
             width: 100%;
+            text-align: center;
             position: relative;
             z-index: 2;
-            text-align: center;
-            margin: 0 auto;
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        .container.normal-mode {
-            background-color: rgba(255, 255, 255, 0.9);
-            color: #000000;
+        .container.night-mode {
+            background-color: rgba(40, 44, 52, 0.9);
         }
 
         label {
@@ -62,18 +56,19 @@
         input[type="text"] {
             padding: 10px;
             font-size: 1em;
-            width: calc(100% - 22px); /* Adjust width to fit padding and border */
+            width: calc(100% - 22px);
             margin-bottom: 20px;
             border: none;
             border-radius: 5px;
             box-sizing: border-box;
-            background-color: #333842;
-            color: #ffffff;
-        }
-
-        input.normal-mode {
             background-color: #f1f1f1;
             color: #000000;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        input.night-mode {
+            background-color: #333842;
+            color: #ffffff;
         }
 
         button {
@@ -119,6 +114,7 @@
             z-index: 10;
             max-width: 300px;
             width: 100%;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         #donatePopup.normal-mode {
@@ -195,6 +191,7 @@
             text-align: left;
             max-height: 80vh;
             overflow-y: auto;
+            z-index: 3;
         }
 
         .gui.normal-mode {
@@ -203,11 +200,11 @@
         }
 
         .gui.left {
-            left: calc(50% - 700px); /* Adjust to position relative to the center container */
+            left: calc(50% - 800px);
         }
 
         .gui.right {
-            right: calc(50% - 700px); /* Adjust to position relative to the center container */
+            right: calc(50% - 800px);
         }
 
         .gui h2 {
@@ -218,6 +215,10 @@
         .gui p {
             margin: 5px 0;
             font-size: 0.9em;
+        }
+
+        .profit {
+            color: #00ff00; /* Green color for profit */
         }
     </style>
 </head>
@@ -293,12 +294,12 @@
 
             // Display the balance for the first 30 days
             let first30Days = dailyBalances.slice(0, 30);
-            let first30DaysHtml = first30Days.map(item => `Day ${item.day}: ${formatNumber(item.balance.toFixed(2))} | +${formatNumber(item.profit.toFixed(2))}`).join('<br>');
+            let first30DaysHtml = first30Days.map(item => `Day ${item.day}: ${formatNumber(item.balance.toFixed(2))} | <span class="profit">+${formatNumber(item.profit.toFixed(2))}</span>`).join('<br>');
             document.getElementById('first30Days').innerHTML = first30DaysHtml;
 
             // Display the balance for the last 30 days
             let last30Days = dailyBalances.slice(-30);
-            let last30DaysHtml = last30Days.map(item => `Day ${item.day}: ${formatNumber(item.balance.toFixed(2))} | +${formatNumber(item.profit.toFixed(2))}`).join('<br>');
+            let last30DaysHtml = last30Days.map(item => `Day ${item.day}: ${formatNumber(item.balance.toFixed(2))} | <span class="profit">+${formatNumber(item.profit.toFixed(2))}</span>`).join('<br>');
             document.getElementById('last30Days').innerHTML = last30DaysHtml;
 
             // Display the total days needed
@@ -308,19 +309,40 @@
         // Function to toggle between normal and night mode
         function toggleMode() {
             let body = document.body;
-            body.classList.toggle('night-mode');
-            body.classList.toggle('normal-mode');
-
+            let container = document.querySelector('.container');
+            let inputs = document.querySelectorAll('input[type="text"]');
+            let donatePopup = document.getElementById('donatePopup');
             let modeToggle = document.querySelector('.mode-toggle');
-            modeToggle.classList.toggle('night-mode');
+            let guiLeft = document.querySelector('#guiLeft');
+            let guiRight = document.querySelector('#guiRight');
+
+            if (body.classList.contains('normal-mode')) {
+                body.classList.replace('normal-mode', 'night-mode');
+                container.classList.replace('normal-mode', 'night-mode');
+                donatePopup.classList.replace('normal-mode', 'night-mode');
+                modeToggle.classList.add('night-mode');
+                modeToggle.textContent = 'Switch to Normal Mode';
+                inputs.forEach(input => input.classList.replace('normal-mode', 'night-mode'));
+                guiLeft.classList.replace('normal-mode', 'night-mode');
+                guiRight.classList.replace('normal-mode', 'night-mode');
+            } else {
+                body.classList.replace('night-mode', 'normal-mode');
+                container.classList.replace('night-mode', 'normal-mode');
+                donatePopup.classList.replace('night-mode', 'normal-mode');
+                modeToggle.classList.remove('night-mode');
+                modeToggle.textContent = 'Switch to Night Mode';
+                inputs.forEach(input => input.classList.replace('night-mode', 'normal-mode'));
+                guiLeft.classList.replace('night-mode', 'normal-mode');
+                guiRight.classList.replace('night-mode', 'normal-mode');
+            }
         }
 
-        // Function to open the donation popup
+        // Function to open the donate popup
         function openDonatePopup() {
             document.getElementById('donatePopup').style.display = 'block';
         }
 
-        // Function to close the donation popup
+        // Function to close the donate popup
         function closeDonatePopup() {
             document.getElementById('donatePopup').style.display = 'none';
         }
@@ -333,6 +355,7 @@
                 gem.classList.add('gem');
                 gem.style.left = Math.random() * 100 + 'vw';
                 gem.style.animationDuration = Math.random() * 5 + 5 + 's';
+                gem.style.animationDelay = Math.random() * 5 + 's';
                 container.appendChild(gem);
             }
         }
