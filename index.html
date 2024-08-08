@@ -6,9 +6,9 @@
     <title>EXP Bank Calculator</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #282c34;
+            color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -16,45 +16,60 @@
             height: 100vh;
             margin: 0;
             padding: 20px;
+            box-sizing: border-box;
         }
         h1 {
-            color: #4CAF50;
+            color: #61dafb;
             margin-bottom: 20px;
         }
+        .container {
+            background-color: #1c1f26;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            width: 100%;
+        }
         label {
-            font-size: 1.2em;
+            font-size: 1.1em;
             margin-bottom: 10px;
             display: block;
         }
-        input[type="number"] {
+        input[type="text"] {
             padding: 10px;
             font-size: 1em;
             width: 100%;
-            max-width: 300px;
             margin-bottom: 20px;
-            border: 1px solid #ccc;
+            border: none;
             border-radius: 5px;
             box-sizing: border-box;
+            background-color: #333842;
+            color: #ffffff;
         }
         button {
             padding: 10px 20px;
             font-size: 1em;
-            background-color: #4CAF50;
-            color: white;
+            background-color: #61dafb;
+            color: #282c34;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            width: 100%;
+            margin-bottom: 20px;
         }
         button:hover {
-            background-color: #45a049;
+            background-color: #53c1e0;
         }
         #result {
             margin-top: 20px;
             font-size: 1.2em;
+            color: #61dafb;
         }
         #donateButton {
-            margin-top: 30px;
-            background-color: #f44336;
+            background-color: #ff4757;
+        }
+        #donateButton:hover {
+            background-color: #e73b4d;
         }
         #donatePopup {
             display: none;
@@ -62,33 +77,35 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
-            border: 2px solid #4CAF50;
+            background-color: #1c1f26;
+            padding: 30px;
             border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
         }
         #closePopup {
-            display: block;
-            margin-top: 10px;
-            background-color: #4CAF50;
-            text-align: center;
+            margin-top: 20px;
+            background-color: #61dafb;
+            color: #282c34;
+            width: 100%;
         }
     </style>
 </head>
 <body>
     <h1>EXP Bank Calculator</h1>
-    <label for="initialBalance">Initial Balance (Gems): </label>
-    <input type="number" id="initialBalance" value="1000"><br>
+    <div class="container">
+        <label for="initialBalance">Initial Balance (Gems): </label>
+        <input type="text" id="initialBalance" value="1,000">
 
-    <label for="goalBalance">Goal Balance (Gems): </label>
-    <input type="number" id="goalBalance" value="5000"><br>
+        <label for="goalBalance">Goal Balance (Gems): </label>
+        <input type="text" id="goalBalance" value="5,000">
 
-    <button onclick="calculateDays()">Calculate Days</button>
+        <button onclick="calculateDays()">Calculate Days</button>
 
-    <div id="result">Enter values and click "Calculate Days" to see the results.</div>
+        <div id="result">Enter values and click "Calculate Days" to see the results.</div>
 
-    <button id="donateButton" onclick="openDonatePopup()">Donate</button>
+        <button id="donateButton" onclick="openDonatePopup()">Donate</button>
+    </div>
 
     <div id="donatePopup">
         <h2>Donate Here:</h2>
@@ -97,10 +114,20 @@
     </div>
 
     <script>
+        // Function to format numbers with commas
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // Function to parse input values, removing commas
+        function parseInput(value) {
+            return parseFloat(value.replace(/,/g, ''));
+        }
+
         function calculateDays() {
-            // Get user inputs
-            let initialBalance = parseFloat(document.getElementById('initialBalance').value);
-            let goalBalance = parseFloat(document.getElementById('goalBalance').value);
+            // Get user inputs and parse them
+            let initialBalance = parseInput(document.getElementById('initialBalance').value);
+            let goalBalance = parseInput(document.getElementById('goalBalance').value);
             let dailyInterestRate = 0.009; // 0.9% daily interest rate
 
             // Initialize variables
@@ -113,17 +140,17 @@
                 days++;
             }
 
-            // Convert days into years, months, days, and hours
+            // Convert days into years, months, days
             let years = Math.floor(days / 365);
             let remainingDays = days % 365;
             let months = Math.floor(remainingDays / 30);
             remainingDays = remainingDays % 30;
-            let hours = remainingDays * 24;
 
-            // Display results
+            // Display results with formatted numbers
             document.getElementById('result').innerHTML = `
-                It will take approximately <strong>${days} days</strong> to reach your goal of <strong>${goalBalance} gems</strong> from an initial balance of <strong>${initialBalance} gems</strong>.<br>
-                That is roughly <strong>${years} years</strong>, <strong>${months} months</strong>, <strong>${remainingDays} days</strong>, and <strong>${hours} hours</strong>.
+                <p>With a daily compound interest rate of <strong>0.9%</strong>:</p>
+                <p>It will take approximately <strong>${formatNumber(days)} days</strong> to reach your goal of <strong>${formatNumber(goalBalance)} gems</strong> from an initial balance of <strong>${formatNumber(initialBalance)} gems</strong>.</p>
+                <p>That's about <strong>${formatNumber(years)} years</strong>, <strong>${formatNumber(months)} months</strong>, and <strong>${formatNumber(remainingDays)} days</strong>.</p>
             `;
         }
 
@@ -134,6 +161,21 @@
         function closeDonatePopup() {
             document.getElementById('donatePopup').style.display = 'none';
         }
+
+        // Automatically format input fields with commas as the user types
+        document.getElementById('initialBalance').addEventListener('input', function(e) {
+            let value = parseInput(e.target.value);
+            if (!isNaN(value)) {
+                e.target.value = formatNumber(value);
+            }
+        });
+
+        document.getElementById('goalBalance').addEventListener('input', function(e) {
+            let value = parseInput(e.target.value);
+            if (!isNaN(value)) {
+                e.target.value = formatNumber(value);
+            }
+        });
     </script>
 </body>
 </html>
