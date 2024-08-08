@@ -8,10 +8,14 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             box-sizing: border-box;
             transition: background-color 0.3s, color 0.3s;
             overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
         /* Normal Mode Styles */
@@ -39,7 +43,6 @@
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
             max-width: 400px;
             width: 100%;
-            margin: 0 auto;
             position: relative;
             z-index: 2;
         }
@@ -141,7 +144,7 @@
             cursor: pointer;
             z-index: 2;
             transition: background-color 0.3s, color 0.3s;
-            font-size: 0.9em;
+            font-size: 0.8em;
         }
 
         .mode-toggle.night-mode {
@@ -178,10 +181,12 @@
     </style>
 </head>
 <body class="normal-mode">
-    <h1>EXP Bank Calculator</h1>
     <button class="mode-toggle" onclick="toggleMode()">Switch to Night Mode</button>
 
     <div class="container normal-mode">
+        <h1>EXP Bank Calculator</h1>
+        <p>Note: The daily interest rate is 0.9%.</p>
+        
         <label for="initialBalance">Balance (Gems): </label>
         <input type="text" id="initialBalance" value="1,000" class="normal-mode">
 
