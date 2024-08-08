@@ -8,55 +8,57 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             box-sizing: border-box;
             transition: background-color 0.3s, color 0.3s;
             overflow: hidden;
-            background-color: #ffffff;
-            color: #000000;
+            background-color: #f5f5f5;
+            color: #333;
         }
 
         /* Normal Mode Styles */
         body.normal-mode {
-            background-color: #ffffff;
-            color: #000000;
+            background-color: #f5f5f5;
+            color: #333;
         }
 
         /* Night Mode Styles */
         body.night-mode {
-            background-color: #282c34;
-            color: #ffffff;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
         }
 
         h1 {
-            color: #61dafb;
+            color: #2196F3;
             margin-bottom: 20px;
             text-align: center;
+            font-size: 2em;
         }
 
         .container {
             background-color: rgba(255, 255, 255, 0.9);
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             max-width: 400px;
-            width: 100%;
+            width: 90%;
+            margin: 30px auto;
             position: relative;
             z-index: 2;
             display: flex;
-            justify-content: center;
-            align-items: center;
             flex-direction: column;
+            align-items: center;
         }
 
         .container.night-mode {
-            background-color: rgba(40, 44, 52, 0.9);
+            background-color: rgba(30, 30, 30, 0.8);
         }
 
         label {
-            font-size: 1.1em;
+            font-size: 1.2em;
             margin-bottom: 10px;
             display: block;
+            color: #555;
         }
 
         input[type="text"] {
@@ -64,46 +66,48 @@
             font-size: 1em;
             width: 100%;
             margin-bottom: 20px;
-            border: none;
-            border-radius: 5px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
             box-sizing: border-box;
-            background-color: #f1f1f1;
-            color: #000000;
+            background-color: #ffffff;
+            color: #333;
         }
 
         input.night-mode {
-            background-color: #333842;
-            color: #ffffff;
+            background-color: #2c2c2c;
+            color: #e0e0e0;
+            border: 1px solid #444;
         }
 
         button {
-            padding: 10px 20px;
+            padding: 12px 25px;
             font-size: 1em;
-            background-color: #61dafb;
-            color: #282c34;
+            background-color: #2196F3;
+            color: #ffffff;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
             width: 100%;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             transition: background-color 0.3s;
         }
 
         button:hover {
-            background-color: #53c1e0;
+            background-color: #1976D2;
         }
 
         #donateButton {
-            background-color: #ff4757;
+            background-color: #f44336;
         }
 
         #donateButton:hover {
-            background-color: #e73b4d;
+            background-color: #c62828;
         }
 
         #result {
             margin-top: 20px;
-            font-size: 1.2em;
+            font-size: 1.1em;
+            color: #333;
         }
 
         #donatePopup {
@@ -113,20 +117,20 @@
             left: 50%;
             transform: translate(-50%, -50%);
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             text-align: center;
             z-index: 10;
         }
 
         #donatePopup.normal-mode {
             background-color: #ffffff;
-            color: #000000;
+            color: #333;
         }
 
         #donatePopup.night-mode {
-            background-color: #1c1f26;
-            color: #ffffff;
+            background-color: #333;
+            color: #e0e0e0;
         }
 
         #closePopup {
@@ -136,21 +140,21 @@
 
         /* Night Mode Toggle Button */
         .mode-toggle {
-            position: absolute;
+            position: fixed;
             top: 20px;
             right: 20px;
-            background-color: #f1f1f1;
+            background-color: #ffffff;
             border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
+            border-radius: 10px;
+            padding: 10px 15px;
             cursor: pointer;
             z-index: 2;
             transition: background-color 0.3s, color 0.3s;
-            font-size: 0.9em;
+            font-size: 1em;
         }
 
         .mode-toggle.night-mode {
-            background-color: #333842;
+            background-color: #444;
             color: #ffffff;
         }
 
@@ -181,32 +185,36 @@
             }
         }
 
-        .flex-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: calc(100vh - 80px); /* Adjust height as needed */
-            gap: 20px; /* Space between GUIs */
-            overflow: hidden;
-            margin-top: 30px; /* Space above the container */
-        }
-
         .gui {
-            width: 250px;
+            position: fixed;
+            width: 300px;
             height: 400px;
             overflow-y: auto;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 15px;
             box-sizing: border-box;
-            flex: 1;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         .gui.night-mode {
-            background: rgba(40, 44, 52, 0.8);
-            border: 1px solid #555;
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid #444;
+        }
+
+        #guiLeft {
+            left: 20px;
+        }
+
+        #guiRight {
+            right: 20px;
+        }
+
+        .profit {
+            color: #4caf50;
         }
 
         /* Custom Scrollbar Styles */
@@ -225,7 +233,7 @@
 
         .gui {
             scrollbar-width: thin;
-            scrollbar-color: #888 #f1f1f1;
+            scrollbar-color: #888 #f5f5f5;
         }
 
         .gui::-moz-scrollbar {
@@ -246,30 +254,28 @@
     <h1>EXP Bank Calculator</h1>
     <button class="mode-toggle" onclick="toggleMode()">Switch to Night Mode</button>
 
-    <div class="flex-container">
-        <div class="container normal-mode">
-            <label for="initialBalance">Balance (Gems): </label>
-            <input type="text" id="initialBalance" value="1,000" class="normal-mode">
+    <div class="container normal-mode">
+        <label for="initialBalance">Balance (Gems): </label>
+        <input type="text" id="initialBalance" value="1,000" class="normal-mode">
 
-            <label for="goalBalance">Goal Balance (Gems): </label>
-            <input type="text" id="goalBalance" value="5,000" class="normal-mode">
+        <label for="goalBalance">Goal Balance (Gems): </label>
+        <input type="text" id="goalBalance" value="5,000" class="normal-mode">
 
-            <button onclick="calculateDays()">Calculate Days</button>
+        <button onclick="calculateDays()">Calculate Days</button>
 
-            <div id="result">Enter values and click "Calculate Days" to see the results.</div>
+        <div id="result">Enter values and click "Calculate Days" to see the results.</div>
 
-            <button id="donateButton" onclick="openDonatePopup()">Donate</button>
-        </div>
+        <button id="donateButton" onclick="openDonatePopup()">Donate</button>
+    </div>
 
-        <div id="guiLeft" class="gui normal-mode">
-            <h2>First 30 Days</h2>
-            <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
-        </div>
+    <div id="guiLeft" class="gui normal-mode">
+        <h2>First 30 Days</h2>
+        <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
+    </div>
 
-        <div id="guiRight" class="gui normal-mode">
-            <h2>Last 30 Days</h2>
-            <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
-        </div>
+    <div id="guiRight" class="gui normal-mode">
+        <h2>Last 30 Days</h2>
+        <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
     </div>
 
     <div id="donatePopup" class="normal-mode">
@@ -297,21 +303,16 @@
             let goalBalance = parseInput(document.getElementById('goalBalance').value);
             let dailyInterestRate = 0.009;
 
-            if (isNaN(initialBalance) || isNaN(goalBalance)) {
-                alert('Please enter valid numbers.');
-                return;
-            }
-
             let days = 0;
-            let currentBalance = initialBalance;
+            let balance = initialBalance;
             let dailyBalances = [];
 
-            while (currentBalance < goalBalance) {
-                let profit = currentBalance * dailyInterestRate;
-                currentBalance += profit;
+            while (balance < goalBalance) {
+                let profit = balance * dailyInterestRate;
+                balance += profit;
                 dailyBalances.push({
                     day: days + 1,
-                    balance: currentBalance,
+                    balance: balance,
                     profit: profit
                 });
                 days++;
@@ -334,18 +335,9 @@
             document.getElementById('last30Days').innerHTML = last30DaysHtml;
 
             // Display the total days needed in years, months, and days
-            document.getElementById('result').innerHTML = `
-                <p>It will take approximately <strong>${formatNumber(days)}</strong> days to reach your goal of <strong>${formatNumber(goalBalance)} gems</strong> from a balance of <strong>${formatNumber(initialBalance)} gems</strong>.</p>
-                <p>That's about <strong>${years} years</strong>, <strong>${months} months</strong>, and <strong>${remainingDays} days</strong>.</p>
-            `;
-        }
-
-        // Function to toggle night mode
-        function toggleMode() {
-            let body = document.body;
-            let isNightMode = body.classList.toggle('night-mode');
-            document.querySelectorAll('.normal-mode').forEach(el => el.classList.toggle('night-mode', isNightMode));
-            document.querySelectorAll('.mode-toggle').forEach(el => el.classList.toggle('night-mode', isNightMode));
+            document.getElementById('result').innerHTML = 
+                `<p>It will take approximately <strong>${formatNumber(days)}</strong> days to reach your goal of <strong>${formatNumber(goalBalance)} gems</strong> from a balance of <strong>${formatNumber(initialBalance)} gems</strong>.</p>
+                <p>That's about <strong>${years} years</strong>, <strong>${months} months</strong>, and <strong>${remainingDays} days</strong>.</p>`;
         }
 
         // Function to open the donate popup
@@ -358,23 +350,53 @@
             document.getElementById('donatePopup').style.display = 'none';
         }
 
-        // Function to create falling gems
-        function createFallingGems() {
-            let gemCount = 50;
-            let container = document.querySelector('.falling-gems');
+        // Function to toggle between normal and night modes
+        function toggleMode() {
+            let body = document.body;
+            let container = document.querySelector('.container');
+            let inputs = document.querySelectorAll('input[type="text"]');
+            let donatePopup = document.getElementById('donatePopup');
+            let modeToggle = document.querySelector('.mode-toggle');
+            let first30DaysGui = document.getElementById('guiLeft');
+            let last30DaysGui = document.getElementById('guiRight');
+
+            if (body.classList.contains('normal-mode')) {
+                body.classList.replace('normal-mode', 'night-mode');
+                container.classList.replace('normal-mode', 'night-mode');
+                donatePopup.classList.replace('normal-mode', 'night-mode');
+                modeToggle.classList.add('night-mode');
+                modeToggle.textContent = 'Switch to Normal Mode';
+                inputs.forEach(input => input.classList.replace('normal-mode', 'night-mode'));
+                first30DaysGui.classList.replace('normal-mode', 'night-mode');
+                last30DaysGui.classList.replace('normal-mode', 'night-mode');
+            } else {
+                body.classList.replace('night-mode', 'normal-mode');
+                container.classList.replace('night-mode', 'normal-mode');
+                donatePopup.classList.replace('night-mode', 'normal-mode');
+                modeToggle.classList.remove('night-mode');
+                modeToggle.textContent = 'Switch to Night Mode';
+                inputs.forEach(input => input.classList.replace('night-mode', 'normal-mode'));
+                first30DaysGui.classList.replace('night-mode', 'normal-mode');
+                last30DaysGui.classList.replace('night-mode', 'normal-mode');
+            }
+        }
+
+        // Function to generate random falling gems
+        function generateFallingGems() {
+            const gemCount = 20;
+            const fallingGemsContainer = document.querySelector('.falling-gems');
 
             for (let i = 0; i < gemCount; i++) {
                 let gem = document.createElement('div');
                 gem.className = 'gem';
                 gem.style.left = `${Math.random() * 100}vw`;
-                gem.style.animationDuration = `${Math.random() * 3 + 3}s`;
-                gem.style.animationDelay = `${Math.random() * 10}s`;
-                container.appendChild(gem);
+                gem.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                gem.style.animationDelay = `${Math.random() * 2}s`;
+                fallingGemsContainer.appendChild(gem);
             }
         }
 
-        // Initialize the falling gems
-        createFallingGems();
+        generateFallingGems();
 
         // Automatically format input fields with commas as the user types
         document.getElementById('initialBalance').addEventListener('input', function(e) {
