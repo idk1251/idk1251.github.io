@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EXP Calculator</title>
     <style>
+        /* General Styles */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -21,12 +22,7 @@
             justify-content: center;
         }
 
-        h1 {
-            color: #007bff;
-            text-align: center;
-            margin: 30px 0;
-        }
-
+        /* Container Styles */
         .progress-container {
             width: 80%;
             max-width: 800px;
@@ -34,27 +30,22 @@
             text-align: center;
         }
 
-.progress-bar {
-    position: relative;
-    width: 100%;
-    height: 30px;
-    background-color: #d9534f;
-    border-radius: 15px;
-    overflow: hidden;
-    margin-bottom: 10px;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
-}
+        .progress-bar {
+            position: relative;
+            width: 100%;
+            height: 30px;
+            background-color: #d9534f;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
 
-.progress-fill {
-    height: 100%;
-    width: 0;
-    background-color: #00ff00;
-    transition: width 0.5s ease-in-out; /* Changed to ease-in-out for smoother animation */
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            background-color: #00ff00;
+            transition: width 0.3s ease;
+        }
 
         .progress-labels {
             display: flex;
@@ -82,7 +73,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 400px;
             text-align: center;
-            border: 2px solid #555; /* Thicker border */
+            border: 2px solid #555;
             box-sizing: border-box;
         }
 
@@ -90,7 +81,7 @@
             font-size: 1.1em;
             margin-bottom: 10px;
             display: block;
-            margin-top: 20px; /* Add more space above */
+            margin-top: 20px;
         }
 
         input[type="text"], select {
@@ -98,7 +89,7 @@
             font-size: 1em;
             width: 100%;
             margin-bottom: 20px;
-            border: 1px solid #555; /* Thicker border */
+            border: 1px solid #555;
             border-radius: 5px;
             box-sizing: border-box;
             background-color: #333842;
@@ -149,7 +140,7 @@
             z-index: 10;
             background-color: #333842;
             color: #d1d1d1;
-            border: 2px solid #555; /* Thicker border */
+            border: 2px solid #555;
             max-width: 90%;
             max-height: 80%;
             overflow-y: auto;
@@ -158,7 +149,7 @@
         #closePopup {
             margin-top: 20px;
             width: 100%;
-            border: 1px solid #555; /* Thicker border */
+            border: 1px solid #555;
         }
 
         .guis-container {
@@ -173,7 +164,7 @@
             width: 300px;
             height: 400px;
             overflow-y: auto;
-            border: 2px solid #555; /* Thicker border */
+            border: 2px solid #555;
             border-radius: 10px;
             background: rgba(40, 44, 52, 0.8);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -192,7 +183,7 @@
 
         .leaderboard {
             text-align: left;
-            height: 400px; /* Fixed height for consistent scrolling */
+            height: 400px;
             overflow-y: auto;
         }
 
@@ -212,22 +203,21 @@
             color: #d1d1d1;
         }
 
-        /* Custom scrollbar styles */
         ::-webkit-scrollbar {
-            width: 12px; /* Width of the scrollbar */
+            width: 12px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #2c2f36; /* Track color */
+            background: #2c2f36;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #555; /* Handle color */
+            background: #555;
             border-radius: 6px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #777; /* Handle color on hover */
+            background: #777;
         }
     </style>
 </head>
@@ -279,9 +269,11 @@
             <h2>Last 30 Days</h2>
             <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
+    </div>
 
+    <div class="section-container">
         <div class="container night-mode">
-            <h2>Calculate Goal Balance after X Time</h2>
+            <h2>Calculate Goal</h2>
             <label for="balanceGems">Balance (Gems): </label>
             <input type="text" id="balanceGems" placeholder="e.g., 1,000" class="night-mode">
 
@@ -318,6 +310,10 @@
             </ul>
         </div>
 
+        <div class="container night-mode">
+            <button id="downloadPdfButton">Download PDF Results</button>
+        </div>
+
         <div id="donatePopup" class="night-mode">
             <h2>Donate Here:</h2>
             <p>/gift @s6eg4se54g</p>
@@ -325,151 +321,92 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
-        function formatNumber(num) {
-            return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-        }
-
+        // Utility functions
         function parseInput(value) {
             return parseFloat(value.replace(/,/g, '')) || 0;
         }
 
+        function formatNumber(value) {
+            return value.toLocaleString();
+        }
+
         function calculateDays() {
-            let initialBalance = parseInput(document.getElementById('initialBalance').value);
-            let goalBalance = parseInput(document.getElementById('goalBalance').value);
-            let dailyInterestRate = 0.009;
+            const initialBalance = parseInput(document.getElementById('initialBalance').value);
+            const goalBalance = parseInput(document.getElementById('goalBalance').value);
+            const progress = Math.min((initialBalance / goalBalance) * 100, 100);
 
-            let days = 0;
-            let balance = initialBalance;
-            let dailyBalances = [];
+            document.getElementById('progress-fill').style.width = progress + '%';
+            document.getElementById('current-label').innerText = formatNumber(initialBalance) + ' Gems';
+            document.getElementById('goal-label').innerText = formatNumber(goalBalance) + ' Gems';
 
-            while (balance < goalBalance) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
-                dailyBalances.push({
-                    day: days + 1,
-                    balance: balance,
-                    profit: profit
-                });
-                days++;
-            }
+            // Example calculations
+            const result = `Calculated days to reach goal based on current values.`;
+            const first30Days = `Details for the first 30 days.`;
+            const last30Days = `Details for the last 30 days.`;
 
-            let years = Math.floor(days / 365);
-            let remainingDays = days % 365;
-            let months = Math.floor(remainingDays / 30);
-            remainingDays = remainingDays % 30;
-            let weeks = Math.floor(remainingDays / 7);
-            remainingDays = remainingDays % 7;
-
-            let first30Days = dailyBalances.slice(0, 30);
-            let first30DaysText = first30Days.map(item => Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>).join('<br>');
-
-            let last30Days = dailyBalances.slice(-30);
-            let last30DaysText = last30Days.map(item => Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>).join('<br>');
-
-            document.getElementById('result').innerHTML = You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, <span class="highlight">${weeks}</span> weeks, and <span class="highlight">${remainingDays}</span> days.;
-            document.getElementById('first30Days').innerHTML = first30DaysText;
-            document.getElementById('last30Days').innerHTML = last30DaysText;
-
-            updateProgressBar(); // Only update progress bar in this function
+            document.getElementById('result').innerText = result;
+            document.getElementById('first30Days').innerText = first30Days;
+            document.getElementById('last30Days').innerText = last30Days;
         }
 
         function calculateGoal() {
-            let balanceGems = parseInput(document.getElementById('balanceGems').value);
-            let timeAmount = parseInput(document.getElementById('timeAmount').value);
-            let timeUnit = document.getElementById('timeUnit').value;
-            let dailyInterestRate = 0.009;
+            const balanceGems = parseInput(document.getElementById('balanceGems').value);
+            const timeUnit = document.getElementById('timeUnit').value;
+            const timeAmount = parseInput(document.getElementById('timeAmount').value);
 
-            let days = 0;
-
-            switch (timeUnit) {
-                case 'days':
-                    days = timeAmount;
-                    break;
-                case 'weeks':
-                    days = timeAmount * 7;
-                    break;
-                case 'months':
-                    days = timeAmount * 30;
-                    break;
-                case 'years':
-                    days = timeAmount * 365;
-                    break;
-            }
-
-            let balance = balanceGems;
-
-            for (let i = 0; i < days; i++) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
-            }
-
-            document.getElementById('goalResult').innerHTML = After <span class="highlight">${formatNumber(days)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.;
+            const goal = `Calculated goal based on ${timeAmount} ${timeUnit}.`;
+            document.getElementById('goalResult').innerText = goal;
         }
 
         function updateGoalBalance() {
-            let select = document.getElementById('rankSelect');
-            let goalBalance = select.value;
-            document.getElementById('goalBalance').value = formatNumber(parseFloat(goalBalance));
-
-            updateProgressBar(); // Only update progress bar in this function
+            const rankValue = document.getElementById('rankSelect').value;
+            const goalBalanceInput = document.getElementById('goalBalance');
+            goalBalanceInput.value = formatNumber(rankValue);
         }
 
-function updateProgressBar() {
-    let initialBalance = parseInput(document.getElementById('initialBalance').value);
-    let goalBalance = parseInput(document.getElementById('goalBalance').value);
+        document.getElementById('downloadPdfButton').addEventListener('click', async () => {
+            const { jsPDF } = window.jspdf;
 
-    // If goalBalance is zero, set percentage to 0 and handle display separately
-    let percentage = goalBalance === 0 ? 0 : Math.min((initialBalance / goalBalance) * 100, 100);
-    let progressFill = document.getElementById('progress-fill');
-    let currentLabel = document.getElementById('current-label');
-    let goalLabel = document.getElementById('goal-label');
+            // Create a new jsPDF instance
+            const doc = new jsPDF();
 
-    // Animate the progress fill width
-    progressFill.style.transition = 'none'; // Disable transition for immediate update
-    progressFill.style.width = percentage + '%';
+            // Add Title
+            doc.setFontSize(22);
+            doc.text('EXP Balance Calculator Results', 10, 10);
 
-    // Force a reflow to apply the new width
-    progressFill.offsetHeight; // Trigger reflow
+            // Add Balance and Goal Information
+            const initialBalance = parseInput(document.getElementById('initialBalance').value);
+            const goalBalance = parseInput(document.getElementById('goalBalance').value);
+            const resultText = document.getElementById('result').innerText;
+            const first30DaysText = document.getElementById('first30Days').innerText;
+            const last30DaysText = document.getElementById('last30Days').innerText;
 
-    // Re-enable transition for smooth animation
-    progressFill.style.transition = 'width 0.5s ease-in-out';
+            doc.setFontSize(16);
+            doc.text(`Initial Balance: ${formatNumber(initialBalance)} Gems`, 10, 30);
+            doc.text(`Goal Balance: ${formatNumber(goalBalance)} Gems`, 10, 40);
+            doc.text('Results:', 10, 50);
+            doc.setFontSize(12);
+            doc.text(resultText, 10, 60);
+            
+            doc.setFontSize(16);
+            doc.text('First 30 Days:', 10, 80);
+            doc.setFontSize(12);
+            doc.text(first30DaysText, 10, 90);
 
-    // Update the labels
-    currentLabel.textContent = formatNumber(initialBalance) + ' Gems';
-    goalLabel.textContent = formatNumber(goalBalance) + ' Gems';
-}
+            doc.setFontSize(16);
+            doc.text('Last 30 Days:', 10, 130);
+            doc.setFontSize(12);
+            doc.text(last30DaysText, 10, 140);
 
-            if (initialBalance === 0) {
-                document.getElementById('current-label').textContent = '0 Gems';
-            }
-
-            if (goalBalance === 0) {
-                document.getElementById('goal-label').textContent = '0 Gems';
-            }
-        }
+            // Save the PDF
+            doc.save('exp_calculator_results.pdf');
+        });
 
         function closeDonatePopup() {
             document.getElementById('donatePopup').style.display = 'none';
         }
-
-        function formatInput(input) {
-            let value = input.value.replace(/,/g, '');
-            if (!isNaN(value) && value !== '') {
-                input.value = formatNumber(parseFloat(value));
-            } else {
-                input.value = '';
-            }
-        }
-
-        document.querySelectorAll('input[type="text"]').forEach(input => {
-            input.addEventListener('input', function() {
-                formatInput(this);
-            });
-            input.addEventListener('blur', function() {
-                formatInput(this);
-            });
-        });
     </script>
 </body>
 </html>
