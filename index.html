@@ -122,23 +122,21 @@
             border: 2px solid #555; /* Thicker border */
             max-width: 90%;
             max-height: 80%;
-            overflow: hidden; /* Hide outer scrollbar */
+            overflow-y: auto;
         }
 
-        #donatePopupContent {
-            max-height: calc(100% - 60px); /* Adjust height to leave space for the close button */
-            overflow-y: auto; /* Scroll content inside the popup if needed */
+        #closePopup {
+            margin-top: 20px;
+            width: 100%;
+            border: 1px solid #555; /* Thicker border */
         }
 
-        #allDaysGui {
-            overflow: hidden; /* Hide outer scrollbar */
-            width: 350px;
-            height: 400px;
-        }
-
-        #allDaysContent {
-            max-height: calc(100% - 50px); /* Adjust height to fit within the container */
-            overflow-y: auto; /* Scroll content inside the container if needed */
+        .guis-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
         }
 
         .gui {
@@ -234,6 +232,20 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #777; /* Handle color on hover */
         }
+
+        .filter-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .filter-container select {
+            padding: 10px;
+            font-size: 1.1em;
+            border: 1px solid #555;
+            border-radius: 5px;
+            background-color: #2c2f36;
+            color: #ffffff;
+        }
     </style>
 </head>
 <body class="night-mode">
@@ -241,6 +253,15 @@
 
     <div class="section-container">
         <div class="guis-container">
+            <!-- Filter Dropdown -->
+            <div class="filter-container">
+                <label for="dayFilter">Show Days:</label>
+                <select id="dayFilter" onchange="updateAllDays()">
+                    <option value="first">First 30 Days</option>
+                    <option value="last">Last 30 Days</option>
+                </select>
+            </div>
+
             <!-- Reordered GUIs -->
             <div id="allDaysGui" class="gui night-mode">
                 <h2>All Days</h2>
@@ -290,11 +311,9 @@
             </div>
 
             <div id="donatePopup" class="night-mode">
-                <div id="donatePopupContent">
-                    <h2>Donate Here:</h2>
-                    <p>/gift @s6eg4se54g</p>
-                    <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
-                </div>
+                <h2>Donate Here:</h2>
+                <p>/gift @s6eg4se54g</p>
+                <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
             </div>
         </div>
     </div>
@@ -393,6 +412,11 @@
         // Store all days data for "All Days" GUI
         function storeAllDaysData(data) {
             window.allDaysData = data;
+        }
+
+        // Function to generate days text
+        function generateDaysText(daysArray) {
+            return daysArray.map(item => `<div class="day-entry ${item.day === 1 ? 'first-day' : item.day === daysArray.length ? 'last-day' : ''}">Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span></div>`).join('');
         }
     </script>
 </body>
