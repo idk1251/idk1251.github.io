@@ -360,10 +360,10 @@
             remainingDays = remainingDays % 7;
 
             let first30Days = dailyBalances.slice(0, 30);
-            let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
+            let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: ${formatNumber(item.profit)}`).join('\n');
 
             let last30Days = dailyBalances.slice(-30);
-            let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
+            let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: ${formatNumber(item.profit)}`).join('\n');
 
             document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, <span class="highlight">${weeks}</span> weeks, and <span class="highlight">${remainingDays}</span> days.`;
             document.getElementById('first30Days').innerHTML = first30DaysText;
@@ -460,44 +460,24 @@
         async function downloadPDF() {
             const { jsPDF } = window.jspdf;
 
-            let doc = new jsPDF();
-            let y = 10;
-
+            const doc = new jsPDF();
             doc.setFontSize(16);
-            doc.text("EXP Balance Calculator Results", 10, y);
-            y += 10;
-
-            doc.setFontSize(14);
-            doc.text("Results:", 10, y);
-            y += 10;
-
-            let resultText = document.getElementById('result').innerText;
-            let goalResultText = document.getElementById('goalResult').innerText;
+            doc.text('EXP Balance Calculator Results', 10, 10);
 
             doc.setFontSize(12);
-            doc.text(resultText, 10, y);
-            y += 10;
+            doc.text('Days to Reach Goal:', 10, 20);
+            doc.text(document.getElementById('result').textContent, 10, 30);
 
-            doc.text(goalResultText, 10, y);
-            y += 10;
+            doc.text('First 30 Days:', 10, 40);
+            doc.text(document.getElementById('first30Days').textContent, 10, 50);
 
-            doc.setFontSize(14);
-            doc.text("First 30 Days:", 10, y);
-            y += 10;
+            doc.text('Last 30 Days:', 10, 70);
+            doc.text(document.getElementById('last30Days').textContent, 10, 90);
 
-            let first30DaysHTML = document.getElementById('first30Days').innerHTML;
-            doc.fromHTML(first30DaysHTML, 10, y, { 'width': 180 });
-            y += 40;
+            doc.text('Goal Balance After X Time:', 10, 110);
+            doc.text(document.getElementById('goalResult').textContent, 10, 120);
 
-            doc.setFontSize(14);
-            doc.text("Last 30 Days:", 10, y);
-            y += 10;
-
-            let last30DaysHTML = document.getElementById('last30Days').innerHTML;
-            doc.fromHTML(last30DaysHTML, 10, y, { 'width': 180 });
-            y += 40;
-
-            doc.save('exp_calculator_results.pdf');
+            doc.save('results.pdf');
         }
     </script>
 </body>
