@@ -105,6 +105,9 @@
             background-color: #333842;
             color: #d1d1d1;
             border: 2px solid #555; /* Thicker border */
+            max-width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
         }
 
         #closePopup {
@@ -144,6 +147,8 @@
 
         .leaderboard {
             text-align: left;
+            height: 400px; /* Fixed height for consistent scrolling */
+            overflow-y: auto;
         }
 
         .leaderboard h2 {
@@ -192,21 +197,9 @@
             <button onclick="calculateGoal()">Calculate Goal</button>
             <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
         </div>
-    </div>
 
-    <div class="guis-container">
-        <div id="guiLeft" class="gui">
-            <h2>First 30 Days</h2>
-            <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
-        </div>
-
-        <div id="guiRight" class="gui">
-            <h2>Last 30 Days</h2>
-            <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
-        </div>
-
-        <!-- Third Section: Leaderboard -->
-        <div id="leaderboardGui" class="gui leaderboard">
+        <!-- Third Section: Donate GUI -->
+        <div id="donateGui" class="gui">
             <h2>Donate Me!</h2>
             <p>/gift @s6eg4se54g</p>
             <h3>Top 10 Donators</h3>
