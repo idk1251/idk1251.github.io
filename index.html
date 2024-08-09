@@ -277,6 +277,9 @@
 
         <div class="container night-mode">
             <h2>Calculate Goal Balance after X Time</h2>
+            <label for="balanceGems">Balance (Gems): </label>
+            <input type="text" id="balanceGems" placeholder="e.g., 1,000" class="night-mode">
+
             <label for="timeAmount">Time Amount: </label>
             <input type="text" id="timeAmount" placeholder="e.g., 30" class="night-mode">
 
@@ -363,11 +366,11 @@
             document.getElementById('first30Days').innerHTML = first30DaysText;
             document.getElementById('last30Days').innerHTML = last30DaysText;
 
-            updateProgressBar();
+            updateProgressBar(); // Only update progress bar in this function
         }
 
         function calculateGoal() {
-            let initialBalance = parseInput(document.getElementById('initialBalance2').value);
+            let balanceGems = parseInput(document.getElementById('balanceGems').value);
             let timeAmount = parseInput(document.getElementById('timeAmount').value);
             let timeUnit = document.getElementById('timeUnit').value;
             let dailyInterestRate = 0.009;
@@ -389,7 +392,7 @@
                     break;
             }
 
-            let balance = initialBalance;
+            let balance = balanceGems;
 
             for (let i = 0; i < days; i++) {
                 let profit = balance * dailyInterestRate;
@@ -404,7 +407,7 @@
             let goalBalance = select.value;
             document.getElementById('goalBalance').value = formatNumber(parseFloat(goalBalance));
 
-            updateProgressBar();
+            updateProgressBar(); // Only update progress bar in this function
         }
 
         function updateProgressBar() {
