@@ -137,6 +137,11 @@
             color: #00ff00;
         }
 
+        .highlight {
+            color: #ff4757;
+            font-weight: bold;
+        }
+
         .leaderboard {
             text-align: left;
         }
@@ -166,10 +171,10 @@
         <div class="container">
             <h2>Calculate Days to Reach Goal</h2>
             <label for="initialBalance">Balance (Gems): </label>
-            <input type="text" id="initialBalance" value="1,000" onblur="addCommasToInput('initialBalance')">
+            <input type="text" id="initialBalance" value="1,000" oninput="formatInput(this)">
 
             <label for="goalBalance">Goal Balance (Gems): </label>
-            <input type="text" id="goalBalance" value="5,000" onblur="addCommasToInput('goalBalance')">
+            <input type="text" id="goalBalance" value="5,000" oninput="formatInput(this)">
 
             <button onclick="calculateDays()">Calculate Days</button>
             <div id="result">Enter values and click "Calculate Days" to see the results.</div>
@@ -179,7 +184,7 @@
         <div class="container">
             <h2>Calculate Goal Balance after X Days</h2>
             <label for="initialBalance2">Balance (Gems): </label>
-            <input type="text" id="initialBalance2" value="1,000" onblur="addCommasToInput('initialBalance2')">
+            <input type="text" id="initialBalance2" value="1,000" oninput="formatInput(this)">
 
             <label for="daysInput">Number of Days: </label>
             <input type="text" id="daysInput" value="30">
@@ -237,6 +242,12 @@
             return parseFloat(value.replace(/,/g, ''));
         }
 
+        function formatInput(element) {
+            // Format input value with commas
+            let value = parseInput(element.value);
+            element.value = formatNumber(value);
+        }
+
         function calculateDays() {
             let initialBalance = parseInput(document.getElementById('initialBalance').value);
             let goalBalance = parseInput(document.getElementById('goalBalance').value);
@@ -268,7 +279,7 @@
             let last30Days = dailyBalances.slice(-30);
             let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
 
-            document.getElementById('result').innerHTML = `You will reach your goal in ${years} years, ${months} months, and ${remainingDays} days.`;
+            document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> <span class="highlight">years</span>, <span class="highlight">${months}</span> <span class="highlight">months</span>, and <span class="highlight">${remainingDays}</span> <span class="highlight">days</span>.`;
             document.getElementById('first30Days').innerHTML = first30DaysText;
             document.getElementById('last30Days').innerHTML = last30DaysText;
         }
@@ -285,7 +296,7 @@
                 balance += profit;
             }
 
-            document.getElementById('goalResult').innerHTML = `After ${days} days, your balance will be ${formatNumber(balance)} gems.`;
+            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${days}</span> days, your <span class="highlight">balance</span> will be <span class="highlight">${formatNumber(balance)}</span> <span class="highlight">gems</span>.`;
         }
 
         function closeDonatePopup() {
@@ -298,16 +309,9 @@
         });
 
         // Add commas to input value
-        function addCommasToInput(id) {
-            let input = document.getElementById(id);
-            let value = parseInput(input.value);
-            input.value = formatNumber(value);
-        }
-
-        // Add commas on input blur
-        document.getElementById('initialBalance').addEventListener('blur', () => addCommasToInput('initialBalance'));
-        document.getElementById('goalBalance').addEventListener('blur', () => addCommasToInput('goalBalance'));
-        document.getElementById('initialBalance2').addEventListener('blur', () => addCommasToInput('initialBalance2'));
+        document.getElementById('initialBalance').addEventListener('input', () => formatInput(document.getElementById('initialBalance')));
+        document.getElementById('goalBalance').addEventListener('input', () => formatInput(document.getElementById('goalBalance')));
+        document.getElementById('initialBalance2').addEventListener('input', () => formatInput(document.getElementById('initialBalance2')));
     </script>
 </body>
 </html>
