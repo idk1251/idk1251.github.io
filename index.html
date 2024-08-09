@@ -280,9 +280,6 @@
             <label for="balanceGems">Balance (Gems): </label>
             <input type="text" id="balanceGems" placeholder="e.g., 1,000" class="night-mode">
 
-            <label for="timeAmount">Time Amount: </label>
-            <input type="text" id="timeAmount" placeholder="e.g., 30" class="night-mode">
-
             <label for="timeUnit">Time Unit: </label>
             <select id="timeUnit" class="night-mode">
                 <option value="days">Days</option>
@@ -290,6 +287,9 @@
                 <option value="months">Months</option>
                 <option value="years">Years</option>
             </select>
+
+            <label for="timeAmount">Time Amount: </label>
+            <input type="text" id="timeAmount" placeholder="e.g., 30" class="night-mode">
 
             <button onclick="calculateGoal()">Calculate Goal</button>
             <div id="goalResult">Enter time period and click "Calculate Goal" to see the results.</div>
