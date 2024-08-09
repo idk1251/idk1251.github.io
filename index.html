@@ -24,7 +24,7 @@
         h1 {
             color: #007bff;
             text-align: center;
-            margin: 10px 0 30px; /* Adjusted margin to lift the title */
+            margin: 10px 0; /* Adjusted to be a bit higher */
         }
 
         .section-container {
@@ -173,15 +173,6 @@
             color: #d1d1d1;
         }
 
-        .sorting-options {
-            margin-top: 10px;
-            margin-bottom: 20px;
-        }
-
-        .sorting-options label {
-            margin-right: 10px;
-        }
-
         /* Custom scrollbar styles */
         ::-webkit-scrollbar {
             width: 12px; /* Width of the scrollbar */
@@ -207,6 +198,16 @@
     <div class="section-container">
         <div class="guis-container">
             <!-- Reordered GUIs -->
+            <div id="allDaysGui" class="gui night-mode">
+                <h2>All Days</h2>
+                <label for="dayFilter">Show: </label>
+                <select id="dayFilter" onchange="updateAllDays()">
+                    <option value="first">First 30 Days</option>
+                    <option value="last">Last 30 Days</option>
+                </select>
+                <div id="allDaysContent">Select an option to view the data.</div>
+            </div>
+
             <div class="container night-mode">
                 <h2>Calculate Days to Reach Goal</h2>
                 <label for="initialBalance">Balance (Gems): </label>
@@ -229,18 +230,6 @@
 
                 <button onclick="calculateGoal()">Calculate Goal</button>
                 <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
-            </div>
-
-            <div class="container night-mode">
-                <h2>All Days</h2>
-                <div class="sorting-options">
-                    <label for="sortOrder">Sort Order:</label>
-                    <select id="sortOrder" onchange="updateAllDays()">
-                        <option value="asc">Ascending</option>
-                        <option value="desc">Descending</option>
-                    </select>
-                </div>
-                <div id="allDays">Enter values and click "Calculate Days" to see the results.</div>
             </div>
 
             <div id="leaderboardGui" class="gui night-mode leaderboard">
@@ -305,10 +294,16 @@
             let months = Math.floor(remainingDays / 30);
             remainingDays = remainingDays % 30;
 
-            let allDays = dailyBalances;
-            updateAllDays(); // Initialize with default sort order
+            let first30Days = dailyBalances.slice(0, 30);
+            let last30Days = dailyBalances.slice(-30);
+
+            function generateDaysText(daysArray) {
+                return daysArray.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
+            }
 
             document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, and <span class="highlight">${remainingDays}</span> days.`;
+            document.getElementById('first30Days').innerHTML = generateDaysText(first30Days);
+            document.getElementById('last30Days').innerHTML = generateDaysText(last30Days);
         }
 
         function calculateGoal() {
@@ -326,27 +321,21 @@
             document.getElementById('goalResult').innerHTML = `After <span class="highlight">${days}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
         }
 
-        function updateAllDays() {
-            let sortOrder = document.getElementById('sortOrder').value;
-            let dailyBalances = getAllDaysData(); // Retrieve the daily balance data
-
-            if (sortOrder === 'asc') {
-                dailyBalances.sort((a, b) => a.day - b.day);
-            } else {
-                dailyBalances.sort((a, b) => b.day - a.day);
-            }
-
-            let allDaysText = dailyBalances.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
-            document.getElementById('allDays').innerHTML = allDaysText;
-        }
-
-        function getAllDaysData() {
-            // Dummy function for fetching all days data, replace with actual logic
-            return [];
-        }
-
         function closeDonatePopup() {
             document.getElementById('donatePopup').style.display = 'none';
+        }
+
+        function updateAllDays() {
+            let filter = document.getElementById('dayFilter').value;
+            let allDaysContent = document.getElementById('allDaysContent');
+            
+            if (!window.allDaysData) {
+                allDaysContent.innerHTML = 'Calculate days first to see the data here.';
+                return;
+            }
+
+            let daysArray = filter === 'first' ? window.allDaysData.slice(0, 30) : window.allDaysData.slice(-30);
+            allDaysContent.innerHTML = daysArray.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
         }
 
         // Open donate popup on button click
@@ -360,6 +349,11 @@
                 this.value = formatNumber(parseInput(this.value));
             });
         });
+
+        // Store all days data for "All Days" GUI
+        function storeAllDaysData(data) {
+            window.allDaysData = data;
+        }
     </script>
 </body>
 </html>
