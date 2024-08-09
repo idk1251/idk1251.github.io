@@ -269,12 +269,10 @@
 
     <script>
         function formatNumber(num) {
-            // Format number with commas
             return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         }
 
         function parseInput(value) {
-            // Parse input with commas removed
             return parseFloat(value.replace(/,/g, '')) || 0;
         }
 
@@ -316,17 +314,31 @@
 
         function calculateGoal() {
             let initialBalance = parseInput(document.getElementById('initialBalance2').value);
-            let days = parseInput(document.getElementById('daysInput').value);
+            let time = parseInput(document.getElementById('timeInput').value);
+            let timeUnit = document.getElementById('timeUnit').value;
             let dailyInterestRate = 0.009;
+
+            // Convert time to days based on selected unit
+            switch (timeUnit) {
+                case 'weeks':
+                    time *= 7;
+                    break;
+                case 'months':
+                    time *= 30;
+                    break;
+                case 'years':
+                    time *= 365;
+                    break;
+            }
 
             let balance = initialBalance;
 
-            for (let i = 0; i < days; i++) {
+            for (let i = 0; i < time; i++) {
                 let profit = balance * dailyInterestRate;
                 balance += profit;
             }
 
-            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${formatNumber(days)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
+            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${formatNumber(time)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
         }
 
         function updateGoalBalance() {
@@ -340,7 +352,6 @@
         }
 
         function formatInput(input) {
-            // Automatically format numbers with commas
             let value = input.value.replace(/,/g, '');
             if (!isNaN(value) && value !== '') {
                 input.value = formatNumber(parseFloat(value));
@@ -349,7 +360,6 @@
             }
         }
 
-        // Format inputs on keyup and paste
         document.querySelectorAll('input[type="text"]').forEach(input => {
             input.addEventListener('input', function() {
                 formatInput(this);
