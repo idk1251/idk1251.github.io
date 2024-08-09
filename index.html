@@ -298,34 +298,58 @@
 
     <div id="donatePopup">
         <h2>Donate</h2>
-        <p>Consider supporting the developer! Your contribution helps keep this tool available.</p>
+        <p>If you'd like to support the development, consider donating via the link below:</p>
+        <button id="donateButton">Donate Now</button>
         <button id="closePopup">Close</button>
     </div>
-    
-    <button id="donateButton">Donate</button>
 
     <script>
-        function formatNumber(number) {
-            return new Intl.NumberFormat().format(number);
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('donateButton').addEventListener('click', function() {
+                window.open('https://www.paypal.com/donate', '_blank');
+            });
+
+            document.getElementById('closePopup').addEventListener('click', function() {
+                document.getElementById('donatePopup').style.display = 'none';
+            });
+        });
 
         function parseInput(value) {
-            return parseFloat(value.replace(/,/g, ''));
+            return parseFloat(value.replace(/[^0-9.]/g, '')) || 0;
+        }
+
+        function formatNumber(num) {
+            return num.toLocaleString();
         }
 
         function calculateDays() {
             let initialBalance = parseInput(document.getElementById('initialBalance').value);
             let goalBalance = parseInput(document.getElementById('goalBalance').value);
+
+            if (goalBalance <= initialBalance) {
+                document.getElementById('result').innerHTML = 'Goal balance must be greater than the initial balance.';
+                return;
+            }
+
             let dailyInterestRate = 0.009;
             let days = 0;
+            let balance = initialBalance;
 
-            while (initialBalance < goalBalance) {
-                initialBalance += initialBalance * dailyInterestRate;
+            while (balance < goalBalance) {
+                let profit = balance * dailyInterestRate;
+                balance += profit;
                 days++;
             }
 
-            document.getElementById('result').innerHTML = `It will take approximately <span class="highlight">${formatNumber(days)}</span> days to reach <span class="highlight">${formatNumber(goalBalance)}</span> gems.`;
-            updateProgressBar();
+            document.getElementById('result').innerHTML = `To reach a balance of <span class="highlight">${formatNumber(goalBalance)}</span> gems from <span class="highlight">${formatNumber(initialBalance)}</span> gems, it will take <span class="highlight">${days}</span> days.`;
+        }
+
+        function updateGoalBalance() {
+            let selectedRankValue = document.getElementById('rankSelect').value;
+            if (selectedRankValue) {
+                document.getElementById('goalBalance').value = selectedRankValue;
+                calculateDays();
+            }
         }
 
         function calculateGoal() {
@@ -359,40 +383,24 @@
             }
 
             document.getElementById('goalResult').innerHTML = `After <span class="highlight">${formatNumber(days)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
+
+            // Update progress bar
             updateProgressBar();
         }
 
         function updateProgressBar() {
-            let initialBalance = parseInput(document.getElementById('initialBalance').value);
-            let goalBalance = parseInput(document.getElementById('goalBalance').value);
-            let currentBalance = parseInput(document.getElementById('result').innerHTML.replace(/,/g, '').replace(/<span class="highlight">|<\/span>/g, ''));
+            // Dummy values for demonstration
+            let startValue = 0;
+            let currentValue = parseInput(document.getElementById('initialBalance').value);
+            let goalValue = parseInput(document.getElementById('goalBalance').value);
 
-            let progressBarFill = document.getElementById('progress-fill');
-            let startLabel = document.getElementById('start-label');
-            let goalLabel = document.getElementById('goal-label');
-            let currentLabel = document.getElementById('current-label');
-
-            let percentage = (currentBalance - initialBalance) / (goalBalance - initialBalance) * 100;
-            percentage = Math.min(percentage, 100);
-
-            progressBarFill.style.width = percentage + '%';
-            currentLabel.textContent = formatNumber(currentBalance) + ' Gems';
-            goalLabel.textContent = formatNumber(goalBalance) + ' Gems';
-            startLabel.textContent = formatNumber(initialBalance) + ' Gems';
+            if (goalValue > 0) {
+                let percentage = Math.min((currentValue / goalValue) * 100, 100);
+                document.getElementById('progress-fill').style.width = percentage + '%';
+                document.getElementById('current-label').textContent = formatNumber(currentValue) + ' Gems';
+                document.getElementById('goal-label').textContent = formatNumber(goalValue) + ' Gems';
+            }
         }
-
-        function updateGoalBalance() {
-            let selectedValue = document.getElementById('rankSelect').value;
-            document.getElementById('goalBalance').value = selectedValue;
-        }
-
-        document.getElementById('donateButton').addEventListener('click', function() {
-            document.getElementById('donatePopup').style.display = 'block';
-        });
-
-        document.getElementById('closePopup').addEventListener('click', function() {
-            document.getElementById('donatePopup').style.display = 'none';
-        });
     </script>
 </body>
 </html>
