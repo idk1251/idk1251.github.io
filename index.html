@@ -39,7 +39,7 @@
 
         .container {
             background-color: #333842;
-            padding: 40px;
+            padding: 30px;
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 500px;
@@ -125,14 +125,6 @@
             background: #777;
         }
 
-        .guis-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
         .gui {
             width: 500px;
             height: 500px;
@@ -150,35 +142,7 @@
     <h1>EXP Balance Calculator</h1>
     <h1>(by s6eg4se54g)</h1>
     <div class="section-container">
-        <!-- Control Section -->
-        <div class="container">
-            <h2>Time-based Balance Growth</h2>
-            <label for="balanceInput">Balance (Gems): </label>
-            <input type="text" id="balanceInput" value="1,000">
-
-            <label for="timeUnit">Select Time Unit: </label>
-            <select id="timeUnit">
-                <option value="seconds">Seconds</option>
-                <option value="minutes">Minutes</option>
-                <option value="hours">Hours</option>
-                <option value="days">Days</option>
-                <option value="weeks">Weeks</option>
-                <option value="months">Months</option>
-                <option value="years">Years</option>
-            </select>
-
-            <button onclick="calculateTimeBasedGrowth()">Calculate</button>
-        </div>
-
-        <!-- Results Section -->
-        <div class="results-container" id="resultsContainer">
-            <h2>Results</h2>
-            <div id="timeBasedResult">Enter balance and select time unit to see results.</div>
-        </div>
-    </div>
-
-    <div class="section-container">
-        <!-- Additional GUI Containers -->
+        <!-- Existing GUIs -->
         <div id="guiLeft" class="gui">
             <h2>First 30 Days</h2>
             <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
@@ -211,6 +175,31 @@
 
             <button onclick="calculateGoal()">Calculate Goal</button>
             <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
+        </div>
+
+        <!-- New Time-based Balance Growth GUI -->
+        <div class="container">
+            <h2>Time-based Balance Growth</h2>
+            <label for="balanceInput">Balance (Gems): </label>
+            <input type="text" id="balanceInput" value="1,000">
+
+            <label for="timeUnit">Select Time Unit: </label>
+            <select id="timeUnit">
+                <option value="seconds">Seconds</option>
+                <option value="minutes">Minutes</option>
+                <option value="hours">Hours</option>
+                <option value="days">Days</option>
+                <option value="weeks">Weeks</option>
+                <option value="months">Months</option>
+                <option value="years">Years</option>
+            </select>
+
+            <button onclick="calculateTimeBasedGrowth()">Calculate</button>
+        </div>
+
+        <div id="resultsContainer" class="results-container">
+            <h2>Results</h2>
+            <div id="timeBasedResult">Enter balance and select time unit to see results.</div>
         </div>
 
         <div id="leaderboardGui" class="gui leaderboard">
@@ -274,7 +263,7 @@
         function calculateTimeBasedGrowth() {
             let balance = parseInput(document.getElementById('balanceInput').value);
             let timeUnit = document.getElementById('timeUnit').value;
-            let interestRate = 0.009;
+            let interestRate = 0.009; // Example daily rate
             let timePeriods;
 
             switch(timeUnit) {
@@ -294,7 +283,7 @@
                     timePeriods = 4;
                     break;
                 case 'months':
-                    timePeriods = 12;
+                    timePeriods = 4;
                     break;
                 case 'years':
                     timePeriods = 10;
