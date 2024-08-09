@@ -24,7 +24,7 @@
         h1 {
             color: #007bff;
             text-align: center;
-            margin: 30px 0;
+            margin: 10px 0 30px; /* Adjusted margin to lift the title */
         }
 
         .section-container {
@@ -173,6 +173,15 @@
             color: #d1d1d1;
         }
 
+        .sorting-options {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .sorting-options label {
+            margin-right: 10px;
+        }
+
         /* Custom scrollbar styles */
         ::-webkit-scrollbar {
             width: 12px; /* Width of the scrollbar */
@@ -198,16 +207,6 @@
     <div class="section-container">
         <div class="guis-container">
             <!-- Reordered GUIs -->
-            <div id="guiLeft" class="gui night-mode">
-                <h2>First 30 Days</h2>
-                <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
-            </div>
-
-            <div id="guiRight" class="gui night-mode">
-                <h2>Last 30 Days</h2>
-                <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
-            </div>
-
             <div class="container night-mode">
                 <h2>Calculate Days to Reach Goal</h2>
                 <label for="initialBalance">Balance (Gems): </label>
@@ -230,6 +229,18 @@
 
                 <button onclick="calculateGoal()">Calculate Goal</button>
                 <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
+            </div>
+
+            <div class="container night-mode">
+                <h2>All Days</h2>
+                <div class="sorting-options">
+                    <label for="sortOrder">Sort Order:</label>
+                    <select id="sortOrder" onchange="updateAllDays()">
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </div>
+                <div id="allDays">Enter values and click "Calculate Days" to see the results.</div>
             </div>
 
             <div id="leaderboardGui" class="gui night-mode leaderboard">
@@ -294,15 +305,10 @@
             let months = Math.floor(remainingDays / 30);
             remainingDays = remainingDays % 30;
 
-            let first30Days = dailyBalances.slice(0, 30);
-            let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
-
-            let last30Days = dailyBalances.slice(-30);
-            let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
+            let allDays = dailyBalances;
+            updateAllDays(); // Initialize with default sort order
 
             document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, and <span class="highlight">${remainingDays}</span> days.`;
-            document.getElementById('first30Days').innerHTML = first30DaysText;
-            document.getElementById('last30Days').innerHTML = last30DaysText;
         }
 
         function calculateGoal() {
@@ -318,6 +324,25 @@
             }
 
             document.getElementById('goalResult').innerHTML = `After <span class="highlight">${days}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
+        }
+
+        function updateAllDays() {
+            let sortOrder = document.getElementById('sortOrder').value;
+            let dailyBalances = getAllDaysData(); // Retrieve the daily balance data
+
+            if (sortOrder === 'asc') {
+                dailyBalances.sort((a, b) => a.day - b.day);
+            } else {
+                dailyBalances.sort((a, b) => b.day - a.day);
+            }
+
+            let allDaysText = dailyBalances.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
+            document.getElementById('allDays').innerHTML = allDaysText;
+        }
+
+        function getAllDaysData() {
+            // Dummy function for fetching all days data, replace with actual logic
+            return [];
         }
 
         function closeDonatePopup() {
