@@ -28,7 +28,7 @@
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             max-width: 400px;
-            margin: 0 auto;
+            margin: 20px auto;
             text-align: center;
             position: relative;
             border: 2px solid #555; /* Thicker border */
@@ -133,8 +133,10 @@
 <body class="night-mode">
     <h1>EXP Balance Calculator</h1>
 
+    <!-- First Section: Calculate Days -->
     <div class="container night-mode">
-        <label for="initialBalance">Balance (Gems): </label>
+        <h2>Calculate Days to Reach Goal</h2>
+        <label for="initialBalance">Initial Balance (Gems): </label>
         <input type="text" id="initialBalance" value="1,000" class="night-mode">
 
         <label for="goalBalance">Goal Balance (Gems): </label>
@@ -142,14 +144,19 @@
 
         <button onclick="calculateDays()">Calculate Days</button>
         <div id="result">Enter values and click "Calculate Days" to see the results.</div>
+    </div>
 
-        <label for="daysInput">Days: </label>
+    <!-- Second Section: Calculate Goal Balance -->
+    <div class="container night-mode">
+        <h2>Calculate Goal Balance after X Days</h2>
+        <label for="initialBalance2">Initial Balance (Gems): </label>
+        <input type="text" id="initialBalance2" value="1,000" class="night-mode">
+
+        <label for="daysInput">Number of Days: </label>
         <input type="text" id="daysInput" value="30" class="night-mode">
 
         <button onclick="calculateGoal()">Calculate Goal</button>
         <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
-
-        <button id="donateButton" onclick="openDonatePopup()">Donate</button>
     </div>
 
     <div class="guis-container">
@@ -220,19 +227,18 @@
         }
 
         function calculateGoal() {
-            let initialBalance = parseInput(document.getElementById('initialBalance').value);
+            let initialBalance2 = parseInput(document.getElementById('initialBalance2').value);
             let daysInput = parseInput(document.getElementById('daysInput').value);
             let dailyInterestRate = 0.009;
 
-            let balance = initialBalance;
+            let balance = initialBalance2;
 
             for (let i = 0; i < daysInput; i++) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
+                balance += balance * dailyInterestRate;
             }
 
             document.getElementById('goalResult').innerHTML = 
-                `<p>After <strong>${formatNumber(daysInput)}</strong> days, your balance will be approximately <strong>${formatNumber(balance)} gems</strong>.</p>`;
+                `<p>After <strong>${formatNumber(daysInput)}</strong> days, your balance will be approximately <strong>${formatNumber(balance)} gems</strong> starting from an initial balance of <strong>${formatNumber(initialBalance2)} gems</strong>.</p>`;
         }
 
         function openDonatePopup() {
@@ -251,6 +257,13 @@
         });
 
         document.getElementById('goalBalance').addEventListener('input', function(e) {
+            let value = parseInput(e.target.value);
+            if (!isNaN(value)) {
+                e.target.value = formatNumber(value);
+            }
+        });
+
+        document.getElementById('initialBalance2').addEventListener('input', function(e) {
             let value = parseInput(e.target.value);
             if (!isNaN(value)) {
                 e.target.value = formatNumber(value);
