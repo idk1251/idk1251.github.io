@@ -196,20 +196,30 @@
     <h1>EXP Balance Calculator</h1>
 
     <div class="section-container">
-        <!-- GUI Containers -->
-        <div class="container night-mode">
-            <h2>Calculate Days to Reach Goal</h2>
-            <label for="initialBalance">Balance (Gems): </label>
-            <input type="text" id="initialBalance" value="1,000" class="night-mode">
-
-            <label for="goalBalance">Goal Balance (Gems): </label>
-            <input type="text" id="goalBalance" value="5,000" class="night-mode">
-
-            <button onclick="calculateDays()">Calculate Days</button>
-            <div id="result">Enter values and click "Calculate Days" to see the results.</div>
-        </div>
-
         <div class="guis-container">
+            <!-- Reordered GUIs -->
+            <div id="guiLeft" class="gui night-mode">
+                <h2>First 30 Days</h2>
+                <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
+            </div>
+
+            <div id="guiRight" class="gui night-mode">
+                <h2>Last 30 Days</h2>
+                <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
+            </div>
+
+            <div class="container night-mode">
+                <h2>Calculate Days to Reach Goal</h2>
+                <label for="initialBalance">Balance (Gems): </label>
+                <input type="text" id="initialBalance" value="1,000" class="night-mode">
+
+                <label for="goalBalance">Goal Balance (Gems): </label>
+                <input type="text" id="goalBalance" value="5,000" class="night-mode">
+
+                <button onclick="calculateDays()">Calculate Days</button>
+                <div id="result">Enter values and click "Calculate Days" to see the results.</div>
+            </div>
+
             <div class="container night-mode">
                 <h2>Calculate Goal Balance after X Days</h2>
                 <label for="initialBalance2">Balance (Gems): </label>
@@ -244,16 +254,6 @@
                 <h2>Donate Here:</h2>
                 <p>/gift @s6eg4se54g</p>
                 <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
-            </div>
-
-            <div id="guiLeft" class="gui night-mode">
-                <h2>First 30 Days</h2>
-                <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
-            </div>
-
-            <div id="guiRight" class="gui night-mode">
-                <h2>Last 30 Days</h2>
-                <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
             </div>
         </div>
     </div>
