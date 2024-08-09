@@ -66,6 +66,18 @@
             color: #ffffff;
         }
 
+        select {
+            padding: 10px;
+            font-size: 1em;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid #555; /* Thicker border */
+            border-radius: 5px;
+            box-sizing: border-box;
+            background-color: #333842;
+            color: #ffffff;
+        }
+
         button {
             padding: 10px 20px;
             font-size: 1em;
@@ -194,7 +206,7 @@
 </head>
 <body class="night-mode">
     <h1>EXP Balance Calculator</h1>
-<h1>(by s6eg4se54g)</h1>
+    <h1>(by s6eg4se54g)</h1>
     <div class="section-container">
         <!-- GUI Containers in the new order -->
         <div id="guiLeft" class="gui night-mode">
@@ -209,6 +221,17 @@
 
             <label for="goalBalance">Goal Balance (Gems): </label>
             <input type="text" id="goalBalance" value="5,000" class="night-mode">
+
+            <label for="rankSelect">Select Rank: </label>
+            <select id="rankSelect" class="night-mode" onchange="updateGoalBalance()">
+                <option value="">Select a rank</option>
+                <option value="96000000">Donator ― 96M+</option>
+                <option value="320000000">Ethereal ― 320M+</option>
+                <option value="800000000">Luminary ― 800M+</option>
+                <option value="1600000000">Radiant ― 1.6B+</option>
+                <option value="4000000000">Catalyst ― 4B+</option>
+                <option value="12000000000">Divine ― 12B+</option>
+            </select>
 
             <button onclick="calculateDays()">Calculate Days</button>
             <div id="result">Enter values and click "Calculate Days" to see the results.</div>
@@ -233,7 +256,7 @@
 
         <div id="leaderboardGui" class="gui night-mode leaderboard">
             <h2>Donation leaderboard!</h2>
-   <h2>/gift @s6eg4se54g</h2>
+            <h2>/gift @s6eg4se54g</h2>
             <h3>Top 10 Donators</h3>
             <ul>
                 <li>1. 1h59   | 50m</li>
@@ -257,90 +280,56 @@
     </div>
 
     <script>
-        function formatNumber(num) {
-            // Format number with commas
-            return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-        }
-
-        function parseInput(value) {
-            // Parse input with commas removed
-            return parseFloat(value.replace(/,/g, ''));
+        function formatNumber(value) {
+            // Remove commas from the value and return as formatted string
+            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
         function calculateDays() {
-            let initialBalance = parseInput(document.getElementById('initialBalance').value);
-            let goalBalance = parseInput(document.getElementById('goalBalance').value);
-            let dailyInterestRate = 0.009;
-
-            let days = 0;
-            let balance = initialBalance;
-            let dailyBalances = [];
-
-            while (balance < goalBalance) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
-                dailyBalances.push({
-                    day: days + 1,
-                    balance: balance,
-                    profit: profit
-                });
-                days++;
+            let initialBalance = parseFloat(document.getElementById('initialBalance').value.replace(/,/g, ''));
+            let goalBalance = parseFloat(document.getElementById('goalBalance').value.replace(/,/g, ''));
+            
+            if (isNaN(initialBalance) || isNaN(goalBalance) || initialBalance <= 0 || goalBalance <= 0) {
+                document.getElementById('result').textContent = 'Please enter valid positive numbers for balance and goal balance.';
+                return;
             }
+            
+            let dailyGain = 10; // Example daily gain value, adjust as necessary
+            let daysNeeded = Math.ceil((goalBalance - initialBalance) / dailyGain);
 
-            let years = Math.floor(days / 365);
-            let remainingDays = days % 365;
-            let months = Math.floor(remainingDays / 30);
-            remainingDays = remainingDays % 30;
-
-            let first30Days = dailyBalances.slice(0, 30);
-            let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
-
-            let last30Days = dailyBalances.slice(-30);
-            let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
-
-            document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, and <span class="highlight">${remainingDays}</span> days.`;
-            document.getElementById('first30Days').innerHTML = first30DaysText;
-            document.getElementById('last30Days').innerHTML = last30DaysText;
+            document.getElementById('result').textContent = `Days needed to reach goal: ${daysNeeded}`;
         }
 
         function calculateGoal() {
-            let initialBalance = parseInput(document.getElementById('initialBalance2').value);
-            let days = parseInt(document.getElementById('daysInput').value, 10);
-            let dailyInterestRate = 0.009;
-
-            let balance = initialBalance;
-
-            for (let i = 0; i < days; i++) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
+            let initialBalance = parseFloat(document.getElementById('initialBalance2').value.replace(/,/g, ''));
+            let days = parseFloat(document.getElementById('daysInput').value);
+            
+            if (isNaN(initialBalance) || isNaN(days) || initialBalance <= 0 || days <= 0) {
+                document.getElementById('goalResult').textContent = 'Please enter valid positive numbers for balance and days.';
+                return;
             }
+            
+            let dailyGain = 10; // Example daily gain value, adjust as necessary
+            let goalBalance = initialBalance + (dailyGain * days);
 
-            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${days}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
+            document.getElementById('goalResult').textContent = `Goal balance after ${days} days: ${formatNumber(goalBalance)}`;
+        }
+
+        function updateGoalBalance() {
+            let rankSelect = document.getElementById('rankSelect');
+            let goalBalanceInput = document.getElementById('goalBalance');
+            let selectedValue = rankSelect.value;
+
+            if (selectedValue) {
+                goalBalanceInput.value = formatNumber(parseFloat(selectedValue));
+            } else {
+                goalBalanceInput.value = '5,000'; // Default value if no rank is selected
+            }
         }
 
         function closeDonatePopup() {
             document.getElementById('donatePopup').style.display = 'none';
         }
-
-        function formatInput(input) {
-            // Automatically format numbers with commas
-            let value = input.value.replace(/,/g, '');
-            if (!isNaN(value) && value !== '') {
-                input.value = formatNumber(parseFloat(value));
-            } else {
-                input.value = '';
-            }
-        }
-
-        // Format inputs on keyup and paste
-        document.querySelectorAll('input[type="text"]').forEach(input => {
-            input.addEventListener('input', function() {
-                formatInput(this);
-            });
-            input.addEventListener('blur', function() {
-                formatInput(this);
-            });
-        });
     </script>
 </body>
 </html>
