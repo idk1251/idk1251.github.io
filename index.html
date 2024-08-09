@@ -54,19 +54,7 @@
             margin-top: 20px; /* Add more space above */
         }
 
-        input[type="text"] {
-            padding: 10px;
-            font-size: 1em;
-            width: 100%;
-            margin-bottom: 20px;
-            border: 1px solid #555; /* Thicker border */
-            border-radius: 5px;
-            box-sizing: border-box;
-            background-color: #333842;
-            color: #ffffff;
-        }
-
-        select {
+        input[type="text"], select {
             padding: 10px;
             font-size: 1em;
             width: 100%;
@@ -204,27 +192,23 @@
         }
     </style>
 </head>
-<body class="night-mode">
+<body>
     <h1>EXP Balance Calculator</h1>
     <h1>(by s6eg4se54g)</h1>
     <div class="section-container">
-        <!-- GUI Containers in the new order -->
-        <div id="guiLeft" class="gui night-mode">
+        <div id="guiLeft" class="gui">
             <h2>First 30 Days</h2>
             <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div class="container night-mode">
+        <div class="container">
             <h2>Calculate Days to Reach Goal</h2>
             <label for="initialBalance">Balance (Gems): </label>
-            <input type="text" id="initialBalance" value="1,000" class="night-mode">
+            <input type="text" id="initialBalance" value="1,000">
 
             <label for="goalBalance">Goal Balance (Gems): </label>
-            <input type="text" id="goalBalance" value="5,000" class="night-mode">
-
-            <label for="rankSelect">Select Rank: </label>
             <select id="rankSelect" onchange="updateGoalBalance()">
-                <option value="" disabled selected>Select Rank</option>
+                <option value="">Select Rank</option>
                 <option value="96000000">Donator ― 96M+</option>
                 <option value="320000000">Ethereal ― 320M+</option>
                 <option value="800000000">Luminary ― 800M+</option>
@@ -237,32 +221,32 @@
             <div id="result">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div id="guiRight" class="gui night-mode">
+        <div id="guiRight" class="gui">
             <h2>Last 30 Days</h2>
             <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div class="container night-mode">
+        <div class="container">
             <h2>Calculate Goal Balance after X Days</h2>
             <label for="initialBalance2">Balance (Gems): </label>
-            <input type="text" id="initialBalance2" value="1,000" class="night-mode">
+            <input type="text" id="initialBalance2" value="1,000">
 
             <label for="daysInput">Number of Days: </label>
-            <input type="text" id="daysInput" value="30" class="night-mode">
+            <input type="text" id="daysInput" value="30">
 
             <button onclick="calculateGoal()">Calculate Goal</button>
             <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
         </div>
 
-        <div id="leaderboardGui" class="gui night-mode leaderboard">
+        <div id="leaderboardGui" class="gui leaderboard">
             <h2>Donation leaderboard!</h2>
             <h2>/gift @s6eg4se54g</h2>
             <h3>Top 10 Donators</h3>
             <ul>
                 <li>1. 1h59   | 50m</li>
                 <li>2. alexplays038   | 2m   </li>
-                <li>3. iamonevader   |1m</li>
-                <li>5. None yet!</li>
+                <li>3. iamonevader   | 1m</li>
+                <li>4. None yet!</li>
                 <li>5. None yet!</li>
                 <li>6. None yet!</li>
                 <li>7. None yet!</li>
@@ -275,7 +259,7 @@
         <div id="donatePopup" class="night-mode">
             <h2>Donate Here:</h2>
             <p>/gift @s6eg4se54g</p>
-            <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
+            <button id="closePopup" onclick="closeDonatePopup()">Close</button>
         </div>
     </div>
 
@@ -287,7 +271,7 @@
 
         function parseInput(value) {
             // Parse input with commas removed
-            return parseFloat(value.replace(/,/g, ''));
+            return parseFloat(value.replace(/,/g, '')) || 0;
         }
 
         function calculateDays() {
@@ -358,11 +342,7 @@
         function updateGoalBalance() {
             const rankSelect = document.getElementById('rankSelect');
             const goalBalanceInput = document.getElementById('goalBalance');
-            if (rankSelect.value) {
-                goalBalanceInput.value = formatNumber(parseFloat(rankSelect.value));
-            } else {
-                goalBalanceInput.value = '';
-            }
+            goalBalanceInput.value = formatNumber(parseInput(rankSelect.value));
         }
 
         // Format inputs on keyup and paste
