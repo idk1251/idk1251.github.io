@@ -217,6 +217,18 @@
                 <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
             </div>
             
+            <div class="container night-mode">
+                <h2>Calculate Goal Balance after X Days</h2>
+                <label for="initialBalance2">Balance (Gems): </label>
+                <input type="text" id="initialBalance2" value="1,000" class="night-mode">
+
+                <label for="daysInput">Number of Days: </label>
+                <input type="text" id="daysInput" value="30" class="night-mode">
+
+                <button onclick="calculateGoal()">Calculate Goal</button>
+                <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
+            </div>
+
             <div id="leaderboardGui" class="gui night-mode leaderboard">
                 <h2>Donate Me!</h2>
                 <p>/gift @s6eg4se54g</p>
@@ -239,18 +251,6 @@
                 <h2>Donate Here:</h2>
                 <p>/gift @s6eg4se54g</p>
                 <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
-            </div>
-
-            <div class="container night-mode">
-                <h2>Calculate Goal Balance after X Days</h2>
-                <label for="initialBalance2">Balance (Gems): </label>
-                <input type="text" id="initialBalance2" value="1,000" class="night-mode">
-
-                <label for="daysInput">Number of Days: </label>
-                <input type="text" id="daysInput" value="30" class="night-mode">
-
-                <button onclick="calculateGoal()">Calculate Goal</button>
-                <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
             </div>
         </div>
     </div>
