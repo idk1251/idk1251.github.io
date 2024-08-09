@@ -27,51 +27,49 @@
             justify-content: space-between;
             gap: 20px;
             flex-wrap: wrap;
-            padding: 20px;
-            max-width: 1200px; /* Adjust as needed */
             margin: 0 auto;
+            padding: 20px;
+            max-width: 1200px;
         }
 
-        .container, .gui {
+        .container {
             background-color: #333842;
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             border: 2px solid #555; /* Thicker border */
             box-sizing: border-box;
-        }
-
-        .container {
-            width: 100%; /* Default width */
-            max-width: 400px; /* Maximum width */
+            width: 100%; /* Full width by default */
+            max-width: 400px; /* Max width for the main container */
         }
 
         .gui {
-            width: 100%;
-            max-width: 400px; /* Maximum width */
-            height: auto; /* Auto height to fit content */
-            overflow: hidden; /* Prevent scrolling */
+            background-color: #333842;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 2px solid #555; /* Thicker border */
+            box-sizing: border-box;
+            width: 100%; /* Full width by default */
+            max-width: 400px; /* Max width for the GUI sections */
         }
 
-        .two-column {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
+        .gui, .container {
+            margin-bottom: 20px; /* Space between sections */
         }
 
-        .two-column .gui {
-            flex: 1;
-            min-width: 300px; /* Minimum width for responsiveness */
+        .container h2, .gui h2 {
+            margin-top: 0;
         }
 
-        label {
+        .container label {
             font-size: 1.1em;
             margin-bottom: 10px;
             display: block;
             margin-top: 20px; /* Add more space above */
         }
 
-        input[type="text"] {
+        .container input[type="text"] {
             padding: 10px;
             font-size: 1em;
             width: 100%;
@@ -83,7 +81,7 @@
             color: #ffffff;
         }
 
-        button {
+        .container button {
             padding: 10px 20px;
             font-size: 1em;
             background-color: #007bff;
@@ -96,7 +94,7 @@
             transition: background-color 0.3s;
         }
 
-        button:hover {
+        .container button:hover {
             background-color: #0056b3;
         }
 
@@ -174,23 +172,18 @@
 
             <button onclick="calculateDays()">Calculate Days</button>
             <div id="result">Enter values and click "Calculate Days" to see the results.</div>
-
-            <button id="donateButton" onclick="openDonatePopup()">Donate</button>
         </div>
 
-        <!-- Two-column layout for 30 Days GUIs -->
-        <div class="two-column">
-            <!-- First 30 Days GUI -->
-            <div id="guiLeft" class="gui night-mode">
-                <h2>First 30 Days</h2>
-                <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
-            </div>
+        <!-- First 30 Days GUI -->
+        <div id="guiLeft" class="gui night-mode">
+            <h2>First 30 Days</h2>
+            <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
+        </div>
 
-            <!-- Last 30 Days GUI -->
-            <div id="guiRight" class="gui night-mode">
-                <h2>Last 30 Days</h2>
-                <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
-            </div>
+        <!-- Last 30 Days GUI -->
+        <div id="guiRight" class="gui night-mode">
+            <h2>Last 30 Days</h2>
+            <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
     </div>
 
@@ -294,10 +287,6 @@
             }
 
             document.getElementById('goalResult').innerHTML = `After ${days} days, your balance will be ${formatNumber(balance)} gems.`;
-        }
-
-        function openDonatePopup() {
-            document.getElementById('donatePopup').style.display = 'block';
         }
 
         function closeDonatePopup() {
