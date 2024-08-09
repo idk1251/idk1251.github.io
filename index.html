@@ -27,6 +27,40 @@
             margin: 30px 0;
         }
 
+        .progress-container {
+            width: 80%;
+            max-width: 800px;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .progress-bar {
+            position: relative;
+            width: 100%;
+            height: 30px;
+            background-color: #555;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            background-color: #00ff00;
+            transition: width 0.3s ease;
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1em;
+        }
+
+        #current-label {
+            color: #00ff00;
+        }
+
         .section-container {
             display: flex;
             justify-content: center;
@@ -190,40 +224,6 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #777; /* Handle color on hover */
         }
-
-        .progress-container {
-            width: 80%;
-            max-width: 800px;
-            margin: 20px auto;
-            text-align: center;
-        }
-
-        .progress-bar {
-            position: relative;
-            width: 100%;
-            height: 30px;
-            background-color: #555;
-            border-radius: 15px;
-            overflow: hidden;
-            margin-bottom: 10px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            width: 0;
-            background-color: #00ff00;
-            transition: width 0.3s ease;
-        }
-
-        .progress-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.1em;
-        }
-
-        #current-label {
-            color: #00ff00;
-        }
     </style>
 </head>
 <body class="night-mode">
@@ -242,7 +242,6 @@
     </div>
 
     <div class="section-container">
-        <!-- GUI Containers in the new order -->
         <div id="guiLeft" class="gui night-mode">
             <h2>First 30 Days</h2>
             <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
@@ -277,18 +276,12 @@
         </div>
 
         <div class="container night-mode">
-            <h2>Calculate Goal Balance after X Days</h2>
+            <h2>Calculate Goal Balance after X Time</h2>
             <label for="initialBalance2">Balance (Gems): </label>
             <input type="text" id="initialBalance2" value="1,000" class="night-mode">
 
             <label for="timeInput">Time Period: </label>
-            <select id="timeInput" class="night-mode">
-                <option value="days">Days</option>
-                <option value="weeks">Weeks</option>
-                <option value="months">Months</option>
-                <option value="years">Years</option>
-            </select>
-            <input type="text" id="daysInput" value="30" class="night-mode">
+            <input type="text" id="timeInput" placeholder="e.g., 30 days, 2 weeks, 6 months, 1 year" class="night-mode">
 
             <button onclick="calculateGoal()">Calculate Goal</button>
             <div id="goalResult">Enter time period and click "Calculate Goal" to see the results.</div>
@@ -354,6 +347,8 @@
             let remainingDays = days % 365;
             let months = Math.floor(remainingDays / 30);
             remainingDays = remainingDays % 30;
+            let weeks = Math.floor(remainingDays / 7);
+            remainingDays = remainingDays % 7;
 
             let first30Days = dailyBalances.slice(0, 30);
             let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
@@ -361,31 +356,40 @@
             let last30Days = dailyBalances.slice(-30);
             let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
 
-            document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, and <span class="highlight">${remainingDays}</span> days.`;
+            document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, <span class="highlight">${weeks}</span> weeks, and <span class="highlight">${remainingDays}</span> days.`;
             document.getElementById('first30Days').innerHTML = first30DaysText;
             document.getElementById('last30Days').innerHTML = last30DaysText;
 
-            // Update the progress bar
+            // Update progress bar
             updateProgressBar();
         }
 
         function calculateGoal() {
             let initialBalance = parseInput(document.getElementById('initialBalance2').value);
-            let days = parseInput(document.getElementById('daysInput').value);
-            let timeUnit = document.getElementById('timeInput').value;
+            let timeInput = document.getElementById('timeInput').value;
             let dailyInterestRate = 0.009;
 
-            // Convert time units to days
-            switch (timeUnit) {
-                case 'weeks':
-                    days *= 7;
-                    break;
-                case 'months':
-                    days *= 30;
-                    break;
-                case 'years':
-                    days *= 365;
-                    break;
+            let days = 0;
+
+            // Parse time input
+            let timeParts = timeInput.match(/(\d+)\s*(days|weeks|months|years)/i);
+            if (timeParts) {
+                let amount = parseInt(timeParts[1]);
+                let unit = timeParts[2].toLowerCase();
+                switch (unit) {
+                    case 'days':
+                        days = amount;
+                        break;
+                    case 'weeks':
+                        days = amount * 7;
+                        break;
+                    case 'months':
+                        days = amount * 30;
+                        break;
+                    case 'years':
+                        days = amount * 365;
+                        break;
+                }
             }
 
             let balance = initialBalance;
@@ -397,7 +401,7 @@
 
             document.getElementById('goalResult').innerHTML = `After <span class="highlight">${formatNumber(days)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
 
-            // Update the progress bar
+            // Update progress bar
             updateProgressBar();
         }
 
@@ -405,7 +409,31 @@
             let select = document.getElementById('rankSelect');
             let goalBalance = select.value;
             document.getElementById('goalBalance').value = formatNumber(parseFloat(goalBalance));
-            updateProgressBar(); // Update the progress bar when the goal balance changes
+
+            // Update progress bar
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            let initialBalance = parseInput(document.getElementById('initialBalance').value);
+            let goalBalance = parseInput(document.getElementById('goalBalance').value);
+
+            let percentage = Math.min((initialBalance / goalBalance) * 100, 100); // Calculate percentage and cap it at 100%
+            let progressFill = document.getElementById('progress-fill');
+            let currentLabel = document.getElementById('current-label');
+            let goalLabel = document.getElementById('goal-label');
+
+            progressFill.style.width = percentage + '%';
+            currentLabel.textContent = formatNumber(initialBalance) + ' Gems';
+            goalLabel.textContent = formatNumber(goalBalance) + ' Gems';
+
+            if (initialBalance === 0) {
+                document.getElementById('current-label').textContent = '0 Gems';
+            }
+
+            if (goalBalance === 0) {
+                document.getElementById('goal-label').textContent = '0 Gems';
+            }
         }
 
         function closeDonatePopup() {
@@ -422,19 +450,6 @@
             }
         }
 
-        function updateProgressBar() {
-            let initialBalance = parseInput(document.getElementById('initialBalance').value);
-            let goalBalance = parseInput(document.getElementById('goalBalance').value);
-
-            let percentage = goalBalance > 0 ? (initialBalance / goalBalance) * 100 : 0;
-            let progressFill = document.getElementById('progress-fill');
-            let currentLabel = document.getElementById('current-label');
-
-            progressFill.style.width = percentage + '%';
-            currentLabel.textContent = formatNumber(initialBalance) + ' Gems';
-            document.getElementById('goal-label').textContent = formatNumber(goalBalance) + ' Gems';
-        }
-
         // Format inputs on keyup and paste
         document.querySelectorAll('input[type="text"]').forEach(input => {
             input.addEventListener('input', function() {
@@ -444,9 +459,6 @@
                 formatInput(this);
             });
         });
-
-        // Initial update of the progress bar
-        updateProgressBar();
     </script>
 </body>
 </html>
