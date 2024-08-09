@@ -190,11 +190,59 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #777; /* Handle color on hover */
         }
+
+        /* Progress bar styles */
+        .progress-container {
+            width: 80%;
+            max-width: 800px;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .progress-bar {
+            position: relative;
+            width: 100%;
+            height: 30px;
+            background-color: #555;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            background-color: #00ff00;
+            transition: width 0.3s ease;
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1em;
+        }
+
+        #current-label {
+            color: #00ff00;
+        }
     </style>
 </head>
 <body class="night-mode">
     <h1>EXP Balance Calculator</h1>
     <h1>(by s6eg4se54g)</h1>
+    
+    <!-- Progress bar section -->
+    <div class="progress-container">
+        <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
+        </div>
+        <div class="progress-labels">
+            <span id="start-label">0 Gems</span>
+            <span id="current-label">0 Gems</span>
+            <span id="goal-label">0 Gems</span>
+        </div>
+    </div>
+
     <div class="section-container">
         <!-- GUI Containers in the new order -->
         <div id="guiLeft" class="gui night-mode">
@@ -231,23 +279,15 @@
         </div>
 
         <div class="container night-mode">
-            <h2>Calculate Goal Balance after X Time</h2>
+            <h2>Calculate Goal Balance after X Days</h2>
             <label for="initialBalance2">Balance (Gems): </label>
             <input type="text" id="initialBalance2" value="1,000" class="night-mode">
 
-            <label for="timeInput">Amount of Time: </label>
-            <input type="text" id="timeInput" value="30" class="night-mode">
-
-            <label for="timeUnit">Time Unit: </label>
-            <select id="timeUnit" class="night-mode">
-                <option value="days">Days</option>
-                <option value="weeks">Weeks</option>
-                <option value="months">Months</option>
-                <option value="years">Years</option>
-            </select>
+            <label for="daysInput">Number of Days: </label>
+            <input type="text" id="daysInput" value="30" class="night-mode">
 
             <button onclick="calculateGoal()">Calculate Goal</button>
-            <div id="goalResult">Enter time and click "Calculate Goal" to see the results.</div>
+            <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
         </div>
 
         <div id="leaderboardGui" class="gui night-mode leaderboard">
@@ -258,7 +298,7 @@
                 <li>1. 1h59   | 50m</li>
                 <li>2. alexplays038   | 2m   </li>
                 <li>3. iamonevader   |1m</li>
-                <li>4. None yet!</li>
+                <li>5. None yet!</li>
                 <li>5. None yet!</li>
                 <li>6. None yet!</li>
                 <li>7. None yet!</li>
@@ -277,10 +317,12 @@
 
     <script>
         function formatNumber(num) {
+            // Format number with commas
             return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         }
 
         function parseInput(value) {
+            // Parse input with commas removed
             return parseFloat(value.replace(/,/g, '')) || 0;
         }
 
@@ -318,41 +360,32 @@
             document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, and <span class="highlight">${remainingDays}</span> days.`;
             document.getElementById('first30Days').innerHTML = first30DaysText;
             document.getElementById('last30Days').innerHTML = last30DaysText;
+
+            updateProgressBar();
         }
 
         function calculateGoal() {
             let initialBalance = parseInput(document.getElementById('initialBalance2').value);
-            let time = parseInput(document.getElementById('timeInput').value);
-            let timeUnit = document.getElementById('timeUnit').value;
+            let days = parseInput(document.getElementById('daysInput').value);
             let dailyInterestRate = 0.009;
-
-            // Convert time to days based on selected unit
-            switch (timeUnit) {
-                case 'weeks':
-                    time *= 7;
-                    break;
-                case 'months':
-                    time *= 30;
-                    break;
-                case 'years':
-                    time *= 365;
-                    break;
-            }
 
             let balance = initialBalance;
 
-            for (let i = 0; i < time; i++) {
+            for (let i = 0; i < days; i++) {
                 let profit = balance * dailyInterestRate;
                 balance += profit;
             }
 
-            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${formatNumber(time)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
+            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${formatNumber(days)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
+
+            updateProgressBar();
         }
 
         function updateGoalBalance() {
             let select = document.getElementById('rankSelect');
             let goalBalance = select.value;
             document.getElementById('goalBalance').value = formatNumber(parseFloat(goalBalance));
+            updateProgressBar(); // Update progress bar when rank is changed
         }
 
         function closeDonatePopup() {
@@ -360,6 +393,7 @@
         }
 
         function formatInput(input) {
+            // Automatically format numbers with commas
             let value = input.value.replace(/,/g, '');
             if (!isNaN(value) && value !== '') {
                 input.value = formatNumber(parseFloat(value));
@@ -368,6 +402,21 @@
             }
         }
 
+        function updateProgressBar() {
+            let initialBalance = parseInput(document.getElementById('initialBalance').value);
+            let goalBalance = parseInput(document.getElementById('goalBalance').value);
+
+            let percentage = Math.min((initialBalance / goalBalance) * 100, 100); // Calculate percentage and cap it at 100%
+            let progressFill = document.getElementById('progress-fill');
+            let currentLabel = document.getElementById('current-label');
+            let goalLabel = document.getElementById('goal-label');
+
+            progressFill.style.width = percentage + '%';
+            currentLabel.textContent = formatNumber(initialBalance) + ' Gems';
+            goalLabel.textContent = formatNumber(goalBalance) + ' Gems';
+        }
+
+        // Format inputs on keyup and paste
         document.querySelectorAll('input[type="text"]').forEach(input => {
             input.addEventListener('input', function() {
                 formatInput(this);
