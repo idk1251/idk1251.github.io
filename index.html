@@ -322,15 +322,23 @@
             document.getElementById('donatePopup').style.display = 'none';
         }
 
-        // Open donate popup on button click
-        document.getElementById('donateButton').addEventListener('click', () => {
-            document.getElementById('donatePopup').style.display = 'block';
-        });
+        function formatInput(input) {
+            // Automatically format numbers with commas
+            let value = input.value.replace(/,/g, '');
+            if (!isNaN(value) && value !== '') {
+                input.value = formatNumber(parseFloat(value));
+            } else {
+                input.value = '';
+            }
+        }
 
-        // Automatically format numbers with commas
+        // Format inputs on keyup and paste
         document.querySelectorAll('input[type="text"]').forEach(input => {
             input.addEventListener('input', function() {
-                this.value = formatNumber(parseInput(this.value));
+                formatInput(this);
+            });
+            input.addEventListener('blur', function() {
+                formatInput(this);
             });
         });
     </script>
