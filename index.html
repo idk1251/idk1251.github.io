@@ -24,21 +24,30 @@
 
         .main-container {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             gap: 20px;
             flex-wrap: wrap;
             margin: 0 auto;
             padding: 20px;
         }
 
-        .container {
+        .container, .gui {
             background-color: #333842;
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 400px;
             border: 2px solid #555; /* Thicker border */
             box-sizing: border-box;
+        }
+
+        .container {
+            width: 300px; /* Adjust width as needed */
+        }
+
+        .gui {
+            width: 300px; /* Adjust width as needed */
+            height: auto; /* Auto height to fit content */
+            overflow: hidden; /* Prevent scrolling */
         }
 
         label {
@@ -113,22 +122,6 @@
             margin-top: 20px;
             width: 100%;
             border: 1px solid #555; /* Thicker border */
-        }
-
-        .gui {
-            width: 300px;
-            height: auto; /* Remove fixed height */
-            overflow: hidden; /* Prevent scrolling */
-            border: 2px solid #555; /* Thicker border */
-            border-radius: 10px;
-            background: rgba(40, 44, 52, 0.8);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            padding: 15px;
-            box-sizing: border-box;
-        }
-
-        .profit {
-            color: #00ff00;
         }
 
         .leaderboard {
@@ -287,11 +280,6 @@
         function closeDonatePopup() {
             document.getElementById('donatePopup').style.display = 'none';
         }
-
-        // Optionally open the donate popup on page load or button click
-        // document.getElementById('donateButton').addEventListener('click', () => {
-        //     document.getElementById('donatePopup').style.display = 'block';
-        // });
 
         // Ensure proper formatting of the input fields
         document.getElementById('initialBalance').addEventListener('input', function(e) {
