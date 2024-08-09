@@ -226,7 +226,7 @@
         }
     </style>
 </head>
-<body>
+<body class="night-mode">
     <h1>EXP Balance Calculator</h1>
     <h1>(by s6eg4se54g)</h1>
     
@@ -242,21 +242,21 @@
     </div>
 
     <div class="section-container">
-        <div id="guiLeft" class="gui">
+        <div id="guiLeft" class="gui night-mode">
             <h2>First 30 Days</h2>
             <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div class="container">
+        <div class="container night-mode">
             <h2>Calculate Days to Reach Goal</h2>
             <label for="initialBalance">Balance (Gems): </label>
-            <input type="text" id="initialBalance" value="1,000">
+            <input type="text" id="initialBalance" value="1,000" class="night-mode">
 
             <label for="goalBalance">Goal Balance (Gems): </label>
-            <input type="text" id="goalBalance" value="5,000">
+            <input type="text" id="goalBalance" value="5,000" class="night-mode">
 
             <label for="rankSelect">Select Goal Rank: </label>
-            <select id="rankSelect" onchange="updateGoalBalance()">
+            <select id="rankSelect" class="night-mode" onchange="updateGoalBalance()">
                 <option value="">Select a Rank</option>
                 <option value="96000000">Donator ― 96M+</option>
                 <option value="320000000">Ethereal ― 320M+</option>
@@ -270,18 +270,18 @@
             <div id="result">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div id="guiRight" class="gui">
+        <div id="guiRight" class="gui night-mode">
             <h2>Last 30 Days</h2>
             <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div class="container">
+        <div class="container night-mode">
             <h2>Calculate Goal Balance after X Time</h2>
             <label for="balanceGems">Balance (Gems): </label>
-            <input type="text" id="balanceGems" placeholder="e.g., 1,000">
+            <input type="text" id="balanceGems" placeholder="e.g., 1,000" class="night-mode">
 
             <label for="timeUnit">Time Unit: </label>
-            <select id="timeUnit">
+            <select id="timeUnit" class="night-mode">
                 <option value="days">Days</option>
                 <option value="weeks">Weeks</option>
                 <option value="months">Months</option>
@@ -289,19 +289,19 @@
             </select>
 
             <label for="timeAmount">Time Amount: </label>
-            <input type="text" id="timeAmount" placeholder="e.g., 30">
+            <input type="text" id="timeAmount" placeholder="e.g., 30" class="night-mode">
 
             <button onclick="calculateGoal()">Calculate Goal</button>
             <div id="goalResult">Enter time period and click "Calculate Goal" to see the results.</div>
         </div>
 
-        <div id="leaderboardGui" class="gui leaderboard">
+        <div id="leaderboardGui" class="gui night-mode leaderboard">
             <h2>Donation leaderboard!</h2>
             <h2>/gift @s6eg4se54g</h2>
             <h3>Top 10 Donators</h3>
             <ul>
                 <li>1. 1h59   | 50m</li>
-                <li>2. alexplays038   | 2m</li>
+                <li>2. alexplays038   | 2m   </li>
                 <li>3. iamonevader   |1m</li>
                 <li>5. None yet!</li>
                 <li>5. None yet!</li>
@@ -313,16 +313,13 @@
             </ul>
         </div>
 
-        <div id="donatePopup">
+        <div id="donatePopup" class="night-mode">
             <h2>Donate Here:</h2>
             <p>/gift @s6eg4se54g</p>
-            <button id="closePopup" onclick="closeDonatePopup()">Close</button>
+            <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
         </div>
     </div>
 
-    <button onclick="downloadPDF()">Download PDF Results</button>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.6.0/jspdf.umd.min.js"></script>
     <script>
         function formatNumber(num) {
             return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
@@ -360,12 +357,12 @@
             remainingDays = remainingDays % 7;
 
             let first30Days = dailyBalances.slice(0, 30);
-            let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: ${formatNumber(item.profit)}`).join('\n');
+            let first30DaysText = first30Days.map(item => Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>).join('<br>');
 
             let last30Days = dailyBalances.slice(-30);
-            let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: ${formatNumber(item.profit)}`).join('\n');
+            let last30DaysText = last30Days.map(item => Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>).join('<br>');
 
-            document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, <span class="highlight">${weeks}</span> weeks, and <span class="highlight">${remainingDays}</span> days.`;
+            document.getElementById('result').innerHTML = You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, <span class="highlight">${weeks}</span> weeks, and <span class="highlight">${remainingDays}</span> days.;
             document.getElementById('first30Days').innerHTML = first30DaysText;
             document.getElementById('last30Days').innerHTML = last30DaysText;
 
@@ -402,7 +399,7 @@
                 balance += profit;
             }
 
-            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${formatNumber(days)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
+            document.getElementById('goalResult').innerHTML = After <span class="highlight">${formatNumber(days)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.;
         }
 
         function updateGoalBalance() {
@@ -456,29 +453,6 @@
                 formatInput(this);
             });
         });
-
-        async function downloadPDF() {
-            const { jsPDF } = window.jspdf;
-
-            const doc = new jsPDF();
-            doc.setFontSize(16);
-            doc.text('EXP Balance Calculator Results', 10, 10);
-
-            doc.setFontSize(12);
-            doc.text('Days to Reach Goal:', 10, 20);
-            doc.text(document.getElementById('result').textContent, 10, 30);
-
-            doc.text('First 30 Days:', 10, 40);
-            doc.text(document.getElementById('first30Days').textContent, 10, 50);
-
-            doc.text('Last 30 Days:', 10, 70);
-            doc.text(document.getElementById('last30Days').textContent, 10, 90);
-
-            doc.text('Goal Balance After X Time:', 10, 110);
-            doc.text(document.getElementById('goalResult').textContent, 10, 120);
-
-            doc.save('results.pdf');
-        }
     </script>
 </body>
 </html>
