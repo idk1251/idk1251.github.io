@@ -136,18 +136,37 @@
         .profit {
             color: #00ff00;
         }
+
+        .leaderboard {
+            text-align: left;
+        }
+
+        .leaderboard h2 {
+            text-align: center;
+            color: #ff4757;
+        }
+
+        .leaderboard ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .leaderboard li {
+            padding: 5px 0;
+            border-bottom: 1px solid #555;
+            color: #d1d1d1;
+        }
     </style>
 </head>
 <body class="night-mode">
     <h1>EXP Balance Calculator</h1>
 
-    <!-- Flex container to hold the two sections side by side -->
     <div class="flex-container">
 
         <!-- First Section: Calculate Days -->
         <div class="container night-mode">
             <h2>Calculate Days to Reach Goal</h2>
-            <label for="initialBalance">Initial Balance (Gems): </label>
+            <label for="initialBalance">Balance (Gems): </label>
             <input type="text" id="initialBalance" value="1,000" class="night-mode">
 
             <label for="goalBalance">Goal Balance (Gems): </label>
@@ -160,7 +179,7 @@
         <!-- Second Section: Calculate Goal Balance -->
         <div class="container night-mode">
             <h2>Calculate Goal Balance after X Days</h2>
-            <label for="initialBalance2">Initial Balance (Gems): </label>
+            <label for="initialBalance2">Balance (Gems): </label>
             <input type="text" id="initialBalance2" value="1,000" class="night-mode">
 
             <label for="daysInput">Number of Days: </label>
@@ -182,6 +201,26 @@
             <h2>Last 30 Days</h2>
             <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
+
+        <!-- Third Section: Leaderboard -->
+        <div id="leaderboardGui" class="gui night-mode leaderboard">
+            <h2>Donate Me!</h2>
+            <p>/gift @s6eg4se54g</p>
+            <h3>Top 10 Donators</h3>
+            <ul>
+                <li>1. None yet!</li>
+                <li>2. None yet!</li>
+                <li>3. None yet!</li>
+                <li>4. None yet!</li>
+                <li>5. None yet!</li>
+                <li>6. None yet!</li>
+                <li>7. None yet!</li>
+                <li>8. None yet!</li>
+                <li>9. None yet!</li>
+                <li>10. None yet!</li>
+            </ul>
+        </div>
+
     </div>
 
     <div id="donatePopup" class="night-mode">
@@ -227,68 +266,39 @@
             remainingDays = remainingDays % 30;
 
             let first30Days = dailyBalances.slice(0, 30);
-            let first30DaysHtml = first30Days.map(item => `Day ${item.day}: ${formatNumber(item.balance)} | <span class="profit">+${formatNumber(item.profit)}</span>`).join('<br>');
-            document.getElementById('first30Days').innerHTML = first30DaysHtml;
+            let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)}, Profit: ${formatNumber(item.profit)}`).join('<br>');
 
             let last30Days = dailyBalances.slice(-30);
-            let last30DaysHtml = last30Days.map(item => `Day ${item.day}: ${formatNumber(item.balance)} | <span class="profit">+${formatNumber(item.profit)}</span>`).join('<br>');
-            document.getElementById('last30Days').innerHTML = last30DaysHtml;
+            let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)}, Profit: ${formatNumber(item.profit)}`).join('<br>');
 
-            document.getElementById('result').innerHTML = 
-                `<p>It will take approximately <strong>${formatNumber(days)}</strong> days to reach your goal of <strong>${formatNumber(goalBalance)} gems</strong> from a balance of <strong>${formatNumber(initialBalance)} gems</strong>.</p>
-                <p>That's about <strong>${years} years</strong>, <strong>${months} months</strong>, and <strong>${remainingDays} days</strong>.</p>`;
+            document.getElementById('result').innerHTML = `You will reach your goal in ${years} years, ${months} months, and ${remainingDays} days.`;
+            document.getElementById('first30Days').innerHTML = first30DaysText;
+            document.getElementById('last30Days').innerHTML = last30DaysText;
         }
 
         function calculateGoal() {
-            let initialBalance2 = parseInput(document.getElementById('initialBalance2').value);
-            let daysInput = parseInput(document.getElementById('daysInput').value);
+            let initialBalance = parseInput(document.getElementById('initialBalance2').value);
+            let days = parseInt(document.getElementById('daysInput').value, 10);
             let dailyInterestRate = 0.009;
 
-            let balance = initialBalance2;
+            let balance = initialBalance;
 
-            for (let i = 0; i < daysInput; i++) {
-                balance += balance * dailyInterestRate;
+            for (let i = 0; i < days; i++) {
+                let profit = balance * dailyInterestRate;
+                balance += profit;
             }
 
-            document.getElementById('goalResult').innerHTML = 
-                `<p>After <strong>${formatNumber(daysInput)}</strong> days, your balance will be approximately <strong>${formatNumber(balance)} gems</strong> starting from an initial balance of <strong>${formatNumber(initialBalance2)} gems</strong>.</p>`;
-        }
-
-        function openDonatePopup() {
-            document.getElementById('donatePopup').style.display = 'block';
+            document.getElementById('goalResult').innerHTML = `After ${days} days, your balance will be ${formatNumber(balance)} gems.`;
         }
 
         function closeDonatePopup() {
             document.getElementById('donatePopup').style.display = 'none';
         }
 
-        document.getElementById('initialBalance').addEventListener('input', function(e) {
-            let value = parseInput(e.target.value);
-            if (!isNaN(value)) {
-                e.target.value = formatNumber(value);
-            }
-        });
-
-        document.getElementById('goalBalance').addEventListener('input', function(e) {
-            let value = parseInput(e.target.value);
-            if (!isNaN(value)) {
-                e.target.value = formatNumber(value);
-            }
-        });
-
-        document.getElementById('initialBalance2').addEventListener('input', function(e) {
-            let value = parseInput(e.target.value);
-            if (!isNaN(value)) {
-                e.target.value = formatNumber(value);
-            }
-        });
-
-        document.getElementById('daysInput').addEventListener('input', function(e) {
-            let value = parseInput(e.target.value);
-            if (!isNaN(value)) {
-                e.target.value = formatNumber(value);
-            }
-        });
+// Open donate popup on button click
+document.getElementById('donateButton').addEventListener('click', () => {
+    document.getElementById('donatePopup').style.display = 'block';
+});
     </script>
 </body>
 </html>
