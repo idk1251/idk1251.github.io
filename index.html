@@ -143,7 +143,7 @@
         }
 
         .profit {
-            color: #00ff00;
+            color: #00ff00; /* Green for profit */
         }
 
         .highlight {
@@ -171,6 +171,17 @@
             padding: 5px 0;
             border-bottom: 1px solid #555;
             color: #d1d1d1;
+        }
+
+        .all-days-content {
+            text-align: left;
+            max-height: 300px; /* Limit height to make it scrollable */
+            overflow-y: auto;
+        }
+
+        .day-entry {
+            padding: 5px;
+            border-bottom: 1px solid #444;
         }
 
         /* Custom scrollbar styles */
@@ -205,7 +216,7 @@
                     <option value="first">First 30 Days</option>
                     <option value="last">Last 30 Days</option>
                 </select>
-                <div id="allDaysContent">Select an option to view the data.</div>
+                <div id="allDaysContent" class="all-days-content">Select an option to view the data.</div>
             </div>
 
             <div class="container night-mode">
@@ -294,16 +305,15 @@
             let months = Math.floor(remainingDays / 30);
             remainingDays = remainingDays % 30;
 
-            let first30Days = dailyBalances.slice(0, 30);
-            let last30Days = dailyBalances.slice(-30);
-
             function generateDaysText(daysArray) {
-                return daysArray.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
+                return daysArray.map(item => `<div class="day-entry">Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span></div>`).join('');
             }
 
             document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, and <span class="highlight">${remainingDays}</span> days.`;
-            document.getElementById('first30Days').innerHTML = generateDaysText(first30Days);
-            document.getElementById('last30Days').innerHTML = generateDaysText(last30Days);
+            document.getElementById('allDaysContent').innerHTML = generateDaysText(dailyBalances);
+
+            // Store all days data for "All Days" GUI
+            storeAllDaysData(dailyBalances);
         }
 
         function calculateGoal() {
@@ -328,14 +338,14 @@
         function updateAllDays() {
             let filter = document.getElementById('dayFilter').value;
             let allDaysContent = document.getElementById('allDaysContent');
-            
+
             if (!window.allDaysData) {
                 allDaysContent.innerHTML = 'Calculate days first to see the data here.';
                 return;
             }
 
             let daysArray = filter === 'first' ? window.allDaysData.slice(0, 30) : window.allDaysData.slice(-30);
-            allDaysContent.innerHTML = daysArray.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
+            allDaysContent.innerHTML = daysArray.map(item => `<div class="day-entry">Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span></div>`).join('');
         }
 
         // Open donate popup on button click
