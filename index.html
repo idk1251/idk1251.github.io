@@ -126,74 +126,26 @@
         }
 
         #donatePopupContent {
-            max-height: 60vh; /* Adjust height as needed */
+            max-height: calc(100% - 60px); /* Adjust height to leave space for the close button */
             overflow-y: auto; /* Scroll content inside the popup if needed */
         }
 
-        #closePopup {
-            margin-top: 20px;
-            width: 100%;
-            border: 1px solid #555; /* Thicker border */
-        }
-
-        .guis-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .gui {
+        #allDaysGui {
             width: 350px;
             height: 400px;
-            overflow-y: auto;
+            overflow: hidden; /* Hide outer scrollbar */
             border: 2px solid #555; /* Thicker border */
             border-radius: 10px;
             background: rgba(40, 44, 52, 0.8);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
             padding: 20px;
             box-sizing: border-box;
+            position: relative;
         }
 
-        .profit {
-            color: #00ff00; /* Green for profit */
-        }
-
-        .highlight {
-            color: #ff4757;
-            font-weight: bold;
-        }
-
-        .leaderboard {
-            text-align: left;
-            height: 300px; /* Reduced height for a better fit */
-            overflow-y: auto;
-            padding-right: 10px; /* Space for scrollbar */
-        }
-
-        .leaderboard h2 {
-            text-align: center;
-            color: #ff4757;
-            margin-bottom: 10px;
-        }
-
-        .leaderboard ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .leaderboard li {
-            padding: 8px 0;
-            border-bottom: 1px solid #444;
-            color: #d1d1d1;
-        }
-
-        .all-days-content {
-            text-align: left;
-            padding-right: 10px; /* Space for scrollbar */
-            overflow-y: auto; /* Ensure scrolling within this container */
-            height: calc(100% - 50px); /* Adjust height to fit within the container */
+        #allDaysContent {
+            max-height: calc(100% - 50px); /* Adjust height to fit within the container */
+            overflow-y: auto; /* Scroll content inside the container if needed */
         }
 
         .day-entry {
@@ -246,15 +198,6 @@
 
     <div class="section-container">
         <div class="guis-container">
-            <!-- Filter Dropdown -->
-            <div class="filter-container">
-                <label for="dayFilter">Show Days:</label>
-                <select id="dayFilter" onchange="updateAllDays()">
-                    <option value="first">First 30 Days</option>
-                    <option value="last">Last 30 Days</option>
-                </select>
-            </div>
-
             <!-- Reordered GUIs -->
             <div id="allDaysGui" class="gui night-mode">
                 <h2>All Days</h2>
@@ -407,11 +350,6 @@
         // Store all days data for "All Days" GUI
         function storeAllDaysData(data) {
             window.allDaysData = data;
-        }
-
-        // Function to generate days text
-        function generateDaysText(daysArray) {
-            return daysArray.map(item => `<div class="day-entry ${item.day === 1 ? 'first-day' : item.day === daysArray.length ? 'last-day' : ''}">Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span></div>`).join('');
         }
     </script>
 </body>
