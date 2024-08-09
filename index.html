@@ -11,8 +11,9 @@
             padding: 0;
             box-sizing: border-box;
             transition: background-color 0.3s, color 0.3s;
-            background-color: #1e1e1e;
+            background-color: #1e1e1e; /* Default to night mode */
             color: #d1d1d1;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -31,10 +32,8 @@
             justify-content: center;
             align-items: flex-start;
             gap: 20px;
-            padding: 20px;
-            width: 100%;
-            max-width: 1200px;
             flex-wrap: wrap;
+            padding: 20px;
         }
 
         .container {
@@ -42,23 +41,25 @@
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 500px;
-            border: 2px solid #555;
+            width: 400px;
+            text-align: center;
+            border: 2px solid #555; /* Thicker border */
             box-sizing: border-box;
         }
 
         label {
-            font-size: 1.2em;
+            font-size: 1.1em;
             margin-bottom: 10px;
             display: block;
+            margin-top: 20px; /* Add more space above */
         }
 
-        input[type="text"], select {
-            padding: 15px;
-            font-size: 1.1em;
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1em;
             width: 100%;
             margin-bottom: 20px;
-            border: 1px solid #555;
+            border: 1px solid #555; /* Thicker border */
             border-radius: 5px;
             box-sizing: border-box;
             background-color: #333842;
@@ -66,8 +67,8 @@
         }
 
         button {
-            padding: 15px 20px;
-            font-size: 1.1em;
+            padding: 10px 20px;
+            font-size: 1em;
             background-color: #007bff;
             color: #ffffff;
             border: 1px solid #0056b3;
@@ -82,20 +83,63 @@
             background-color: #0056b3;
         }
 
-        .results-container {
-            background-color: #333842;
-            padding: 20px;
-            border-radius: 15px;
-            border: 2px solid #555;
-            box-sizing: border-box;
-            width: 500px;
+        #donateButton {
+            background-color: #ff4757;
+            border: 1px solid #e73b4d;
+        }
+
+        #donateButton:hover {
+            background-color: #e73b4d;
+        }
+
+        #result, #goalResult, #timeBasedResult {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+        #donatePopup {
             display: none;
-            max-height: 500px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            z-index: 10;
+            background-color: #333842;
+            color: #d1d1d1;
+            border: 2px solid #555; /* Thicker border */
+            max-width: 90%;
+            max-height: 80%;
             overflow-y: auto;
         }
 
-        #result, #timeBasedResult {
-            font-size: 1.2em;
+        #closePopup {
+            margin-top: 20px;
+            width: 100%;
+            border: 1px solid #555; /* Thicker border */
+        }
+
+        .guis-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .gui {
+            width: 300px;
+            height: 400px;
+            overflow-y: auto;
+            border: 2px solid #555; /* Thicker border */
+            border-radius: 10px;
+            background: rgba(40, 44, 52, 0.8);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            box-sizing: border-box;
         }
 
         .profit {
@@ -107,84 +151,94 @@
             font-weight: bold;
         }
 
+        .leaderboard {
+            text-align: left;
+            height: 400px; /* Fixed height for consistent scrolling */
+            overflow-y: auto;
+        }
+
+        .leaderboard h2 {
+            text-align: center;
+            color: #ff4757;
+        }
+
+        .leaderboard ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .leaderboard li {
+            padding: 5px 0;
+            border-bottom: 1px solid #555;
+            color: #d1d1d1;
+        }
+
         /* Custom scrollbar styles */
         ::-webkit-scrollbar {
-            width: 12px;
+            width: 12px; /* Width of the scrollbar */
         }
 
         ::-webkit-scrollbar-track {
-            background: #2c2f36;
+            background: #2c2f36; /* Track color */
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #555;
+            background: #555; /* Handle color */
             border-radius: 6px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #777;
-        }
-
-        .gui {
-            width: 500px;
-            height: 500px;
-            overflow-y: auto;
-            border: 2px solid #555;
-            border-radius: 10px;
-            background: rgba(40, 44, 52, 0.8);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            box-sizing: border-box;
+            background: #777; /* Handle color on hover */
         }
     </style>
 </head>
-<body>
+<body class="night-mode">
     <h1>EXP Balance Calculator</h1>
     <h1>(by s6eg4se54g)</h1>
     <div class="section-container">
-        <!-- Existing GUIs -->
-        <div id="guiLeft" class="gui">
+        <!-- Existing GUI Containers -->
+        <div id="guiLeft" class="gui night-mode">
             <h2>First 30 Days</h2>
             <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div class="container">
+        <div class="container night-mode">
             <h2>Calculate Days to Reach Goal</h2>
             <label for="initialBalance">Balance (Gems): </label>
-            <input type="text" id="initialBalance" value="1,000">
+            <input type="text" id="initialBalance" value="1,000" class="night-mode">
 
             <label for="goalBalance">Goal Balance (Gems): </label>
-            <input type="text" id="goalBalance" value="5,000">
+            <input type="text" id="goalBalance" value="5,000" class="night-mode">
 
             <button onclick="calculateDays()">Calculate Days</button>
             <div id="result">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div id="guiRight" class="gui">
+        <div id="guiRight" class="gui night-mode">
             <h2>Last 30 Days</h2>
             <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div class="container">
+        <div class="container night-mode">
             <h2>Calculate Goal Balance after X Days</h2>
             <label for="initialBalance2">Balance (Gems): </label>
-            <input type="text" id="initialBalance2" value="1,000">
+            <input type="text" id="initialBalance2" value="1,000" class="night-mode">
 
             <label for="daysInput">Number of Days: </label>
-            <input type="text" id="daysInput" value="30">
+            <input type="text" id="daysInput" value="30" class="night-mode">
 
             <button onclick="calculateGoal()">Calculate Goal</button>
             <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
         </div>
 
-        <!-- New Time-based Balance Growth GUI -->
-        <div class="container">
+        <!-- New GUI for Time-based Balance Growth -->
+        <div class="container night-mode">
             <h2>Time-based Balance Growth</h2>
             <label for="balanceInput">Balance (Gems): </label>
-            <input type="text" id="balanceInput" value="1,000">
+            <input type="text" id="balanceInput" value="1,000" class="night-mode">
 
             <label for="timeUnit">Select Time Unit: </label>
-            <select id="timeUnit">
+            <select id="timeUnit" class="night-mode">
                 <option value="seconds">Seconds</option>
                 <option value="minutes">Minutes</option>
                 <option value="hours">Hours</option>
@@ -195,14 +249,10 @@
             </select>
 
             <button onclick="calculateTimeBasedGrowth()">Calculate</button>
-        </div>
-
-        <div id="resultsContainer" class="results-container">
-            <h2>Results</h2>
             <div id="timeBasedResult">Enter balance and select time unit to see results.</div>
         </div>
 
-        <div id="leaderboardGui" class="gui leaderboard">
+        <div id="leaderboardGui" class="gui night-mode leaderboard">
             <h2>Donation leaderboard!</h2>
             <h2>/gift @s6eg4se54g</h2>
             <h3>Top 10 Donators</h3>
@@ -220,44 +270,73 @@
             </ul>
         </div>
 
-        <div id="donatePopup" class="container">
+        <div id="donatePopup" class="night-mode">
             <h2>Donate Here:</h2>
             <p>/gift @s6eg4se54g</p>
-            <button id="closePopup" onclick="closeDonatePopup()">Close</button>
+            <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
         </div>
     </div>
 
     <script>
         function formatNumber(num) {
+            // Format number with commas
             return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         }
 
         function parseInput(value) {
+            // Parse input with commas removed
             return parseFloat(value.replace(/,/g, ''));
         }
 
         function calculateDays() {
             let initialBalance = parseInput(document.getElementById('initialBalance').value);
             let goalBalance = parseInput(document.getElementById('goalBalance').value);
-            let dailyInterestRate = 0.009; // Example daily rate
+            let dailyInterestRate = 0.009;
 
             let days = 0;
-            while (initialBalance < goalBalance) {
-                initialBalance += initialBalance * dailyInterestRate;
+            let balance = initialBalance;
+            let dailyBalances = [];
+
+            while (balance < goalBalance) {
+                let profit = balance * dailyInterestRate;
+                balance += profit;
+                dailyBalances.push({
+                    day: days + 1,
+                    balance: balance,
+                    profit: profit
+                });
                 days++;
             }
 
-            document.getElementById('result').innerHTML = `Days to reach goal: <span class="highlight">${days}</span>`;
+            let years = Math.floor(days / 365);
+            let remainingDays = days % 365;
+            let months = Math.floor(remainingDays / 30);
+            remainingDays = remainingDays % 30;
+
+            let first30Days = dailyBalances.slice(0, 30);
+            let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
+
+            let last30Days = dailyBalances.slice(-30);
+            let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
+
+            document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, and <span class="highlight">${remainingDays}</span> days.`;
+            document.getElementById('first30Days').innerHTML = first30DaysText;
+            document.getElementById('last30Days').innerHTML = last30DaysText;
         }
 
         function calculateGoal() {
             let initialBalance = parseInput(document.getElementById('initialBalance2').value);
-            let days = parseInput(document.getElementById('daysInput').value);
-            let dailyInterestRate = 0.009; // Example daily rate
+            let days = parseInt(document.getElementById('daysInput').value, 10);
+            let dailyInterestRate = 0.009;
 
-            let finalBalance = initialBalance * Math.pow(1 + dailyInterestRate, days);
+            let balance = initialBalance;
 
-            document.getElementById('goalResult').innerHTML = `Goal Balance after ${days} days: <span class="highlight">${formatNumber(finalBalance)}</span>`;
+            for (let i = 0; i < days; i++) {
+                let profit = balance * dailyInterestRate;
+                balance += profit;
+            }
+
+            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${days}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
         }
 
         function calculateTimeBasedGrowth() {
@@ -300,10 +379,14 @@
             }
 
             document.getElementById('timeBasedResult').innerHTML = resultText;
-            document.getElementById('resultsContainer').style.display = 'block';
+        }
+
+        function closeDonatePopup() {
+            document.getElementById('donatePopup').style.display = 'none';
         }
 
         function formatInput(input) {
+            // Automatically format numbers with commas
             let value = input.value.replace(/,/g, '');
             if (!isNaN(value) && value !== '') {
                 input.value = formatNumber(parseFloat(value));
@@ -312,6 +395,7 @@
             }
         }
 
+        // Format inputs on keyup and paste
         document.querySelectorAll('input[type="text"]').forEach(input => {
             input.addEventListener('input', function() {
                 formatInput(this);
@@ -320,10 +404,6 @@
                 formatInput(this);
             });
         });
-
-        function closeDonatePopup() {
-            document.getElementById('donatePopup').style.display = 'none';
-        }
     </script>
 </body>
 </html>
