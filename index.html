@@ -166,6 +166,11 @@
             border-bottom: 1px solid #555;
             color: #d1d1d1;
         }
+
+        .guis-container > .container, .guis-container > .gui {
+            flex: 1 1 400px; /* Flex-grow and basis to ensure proper sizing */
+        }
+
     </style>
 </head>
 <body>
@@ -173,20 +178,19 @@
 
     <div class="flex-container">
         <!-- First Section: Calculate Days -->
-        <div class="container">
-            <h2>Calculate Days to Reach Goal</h2>
-            <label for="initialBalance">Balance (Gems): </label>
-            <input type="text" id="initialBalance" value="1,000" oninput="formatInput(this)">
-
-            <label for="goalBalance">Goal Balance (Gems): </label>
-            <input type="text" id="goalBalance" value="5,000" oninput="formatInput(this)">
-
-            <button onclick="calculateDays()">Calculate Days</button>
-            <div id="result">Enter values and click "Calculate Days" to see the results.</div>
-        </div>
-
-        <!-- First 30 Days and Last 30 Days GUI -->
         <div class="guis-container">
+            <div class="container">
+                <h2>Calculate Days to Reach Goal</h2>
+                <label for="initialBalance">Balance (Gems): </label>
+                <input type="text" id="initialBalance" value="1,000" oninput="formatInput(this)">
+
+                <label for="goalBalance">Goal Balance (Gems): </label>
+                <input type="text" id="goalBalance" value="5,000" oninput="formatInput(this)">
+
+                <button onclick="calculateDays()">Calculate Days</button>
+                <div id="result">Enter values and click "Calculate Days" to see the results.</div>
+            </div>
+
             <div id="guiLeft" class="gui">
                 <h2>First 30 Days</h2>
                 <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
@@ -197,9 +201,7 @@
                 <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
             </div>
         </div>
-    </div>
 
-    <div class="flex-container">
         <!-- Second Section: Calculate Goal Balance -->
         <div class="container">
             <h2>Calculate Goal Balance after X Days</h2>
