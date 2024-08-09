@@ -131,21 +131,64 @@
         }
 
         #allDaysGui {
+            overflow: hidden; /* Hide outer scrollbar */
             width: 350px;
             height: 400px;
-            overflow: hidden; /* Hide outer scrollbar */
+        }
+
+        #allDaysContent {
+            max-height: calc(100% - 50px); /* Adjust height to fit within the container */
+            overflow-y: auto; /* Scroll content inside the container if needed */
+        }
+
+        .gui {
+            width: 350px;
+            height: 400px;
+            overflow-y: auto;
             border: 2px solid #555; /* Thicker border */
             border-radius: 10px;
             background: rgba(40, 44, 52, 0.8);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
             padding: 20px;
             box-sizing: border-box;
-            position: relative;
         }
 
-        #allDaysContent {
-            max-height: calc(100% - 50px); /* Adjust height to fit within the container */
-            overflow-y: auto; /* Scroll content inside the container if needed */
+        .profit {
+            color: #00ff00; /* Green for profit */
+        }
+
+        .highlight {
+            color: #ff4757;
+            font-weight: bold;
+        }
+
+        .leaderboard {
+            text-align: left;
+            height: 300px; /* Reduced height for a better fit */
+            overflow-y: auto;
+            padding-right: 10px; /* Space for scrollbar */
+        }
+
+        .leaderboard h2 {
+            text-align: center;
+            color: #ff4757;
+            margin-bottom: 10px;
+        }
+
+        .leaderboard ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .leaderboard li {
+            padding: 8px 0;
+            border-bottom: 1px solid #444;
+            color: #d1d1d1;
+        }
+
+        .all-days-content {
+            text-align: left;
+            padding-right: 10px; /* Space for scrollbar */
         }
 
         .day-entry {
