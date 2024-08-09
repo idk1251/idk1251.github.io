@@ -22,21 +22,21 @@
             margin: 30px 0;
         }
 
-        .flex-container {
+        .main-container {
             display: flex;
             justify-content: center;
-            align-items: flex-start;
             gap: 20px;
             flex-wrap: wrap;
+            margin: 0 auto;
+            padding: 20px;
         }
 
         .container {
             background-color: #333842;
-            padding: 30px;
+            padding: 20px;
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 400px;
-            text-align: center;
             border: 2px solid #555; /* Thicker border */
             box-sizing: border-box;
         }
@@ -105,6 +105,8 @@
             background-color: #333842;
             color: #d1d1d1;
             border: 2px solid #555; /* Thicker border */
+            max-width: 400px; /* Restrict width */
+            overflow: hidden; /* Prevent scrolling */
         }
 
         #closePopup {
@@ -113,18 +115,10 @@
             border: 1px solid #555; /* Thicker border */
         }
 
-        .guis-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 30px 0;
-            flex-wrap: wrap;
-        }
-
         .gui {
             width: 300px;
-            height: 400px;
-            overflow-y: auto;
+            height: auto; /* Remove fixed height */
+            overflow: hidden; /* Prevent scrolling */
             border: 2px solid #555; /* Thicker border */
             border-radius: 10px;
             background: rgba(40, 44, 52, 0.8);
@@ -161,9 +155,8 @@
 <body class="night-mode">
     <h1>EXP Balance Calculator</h1>
 
-    <div class="flex-container">
-
-        <!-- First Section: Calculate Days -->
+    <div class="main-container">
+        <!-- Calculate Days Section -->
         <div class="container night-mode">
             <h2>Calculate Days to Reach Goal</h2>
             <label for="initialBalance">Balance (Gems): </label>
@@ -176,33 +169,34 @@
             <div id="result">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <!-- Second Section: Calculate Goal Balance -->
-        <div class="container night-mode">
-            <h2>Calculate Goal Balance after X Days</h2>
-            <label for="initialBalance2">Balance (Gems): </label>
-            <input type="text" id="initialBalance2" value="1,000" class="night-mode">
-
-            <label for="daysInput">Number of Days: </label>
-            <input type="text" id="daysInput" value="30" class="night-mode">
-
-            <button onclick="calculateGoal()">Calculate Goal</button>
-            <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
-        </div>
-
-    </div>
-
-    <div class="guis-container">
+        <!-- First 30 Days GUI -->
         <div id="guiLeft" class="gui night-mode">
             <h2>First 30 Days</h2>
             <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
+        <!-- Last 30 Days GUI -->
         <div id="guiRight" class="gui night-mode">
             <h2>Last 30 Days</h2>
             <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
+    </div>
 
-        <!-- Third Section: Leaderboard -->
+    <div class="container night-mode">
+        <!-- Calculate Goal Balance Section -->
+        <h2>Calculate Goal Balance after X Days</h2>
+        <label for="initialBalance2">Balance (Gems): </label>
+        <input type="text" id="initialBalance2" value="1,000" class="night-mode">
+
+        <label for="daysInput">Number of Days: </label>
+        <input type="text" id="daysInput" value="30" class="night-mode">
+
+        <button onclick="calculateGoal()">Calculate Goal</button>
+        <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
+    </div>
+
+    <!-- Leaderboard GUI -->
+    <div class="container night-mode">
         <div id="leaderboardGui" class="gui night-mode leaderboard">
             <h2>Donate Me!</h2>
             <p>/gift @s6eg4se54g</p>
@@ -220,7 +214,6 @@
                 <li>10. None yet!</li>
             </ul>
         </div>
-
     </div>
 
     <div id="donatePopup" class="night-mode">
@@ -267,13 +260,13 @@
 
             let first30Days = dailyBalances.slice(0, 30);
             let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)}, Profit: ${formatNumber(item.profit)}`).join('<br>');
+            document.getElementById('first30Days').innerHTML = first30DaysText;
 
             let last30Days = dailyBalances.slice(-30);
             let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)}, Profit: ${formatNumber(item.profit)}`).join('<br>');
+            document.getElementById('last30Days').innerHTML = last30DaysText;
 
             document.getElementById('result').innerHTML = `You will reach your goal in ${years} years, ${months} months, and ${remainingDays} days.`;
-            document.getElementById('first30Days').innerHTML = first30DaysText;
-            document.getElementById('last30Days').innerHTML = last30DaysText;
         }
 
         function calculateGoal() {
@@ -295,10 +288,39 @@
             document.getElementById('donatePopup').style.display = 'none';
         }
 
-// Open donate popup on button click
-document.getElementById('donateButton').addEventListener('click', () => {
-    document.getElementById('donatePopup').style.display = 'block';
-});
+        // Optionally open the donate popup on page load or button click
+        // document.getElementById('donateButton').addEventListener('click', () => {
+        //     document.getElementById('donatePopup').style.display = 'block';
+        // });
+
+        // Ensure proper formatting of the input fields
+        document.getElementById('initialBalance').addEventListener('input', function(e) {
+            let value = parseInput(e.target.value);
+            if (!isNaN(value)) {
+                e.target.value = formatNumber(value);
+            }
+        });
+
+        document.getElementById('goalBalance').addEventListener('input', function(e) {
+            let value = parseInput(e.target.value);
+            if (!isNaN(value)) {
+                e.target.value = formatNumber(value);
+            }
+        });
+
+        document.getElementById('initialBalance2').addEventListener('input', function(e) {
+            let value = parseInput(e.target.value);
+            if (!isNaN(value)) {
+                e.target.value = formatNumber(value);
+            }
+        });
+
+        document.getElementById('daysInput').addEventListener('input', function(e) {
+            let value = parseInput(e.target.value);
+            if (!isNaN(value)) {
+                e.target.value = formatNumber(value);
+            }
+        });
     </script>
 </body>
 </html>
