@@ -79,7 +79,7 @@
             background-color: #e73b4d;
         }
 
-        #result {
+        #result, #goalResult {
             margin-top: 20px;
             font-size: 1.2em;
         }
@@ -141,8 +141,13 @@
         <input type="text" id="goalBalance" value="5,000" class="night-mode">
 
         <button onclick="calculateDays()">Calculate Days</button>
-
         <div id="result">Enter values and click "Calculate Days" to see the results.</div>
+
+        <label for="daysInput">Days: </label>
+        <input type="text" id="daysInput" value="30" class="night-mode">
+
+        <button onclick="calculateGoal()">Calculate Goal</button>
+        <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
 
         <button id="donateButton" onclick="openDonatePopup()">Donate</button>
     </div>
@@ -214,6 +219,22 @@
                 <p>That's about <strong>${years} years</strong>, <strong>${months} months</strong>, and <strong>${remainingDays} days</strong>.</p>`;
         }
 
+        function calculateGoal() {
+            let initialBalance = parseInput(document.getElementById('initialBalance').value);
+            let daysInput = parseInput(document.getElementById('daysInput').value);
+            let dailyInterestRate = 0.009;
+
+            let balance = initialBalance;
+
+            for (let i = 0; i < daysInput; i++) {
+                let profit = balance * dailyInterestRate;
+                balance += profit;
+            }
+
+            document.getElementById('goalResult').innerHTML = 
+                `<p>After <strong>${formatNumber(daysInput)}</strong> days, your balance will be approximately <strong>${formatNumber(balance)} gems</strong>.</p>`;
+        }
+
         function openDonatePopup() {
             document.getElementById('donatePopup').style.display = 'block';
         }
@@ -230,6 +251,13 @@
         });
 
         document.getElementById('goalBalance').addEventListener('input', function(e) {
+            let value = parseInput(e.target.value);
+            if (!isNaN(value)) {
+                e.target.value = formatNumber(value);
+            }
+        });
+
+        document.getElementById('daysInput').addEventListener('input', function(e) {
             let value = parseInput(e.target.value);
             if (!isNaN(value)) {
                 e.target.value = formatNumber(value);
