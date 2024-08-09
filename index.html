@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EXP Balance Calculator</title>
     <style>
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background-color: #1e1e1e; /* Default to night mode */
-    color: #d1d1d1;
-    overflow: hidden; /* Remove the x-scrollbar */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    justify-content: center;
-    transition: background-color 0.3s, color 0.3s;
-}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #1e1e1e; /* Default to night mode */
+            color: #d1d1d1;
+            overflow: hidden; /* Ensure no unnecessary scrollbars */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            justify-content: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
 
         h1 {
             color: #007bff;
@@ -142,7 +142,7 @@ body {
         .gui {
             width: 350px;
             height: 400px;
-            overflow-y: auto;
+            overflow: hidden; /* Prevent the entire container from scrolling */
             border: 2px solid #555; /* Thicker border */
             border-radius: 10px;
             background: rgba(40, 44, 52, 0.8);
@@ -162,8 +162,9 @@ body {
 
         .leaderboard {
             text-align: left;
-            height: 300px; /* Reduced height for a better fit */
+            max-height: 240px; /* Limit the height */
             overflow-y: auto;
+            padding-right: 10px; /* Space for scrollbar */
         }
 
         .leaderboard h2 {
@@ -185,7 +186,6 @@ body {
 
         .all-days-content {
             text-align: left;
-            padding-right: 10px; /* Space for scrollbar */
         }
 
         .day-entry {
@@ -233,8 +233,8 @@ body {
         }
 
         .filter-container {
-            margin-bottom: 20px;
             text-align: center;
+            margin-bottom: 10px; /* Space below filter */
         }
 
         .filter-container select {
@@ -252,19 +252,18 @@ body {
 
     <div class="section-container">
         <div class="guis-container">
-            <!-- Filter Dropdown -->
-            <div class="filter-container">
-                <label for="dayFilter">Show Days:</label>
-                <select id="dayFilter" onchange="updateAllDays()">
-                    <option value="first">First 30 Days</option>
-                    <option value="last">Last 30 Days</option>
-                </select>
-            </div>
 
-            <!-- Reordered GUIs -->
+            <!-- Reordered GUIs with Integrated Dropdown -->
             <div id="allDaysGui" class="gui night-mode">
                 <h2>First + Last Days!</h2>
-                <div id="allDaysContent" class="all-days-content">Select an option to view the data.</div>
+                <div class="filter-container">
+                    <label for="dayFilter">Show Days:</label>
+                    <select id="dayFilter" onchange="updateAllDays()">
+                        <option value="first">First 30 Days</option>
+                        <option value="last">Last 30 Days</option>
+                    </select>
+                </div>
+                <div id="allDaysContent" class="all-days-content leaderboard">Select an option to view the data.</div>
             </div>
 
             <div class="container night-mode">
@@ -280,143 +279,69 @@ body {
             </div>
 
             <div class="container night-mode">
-                <h2>Calculate Goal Balance after X Days</h2>
-                <label for="initialBalance2">Balance (Gems): </label>
-                <input type="text" id="initialBalance2" value="1,000" class="night-mode">
-
-                <label for="daysInput">Number of Days: </label>
-                <input type="text" id="daysInput" value="30" class="night-mode">
-
-                <button onclick="calculateGoal()">Calculate Goal</button>
-                <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
-            </div>
-
-            <div id="leaderboardGui" class="gui night-mode">
-                <h2>Donation leaderboard</h2>
-             <h2>/gift @s6eg4se54g</h2>
-                <div class="leaderboard">
-                    <ul>
-                        <li>1. None yet!</li>
-                        <li>2. None yet!</li>
-                        <li>3. None yet!</li>
-                        <li>4. None yet!</li>
-                        <li>5. None yet!</li>
-                        <li>6. None yet!</li>
-                        <li>7. None yet!</li>
-                        <li>8. None yet!</li>
-                        <li>9. None yet!</li>
-                        <li>10. None yet!</li>
-                    </ul>
+                <h2>Donation Section</h2>
+                <p>Your support helps keep this project alive. If you find this tool helpful, please consider making a donation.</p>
+                <button id="donateButton" onclick="togglePopup()">Donate</button>
+                <div id="donatePopup" class="night-mode">
+                    <h2>Donate Now</h2>
+                    <p>Your support is greatly appreciated! Click the button below to proceed with the donation.</p>
+                    <button onclick="closePopup()" id="closePopup">Close</button>
                 </div>
-            </div>
-
-            <div id="donatePopup" class="night-mode">
-                <h2>Donate Here:</h2>
-                <p>/gift @s6eg4se54g</p>
-                <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
             </div>
         </div>
     </div>
 
     <script>
-        function formatNumber(num) {
-            // Format number with commas
-            return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-        }
-
-        function parseInput(value) {
-            // Parse input with commas removed
-            return parseFloat(value.replace(/,/g, ''));
-        }
-
-        function calculateDays() {
-            let initialBalance = parseInput(document.getElementById('initialBalance').value);
-            let goalBalance = parseInput(document.getElementById('goalBalance').value);
-            let dailyInterestRate = 0.009;
-
-            let days = 0;
-            let balance = initialBalance;
-            let dailyBalances = [];
-
-            while (balance < goalBalance) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
-                dailyBalances.push({
-                    day: days + 1,
-                    balance: balance,
-                    profit: profit
-                });
-                days++;
-            }
-
-            let years = Math.floor(days / 365);
-            let remainingDays = days % 365;
-            let months = Math.floor(remainingDays / 30);
-            remainingDays = remainingDays % 30;
-
-            function generateDaysText(daysArray) {
-                return daysArray.map(item => `<div class="day-entry ${item.day === 1 ? 'first-day' : item.day === daysArray.length ? 'last-day' : ''}">Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span></div>`).join('');
-            }
-
-            document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, and <span class="highlight">${remainingDays}</span> days.`;
-            document.getElementById('allDaysContent').innerHTML = generateDaysText(dailyBalances);
-
-            // Store all days data for "All Days" GUI
-            storeAllDaysData(dailyBalances);
-        }
-
-        function calculateGoal() {
-            let initialBalance = parseInput(document.getElementById('initialBalance2').value);
-            let days = parseInt(document.getElementById('daysInput').value, 10);
-            let dailyInterestRate = 0.009;
-
-            let balance = initialBalance;
-
-            for (let i = 0; i < days; i++) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
-            }
-
-            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${days}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
-        }
-
-        function closeDonatePopup() {
-            document.getElementById('donatePopup').style.display = 'none';
-        }
-
-        function updateAllDays() {
-            let filter = document.getElementById('dayFilter').value;
-            let allDaysContent = document.getElementById('allDaysContent');
-
-            if (!window.allDaysData) {
-                allDaysContent.innerHTML = 'Calculate days first to see the data here.';
-                return;
-            }
-
-            let daysArray = filter === 'first' ? window.allDaysData.slice(0, 30) : window.allDaysData.slice(-30);
-            allDaysContent.innerHTML = generateDaysText(daysArray);
-        }
-
-        // Open donate popup on button click
-        document.getElementById('donateButton').addEventListener('click', () => {
+        document.getElementById('donateButton').addEventListener('click', function () {
             document.getElementById('donatePopup').style.display = 'block';
         });
 
-        // Automatically format numbers with commas
-        document.querySelectorAll('input[type="text"]').forEach(input => {
-            input.addEventListener('input', function() {
-                this.value = formatNumber(parseInput(this.value));
-            });
+        document.getElementById('closePopup').addEventListener('click', function () {
+            document.getElementById('donatePopup').style.display = 'none';
         });
 
-        // Store all days data for "All Days" GUI
-        function storeAllDaysData(data) {
-            window.allDaysData = data;
+        function updateAllDays() {
+            const dayFilter = document.getElementById("dayFilter").value;
+            const allDaysContent = document.getElementById("allDaysContent");
+
+            allDaysContent.innerHTML = "";
+
+            if (dayFilter === "first") {
+                for (let i = 1; i <= 30; i++) {
+                    allDaysContent.innerHTML += `<div class="day-entry">Day ${i}: Balance: ${1000 + i * 9} | <span class="profit">Profit: 9</span></div>`;
+                }
+            } else if (dayFilter === "last") {
+                for (let i = 971; i <= 1000; i++) {
+                    allDaysContent.innerHTML += `<div class="day-entry">Day ${i}: Balance: ${1000 + i * 9} | <span class="profit">Profit: 9</span></div>`;
+                }
+            }
         }
 
-        // Function to generate days text
-        function generateDaysText(daysArray) {
-            return daysArray.map(item => `<div class="day-entry ${item.day === 1 ? 'first-day' : item.day === daysArray.length ? 'last-day' : ''}">Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span></div>`).join('');
+        // Default to first 30 days
+        updateAllDays();
+
+        function calculateDays() {
+            const initialBalance = parseInt(document.getElementById("initialBalance").value.replace(/,/g, ""));
+            const goalBalance = parseInt(document.getElementById("goalBalance").value.replace(/,/g, ""));
+            const profitPerDay = 9;
+
+            if (isNaN(initialBalance) || isNaN(goalBalance) || initialBalance >= goalBalance) {
+                document.getElementById("result").innerHTML = "Please enter valid values, and ensure the goal balance is greater than the initial balance.";
+                return;
+            }
+
+            const daysNeeded = Math.ceil((goalBalance - initialBalance) / profitPerDay);
+
+            document.getElementById("result").innerHTML = `It will take approximately <span class="highlight">${daysNeeded}</span> days to reach a balance of <span class="highlight">${goalBalance.toLocaleString()}</span> gems.`;
+        }
+
+        function togglePopup() {
+            var popup = document.getElementById("donatePopup");
+            popup.style.display = popup.style.display === "block" ? "none" : "block";
+        }
+
+        function closePopup() {
+            document.getElementById("donatePopup").style.display = "none";
         }
     </script>
 </body>
