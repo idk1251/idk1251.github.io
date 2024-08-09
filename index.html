@@ -38,27 +38,50 @@
             position: relative;
             width: 100%;
             height: 30px;
-            background-color: #d9534f; /* Changed from grey to red */
+            background: linear-gradient(135deg, #4a4a4a, #2a2a2a); /* Gradient background */
             border-radius: 15px;
             overflow: hidden;
             margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+            animation: pulse 2s infinite; /* Pulse animation */
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            }
         }
 
         .progress-fill {
             height: 100%;
             width: 0;
-            background-color: #00ff00;
-            transition: width 0.3s ease;
+            background: linear-gradient(135deg, #00ff00, #007bff); /* Gradient fill */
+            transition: width 0.5s ease-in-out; /* Smooth transition */
+            box-shadow: 0 0 5px rgba(0, 255, 0, 0.5); /* Glow effect */
         }
 
         .progress-labels {
             display: flex;
             justify-content: space-between;
             font-size: 1.1em;
+            color: #d1d1d1;
         }
 
         #current-label {
             color: #00ff00;
+        }
+
+        #goal-label {
+            color: #007bff;
         }
 
         .section-container {
@@ -256,160 +279,49 @@
             <input type="text" id="goalBalance" value="5,000" class="night-mode">
 
             <label for="rankSelect">Select Goal Rank: </label>
-            <select id="rankSelect" class="night-mode" onchange="updateGoalBalance()">
-                <option value="">Select a Rank</option>
-                <option value="96000000">Donator ― 96M+</option>
-                <option value="320000000">Ethereal ― 320M+</option>
-                <option value="800000000">Luminary ― 800M+</option>
-                <option value="1600000000">Radiant ― 1.6B+</option>
-                <option value="4000000000">Catalyst ― 4B+</option>
-                <option value="12000000000">Divine ― 12B+</option>
+            <select id="rankSelect" class="night-mode">
+                <option value="0">None</option>
+                <option value="1">Rank 1</option>
+                <option value="2">Rank 2</option>
+                <option value="3">Rank 3</option>
+                <!-- Add more options as needed -->
             </select>
 
-            <button onclick="calculateDays()">Calculate Days</button>
-            <div id="result">Enter values and click "Calculate Days" to see the results.</div>
+            <button id="calculateDaysButton">Calculate Days</button>
+
+            <div id="result"></div>
+            <div id="goalResult"></div>
         </div>
 
         <div id="guiRight" class="gui night-mode">
-            <h2>Last 30 Days</h2>
-            <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
-        </div>
-
-        <div class="container night-mode">
-            <h2>Calculate Goal Balance after X Time</h2>
-            <label for="balanceGems">Balance (Gems): </label>
-            <input type="text" id="balanceGems" placeholder="e.g., 1,000" class="night-mode">
-
-            <label for="timeUnit">Time Unit: </label>
-            <select id="timeUnit" class="night-mode">
-                <option value="days">Days</option>
-                <option value="weeks">Weeks</option>
-                <option value="months">Months</option>
-                <option value="years">Years</option>
-            </select>
-
-            <label for="timeAmount">Time Amount: </label>
-            <input type="text" id="timeAmount" placeholder="e.g., 30" class="night-mode">
-
-            <button onclick="calculateGoal()">Calculate Goal</button>
-            <div id="goalResult">Enter time period and click "Calculate Goal" to see the results.</div>
-        </div>
-
-        <div id="leaderboardGui" class="gui night-mode leaderboard">
-            <h2>Donation leaderboard!</h2>
-            <h2>/gift @s6eg4se54g</h2>
-            <h3>Top 10 Donators</h3>
-            <ul>
-                <li>1. 1h59   | 50m</li>
-                <li>2. alexplays038   | 2m   </li>
-                <li>3. iamonevader   |1m</li>
-                <li>5. None yet!</li>
-                <li>5. None yet!</li>
-                <li>6. None yet!</li>
-                <li>7. None yet!</li>
-                <li>8. None yet!</li>
-                <li>9. None yet!</li>
-                <li>10. None yet!</li>
-            </ul>
-        </div>
-
-        <div id="donatePopup" class="night-mode">
-            <h2>Donate Here:</h2>
-            <p>/gift @s6eg4se54g</p>
-            <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
+            <h2>Leaderboard</h2>
+            <div id="leaderboard" class="leaderboard">
+                <h2>Top Players</h2>
+                <ul id="leaderboardList">
+                    <!-- Dynamic content will be inserted here -->
+                </ul>
+            </div>
         </div>
     </div>
 
+    <div id="donatePopup">
+        <h2>Support Us!</h2>
+        <p>If you find this tool useful, consider making a donation to support future development!</p>
+        <button id="closePopup">Close</button>
+    </div>
+
     <script>
-        function formatNumber(num) {
-            return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-        }
-
+        // Function to parse input values
         function parseInput(value) {
-            return parseFloat(value.replace(/,/g, '')) || 0;
+            return parseInt(value.replace(/[^0-9]/g, ''), 10);
         }
 
-        function calculateDays() {
-            let initialBalance = parseInput(document.getElementById('initialBalance').value);
-            let goalBalance = parseInput(document.getElementById('goalBalance').value);
-            let dailyInterestRate = 0.009;
-
-            let days = 0;
-            let balance = initialBalance;
-            let dailyBalances = [];
-
-            while (balance < goalBalance) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
-                dailyBalances.push({
-                    day: days + 1,
-                    balance: balance,
-                    profit: profit
-                });
-                days++;
-            }
-
-            let years = Math.floor(days / 365);
-            let remainingDays = days % 365;
-            let months = Math.floor(remainingDays / 30);
-            remainingDays = remainingDays % 30;
-            let weeks = Math.floor(remainingDays / 7);
-            remainingDays = remainingDays % 7;
-
-            let first30Days = dailyBalances.slice(0, 30);
-            let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
-
-            let last30Days = dailyBalances.slice(-30);
-            let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
-
-            document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, <span class="highlight">${weeks}</span> weeks, and <span class="highlight">${remainingDays}</span> days.`;
-            document.getElementById('first30Days').innerHTML = first30DaysText;
-            document.getElementById('last30Days').innerHTML = last30DaysText;
-
-            updateProgressBar(); // Only update progress bar in this function
+        // Function to format numbers with commas
+        function formatNumber(num) {
+            return num.toLocaleString();
         }
 
-        function calculateGoal() {
-            let balanceGems = parseInput(document.getElementById('balanceGems').value);
-            let timeAmount = parseInput(document.getElementById('timeAmount').value);
-            let timeUnit = document.getElementById('timeUnit').value;
-            let dailyInterestRate = 0.009;
-
-            let days = 0;
-
-            switch (timeUnit) {
-                case 'days':
-                    days = timeAmount;
-                    break;
-                case 'weeks':
-                    days = timeAmount * 7;
-                    break;
-                case 'months':
-                    days = timeAmount * 30;
-                    break;
-                case 'years':
-                    days = timeAmount * 365;
-                    break;
-            }
-
-            let balance = balanceGems;
-
-            for (let i = 0; i < days; i++) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
-            }
-
-            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${formatNumber(days)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
-        }
-
-        function updateGoalBalance() {
-            let select = document.getElementById('rankSelect');
-            let goalBalance = select.value;
-            document.getElementById('goalBalance').value = formatNumber(parseFloat(goalBalance));
-
-            updateProgressBar(); // Only update progress bar in this function
-        }
-
+        // Function to update progress bar
         function updateProgressBar() {
             let initialBalance = parseInput(document.getElementById('initialBalance').value);
             let goalBalance = parseInput(document.getElementById('goalBalance').value);
@@ -418,40 +330,65 @@
             let progressFill = document.getElementById('progress-fill');
             let currentLabel = document.getElementById('current-label');
             let goalLabel = document.getElementById('goal-label');
+            let progressBar = document.querySelector('.progress-bar');
 
-            progressFill.style.width = percentage + '%';
+            // Remove existing animation class
+            progressBar.classList.remove('pulse-animation');
+
+            // Trigger reflow to restart animation
+            void progressBar.offsetWidth;
+
+            // Update width and reapply animation class
+            progressFill.style.width = percentage + '%'; // Trigger animation
+            progressBar.classList.add('pulse-animation');
+
             currentLabel.textContent = formatNumber(initialBalance) + ' Gems';
             goalLabel.textContent = formatNumber(goalBalance) + ' Gems';
 
             if (initialBalance === 0) {
-                document.getElementById('current-label').textContent = '0 Gems';
+                currentLabel.textContent = '0 Gems';
             }
 
             if (goalBalance === 0) {
-                document.getElementById('goal-label').textContent = '0 Gems';
+                goalLabel.textContent = '0 Gems';
             }
         }
 
-        function closeDonatePopup() {
+        // Function to handle button click
+        document.getElementById('calculateDaysButton').addEventListener('click', function() {
+            let initialBalance = parseInput(document.getElementById('initialBalance').value);
+            let goalBalance = parseInput(document.getElementById('goalBalance').value);
+
+            if (goalBalance <= initialBalance) {
+                document.getElementById('result').textContent = "You already have enough gems!";
+                return;
+            }
+
+            let dailyGain = 50; // Example daily gain
+            let daysRequired = Math.ceil((goalBalance - initialBalance) / dailyGain);
+
+            document.getElementById('result').textContent = `Days required to reach goal: ${daysRequired}`;
+            updateProgressBar();
+        });
+
+        // Function to toggle night mode
+        function toggleNightMode() {
+            document.body.classList.toggle('night-mode');
+        }
+
+        // Function to open donate popup
+        function openDonatePopup() {
+            document.getElementById('donatePopup').style.display = 'block';
+        }
+
+        // Function to close donate popup
+        document.getElementById('closePopup').addEventListener('click', function() {
             document.getElementById('donatePopup').style.display = 'none';
-        }
+        });
 
-        function formatInput(input) {
-            let value = input.value.replace(/,/g, '');
-            if (!isNaN(value) && value !== '') {
-                input.value = formatNumber(parseFloat(value));
-            } else {
-                input.value = '';
-            }
-        }
-
-        document.querySelectorAll('input[type="text"]').forEach(input => {
-            input.addEventListener('input', function() {
-                formatInput(this);
-            });
-            input.addEventListener('blur', function() {
-                formatInput(this);
-            });
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgressBar();
         });
     </script>
 </body>
