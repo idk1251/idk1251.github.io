@@ -280,7 +280,7 @@
             <label for="initialBalance2">Balance (Gems): </label>
             <input type="text" id="initialBalance2" value="1,000" class="night-mode">
 
-            <label for="timeAmount">Amount: </label>
+            <label for="timeAmount">Time Amount: </label>
             <input type="text" id="timeAmount" placeholder="e.g., 30" class="night-mode">
 
             <label for="timeUnit">Time Unit: </label>
@@ -294,62 +294,82 @@
             <button onclick="calculateGoal()">Calculate Goal</button>
             <div id="goalResult">Enter time period and click "Calculate Goal" to see the results.</div>
         </div>
-    </div>
 
-    <div id="donatePopup">
-        <h2>Donate</h2>
-        <p>If you'd like to support the development, consider donating via the link below:</p>
-        <button id="donateButton">Donate Now</button>
-        <button id="closePopup">Close</button>
+        <div id="leaderboardGui" class="gui night-mode leaderboard">
+            <h2>Donation leaderboard!</h2>
+            <h2>/gift @s6eg4se54g</h2>
+            <h3>Top 10 Donators</h3>
+            <ul>
+                <li>1. 1h59   | 50m</li>
+                <li>2. alexplays038   | 2m   </li>
+                <li>3. iamonevader   |1m</li>
+                <li>5. None yet!</li>
+                <li>5. None yet!</li>
+                <li>6. None yet!</li>
+                <li>7. None yet!</li>
+                <li>8. None yet!</li>
+                <li>9. None yet!</li>
+                <li>10. None yet!</li>
+            </ul>
+        </div>
+
+        <div id="donatePopup" class="night-mode">
+            <h2>Donate Here:</h2>
+            <p>/gift @s6eg4se54g</p>
+            <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
+        </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('donateButton').addEventListener('click', function() {
-                window.open('https://www.paypal.com/donate', '_blank');
-            });
-
-            document.getElementById('closePopup').addEventListener('click', function() {
-                document.getElementById('donatePopup').style.display = 'none';
-            });
-        });
-
-        function parseInput(value) {
-            return parseFloat(value.replace(/[^0-9.]/g, '')) || 0;
+        function formatNumber(num) {
+            // Format number with commas
+            return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         }
 
-        function formatNumber(num) {
-            return num.toLocaleString();
+        function parseInput(value) {
+            // Parse input with commas removed
+            return parseFloat(value.replace(/,/g, '')) || 0;
         }
 
         function calculateDays() {
             let initialBalance = parseInput(document.getElementById('initialBalance').value);
             let goalBalance = parseInput(document.getElementById('goalBalance').value);
-
-            if (goalBalance <= initialBalance) {
-                document.getElementById('result').innerHTML = 'Goal balance must be greater than the initial balance.';
-                return;
-            }
-
             let dailyInterestRate = 0.009;
+
             let days = 0;
             let balance = initialBalance;
+            let dailyBalances = [];
 
             while (balance < goalBalance) {
                 let profit = balance * dailyInterestRate;
                 balance += profit;
+                dailyBalances.push({
+                    day: days + 1,
+                    balance: balance,
+                    profit: profit
+                });
                 days++;
             }
 
-            document.getElementById('result').innerHTML = `To reach a balance of <span class="highlight">${formatNumber(goalBalance)}</span> gems from <span class="highlight">${formatNumber(initialBalance)}</span> gems, it will take <span class="highlight">${days}</span> days.`;
-        }
+            let years = Math.floor(days / 365);
+            let remainingDays = days % 365;
+            let months = Math.floor(remainingDays / 30);
+            remainingDays = remainingDays % 30;
+            let weeks = Math.floor(remainingDays / 7);
+            remainingDays = remainingDays % 7;
 
-        function updateGoalBalance() {
-            let selectedRankValue = document.getElementById('rankSelect').value;
-            if (selectedRankValue) {
-                document.getElementById('goalBalance').value = selectedRankValue;
-                calculateDays();
-            }
+            let first30Days = dailyBalances.slice(0, 30);
+            let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
+
+            let last30Days = dailyBalances.slice(-30);
+            let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
+
+            document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, <span class="highlight">${weeks}</span> weeks, and <span class="highlight">${remainingDays}</span> days.`;
+            document.getElementById('first30Days').innerHTML = first30DaysText;
+            document.getElementById('last30Days').innerHTML = last30DaysText;
+
+            // Update progress bar
+            updateProgressBar();
         }
 
         function calculateGoal() {
@@ -360,6 +380,7 @@
 
             let days = 0;
 
+            // Convert time unit to days
             switch (timeUnit) {
                 case 'days':
                     days = timeAmount;
@@ -388,19 +409,60 @@
             updateProgressBar();
         }
 
-        function updateProgressBar() {
-            // Dummy values for demonstration
-            let startValue = 0;
-            let currentValue = parseInput(document.getElementById('initialBalance').value);
-            let goalValue = parseInput(document.getElementById('goalBalance').value);
+        function updateGoalBalance() {
+            let select = document.getElementById('rankSelect');
+            let goalBalance = select.value;
+            document.getElementById('goalBalance').value = formatNumber(parseFloat(goalBalance));
 
-            if (goalValue > 0) {
-                let percentage = Math.min((currentValue / goalValue) * 100, 100);
-                document.getElementById('progress-fill').style.width = percentage + '%';
-                document.getElementById('current-label').textContent = formatNumber(currentValue) + ' Gems';
-                document.getElementById('goal-label').textContent = formatNumber(goalValue) + ' Gems';
+            // Update progress bar
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            let initialBalance = parseInput(document.getElementById('initialBalance').value);
+            let goalBalance = parseInput(document.getElementById('goalBalance').value);
+
+            let percentage = Math.min((initialBalance / goalBalance) * 100, 100); // Calculate percentage and cap it at 100%
+            let progressFill = document.getElementById('progress-fill');
+            let currentLabel = document.getElementById('current-label');
+            let goalLabel = document.getElementById('goal-label');
+
+            progressFill.style.width = percentage + '%';
+            currentLabel.textContent = formatNumber(initialBalance) + ' Gems';
+            goalLabel.textContent = formatNumber(goalBalance) + ' Gems';
+
+            if (initialBalance === 0) {
+                document.getElementById('current-label').textContent = '0 Gems';
+            }
+
+            if (goalBalance === 0) {
+                document.getElementById('goal-label').textContent = '0 Gems';
             }
         }
+
+        function closeDonatePopup() {
+            document.getElementById('donatePopup').style.display = 'none';
+        }
+
+        function formatInput(input) {
+            // Automatically format numbers with commas
+            let value = input.value.replace(/,/g, '');
+            if (!isNaN(value) && value !== '') {
+                input.value = formatNumber(parseFloat(value));
+            } else {
+                input.value = '';
+            }
+        }
+
+        // Format inputs on keyup and paste
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            input.addEventListener('input', function() {
+                formatInput(this);
+            });
+            input.addEventListener('blur', function() {
+                formatInput(this);
+            });
+        });
     </script>
 </body>
 </html>
