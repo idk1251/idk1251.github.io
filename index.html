@@ -54,7 +54,7 @@
             margin-top: 20px; /* Add more space above */
         }
 
-        input[type="text"] {
+        input[type="text"], select {
             padding: 10px;
             font-size: 1em;
             width: 100%;
@@ -194,7 +194,7 @@
 </head>
 <body class="night-mode">
     <h1>EXP Balance Calculator</h1>
-<h1>(by s6eg4se54g)</h1>
+    <h1>(by s6eg4se54g)</h1>
     <div class="section-container">
         <!-- GUI Containers in the new order -->
         <div id="guiLeft" class="gui night-mode">
@@ -233,7 +233,7 @@
 
         <div id="leaderboardGui" class="gui night-mode leaderboard">
             <h2>Donation leaderboard!</h2>
-   <h2>/gift @s6eg4se54g</h2>
+            <h2>/gift @s6eg4se54g</h2>
             <h3>Top 10 Donators</h3>
             <ul>
                 <li>1. 1h59   | 50m</li>
@@ -247,6 +247,26 @@
                 <li>9. None yet!</li>
                 <li>10. None yet!</li>
             </ul>
+        </div>
+
+        <div id="newGui" class="gui night-mode">
+            <h2>Time-based Balance Growth</h2>
+            <label for="balanceInput">Balance (Gems): </label>
+            <input type="text" id="balanceInput" value="1,000" class="night-mode">
+
+            <label for="timeUnit">Select Time Unit: </label>
+            <select id="timeUnit" class="night-mode">
+                <option value="seconds">Seconds</option>
+                <option value="minutes">Minutes</option>
+                <option value="hours">Hours</option>
+                <option value="days">Days</option>
+                <option value="weeks">Weeks</option>
+                <option value="months">Months</option>
+                <option value="years">Years</option>
+            </select>
+
+            <button onclick="calculateTimeBasedGrowth()">Calculate</button>
+            <div id="timeBasedResult">Enter balance and select time unit to see results.</div>
         </div>
 
         <div id="donatePopup" class="night-mode">
@@ -318,6 +338,48 @@
             document.getElementById('goalResult').innerHTML = `After <span class="highlight">${days}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
         }
 
+        function calculateTimeBasedGrowth() {
+            let balance = parseInput(document.getElementById('balanceInput').value);
+            let timeUnit = document.getElementById('timeUnit').value;
+            let interestRate = 0.009;
+            let timePeriods;
+
+            switch(timeUnit) {
+                case 'seconds':
+                    timePeriods = 60;
+                    break;
+                case 'minutes':
+                    timePeriods = 60;
+                    break;
+                case 'hours':
+                    timePeriods = 24;
+                    break;
+                case 'days':
+                    timePeriods = 30;
+                    break;
+                case 'weeks':
+                    timePeriods = 4;
+                    break;
+                case 'months':
+                    timePeriods = 4;
+                    break;
+                case 'years':
+                    timePeriods = 10;
+                    break;
+                default:
+                    timePeriods = 1;
+            }
+
+            let resultText = '';
+            for (let i = 1; i <= timePeriods; i++) {
+                let profit = balance * interestRate;
+                balance += profit;
+                resultText += `${timeUnit.slice(0, -1).toUpperCase()} ${i}: Balance: ${formatNumber(balance)} | Profit: <span class="profit">${formatNumber(profit)}</span><br>`;
+            }
+
+            document.getElementById('timeBasedResult').innerHTML = resultText;
+        }
+
         function closeDonatePopup() {
             document.getElementById('donatePopup').style.display = 'none';
         }
@@ -344,3 +406,4 @@
     </script>
 </body>
 </html>
+
