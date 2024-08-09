@@ -11,7 +11,7 @@
             padding: 0;
             box-sizing: border-box;
             transition: background-color 0.3s, color 0.3s;
-            background-color: #1e1e1e;
+            background-color: #1e1e1e; /* Default to night mode */
             color: #d1d1d1;
             overflow-x: hidden;
             display: flex;
@@ -43,7 +43,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 400px;
             text-align: center;
-            border: 2px solid #555;
+            border: 2px solid #555; /* Thicker border */
             box-sizing: border-box;
         }
 
@@ -51,7 +51,7 @@
             font-size: 1.1em;
             margin-bottom: 10px;
             display: block;
-            margin-top: 20px;
+            margin-top: 20px; /* Add more space above */
         }
 
         input[type="text"] {
@@ -59,7 +59,7 @@
             font-size: 1em;
             width: 100%;
             margin-bottom: 20px;
-            border: 1px solid #555;
+            border: 1px solid #555; /* Thicker border */
             border-radius: 5px;
             box-sizing: border-box;
             background-color: #333842;
@@ -92,7 +92,7 @@
             background-color: #e73b4d;
         }
 
-        #result, #goalResult, #compoundResult {
+        #result, #goalResult {
             margin-top: 20px;
             font-size: 1.2em;
         }
@@ -110,7 +110,7 @@
             z-index: 10;
             background-color: #333842;
             color: #d1d1d1;
-            border: 2px solid #555;
+            border: 2px solid #555; /* Thicker border */
             max-width: 90%;
             max-height: 80%;
             overflow-y: auto;
@@ -119,7 +119,7 @@
         #closePopup {
             margin-top: 20px;
             width: 100%;
-            border: 1px solid #555;
+            border: 1px solid #555; /* Thicker border */
         }
 
         .guis-container {
@@ -134,7 +134,7 @@
             width: 300px;
             height: 400px;
             overflow-y: auto;
-            border: 2px solid #555;
+            border: 2px solid #555; /* Thicker border */
             border-radius: 10px;
             background: rgba(40, 44, 52, 0.8);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -153,7 +153,7 @@
 
         .leaderboard {
             text-align: left;
-            height: 400px;
+            height: 400px; /* Fixed height for consistent scrolling */
             overflow-y: auto;
         }
 
@@ -173,21 +173,22 @@
             color: #d1d1d1;
         }
 
+        /* Custom scrollbar styles */
         ::-webkit-scrollbar {
-            width: 12px;
+            width: 12px; /* Width of the scrollbar */
         }
 
         ::-webkit-scrollbar-track {
-            background: #2c2f36;
+            background: #2c2f36; /* Track color */
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #555;
+            background: #555; /* Handle color */
             border-radius: 6px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #777;
+            background: #777; /* Handle color on hover */
         }
     </style>
 </head>
@@ -195,7 +196,7 @@
     <h1>EXP Balance Calculator</h1>
     <h1>(by s6eg4se54g)</h1>
     <div class="section-container">
-        <!-- Existing GUIs -->
+        <!-- GUI Containers in the new order -->
         <div id="guiLeft" class="gui night-mode">
             <h2>First 30 Days</h2>
             <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
@@ -219,15 +220,15 @@
         </div>
 
         <div class="container night-mode">
-            <h2>Calculate Goal Balance after X Days</h2>
+            <h2>Calculate Goal Balance after X Time</h2>
             <label for="initialBalance2">Balance (Gems): </label>
-            <input type="text" id="initialBalance2" value="1,000" class="night-mode">
+            <input type="text" id="initialBalance2" value="500,000,000" class="night-mode">
 
-            <label for="daysInput">Number of Days: </label>
-            <input type="text" id="daysInput" value="30" class="night-mode">
-
+            <label for="timeInput">Time (Seconds): </label>
+            <input type="text" id="timeInput" value="1" class="night-mode">
+            
             <button onclick="calculateGoal()">Calculate Goal</button>
-            <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
+            <div id="goalResult">Enter time and click "Calculate Goal" to see the results.</div>
         </div>
 
         <div id="leaderboardGui" class="gui night-mode leaderboard">
@@ -235,9 +236,9 @@
             <h2>/gift @s6eg4se54g</h2>
             <h3>Top 10 Donators</h3>
             <ul>
-                <li>1. 1h59 | 50m</li>
-                <li>2. alexplays038 | 2m</li>
-                <li>3. iamonevader | 1m</li>
+                <li>1. 1h59   | 50m</li>
+                <li>2. alexplays038   | 2m   </li>
+                <li>3. iamonevader   |1m</li>
                 <li>5. None yet!</li>
                 <li>5. None yet!</li>
                 <li>6. None yet!</li>
@@ -253,120 +254,101 @@
             <p>/gift @s6eg4se54g</p>
             <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
         </div>
-
-        <!-- New GUI for Compound Interest -->
-        <div class="container night-mode">
-            <h2>Calculate Balance with Compound Interest</h2>
-            <label for="initialBalance3">Balance (Gems): </label>
-            <input type="text" id="initialBalance3" value="1,000" class="night-mode">
-
-            <label for="timeInput">Number of Units (e.g., seconds, minutes, hours, days, weeks, months, years): </label>
-            <input type="text" id="timeInput" value="30" class="night-mode">
-
-            <label for="unitType">Unit Type: </label>
-            <select id="unitType" class="night-mode">
-                <option value="seconds">Seconds</option>
-                <option value="minutes">Minutes</option>
-                <option value="hours">Hours</option>
-                <option value="days">Days</option>
-                <option value="weeks">Weeks</option>
-                <option value="months">Months</option>
-                <option value="years">Years</option>
-            </select>
-
-            <button onclick="calculateCompoundInterest()">Calculate Compound Interest</button>
-            <div id="compoundResult">Enter values and click "Calculate Compound Interest" to see the results.</div>
-        </div>
     </div>
 
     <script>
-        const dailyRate = 0.009; // 0.9%
-        const hourlyRate = 0.000375; // 0.0375%
-        const minuteRate = 0.000015625; // 0.0015625%
-        const secondRate = 0.0000002604; // 0.0000260417%
-        const weeklyRate = dailyRate * 7; // Weekly compound interest
-        const monthlyRate = dailyRate * 30; // Monthly compound interest
-        const yearlyRate = dailyRate * 365; // Yearly compound interest
+        function formatNumber(num) {
+            // Format number with commas
+            return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        }
+
+        function parseInput(value) {
+            // Parse input with commas removed
+            return parseFloat(value.replace(/,/g, ''));
+        }
 
         function calculateDays() {
-            const initialBalance = parseFloat(document.getElementById('initialBalance').value.replace(/,/g, ''));
-            const goalBalance = parseFloat(document.getElementById('goalBalance').value.replace(/,/g, ''));
+            let initialBalance = parseInput(document.getElementById('initialBalance').value);
+            let goalBalance = parseInput(document.getElementById('goalBalance').value);
+            let dailyInterestRate = 0.009;
 
-            const days = Math.log(goalBalance / initialBalance) / Math.log(1 + dailyRate);
-            document.getElementById('result').innerText = `Days required to reach goal: ${Math.ceil(days)}`;
+            let days = 0;
+            let balance = initialBalance;
+            let dailyBalances = [];
+
+            while (balance < goalBalance) {
+                let profit = balance * dailyInterestRate;
+                balance += profit;
+                dailyBalances.push({
+                    day: days + 1,
+                    balance: balance,
+                    profit: profit
+                });
+                days++;
+            }
+
+            let years = Math.floor(days / 365);
+            let remainingDays = days % 365;
+            let months = Math.floor(remainingDays / 30);
+            remainingDays = remainingDays % 30;
+
+            let first30Days = dailyBalances.slice(0, 30);
+            let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
+
+            let last30Days = dailyBalances.slice(-30);
+            let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
+
+            document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, and <span class="highlight">${remainingDays}</span> days.`;
+            document.getElementById('first30Days').innerHTML = first30DaysText;
+            document.getElementById('last30Days').innerHTML = last30DaysText;
         }
 
         function calculateGoal() {
-            const initialBalance = parseFloat(document.getElementById('initialBalance2').value.replace(/,/g, ''));
-            const days = parseFloat(document.getElementById('daysInput').value);
+            let initialBalance = parseInput(document.getElementById('initialBalance2').value);
+            let timeInSeconds = parseInt(document.getElementById('timeInput').value, 10);
+            let dailyInterestRate = 0.009; // 0.9% daily
 
-            const futureBalance = initialBalance * Math.pow(1 + dailyRate, days);
-            document.getElementById('goalResult').innerText = `Balance after ${days} days: ${futureBalance.toFixed(2)}`;
-        }
+            // Convert time to days
+            let days = timeInSeconds / (24 * 3600);
 
-        function compoundInterest(principal, rate, time, frequency) {
-            return principal * Math.pow(1 + rate / frequency, frequency * time);
-        }
-
-        function calculateCompoundInterest() {
-            const initialBalance = parseFloat(document.getElementById('initialBalance3').value.replace(/,/g, ''));
-            const time = parseFloat(document.getElementById('timeInput').value);
-            const unitType = document.getElementById('unitType').value;
-            let rate, frequency, timeUnits;
-
-            switch (unitType) {
-                case 'seconds':
-                    rate = secondRate;
-                    frequency = 1;
-                    timeUnits = time;
-                    break;
-                case 'minutes':
-                    rate = minuteRate;
-                    frequency = 60;
-                    timeUnits = time * 60;
-                    break;
-                case 'hours':
-                    rate = hourlyRate;
-                    frequency = 24;
-                    timeUnits = time * 24 * 60 * 60;
-                    break;
-                case 'days':
-                    rate = dailyRate;
-                    frequency = 1;
-                    timeUnits = time * 24 * 60 * 60;
-                    break;
-                case 'weeks':
-                    rate = weeklyRate;
-                    frequency = 1;
-                    timeUnits = time * 7 * 24 * 60 * 60;
-                    break;
-                case 'months':
-                    rate = monthlyRate;
-                    frequency = 1;
-                    timeUnits = time * 30 * 24 * 60 * 60;
-                    break;
-                case 'years':
-                    rate = yearlyRate;
-                    frequency = 1;
-                    timeUnits = time * 365 * 24 * 60 * 60;
-                    break;
-                default:
-                    rate = dailyRate;
-                    frequency = 1;
-                    timeUnits = time * 24 * 60 * 60;
+            // Validate inputs
+            if (isNaN(initialBalance) || isNaN(days) || initialBalance <= 0 || days <= 0) {
+                document.getElementById('goalResult').innerHTML = 'Please enter valid numbers for balance and time.';
+                return;
             }
 
-            const balance = compoundInterest(initialBalance, rate, timeUnits, frequency);
-            document.getElementById('compoundResult').innerText = `Balance after ${time} ${unitType}: ${balance.toFixed(2)}`;
-        }
+            let balance = initialBalance;
 
-        function openDonatePopup() {
-            document.getElementById('donatePopup').style.display = 'block';
+            for (let i = 0; i < days; i++) {
+                balance *= (1 + dailyInterestRate);
+            }
+
+            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${formatNumber(timeInSeconds)} seconds</span>, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
         }
 
         function closeDonatePopup() {
             document.getElementById('donatePopup').style.display = 'none';
         }
+
+        function formatInput(input) {
+            // Automatically format numbers with commas
+            let value = input.value.replace(/,/g, '');
+            if (!isNaN(value) && value !== '') {
+                input.value = formatNumber(parseFloat(value));
+            } else {
+                input.value = '';
+            }
+        }
+
+        // Format inputs on keyup and paste
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            input.addEventListener('input', function() {
+                formatInput(this);
+            });
+            input.addEventListener('blur', function() {
+                formatInput(this);
+            });
+        });
     </script>
 </body>
 </html>
