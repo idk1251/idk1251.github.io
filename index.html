@@ -54,7 +54,7 @@
             margin-top: 20px; /* Add more space above */
         }
 
-        input[type="text"], select {
+        input[type="text"] {
             padding: 10px;
             font-size: 1em;
             width: 100%;
@@ -192,23 +192,27 @@
         }
     </style>
 </head>
-<body>
+<body class="night-mode">
     <h1>EXP Balance Calculator</h1>
     <h1>(by s6eg4se54g)</h1>
     <div class="section-container">
-        <div id="guiLeft" class="gui">
+        <!-- GUI Containers in the new order -->
+        <div id="guiLeft" class="gui night-mode">
             <h2>First 30 Days</h2>
             <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div class="container">
+        <div class="container night-mode">
             <h2>Calculate Days to Reach Goal</h2>
             <label for="initialBalance">Balance (Gems): </label>
-            <input type="text" id="initialBalance" value="1,000">
+            <input type="text" id="initialBalance" value="1,000" class="night-mode">
 
             <label for="goalBalance">Goal Balance (Gems): </label>
-            <select id="rankSelect" onchange="updateGoalBalance()">
-                <option value="">Select Rank</option>
+            <input type="text" id="goalBalance" value="5,000" class="night-mode">
+
+            <label for="rankSelect">Select Goal Rank: </label>
+            <select id="rankSelect" class="night-mode" onchange="updateGoalBalance()">
+                <option value="">Select a Rank</option>
                 <option value="96000000">Donator ― 96M+</option>
                 <option value="320000000">Ethereal ― 320M+</option>
                 <option value="800000000">Luminary ― 800M+</option>
@@ -221,32 +225,32 @@
             <div id="result">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div id="guiRight" class="gui">
+        <div id="guiRight" class="gui night-mode">
             <h2>Last 30 Days</h2>
             <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div class="container">
+        <div class="container night-mode">
             <h2>Calculate Goal Balance after X Days</h2>
             <label for="initialBalance2">Balance (Gems): </label>
-            <input type="text" id="initialBalance2" value="1,000">
+            <input type="text" id="initialBalance2" value="1,000" class="night-mode">
 
             <label for="daysInput">Number of Days: </label>
-            <input type="text" id="daysInput" value="30">
+            <input type="text" id="daysInput" value="30" class="night-mode">
 
             <button onclick="calculateGoal()">Calculate Goal</button>
             <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
         </div>
 
-        <div id="leaderboardGui" class="gui leaderboard">
+        <div id="leaderboardGui" class="gui night-mode leaderboard">
             <h2>Donation leaderboard!</h2>
             <h2>/gift @s6eg4se54g</h2>
             <h3>Top 10 Donators</h3>
             <ul>
                 <li>1. 1h59   | 50m</li>
                 <li>2. alexplays038   | 2m   </li>
-                <li>3. iamonevader   | 1m</li>
-                <li>4. None yet!</li>
+                <li>3. iamonevader   |1m</li>
+                <li>5. None yet!</li>
                 <li>5. None yet!</li>
                 <li>6. None yet!</li>
                 <li>7. None yet!</li>
@@ -259,7 +263,7 @@
         <div id="donatePopup" class="night-mode">
             <h2>Donate Here:</h2>
             <p>/gift @s6eg4se54g</p>
-            <button id="closePopup" onclick="closeDonatePopup()">Close</button>
+            <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
         </div>
     </div>
 
@@ -312,7 +316,7 @@
 
         function calculateGoal() {
             let initialBalance = parseInput(document.getElementById('initialBalance2').value);
-            let days = parseInt(document.getElementById('daysInput').value, 10);
+            let days = parseInput(document.getElementById('daysInput').value);
             let dailyInterestRate = 0.009;
 
             let balance = initialBalance;
@@ -322,7 +326,13 @@
                 balance += profit;
             }
 
-            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${days}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
+            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${formatNumber(days)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
+        }
+
+        function updateGoalBalance() {
+            let select = document.getElementById('rankSelect');
+            let goalBalance = select.value;
+            document.getElementById('goalBalance').value = formatNumber(parseFloat(goalBalance));
         }
 
         function closeDonatePopup() {
@@ -337,12 +347,6 @@
             } else {
                 input.value = '';
             }
-        }
-
-        function updateGoalBalance() {
-            const rankSelect = document.getElementById('rankSelect');
-            const goalBalanceInput = document.getElementById('goalBalance');
-            goalBalanceInput.value = formatNumber(parseInput(rankSelect.value));
         }
 
         // Format inputs on keyup and paste
