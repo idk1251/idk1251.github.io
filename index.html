@@ -231,15 +231,23 @@
         </div>
 
         <div class="container night-mode">
-            <h2>Calculate Goal Balance after X Days</h2>
+            <h2>Calculate Goal Balance after X Time</h2>
             <label for="initialBalance2">Balance (Gems): </label>
             <input type="text" id="initialBalance2" value="1,000" class="night-mode">
 
-            <label for="daysInput">Number of Days: </label>
-            <input type="text" id="daysInput" value="30" class="night-mode">
+            <label for="timeInput">Amount of Time: </label>
+            <input type="text" id="timeInput" value="30" class="night-mode">
+
+            <label for="timeUnit">Time Unit: </label>
+            <select id="timeUnit" class="night-mode">
+                <option value="days">Days</option>
+                <option value="weeks">Weeks</option>
+                <option value="months">Months</option>
+                <option value="years">Years</option>
+            </select>
 
             <button onclick="calculateGoal()">Calculate Goal</button>
-            <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
+            <div id="goalResult">Enter time and click "Calculate Goal" to see the results.</div>
         </div>
 
         <div id="leaderboardGui" class="gui night-mode leaderboard">
@@ -247,14 +255,14 @@
             <h2>/gift @s6eg4se54g</h2>
             <h3>Top 10 Donators</h3>
             <ul>
-                <li>1. 1h59   | 50m</li>
-                <li>2. alexplays038   | 2m   </li>
-                <li>3. iamonevader   |1m</li>
-                <li>5. None yet!</li>
-                <li>5. None yet!</li>
-                <li>6. None yet!</li>
-                <li>7. None yet!</li>
-                <li>8. None yet!</li>
+                <li>1. 320M+ ― Catalyst</li>
+                <li>2. 120M+ ― Catalyst</li>
+                <li>3. 64M+ ― Catalyst</li>
+                <li>4. 32M+ ― Luminary</li>
+                <li>5. 16M+ ― Radiant</li>
+                <li>6. 8M+ ― Radiant</li>
+                <li>7. 4M+ ― Ethereal</li>
+                <li>8. 1M+ ― Donator</li>
                 <li>9. None yet!</li>
                 <li>10. None yet!</li>
             </ul>
