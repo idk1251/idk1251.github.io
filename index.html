@@ -27,8 +27,9 @@
             justify-content: space-between;
             gap: 20px;
             flex-wrap: wrap;
-            margin: 0 auto;
             padding: 20px;
+            max-width: 1200px; /* Adjust as needed */
+            margin: 0 auto;
         }
 
         .container, .gui {
@@ -41,13 +42,26 @@
         }
 
         .container {
-            width: 300px; /* Adjust width as needed */
+            width: 100%; /* Default width */
+            max-width: 400px; /* Maximum width */
         }
 
         .gui {
-            width: 300px; /* Adjust width as needed */
+            width: 100%;
+            max-width: 400px; /* Maximum width */
             height: auto; /* Auto height to fit content */
             overflow: hidden; /* Prevent scrolling */
+        }
+
+        .two-column {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .two-column .gui {
+            flex: 1;
+            min-width: 300px; /* Minimum width for responsiveness */
         }
 
         label {
@@ -160,18 +174,23 @@
 
             <button onclick="calculateDays()">Calculate Days</button>
             <div id="result">Enter values and click "Calculate Days" to see the results.</div>
+
+            <button id="donateButton" onclick="openDonatePopup()">Donate</button>
         </div>
 
-        <!-- First 30 Days GUI -->
-        <div id="guiLeft" class="gui night-mode">
-            <h2>First 30 Days</h2>
-            <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
-        </div>
+        <!-- Two-column layout for 30 Days GUIs -->
+        <div class="two-column">
+            <!-- First 30 Days GUI -->
+            <div id="guiLeft" class="gui night-mode">
+                <h2>First 30 Days</h2>
+                <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
+            </div>
 
-        <!-- Last 30 Days GUI -->
-        <div id="guiRight" class="gui night-mode">
-            <h2>Last 30 Days</h2>
-            <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
+            <!-- Last 30 Days GUI -->
+            <div id="guiRight" class="gui night-mode">
+                <h2>Last 30 Days</h2>
+                <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
+            </div>
         </div>
     </div>
 
@@ -275,6 +294,10 @@
             }
 
             document.getElementById('goalResult').innerHTML = `After ${days} days, your balance will be ${formatNumber(balance)} gems.`;
+        }
+
+        function openDonatePopup() {
+            document.getElementById('donatePopup').style.display = 'block';
         }
 
         function closeDonatePopup() {
