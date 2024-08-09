@@ -186,7 +186,6 @@
 
         .all-days-content {
             text-align: left;
-            max-height: 300px; /* Limit height to make it scrollable */
             padding-right: 10px; /* Space for scrollbar */
         }
 
@@ -200,31 +199,38 @@
             color: #00ff00; /* Green for profit */
         }
 
-        /* Custom scrollbar styles for day entries */
-        .all-days-content::-webkit-scrollbar {
+        .first-day, .last-day {
+            background-color: #3e3e3e;
+            border: 1px solid #555; /* Thicker border */
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .first-day {
+            border-color: #007bff;
+        }
+
+        .last-day {
+            border-color: #ff4757;
+        }
+
+        /* Custom scrollbar styles */
+        ::-webkit-scrollbar {
             width: 12px; /* Width of the scrollbar */
         }
 
-        .all-days-content::-webkit-scrollbar-track {
+        ::-webkit-scrollbar-track {
             background: #2c2f36; /* Track color */
         }
 
-        .all-days-content::-webkit-scrollbar-thumb {
+        ::-webkit-scrollbar-thumb {
             background: #555; /* Handle color */
             border-radius: 6px;
         }
 
-        .all-days-content::-webkit-scrollbar-thumb:hover {
+        ::-webkit-scrollbar-thumb:hover {
             background: #777; /* Handle color on hover */
-        }
-
-        .day-box {
-            background: #2c2f36;
-            border: 1px solid #555; /* Border to match theme */
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
@@ -263,20 +269,22 @@
                 <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
             </div>
 
-            <div id="leaderboard" class="gui night-mode leaderboard">
+            <div id="leaderboardGui" class="gui night-mode">
                 <h2>Leaderboard</h2>
-                <ul>
-                    <li>1. None yet!</li>
-                    <li>2. None yet!</li>
-                    <li>3. None yet!</li>
-                    <li>4. None yet!</li>
-                    <li>5. None yet!</li>
-                    <li>6. None yet!</li>
-                    <li>7. None yet!</li>
-                    <li>8. None yet!</li>
-                    <li>9. None yet!</li>
-                    <li>10. None yet!</li>
-                </ul>
+                <div class="leaderboard">
+                    <ul>
+                        <li>1. None yet!</li>
+                        <li>2. None yet!</li>
+                        <li>3. None yet!</li>
+                        <li>4. None yet!</li>
+                        <li>5. None yet!</li>
+                        <li>6. None yet!</li>
+                        <li>7. None yet!</li>
+                        <li>8. None yet!</li>
+                        <li>9. None yet!</li>
+                        <li>10. None yet!</li>
+                    </ul>
+                </div>
             </div>
 
             <div id="donatePopup" class="night-mode">
@@ -324,7 +332,7 @@
             remainingDays = remainingDays % 30;
 
             function generateDaysText(daysArray) {
-                return daysArray.map(item => `<div class="day-entry">Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span></div>`).join('');
+                return daysArray.map(item => `<div class="day-entry ${item.day === 1 ? 'first-day' : item.day === daysArray.length ? 'last-day' : ''}">Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span></div>`).join('');
             }
 
             document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, and <span class="highlight">${remainingDays}</span> days.`;
@@ -363,7 +371,7 @@
             }
 
             let daysArray = filter === 'first' ? window.allDaysData.slice(0, 30) : window.allDaysData.slice(-30);
-            allDaysContent.innerHTML = daysArray.map(item => `<div class="day-entry">${filter === 'first' ? 'First ' : 'Last '} Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span></div>`).join('');
+            allDaysContent.innerHTML = generateDaysText(daysArray);
         }
 
         // Open donate popup on button click
