@@ -158,52 +158,50 @@
         }
     </style>
 </head>
-<body class="night-mode">
+<body>
     <h1>EXP Balance Calculator</h1>
 
     <div class="flex-container">
-
         <!-- First Section: Calculate Days -->
-        <div class="container night-mode">
+        <div class="container">
             <h2>Calculate Days to Reach Goal</h2>
             <label for="initialBalance">Balance (Gems): </label>
-            <input type="text" id="initialBalance" value="1,000" class="night-mode">
+            <input type="text" id="initialBalance" value="1,000" onblur="addCommasToInput('initialBalance')">
 
             <label for="goalBalance">Goal Balance (Gems): </label>
-            <input type="text" id="goalBalance" value="5,000" class="night-mode">
+            <input type="text" id="goalBalance" value="5,000" onblur="addCommasToInput('goalBalance')">
 
             <button onclick="calculateDays()">Calculate Days</button>
             <div id="result">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
         <!-- Second Section: Calculate Goal Balance -->
-        <div class="container night-mode">
+        <div class="container">
             <h2>Calculate Goal Balance after X Days</h2>
             <label for="initialBalance2">Balance (Gems): </label>
-            <input type="text" id="initialBalance2" value="1,000" class="night-mode">
+            <input type="text" id="initialBalance2" value="1,000" onblur="addCommasToInput('initialBalance2')">
 
             <label for="daysInput">Number of Days: </label>
-            <input type="text" id="daysInput" value="30" class="night-mode">
+            <input type="text" id="daysInput" value="30">
 
             <button onclick="calculateGoal()">Calculate Goal</button>
             <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
         </div>
-
     </div>
 
     <div class="guis-container">
-        <div id="guiLeft" class="gui night-mode">
+        <div id="guiLeft" class="gui">
             <h2>First 30 Days</h2>
             <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div id="guiRight" class="gui night-mode">
+        <div id="guiRight" class="gui">
             <h2>Last 30 Days</h2>
             <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
         <!-- Third Section: Leaderboard -->
-        <div id="leaderboardGui" class="gui night-mode leaderboard">
+        <div id="leaderboardGui" class="gui leaderboard">
             <h2>Donate Me!</h2>
             <p>/gift @s6eg4se54g</p>
             <h3>Top 10 Donators</h3>
@@ -220,13 +218,12 @@
                 <li>10. None yet!</li>
             </ul>
         </div>
-
     </div>
 
-    <div id="donatePopup" class="night-mode">
+    <div id="donatePopup">
         <h2>Donate Here:</h2>
         <p>/gift @s6eg4se54g</p>
-        <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
+        <button id="closePopup" onclick="closeDonatePopup()">Close</button>
     </div>
 
     <script>
@@ -266,10 +263,10 @@
             remainingDays = remainingDays % 30;
 
             let first30Days = dailyBalances.slice(0, 30);
-            let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)}, Profit: ${formatNumber(item.profit)}`).join('<br>');
+            let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
 
             let last30Days = dailyBalances.slice(-30);
-            let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)}, Profit: ${formatNumber(item.profit)}`).join('<br>');
+            let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
 
             document.getElementById('result').innerHTML = `You will reach your goal in ${years} years, ${months} months, and ${remainingDays} days.`;
             document.getElementById('first30Days').innerHTML = first30DaysText;
@@ -295,11 +292,22 @@
             document.getElementById('donatePopup').style.display = 'none';
         }
 
-// Open donate popup on button click
-document.getElementById('donateButton').addEventListener('click', () => {
-    document.getElementById('donatePopup').style.display = 'block';
-});
+        // Open donate popup on button click
+        document.getElementById('donateButton').addEventListener('click', () => {
+            document.getElementById('donatePopup').style.display = 'block';
+        });
 
+        // Add commas to input value
+        function addCommasToInput(id) {
+            let input = document.getElementById(id);
+            let value = parseInput(input.value);
+            input.value = formatNumber(value);
+        }
+
+        // Add commas on input blur
+        document.getElementById('initialBalance').addEventListener('blur', () => addCommasToInput('initialBalance'));
+        document.getElementById('goalBalance').addEventListener('blur', () => addCommasToInput('goalBalance'));
+        document.getElementById('initialBalance2').addEventListener('blur', () => addCommasToInput('initialBalance2'));
     </script>
 </body>
 </html>
