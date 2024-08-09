@@ -187,7 +187,6 @@
         .all-days-content {
             text-align: left;
             max-height: 300px; /* Limit height to make it scrollable */
-            overflow-y: auto;
             padding-right: 10px; /* Space for scrollbar */
         }
 
@@ -201,22 +200,31 @@
             color: #00ff00; /* Green for profit */
         }
 
-        /* Custom scrollbar styles */
-        ::-webkit-scrollbar {
+        /* Custom scrollbar styles for day entries */
+        .all-days-content::-webkit-scrollbar {
             width: 12px; /* Width of the scrollbar */
         }
 
-        ::-webkit-scrollbar-track {
+        .all-days-content::-webkit-scrollbar-track {
             background: #2c2f36; /* Track color */
         }
 
-        ::-webkit-scrollbar-thumb {
+        .all-days-content::-webkit-scrollbar-thumb {
             background: #555; /* Handle color */
             border-radius: 6px;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
+        .all-days-content::-webkit-scrollbar-thumb:hover {
             background: #777; /* Handle color on hover */
+        }
+
+        .day-box {
+            background: #2c2f36;
+            border: 1px solid #555; /* Border to match theme */
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
@@ -228,11 +236,6 @@
             <!-- Reordered GUIs -->
             <div id="allDaysGui" class="gui night-mode">
                 <h2>All Days</h2>
-                <label for="dayFilter">Show: </label>
-                <select id="dayFilter" onchange="updateAllDays()">
-                    <option value="first">First 30 Days</option>
-                    <option value="last">Last 30 Days</option>
-                </select>
                 <div id="allDaysContent" class="all-days-content">Select an option to view the data.</div>
             </div>
 
@@ -260,10 +263,8 @@
                 <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
             </div>
 
-            <div id="leaderboardGui" class="gui night-mode leaderboard">
-                <h2>Donate Me!</h2>
-                <p>/gift @s6eg4se54g</p>
-                <h3>Top 10 Donators</h3>
+            <div id="leaderboard" class="gui night-mode leaderboard">
+                <h2>Leaderboard</h2>
                 <ul>
                     <li>1. None yet!</li>
                     <li>2. None yet!</li>
@@ -362,7 +363,7 @@
             }
 
             let daysArray = filter === 'first' ? window.allDaysData.slice(0, 30) : window.allDaysData.slice(-30);
-            allDaysContent.innerHTML = daysArray.map(item => `<div class="day-entry">Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span></div>`).join('');
+            allDaysContent.innerHTML = daysArray.map(item => `<div class="day-entry">${filter === 'first' ? 'First ' : 'Last '} Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span></div>`).join('');
         }
 
         // Open donate popup on button click
