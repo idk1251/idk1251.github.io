@@ -277,7 +277,6 @@
 
         <div class="container night-mode">
             <h2>Calculate Goal Balance after X Time</h2>
-
             <label for="timeAmount">Time Amount: </label>
             <input type="text" id="timeAmount" placeholder="e.g., 30" class="night-mode">
 
@@ -288,9 +287,6 @@
                 <option value="months">Months</option>
                 <option value="years">Years</option>
             </select>
-
-            <label for="initialBalance2">Balance (Gems): </label>
-            <input type="text" id="initialBalance2" value="1,000" class="night-mode">
 
             <button onclick="calculateGoal()">Calculate Goal</button>
             <div id="goalResult">Enter time period and click "Calculate Goal" to see the results.</div>
@@ -323,12 +319,10 @@
 
     <script>
         function formatNumber(num) {
-            // Format number with commas
             return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         }
 
         function parseInput(value) {
-            // Parse input with commas removed
             return parseFloat(value.replace(/,/g, '')) || 0;
         }
 
@@ -369,7 +363,6 @@
             document.getElementById('first30Days').innerHTML = first30DaysText;
             document.getElementById('last30Days').innerHTML = last30DaysText;
 
-            // Update progress bar
             updateProgressBar();
         }
 
@@ -381,7 +374,6 @@
 
             let days = 0;
 
-            // Convert time unit to days
             switch (timeUnit) {
                 case 'days':
                     days = timeAmount;
@@ -405,9 +397,6 @@
             }
 
             document.getElementById('goalResult').innerHTML = `After <span class="highlight">${formatNumber(days)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
-
-            // Update progress bar
-            updateProgressBar();
         }
 
         function updateGoalBalance() {
@@ -415,7 +404,6 @@
             let goalBalance = select.value;
             document.getElementById('goalBalance').value = formatNumber(parseFloat(goalBalance));
 
-            // Update progress bar
             updateProgressBar();
         }
 
@@ -423,7 +411,7 @@
             let initialBalance = parseInput(document.getElementById('initialBalance').value);
             let goalBalance = parseInput(document.getElementById('goalBalance').value);
 
-            let percentage = Math.min((initialBalance / goalBalance) * 100, 100); // Calculate percentage and cap it at 100%
+            let percentage = Math.min((initialBalance / goalBalance) * 100, 100);
             let progressFill = document.getElementById('progress-fill');
             let currentLabel = document.getElementById('current-label');
             let goalLabel = document.getElementById('goal-label');
@@ -446,7 +434,6 @@
         }
 
         function formatInput(input) {
-            // Automatically format numbers with commas
             let value = input.value.replace(/,/g, '');
             if (!isNaN(value) && value !== '') {
                 input.value = formatNumber(parseFloat(value));
@@ -455,7 +442,6 @@
             }
         }
 
-        // Format inputs on keyup and paste
         document.querySelectorAll('input[type="text"]').forEach(input => {
             input.addEventListener('input', function() {
                 formatInput(this);
