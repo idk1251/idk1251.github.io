@@ -15,25 +15,33 @@
             color: #d1d1d1;
             overflow-x: hidden;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            min-height: 100vh; /* Center content vertically */
+            min-height: 100vh;
+            justify-content: center;
         }
 
         h1 {
             color: #007bff;
-            text-align: center;
             margin: 30px 0;
         }
 
         .section-container {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             gap: 20px;
-            flex-wrap: wrap;
+            width: 100%;
+            max-width: 1200px; /* Maximum width for the section */
             padding: 20px;
-            min-height: 60vh; /* Adjust as needed to center content */
+        }
+
+        .gui-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
         }
 
         .container {
@@ -122,15 +130,6 @@
             border: 1px solid #555; /* Thicker border */
         }
 
-        .guis-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-            margin-top: 20px;
-        }
-
         .gui {
             width: 300px;
             height: 400px;
@@ -197,21 +196,21 @@
     <h1>EXP Balance Calculator</h1>
 
     <div class="section-container">
-        <!-- First Section: Calculate Days -->
-        <div class="container night-mode">
-            <h2>Calculate Days to Reach Goal</h2>
-            <label for="initialBalance">Balance (Gems): </label>
-            <input type="text" id="initialBalance" value="1,000" class="night-mode">
-
-            <label for="goalBalance">Goal Balance (Gems): </label>
-            <input type="text" id="goalBalance" value="5,000" class="night-mode">
-
-            <button onclick="calculateDays()">Calculate Days</button>
-            <div id="result">Enter values and click "Calculate Days" to see the results.</div>
-        </div>
-
         <!-- GUI Containers -->
-        <div class="guis-container">
+        <div class="gui-container">
+            <!-- First Section: Calculate Days -->
+            <div class="container night-mode">
+                <h2>Calculate Days to Reach Goal</h2>
+                <label for="initialBalance">Balance (Gems): </label>
+                <input type="text" id="initialBalance" value="1,000" class="night-mode">
+
+                <label for="goalBalance">Goal Balance (Gems): </label>
+                <input type="text" id="goalBalance" value="5,000" class="night-mode">
+
+                <button onclick="calculateDays()">Calculate Days</button>
+                <div id="result">Enter values and click "Calculate Days" to see the results.</div>
+            </div>
+
             <div id="guiLeft" class="gui night-mode">
                 <h2>First 30 Days</h2>
                 <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
@@ -221,7 +220,10 @@
                 <h2>Last 30 Days</h2>
                 <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
             </div>
-            
+        </div>
+
+        <div class="gui-container">
+            <!-- Second Section: Calculate Goal Balance -->
             <div class="container night-mode">
                 <h2>Calculate Goal Balance after X Days</h2>
                 <label for="initialBalance2">Balance (Gems): </label>
@@ -334,7 +336,8 @@
         // Automatically format numbers with commas
         document.querySelectorAll('input[type="text"]').forEach(input => {
             input.addEventListener('input', function() {
-                this.value = formatNumber(parseInput(this.value));
+                let parsedValue = parseInput(this.value);
+                this.value = formatNumber(parsedValue);
             });
         });
     </script>
