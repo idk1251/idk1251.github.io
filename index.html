@@ -11,7 +11,7 @@
             padding: 0;
             box-sizing: border-box;
             transition: background-color 0.3s, color 0.3s;
-            background-color: #1e1e1e; /* Default to night mode */
+            background-color: #1e1e1e;
             color: #d1d1d1;
             overflow-x: hidden;
             display: flex;
@@ -43,24 +43,23 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 400px;
             text-align: center;
-            border: 2px solid #555; /* Thicker border */
+            border: 2px solid #555;
             box-sizing: border-box;
-            margin-bottom: 20px;
         }
 
         label {
             font-size: 1.1em;
             margin-bottom: 10px;
             display: block;
-            margin-top: 20px; /* Add more space above */
+            margin-top: 20px;
         }
 
-        input[type="text"], select {
+        input[type="text"] {
             padding: 10px;
             font-size: 1em;
             width: 100%;
             margin-bottom: 20px;
-            border: 1px solid #555; /* Thicker border */
+            border: 1px solid #555;
             border-radius: 5px;
             box-sizing: border-box;
             background-color: #333842;
@@ -111,7 +110,7 @@
             z-index: 10;
             background-color: #333842;
             color: #d1d1d1;
-            border: 2px solid #555; /* Thicker border */
+            border: 2px solid #555;
             max-width: 90%;
             max-height: 80%;
             overflow-y: auto;
@@ -120,7 +119,7 @@
         #closePopup {
             margin-top: 20px;
             width: 100%;
-            border: 1px solid #555; /* Thicker border */
+            border: 1px solid #555;
         }
 
         .guis-container {
@@ -135,7 +134,7 @@
             width: 300px;
             height: 400px;
             overflow-y: auto;
-            border: 2px solid #555; /* Thicker border */
+            border: 2px solid #555;
             border-radius: 10px;
             background: rgba(40, 44, 52, 0.8);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -154,7 +153,7 @@
 
         .leaderboard {
             text-align: left;
-            height: 400px; /* Fixed height for consistent scrolling */
+            height: 400px;
             overflow-y: auto;
         }
 
@@ -174,22 +173,21 @@
             color: #d1d1d1;
         }
 
-        /* Custom scrollbar styles */
         ::-webkit-scrollbar {
-            width: 12px; /* Width of the scrollbar */
+            width: 12px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #2c2f36; /* Track color */
+            background: #2c2f36;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #555; /* Handle color */
+            background: #555;
             border-radius: 6px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #777; /* Handle color on hover */
+            background: #777;
         }
     </style>
 </head>
@@ -197,7 +195,6 @@
     <h1>EXP Balance Calculator</h1>
     <h1>(by s6eg4se54g)</h1>
     <div class="section-container">
-        <!-- GUI Containers in the new order -->
         <div id="guiLeft" class="gui night-mode">
             <h2>First 30 Days</h2>
             <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
@@ -233,26 +230,26 @@
         </div>
 
         <div class="container night-mode">
-            <h2>Calculate Balance Over Time</h2>
-            <label for="initialBalance3">Initial Balance (Gems): </label>
-            <input type="text" id="initialBalance3" value="1,000">
+            <h2>Compound Interest Calculator</h2>
+            <label for="initialBalance3">Initial Balance:</label>
+            <input type="text" id="initialBalance3" value="1000">
 
-            <label for="timeUnit">Time Unit: </label>
-            <select id="timeUnit">
+            <label for="timeInterval">Time Interval:</label>
+            <select id="timeInterval">
                 <option value="seconds">Seconds</option>
                 <option value="minutes">Minutes</option>
                 <option value="hours">Hours</option>
-                <option value="days" selected>Days</option>
+                <option value="days">Days</option>
                 <option value="weeks">Weeks</option>
                 <option value="months">Months</option>
                 <option value="years">Years</option>
             </select>
 
-            <label for="timeValue">Time Value: </label>
-            <input type="text" id="timeValue" value="30">
+            <label for="timeValue">Number of Intervals:</label>
+            <input type="text" id="timeValue" value="1">
 
-            <button onclick="calculateBalance()">Calculate</button>
-            <div id="timeResult">Enter values and click "Calculate" to see the results.</div>
+            <button onclick="calculateCompoundInterest()">Calculate Compound Interest</button>
+            <div id="compoundResult">Enter values and click "Calculate" to see the results.</div>
         </div>
 
         <div id="leaderboardGui" class="gui night-mode leaderboard">
@@ -260,118 +257,114 @@
             <h2>/gift @s6eg4se54g</h2>
             <h3>Top 10 Donators</h3>
             <ul>
-                <li>1. iamonevader   - 100,000 EXP</li>
-                <li>2. Keyz  - 75,000 EXP</li>
-                <li>3. Chad   - 50,000 EXP</li>
-                <li>4. Toast   - 30,000 EXP</li>
-                <li>5. Happyfiddler   - 25,000 EXP</li>
-                <li>6. Jay   - 20,000 EXP</li>
-                <li>7. Steve   - 15,000 EXP</li>
-                <li>8. Mack   - 10,000 EXP</li>
-                <li>9. Furry   - 5,000 EXP</li>
-                <li>10. Pooky   - 1,000 EXP</li>
+                <li>1. 1h59 | 50m</li>
+                <li>2. alexplays038 | 2m</li>
+                <li>3. iamonevader |1m</li>
+                <li>4. None yet!</li>
+                <li>5. None yet!</li>
+                <li>6. None yet!</li>
+                <li>7. None yet!</li>
+                <li>8. None yet!</li>
+                <li>9. None yet!</li>
+                <li>10. None yet!</li>
             </ul>
         </div>
     </div>
 
-    <!-- Donation Popup -->
-    <div id="donatePopup">
-        <h2>Donate to s6eg4se54g</h2>
-        <p>Your support is greatly appreciated!</p>
-        <p>Donations help improve the site and keep it running.</p>
-        <button id="closePopup">Close</button>
+    <!-- Donate Button -->
+    <button id="donateButton">Donate to Developer</button>
+
+    <!-- Donate Popup -->
+    <div id="donatePopup" class="night-mode">
+        <h2>Donate to Developer</h2>
+        <p>Thank you for your support!</p>
+        <button id="closePopup" class="night-mode">Close</button>
     </div>
 
-    <button id="donateButton">Donate</button>
-
     <script>
-        // Function to format numbers with commas
-        function formatNumber(num) {
-            return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-        }
-
-        // Function to parse input and remove commas
-        function parseInput(value) {
-            return parseFloat(value.replace(/,/g, ''));
-        }
-
-        // Function to calculate balance based on daily interest
-        function calculateBalance() {
-            let initialBalance = parseInput(document.getElementById('initialBalance3').value);
-            let timeUnit = document.getElementById('timeUnit').value;
-            let timeValue = parseInput(document.getElementById('timeValue').value);
-            let dailyInterestRate = 0.009;
-            let multiplier = getMultiplier(timeUnit);
-
-            let balance = initialBalance;
-            let totalTime = timeValue * multiplier;
-
-            for (let i = 0; i < totalTime; i++) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
-            }
-
-            let formattedBalance = formatNumber(balance);
-
-            document.getElementById('timeResult').innerHTML = `After <span class="highlight">${timeValue}</span> ${timeUnit}, your balance will be <span class="highlight">${formattedBalance}</span> gems.`;
-        }
-
-        // Function to get the multiplier for time units
-        function getMultiplier(timeUnit) {
-            const multipliers = {
-                'seconds': 1 / (24 * 60 * 60),
-                'minutes': 1 / (24 * 60),
-                'hours': 1 / 24,
-                'days': 1,
-                'weeks': 7,
-                'months': 30,
-                'years': 365
-            };
-            return multipliers[timeUnit] || 1;
-        }
-
-        // Function to calculate days to reach goal
         function calculateDays() {
-            let initialBalance = parseInput(document.getElementById('initialBalance').value);
-            let goalBalance = parseInput(document.getElementById('goalBalance').value);
-            let dailyInterestRate = 0.009;
+            const initialBalance = parseFloat(document.getElementById("initialBalance").value.replace(/,/g, ''));
+            const goalBalance = parseFloat(document.getElementById("goalBalance").value.replace(/,/g, ''));
+            const rate = 1.009; // Adjust this value to match your actual rate
+            const maxDays = 1000; // Set a limit to avoid infinite loop
 
             let days = 0;
-            let balance = initialBalance;
+            let currentBalance = initialBalance;
 
-            while (balance < goalBalance) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
+            while (currentBalance < goalBalance && days < maxDays) {
+                currentBalance *= rate;
                 days++;
             }
 
-            document.getElementById('result').innerHTML = `It will take approximately <span class="highlight">${days}</span> days to reach your goal of <span class="highlight">${formatNumber(goalBalance)}</span> gems.`;
+            const first30 = initialBalance * Math.pow(rate, Math.min(30, days));
+            const last30 = currentBalance * Math.pow(rate, Math.min(30, days));
+
+            document.getElementById("first30Days").textContent = `Balance after first 30 days: ${first30.toFixed(2)} Gems`;
+            document.getElementById("last30Days").textContent = `Balance after last 30 days: ${last30.toFixed(2)} Gems`;
+
+            const resultText = days < maxDays ?
+                `It will take approximately ${days} days to reach a balance of ${goalBalance.toLocaleString()} Gems.` :
+                `It will take more than ${maxDays} days to reach your goal balance.`;
+            document.getElementById("result").textContent = resultText;
         }
 
-        // Function to calculate goal balance after a number of days
         function calculateGoal() {
-            let initialBalance = parseInput(document.getElementById('initialBalance2').value);
-            let days = parseInput(document.getElementById('daysInput').value);
-            let dailyInterestRate = 0.009;
+            const initialBalance = parseFloat(document.getElementById("initialBalance2").value.replace(/,/g, ''));
+            const days = parseFloat(document.getElementById("daysInput").value.replace(/,/g, ''));
+            const rate = 1.009; // Adjust this value to match your actual rate
 
-            let balance = initialBalance;
+            const finalBalance = initialBalance * Math.pow(rate, days);
 
-            for (let i = 0; i < days; i++) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
+            document.getElementById("goalResult").textContent = `After ${days} days, your balance will be approximately ${finalBalance.toFixed(2).toLocaleString()} Gems.`;
+        }
+
+        function calculateCompoundInterest() {
+            const initialBalance = parseFloat(document.getElementById("initialBalance3").value.replace(/,/g, ''));
+            const timeInterval = document.getElementById("timeInterval").value;
+            const timeValue = parseFloat(document.getElementById("timeValue").value.replace(/,/g, ''));
+            const rate = 1.009; // Adjust this value to match your actual rate
+
+            let periodsPerYear = 365;
+            switch(timeInterval) {
+                case 'seconds':
+                    periodsPerYear = 365 * 24 * 60 * 60;
+                    break;
+                case 'minutes':
+                    periodsPerYear = 365 * 24 * 60;
+                    break;
+                case 'hours':
+                    periodsPerYear = 365 * 24;
+                    break;
+                case 'days':
+                    periodsPerYear = 365;
+                    break;
+                case 'weeks':
+                    periodsPerYear = 52;
+                    break;
+                case 'months':
+                    periodsPerYear = 12;
+                    break;
+                case 'years':
+                    periodsPerYear = 1;
+                    break;
             }
 
-            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${days}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
+            const finalBalance = initialBalance * Math.pow(rate, timeValue * periodsPerYear / 365);
+
+            document.getElementById("compoundResult").textContent = `After ${timeValue} ${timeInterval}, your balance will be approximately ${finalBalance.toFixed(2).toLocaleString()} Gems.`;
         }
 
-        // Show/Hide Donate Popup
-        document.getElementById('donateButton').onclick = function() {
-            document.getElementById('donatePopup').style.display = 'block';
-        }
+        const donateButton = document.getElementById("donateButton");
+        const donatePopup = document.getElementById("donatePopup");
+        const closePopup = document.getElementById("closePopup");
 
-        document.getElementById('closePopup').onclick = function() {
-            document.getElementById('donatePopup').style.display = 'none';
-        }
+        donateButton.addEventListener("click", () => {
+            donatePopup.style.display = "block";
+        });
+
+        closePopup.addEventListener("click", () => {
+            donatePopup.style.display = "none";
+        });
     </script>
 </body>
 </html>
