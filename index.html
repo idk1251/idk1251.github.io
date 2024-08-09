@@ -122,7 +122,12 @@
             border: 2px solid #555; /* Thicker border */
             max-width: 90%;
             max-height: 80%;
-            overflow-y: auto;
+            overflow: hidden; /* Hide outer scrollbar */
+        }
+
+        #donatePopupContent {
+            max-height: 60vh; /* Adjust height as needed */
+            overflow-y: auto; /* Scroll content inside the popup if needed */
         }
 
         #closePopup {
@@ -187,6 +192,8 @@
         .all-days-content {
             text-align: left;
             padding-right: 10px; /* Space for scrollbar */
+            overflow-y: auto; /* Ensure scrolling within this container */
+            height: calc(100% - 50px); /* Adjust height to fit within the container */
         }
 
         .day-entry {
@@ -231,20 +238,6 @@
 
         ::-webkit-scrollbar-thumb:hover {
             background: #777; /* Handle color on hover */
-        }
-
-        .filter-container {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .filter-container select {
-            padding: 10px;
-            font-size: 1.1em;
-            border: 1px solid #555;
-            border-radius: 5px;
-            background-color: #2c2f36;
-            color: #ffffff;
         }
     </style>
 </head>
@@ -311,9 +304,11 @@
             </div>
 
             <div id="donatePopup" class="night-mode">
-                <h2>Donate Here:</h2>
-                <p>/gift @s6eg4se54g</p>
-                <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
+                <div id="donatePopupContent">
+                    <h2>Donate Here:</h2>
+                    <p>/gift @s6eg4se54g</p>
+                    <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
+                </div>
             </div>
         </div>
     </div>
