@@ -30,10 +30,11 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            gap: 40px;
+            gap: 20px;
             padding: 20px;
             width: 100%;
             max-width: 1200px;
+            flex-wrap: wrap;
         }
 
         .container {
@@ -123,6 +124,26 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #777;
         }
+
+        .guis-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .gui {
+            width: 500px;
+            height: 500px;
+            overflow-y: auto;
+            border: 2px solid #555;
+            border-radius: 10px;
+            background: rgba(40, 44, 52, 0.8);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
@@ -157,7 +178,12 @@
     </div>
 
     <div class="section-container">
-        <!-- GUI for "Calculate Days to Reach Goal" -->
+        <!-- Additional GUI Containers -->
+        <div id="guiLeft" class="gui">
+            <h2>First 30 Days</h2>
+            <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
+        </div>
+
         <div class="container">
             <h2>Calculate Days to Reach Goal</h2>
             <label for="initialBalance">Balance (Gems): </label>
@@ -170,7 +196,11 @@
             <div id="result">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <!-- GUI for "Calculate Goal Balance after X Days" -->
+        <div id="guiRight" class="gui">
+            <h2>Last 30 Days</h2>
+            <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
+        </div>
+
         <div class="container">
             <h2>Calculate Goal Balance after X Days</h2>
             <label for="initialBalance2">Balance (Gems): </label>
@@ -182,11 +212,8 @@
             <button onclick="calculateGoal()">Calculate Goal</button>
             <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
         </div>
-    </div>
 
-    <div class="section-container">
-        <!-- Existing Leaderboard GUI -->
-        <div id="leaderboardGui" class="container leaderboard">
+        <div id="leaderboardGui" class="gui leaderboard">
             <h2>Donation leaderboard!</h2>
             <h2>/gift @s6eg4se54g</h2>
             <h3>Top 10 Donators</h3>
@@ -204,11 +231,10 @@
             </ul>
         </div>
 
-        <!-- Existing Donation Popup -->
-        <div id="donatePopup" class="container night-mode">
+        <div id="donatePopup" class="container">
             <h2>Donate Here:</h2>
             <p>/gift @s6eg4se54g</p>
-            <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
+            <button id="closePopup" onclick="closeDonatePopup()">Close</button>
         </div>
     </div>
 
@@ -224,60 +250,25 @@
         function calculateDays() {
             let initialBalance = parseInput(document.getElementById('initialBalance').value);
             let goalBalance = parseInput(document.getElementById('goalBalance').value);
-            let dailyInterestRate = 0.009;
+            let dailyInterestRate = 0.009; // Example daily rate
 
             let days = 0;
-            let balance = initialBalance;
-            let dailyBalances = [];
-
-            while (balance < goalBalance) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
-                dailyBalances.push({
-                    day: days + 1,
-                    balance: balance,
-                    profit: profit
-                });
+            while (initialBalance < goalBalance) {
+                initialBalance += initialBalance * dailyInterestRate;
                 days++;
             }
 
-            let years = Math.floor(days / 365);
-            let remainingDays = days % 365;
-            let months = Math.floor(remainingDays / 30);
-            remainingDays = remainingDays % 30;
-
-            let first30Days = dailyBalances.slice(0, 30);
-            let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
-
-            let last30Days = dailyBalances.slice(-30);
-            let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
-
-            document.getElementById('result').innerHTML = `You will reach your goal in approximately <span class="highlight">${years} years, ${months} months, and ${remainingDays} days</span>.<br><br>First 30 days:<br>${first30DaysText}<br><br>Last 30 days:<br>${last30DaysText}`;
+            document.getElementById('result').innerHTML = `Days to reach goal: <span class="highlight">${days}</span>`;
         }
 
         function calculateGoal() {
             let initialBalance = parseInput(document.getElementById('initialBalance2').value);
-            let days = parseInt(document.getElementById('daysInput').value);
-            let dailyInterestRate = 0.009;
-            let dailyBalances = [];
+            let days = parseInput(document.getElementById('daysInput').value);
+            let dailyInterestRate = 0.009; // Example daily rate
 
-            for (let i = 1; i <= days; i++) {
-                let profit = initialBalance * dailyInterestRate;
-                initialBalance += profit;
-                dailyBalances.push({
-                    day: i,
-                    balance: initialBalance,
-                    profit: profit
-                });
-            }
+            let finalBalance = initialBalance * Math.pow(1 + dailyInterestRate, days);
 
-            let first30Days = dailyBalances.slice(0, 30);
-            let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
-
-            let last30Days = dailyBalances.slice(-30);
-            let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
-
-            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${days} days</span>, your balance will be approximately <span class="highlight">${formatNumber(initialBalance)}</span>.<br><br>First 30 days:<br>${first30DaysText}<br><br>Last 30 days:<br>${last30DaysText}`;
+            document.getElementById('goalResult').innerHTML = `Goal Balance after ${days} days: <span class="highlight">${formatNumber(finalBalance)}</span>`;
         }
 
         function calculateTimeBasedGrowth() {
@@ -340,6 +331,10 @@
                 formatInput(this);
             });
         });
+
+        function closeDonatePopup() {
+            document.getElementById('donatePopup').style.display = 'none';
+        }
     </script>
 </body>
 </html>
