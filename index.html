@@ -66,18 +66,6 @@
             color: #ffffff;
         }
 
-        select {
-            padding: 10px;
-            font-size: 1em;
-            width: 100%;
-            margin-bottom: 20px;
-            border: 1px solid #555; /* Thicker border */
-            border-radius: 5px;
-            box-sizing: border-box;
-            background-color: #333842;
-            color: #ffffff;
-        }
-
         button {
             padding: 10px 20px;
             font-size: 1em;
@@ -104,7 +92,7 @@
             background-color: #e73b4d;
         }
 
-        #result, #goalResult, #timeCalculations {
+        #result, #goalResult {
             margin-top: 20px;
             font-size: 1.2em;
         }
@@ -206,27 +194,16 @@
 </head>
 <body class="night-mode">
     <h1>EXP Balance Calculator</h1>
-    <h1>(by s6eg4se54g)</h1>
+<h1>(by s6eg4se54g)</h1>
     <div class="section-container">
         <!-- GUI Containers in the new order -->
         <div id="guiLeft" class="gui night-mode">
-            <h2>Time Calculations</h2>
-            <div id="timeCalculations">Enter balance and select a time unit, then click "Calculate EXP" to see the results.</div>
-            <label for="timeUnit">Select Time Unit:</label>
-            <select id="timeUnit">
-                <option value="seconds">Seconds</option>
-                <option value="minutes">Minutes</option>
-                <option value="hours">Hours</option>
-                <option value="days">Days</option>
-                <option value="weeks">Weeks</option>
-                <option value="months">Months</option>
-                <option value="years">Years</option>
-            </select>
-            <button onclick="calculateExp()">Calculate EXP</button>
+            <h2>First 30 Days</h2>
+            <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
         <div class="container night-mode">
-            <h2>Calculate Time to Reach Goal</h2>
+            <h2>Calculate Days to Reach Goal</h2>
             <label for="initialBalance">Balance (Gems): </label>
             <input type="text" id="initialBalance" value="1,000" class="night-mode">
 
@@ -235,55 +212,58 @@
 
             <button onclick="calculateDays()">Calculate Days</button>
             <div id="result">Enter values and click "Calculate Days" to see the results.</div>
-            <div id="first30Days"></div>
-            <div id="last30Days"></div>
+        </div>
+
+        <div id="guiRight" class="gui night-mode">
+            <h2>Last 30 Days</h2>
+            <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
         <div class="container night-mode">
-            <h2>Calculate Goal Balance after X Time</h2>
+            <h2>Calculate Goal Balance after X Days</h2>
             <label for="initialBalance2">Balance (Gems): </label>
-            <input type="text" id="initialBalance2" value="500,000,000" class="night-mode">
+            <input type="text" id="initialBalance2" value="1,000" class="night-mode">
 
-            <label for="timeInput">Time (Seconds): </label>
-            <input type="text" id="timeInput" value="1" class="night-mode">
-            
+            <label for="daysInput">Number of Days: </label>
+            <input type="text" id="daysInput" value="30" class="night-mode">
+
             <button onclick="calculateGoal()">Calculate Goal</button>
-            <div id="goalResult">Enter time and click "Calculate Goal" to see the results.</div>
+            <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
         </div>
 
         <div id="leaderboardGui" class="gui night-mode leaderboard">
             <h2>Donation leaderboard!</h2>
-            <h2>/gift @s6eg4se54g</h2>
+   <h2>/gift @s6eg4se54g</h2>
             <h3>Top 10 Donators</h3>
             <ul>
                 <li>1. 1h59   | 50m</li>
                 <li>2. alexplays038   | 2m   </li>
-                <li>3. iamtheone  | 3h</li>
-                <li>4. ahem57  | 1h45m</li>
-                <li>5. specialname12  | 2h30m</li>
-                <li>6. elend42   | 5h50m</li>
-                <li>7. secondchance  | 8h20m</li>
-                <li>8. tryagain    | 10m</li>
+                <li>3. iamonevader   |1m</li>
+                <li>5. None yet!</li>
+                <li>5. None yet!</li>
+                <li>6. None yet!</li>
+                <li>7. None yet!</li>
+                <li>8. None yet!</li>
                 <li>9. None yet!</li>
                 <li>10. None yet!</li>
             </ul>
         </div>
-    </div>
 
-    <div id="donatePopup">
-        <h2>Support the Developer</h2>
-        <p>If you'd like to support the developer, you can donate here: <a href="https://paypal.me/s6eg4se54g">paypal.me/s6eg4se54g</a></p>
-        <button id="closePopup" onclick="closeDonatePopup()">Close</button>
+        <div id="donatePopup" class="night-mode">
+            <h2>Donate Here:</h2>
+            <p>/gift @s6eg4se54g</p>
+            <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
+        </div>
     </div>
-
-    <button id="donateButton" onclick="document.getElementById('donatePopup').style.display='block'">Donate</button>
 
     <script>
         function formatNumber(num) {
+            // Format number with commas
             return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         }
 
         function parseInput(value) {
+            // Parse input with commas removed
             return parseFloat(value.replace(/,/g, ''));
         }
 
@@ -325,69 +305,17 @@
 
         function calculateGoal() {
             let initialBalance = parseInput(document.getElementById('initialBalance2').value);
-            let timeInSeconds = parseInt(document.getElementById('timeInput').value, 10);
-            let dailyInterestRate = 0.009; // 0.9% daily
-
-            let days = timeInSeconds / (24 * 3600);
-
-            if (isNaN(initialBalance) || isNaN(days) || initialBalance <= 0 || days <= 0) {
-                document.getElementById('goalResult').innerHTML = 'Please enter valid numbers for balance and time.';
-                return;
-            }
+            let days = parseInt(document.getElementById('daysInput').value, 10);
+            let dailyInterestRate = 0.009;
 
             let balance = initialBalance;
 
             for (let i = 0; i < days; i++) {
-                balance *= (1 + dailyInterestRate);
+                let profit = balance * dailyInterestRate;
+                balance += profit;
             }
 
-            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${formatNumber(timeInSeconds)}</span> seconds, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
-        }
-
-        function calculateExp() {
-            let balance = parseInput(document.getElementById('initialBalance').value);
-            let dailyInterestRate = 0.009; // 0.9% daily
-
-            let secondsInDay = 24 * 3600;
-            let minutesInDay = 24 * 60;
-            let hoursInDay = 24;
-            let daysInWeek = 7;
-            let daysInMonth = 30;
-            let daysInYear = 365;
-
-            let timeUnit = document.getElementById('timeUnit').value;
-
-            // Calculate compounded balance for the selected time period
-            let exp;
-            switch (timeUnit) {
-                case 'seconds':
-                    exp = balance * Math.pow((1 + dailyInterestRate / secondsInDay), 60);
-                    break;
-                case 'minutes':
-                    exp = balance * Math.pow((1 + dailyInterestRate / minutesInDay), 60);
-                    break;
-                case 'hours':
-                    exp = balance * Math.pow((1 + dailyInterestRate / hoursInDay), 60);
-                    break;
-                case 'days':
-                    exp = balance * Math.pow((1 + dailyInterestRate), 60);
-                    break;
-                case 'weeks':
-                    exp = balance * Math.pow((1 + dailyInterestRate), daysInWeek * 60);
-                    break;
-                case 'months':
-                    exp = balance * Math.pow((1 + dailyInterestRate), daysInMonth * 60);
-                    break;
-                case 'years':
-                    exp = balance * Math.pow((1 + dailyInterestRate), daysInYear * 60);
-                    break;
-                default:
-                    exp = balance;
-            }
-
-            document.getElementById('timeCalculations').innerHTML = `
-                After 60 ${timeUnit}: <span class="highlight">${formatNumber(exp.toFixed(2))}</span> gems <br>
-            `;
+            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${days}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
         }
 
         function closeDonatePopup() {
@@ -395,6 +323,7 @@
         }
 
         function formatInput(input) {
+            // Automatically format numbers with commas
             let value = input.value.replace(/,/g, '');
             if (!isNaN(value) && value !== '') {
                 input.value = formatNumber(parseFloat(value));
@@ -403,6 +332,7 @@
             }
         }
 
+        // Format inputs on keyup and paste
         document.querySelectorAll('input[type="text"]').forEach(input => {
             input.addEventListener('input', function() {
                 formatInput(this);
