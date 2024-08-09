@@ -66,6 +66,18 @@
             color: #ffffff;
         }
 
+        select {
+            padding: 10px;
+            font-size: 1em;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid #555; /* Thicker border */
+            border-radius: 5px;
+            box-sizing: border-box;
+            background-color: #333842;
+            color: #ffffff;
+        }
+
         button {
             padding: 10px 20px;
             font-size: 1em;
@@ -199,7 +211,18 @@
         <!-- GUI Containers in the new order -->
         <div id="guiLeft" class="gui night-mode">
             <h2>Time Calculations</h2>
-            <div id="timeCalculations">Enter values and click "Calculate Time" to see the results.</div>
+            <div id="timeCalculations">Enter balance and select a time unit, then click "Calculate EXP" to see the results.</div>
+            <label for="timeUnit">Select Time Unit:</label>
+            <select id="timeUnit">
+                <option value="seconds">Seconds</option>
+                <option value="minutes">Minutes</option>
+                <option value="hours">Hours</option>
+                <option value="days">Days</option>
+                <option value="weeks">Weeks</option>
+                <option value="months">Months</option>
+                <option value="years">Years</option>
+            </select>
+            <button onclick="calculateExp()">Calculate EXP</button>
         </div>
 
         <div class="container night-mode">
@@ -212,6 +235,8 @@
 
             <button onclick="calculateDays()">Calculate Days</button>
             <div id="result">Enter values and click "Calculate Days" to see the results.</div>
+            <div id="first30Days"></div>
+            <div id="last30Days"></div>
         </div>
 
         <div class="container night-mode">
@@ -226,15 +251,6 @@
             <div id="goalResult">Enter time and click "Calculate Goal" to see the results.</div>
         </div>
 
-        <div id="timeCalculationsGui" class="gui night-mode">
-            <h2>Calculate EXP for Different Time Units</h2>
-            <label for="balanceInput">Balance (Gems): </label>
-            <input type="text" id="balanceInput" value="500,000,000" class="night-mode">
-
-            <button onclick="calculateExp()">Calculate EXP</button>
-            <div id="timeCalculations">Enter balance and click "Calculate EXP" to see the results.</div>
-        </div>
-
         <div id="leaderboardGui" class="gui night-mode leaderboard">
             <h2>Donation leaderboard!</h2>
             <h2>/gift @s6eg4se54g</h2>
@@ -242,7 +258,7 @@
             <ul>
                 <li>1. 1h59   | 50m</li>
                 <li>2. alexplays038   | 2m   </li>
-                <li>3. iamtheone5432  | 45s</li>
+                <li>3. iamtheone  | 3h</li>
                 <li>4. ahem57  | 1h45m</li>
                 <li>5. specialname12  | 2h30m</li>
                 <li>6. elend42   | 5h50m</li>
@@ -329,7 +345,7 @@
         }
 
         function calculateExp() {
-            let balance = parseInput(document.getElementById('balanceInput').value);
+            let balance = parseInput(document.getElementById('initialBalance').value);
             let dailyInterestRate = 0.009; // 0.9% daily
 
             let secondsInDay = 24 * 3600;
@@ -339,23 +355,38 @@
             let daysInMonth = 30;
             let daysInYear = 365;
 
-            // Calculate compounded balance for each time period
-            let expInSeconds = balance * Math.pow((1 + dailyInterestRate / secondsInDay), 1);
-            let expInMinutes = balance * Math.pow((1 + dailyInterestRate / minutesInDay), 1);
-            let expInHours = balance * Math.pow((1 + dailyInterestRate / hoursInDay), 1);
-            let expInDays = balance * Math.pow((1 + dailyInterestRate), 1);
-            let expInWeeks = balance * Math.pow((1 + dailyInterestRate), daysInWeek);
-            let expInMonths = balance * Math.pow((1 + dailyInterestRate), daysInMonth);
-            let expInYears = balance * Math.pow((1 + dailyInterestRate), daysInYear);
+            let timeUnit = document.getElementById('timeUnit').value;
+
+            // Calculate compounded balance for the selected time period
+            let exp;
+            switch (timeUnit) {
+                case 'seconds':
+                    exp = balance * Math.pow((1 + dailyInterestRate / secondsInDay), 60);
+                    break;
+                case 'minutes':
+                    exp = balance * Math.pow((1 + dailyInterestRate / minutesInDay), 60);
+                    break;
+                case 'hours':
+                    exp = balance * Math.pow((1 + dailyInterestRate / hoursInDay), 60);
+                    break;
+                case 'days':
+                    exp = balance * Math.pow((1 + dailyInterestRate), 60);
+                    break;
+                case 'weeks':
+                    exp = balance * Math.pow((1 + dailyInterestRate), daysInWeek * 60);
+                    break;
+                case 'months':
+                    exp = balance * Math.pow((1 + dailyInterestRate), daysInMonth * 60);
+                    break;
+                case 'years':
+                    exp = balance * Math.pow((1 + dailyInterestRate), daysInYear * 60);
+                    break;
+                default:
+                    exp = balance;
+            }
 
             document.getElementById('timeCalculations').innerHTML = `
-                After 1 second: <span class="highlight">${formatNumber(expInSeconds.toFixed(2))}</span> gems <br>
-                After 1 minute: <span class="highlight">${formatNumber(expInMinutes.toFixed(2))}</span> gems <br>
-                After 1 hour: <span class="highlight">${formatNumber(expInHours.toFixed(2))}</span> gems <br>
-                After 1 day: <span class="highlight">${formatNumber(expInDays.toFixed(2))}</span> gems <br>
-                After 1 week: <span class="highlight">${formatNumber(expInWeeks.toFixed(2))}</span> gems <br>
-                After 1 month: <span class="highlight">${formatNumber(expInMonths.toFixed(2))}</span> gems <br>
-                After 1 year: <span class="highlight">${formatNumber(expInYears.toFixed(2))}</span> gems <br>
+                After 60 ${timeUnit}: <span class="highlight">${formatNumber(exp.toFixed(2))}</span> gems <br>
             `;
         }
 
