@@ -30,6 +30,12 @@
             flex-wrap: wrap;
         }
 
+        .section-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
         .container {
             background-color: #333842;
             padding: 30px;
@@ -167,18 +173,15 @@
             color: #d1d1d1;
         }
 
-        .guis-container > .container, .guis-container > .gui {
-            flex: 1 1 400px; /* Flex-grow and basis to ensure proper sizing */
-        }
-
     </style>
 </head>
 <body>
     <h1>EXP Balance Calculator</h1>
 
     <div class="flex-container">
-        <!-- First Section: Calculate Days -->
-        <div class="guis-container">
+        <!-- Section for Calculation and GUIs -->
+        <div class="section-container">
+            <!-- Calculate Days to Reach Goal -->
             <div class="container">
                 <h2>Calculate Days to Reach Goal</h2>
                 <label for="initialBalance">Balance (Gems): </label>
@@ -191,47 +194,52 @@
                 <div id="result">Enter values and click "Calculate Days" to see the results.</div>
             </div>
 
-            <div id="guiLeft" class="gui">
-                <h2>First 30 Days</h2>
-                <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
-            </div>
+            <!-- GUIs for First and Last 30 Days -->
+            <div class="guis-container">
+                <div id="guiLeft" class="gui">
+                    <h2>First 30 Days</h2>
+                    <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
+                </div>
 
-            <div id="guiRight" class="gui">
-                <h2>Last 30 Days</h2>
-                <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
+                <div id="guiRight" class="gui">
+                    <h2>Last 30 Days</h2>
+                    <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
+                </div>
             </div>
         </div>
 
-        <!-- Second Section: Calculate Goal Balance -->
-        <div class="container">
-            <h2>Calculate Goal Balance after X Days</h2>
-            <label for="initialBalance2">Balance (Gems): </label>
-            <input type="text" id="initialBalance2" value="1,000" oninput="formatInput(this)">
+        <!-- Calculate Goal Balance and Donate GUI -->
+        <div class="section-container">
+            <div class="container">
+                <h2>Calculate Goal Balance after X Days</h2>
+                <label for="initialBalance2">Balance (Gems): </label>
+                <input type="text" id="initialBalance2" value="1,000" oninput="formatInput(this)">
 
-            <label for="daysInput">Number of Days: </label>
-            <input type="text" id="daysInput" value="30">
+                <label for="daysInput">Number of Days: </label>
+                <input type="text" id="daysInput" value="30">
 
-            <button onclick="calculateGoal()">Calculate Goal</button>
-            <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
-        </div>
+                <button onclick="calculateGoal()">Calculate Goal</button>
+                <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
+            </div>
 
-        <!-- Third Section: Donate GUI -->
-        <div id="donateGui" class="gui">
-            <h2>Donate Me!</h2>
-            <p>/gift @s6eg4se54g</p>
-            <h3>Top 10 Donators</h3>
-            <ul>
-                <li>1. None yet!</li>
-                <li>2. None yet!</li>
-                <li>3. None yet!</li>
-                <li>4. None yet!</li>
-                <li>5. None yet!</li>
-                <li>6. None yet!</li>
-                <li>7. None yet!</li>
-                <li>8. None yet!</li>
-                <li>9. None yet!</li>
-                <li>10. None yet!</li>
-            </ul>
+            <!-- Donate GUI -->
+            <div id="donateGui" class="gui">
+                <h2>Donate Me!</h2>
+                <p>/gift @s6eg4se54g</p>
+                <h3>Top 10 Donators</h3>
+                <ul>
+                    <li>1. None yet!</li>
+                    <li>2. None yet!</li>
+                    <li>3. None yet!</li>
+                    <li>4. None yet!</li>
+                    <li>5. None yet!</li>
+                    <li>6. None yet!</li>
+                    <li>7. None yet!</li>
+                    <li>8. None yet!</li>
+                    <li>9. None yet!</li>
+                    <li>10. None yet!</li>
+                </ul>
+            </div>
         </div>
     </div>
 
