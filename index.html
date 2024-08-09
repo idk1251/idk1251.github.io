@@ -149,7 +149,6 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
             padding: 20px;
             box-sizing: border-box;
-            position: relative; /* Allow positioning of the fixed header */
         }
 
         .profit {
@@ -186,24 +185,8 @@
         }
 
         .all-days-content {
-            position: relative; /* Allow for fixed title */
+            text-align: left;
             padding-right: 10px; /* Space for scrollbar */
-            max-height: 300px; /* Adjust as needed */
-            overflow-y: auto; /* Ensure scrolling */
-        }
-
-        .all-days-content::before {
-            content: 'All Days';
-            position: fixed;
-            top: 20px; /* Adjust as needed */
-            left: 20px;
-            font-size: 1.5em;
-            color: #007bff;
-            background-color: #2c2f36;
-            padding: 10px;
-            border: 2px solid #555;
-            border-radius: 8px;
-            z-index: 1;
         }
 
         .day-entry {
@@ -232,29 +215,6 @@
             border-color: #ff4757;
         }
 
-        .button-group {
-            margin: 20px 0;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .button-group button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            border: 1px solid #0056b3;
-            border-radius: 5px;
-            color: #ffffff;
-            font-size: 1em;
-            cursor: pointer;
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
-
-        .button-group button:hover {
-            background-color: #0056b3;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-
         /* Custom scrollbar styles */
         ::-webkit-scrollbar {
             width: 12px; /* Width of the scrollbar */
@@ -272,6 +232,20 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #777; /* Handle color on hover */
         }
+
+        .filter-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .filter-container select {
+            padding: 10px;
+            font-size: 1.1em;
+            border: 1px solid #555;
+            border-radius: 5px;
+            background-color: #2c2f36;
+            color: #ffffff;
+        }
     </style>
 </head>
 <body class="night-mode">
@@ -279,35 +253,43 @@
 
     <div class="section-container">
         <div class="guis-container">
-            <!-- Updated GUIs -->
+            <!-- Filter Dropdown -->
+            <div class="filter-container">
+                <label for="dayFilter">Show Days:</label>
+                <select id="dayFilter" onchange="updateAllDays()">
+                    <option value="first">First 30 Days</option>
+                    <option value="last">Last 30 Days</option>
+                </select>
+            </div>
+
+            <!-- Reordered GUIs -->
             <div id="allDaysGui" class="gui night-mode">
-                <div class="button-group">
-                    <button onclick="updateAllDays('first')">First Days</button>
-                    <button onclick="updateAllDays('last')">Last Days</button>
-                </div>
-                <div id="allDaysContent" class="all-days-content">
-                    <!-- All days data will be populated here -->
-                </div>
+                <h2>All Days</h2>
+                <div id="allDaysContent" class="all-days-content">Select an option to view the data.</div>
             </div>
 
-            <div id="calculateGui" class="gui night-mode">
-                <h2>Calculate Days</h2>
-                <label for="initialBalance">Initial Balance:</label>
-                <input type="text" id="initialBalance" placeholder="Enter initial balance">
-                <label for="goalBalance">Goal Balance:</label>
-                <input type="text" id="goalBalance" placeholder="Enter goal balance">
-                <button onclick="calculateDays()">Calculate</button>
-                <div id="result"></div>
+            <div class="container night-mode">
+                <h2>Calculate Days to Reach Goal</h2>
+                <label for="initialBalance">Balance (Gems): </label>
+                <input type="text" id="initialBalance" value="1,000" class="night-mode">
+
+                <label for="goalBalance">Goal Balance (Gems): </label>
+                <input type="text" id="goalBalance" value="5,000" class="night-mode">
+
+                <button onclick="calculateDays()">Calculate Days</button>
+                <div id="result">Enter values and click "Calculate Days" to see the results.</div>
             </div>
 
-            <div id="goalGui" class="gui night-mode">
-                <h2>Calculate Goal</h2>
-                <label for="initialBalance2">Initial Balance:</label>
-                <input type="text" id="initialBalance2" placeholder="Enter initial balance">
-                <label for="daysInput">Number of Days:</label>
-                <input type="text" id="daysInput" placeholder="Enter number of days">
-                <button onclick="calculateGoal()">Calculate</button>
-                <div id="goalResult"></div>
+            <div class="container night-mode">
+                <h2>Calculate Goal Balance after X Days</h2>
+                <label for="initialBalance2">Balance (Gems): </label>
+                <input type="text" id="initialBalance2" value="1,000" class="night-mode">
+
+                <label for="daysInput">Number of Days: </label>
+                <input type="text" id="daysInput" value="30" class="night-mode">
+
+                <button onclick="calculateGoal()">Calculate Goal</button>
+                <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
             </div>
 
             <div id="leaderboardGui" class="gui night-mode">
@@ -402,7 +384,8 @@
             document.getElementById('donatePopup').style.display = 'none';
         }
 
-        function updateAllDays(filter) {
+        function updateAllDays() {
+            let filter = document.getElementById('dayFilter').value;
             let allDaysContent = document.getElementById('allDaysContent');
 
             if (!window.allDaysData) {
@@ -431,7 +414,7 @@
             window.allDaysData = data;
         }
 
-        // Generate days text
+        // Function to generate days text
         function generateDaysText(daysArray) {
             return daysArray.map(item => `<div class="day-entry ${item.day === 1 ? 'first-day' : item.day === daysArray.length ? 'last-day' : ''}">Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span></div>`).join('');
         }
