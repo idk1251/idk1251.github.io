@@ -22,18 +22,13 @@
             margin: 30px 0;
         }
 
-        .flex-container {
+        .section-container {
             display: flex;
             justify-content: center;
             align-items: flex-start;
             gap: 20px;
             flex-wrap: wrap;
-        }
-
-        .section-container {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
+            padding: 20px;
         }
 
         .container {
@@ -126,8 +121,8 @@
             display: flex;
             justify-content: center;
             gap: 20px;
-            margin: 30px 0;
             flex-wrap: wrap;
+            align-items: center; /* Center the GUIs vertically */
         }
 
         .gui {
@@ -173,80 +168,90 @@
             color: #d1d1d1;
         }
 
+        /* Custom scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 12px; /* Width of the scrollbar */
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #2c2f36; /* Track color */
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #555; /* Handle color */
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #777; /* Handle color on hover */
+        }
     </style>
 </head>
-<body>
+<body class="night-mode">
     <h1>EXP Balance Calculator</h1>
 
-    <div class="flex-container">
-        <!-- Section for Calculation and GUIs -->
-        <div class="section-container">
-            <!-- Calculate Days to Reach Goal -->
-            <div class="container">
-                <h2>Calculate Days to Reach Goal</h2>
-                <label for="initialBalance">Balance (Gems): </label>
-                <input type="text" id="initialBalance" value="1,000" oninput="formatInput(this)">
+    <div class="section-container">
+        <!-- First Section: Calculate Days -->
+        <div class="container night-mode">
+            <h2>Calculate Days to Reach Goal</h2>
+            <label for="initialBalance">Balance (Gems): </label>
+            <input type="text" id="initialBalance" value="1,000" class="night-mode">
 
-                <label for="goalBalance">Goal Balance (Gems): </label>
-                <input type="text" id="goalBalance" value="5,000" oninput="formatInput(this)">
+            <label for="goalBalance">Goal Balance (Gems): </label>
+            <input type="text" id="goalBalance" value="5,000" class="night-mode">
 
-                <button onclick="calculateDays()">Calculate Days</button>
-                <div id="result">Enter values and click "Calculate Days" to see the results.</div>
-            </div>
-
-            <!-- GUIs for First and Last 30 Days -->
-            <div class="guis-container">
-                <div id="guiLeft" class="gui">
-                    <h2>First 30 Days</h2>
-                    <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
-                </div>
-
-                <div id="guiRight" class="gui">
-                    <h2>Last 30 Days</h2>
-                    <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
-                </div>
-            </div>
+            <button onclick="calculateDays()">Calculate Days</button>
+            <div id="result">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <!-- Calculate Goal Balance and Donate GUI -->
-        <div class="section-container">
-            <div class="container">
-                <h2>Calculate Goal Balance after X Days</h2>
-                <label for="initialBalance2">Balance (Gems): </label>
-                <input type="text" id="initialBalance2" value="1,000" oninput="formatInput(this)">
+        <!-- Second Section: Calculate Goal Balance -->
+        <div class="container night-mode">
+            <h2>Calculate Goal Balance after X Days</h2>
+            <label for="initialBalance2">Balance (Gems): </label>
+            <input type="text" id="initialBalance2" value="1,000" class="night-mode">
 
-                <label for="daysInput">Number of Days: </label>
-                <input type="text" id="daysInput" value="30">
+            <label for="daysInput">Number of Days: </label>
+            <input type="text" id="daysInput" value="30" class="night-mode">
 
-                <button onclick="calculateGoal()">Calculate Goal</button>
-                <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
-            </div>
-
-            <!-- Donate GUI -->
-            <div id="donateGui" class="gui">
-                <h2>Donate Me!</h2>
-                <p>/gift @s6eg4se54g</p>
-                <h3>Top 10 Donators</h3>
-                <ul>
-                    <li>1. None yet!</li>
-                    <li>2. None yet!</li>
-                    <li>3. None yet!</li>
-                    <li>4. None yet!</li>
-                    <li>5. None yet!</li>
-                    <li>6. None yet!</li>
-                    <li>7. None yet!</li>
-                    <li>8. None yet!</li>
-                    <li>9. None yet!</li>
-                    <li>10. None yet!</li>
-                </ul>
-            </div>
+            <button onclick="calculateGoal()">Calculate Goal</button>
+            <div id="goalResult">Enter days and click "Calculate Goal" to see the results.</div>
         </div>
     </div>
 
-    <div id="donatePopup">
-        <h2>Donate Here:</h2>
-        <p>/gift @s6eg4se54g</p>
-        <button id="closePopup" onclick="closeDonatePopup()">Close</button>
+    <div class="guis-container">
+        <div id="guiLeft" class="gui night-mode">
+            <h2>First 30 Days</h2>
+            <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
+        </div>
+
+        <div id="guiRight" class="gui night-mode">
+            <h2>Last 30 Days</h2>
+            <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
+        </div>
+
+        <div id="leaderboardGui" class="gui night-mode leaderboard">
+            <h2>Donate Me!</h2>
+            <p>/gift @s6eg4se54g</p>
+            <h3>Top 10 Donators</h3>
+            <ul>
+                <li>1. None yet!</li>
+                <li>2. None yet!</li>
+                <li>3. None yet!</li>
+                <li>4. None yet!</li>
+                <li>5. None yet!</li>
+                <li>6. None yet!</li>
+                <li>7. None yet!</li>
+                <li>8. None yet!</li>
+                <li>9. None yet!</li>
+                <li>10. None yet!</li>
+            </ul>
+        </div>
+
+        <div id="donatePopup" class="night-mode">
+            <h2>Donate Here:</h2>
+            <p>/gift @s6eg4se54g</p>
+            <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
+        </div>
     </div>
 
     <script>
@@ -258,12 +263,6 @@
         function parseInput(value) {
             // Parse input with commas removed
             return parseFloat(value.replace(/,/g, ''));
-        }
-
-        function formatInput(element) {
-            // Format input value with commas
-            let value = parseInput(element.value);
-            element.value = formatNumber(value);
         }
 
         function calculateDays() {
@@ -297,7 +296,7 @@
             let last30Days = dailyBalances.slice(-30);
             let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
 
-            document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> <span class="highlight">years</span>, <span class="highlight">${months}</span> <span class="highlight">months</span>, and <span class="highlight">${remainingDays}</span> <span class="highlight">days</span>.`;
+            document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, and <span class="highlight">${remainingDays}</span> days.`;
             document.getElementById('first30Days').innerHTML = first30DaysText;
             document.getElementById('last30Days').innerHTML = last30DaysText;
         }
@@ -314,7 +313,7 @@
                 balance += profit;
             }
 
-            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${days}</span> days, your <span class="highlight">balance</span> will be <span class="highlight">${formatNumber(balance)}</span> <span class="highlight">gems</span>.`;
+            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${days}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
         }
 
         function closeDonatePopup() {
@@ -326,10 +325,12 @@
             document.getElementById('donatePopup').style.display = 'block';
         });
 
-        // Add commas to input value
-        document.getElementById('initialBalance').addEventListener('input', () => formatInput(document.getElementById('initialBalance')));
-        document.getElementById('goalBalance').addEventListener('input', () => formatInput(document.getElementById('goalBalance')));
-        document.getElementById('initialBalance2').addEventListener('input', () => formatInput(document.getElementById('initialBalance2')));
+        // Automatically format numbers with commas
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            input.addEventListener('input', function() {
+                this.value = formatNumber(parseInput(this.value));
+            });
+        });
     </script>
 </body>
 </html>
