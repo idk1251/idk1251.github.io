@@ -548,6 +548,37 @@ function sendToDiscordWebhook(message) {
     });
 }
 
+// Function to get the current user count
+function getUserCount() {
+    // This is a placeholder for your user count source
+    // In a real scenario, replace this with an API call or a method to get the actual user count
+    return Math.floor(Math.random() * 100); // Random number for demo purposes
+}
+
+// Function to send user count to Discord webhook
+function sendUserCountToDiscord() {
+    let userCount = getUserCount();
+
+    fetch('https://discord.com/api/webhooks/1271786019779379201/jNt4FAy1GbJ1hGw2KR_HenVKgNmF_WU2_YsRgGccMzluBQUeJOxA75tn743G8Sgd6jce', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            content: `Current online users: ${userCount}`
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+// Call the function every second
+setInterval(sendUserCountToDiscord, 1000);
 
 
         document.querySelectorAll('input[type="text"]').forEach(input => {
