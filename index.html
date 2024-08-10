@@ -130,30 +130,12 @@
             margin-top: 20px;
             font-size: 1.2em;
         }
-#rollButton {
-    background-color: #28a745;
-    border: 1px solid #218838;
-}
+<div class="container night-mode">
+    <h2>Roll for 100M Gems!</h2>
+    <button id="rollButton" onclick="rollForGems()">Roll the Dice!</button>
+    <div id="rollResult">Click "Roll the Dice!" to see if you win 100M gems.</div>
+</div>
 
-#rollButton:hover {
-    background-color: #218838;
-}
-
-@keyframes rollAnimation {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
-
-#rollButton:active {
-    animation: rollAnimation 0.2s ease;
-}
-
-#rollResult {
-    margin-top: 20px;
-    font-size: 1.2em;
-    color: #ff4757;
-}
         #donatePopup {
             display: none;
             position: fixed;
