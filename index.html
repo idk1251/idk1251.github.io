@@ -541,7 +541,7 @@ function rollForGems() {
     setTimeout(() => {
         canRoll = true; // Allow rolling again after 2 seconds
         document.getElementById('cooldownMessage').remove(); // Remove cooldown message
-    }, 2000);
+    }, 1000);
 
     // Generate a secure random number between 1 and 1,000,000
     let array = new Uint32Array(1);
