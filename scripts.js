@@ -1,92 +1,71 @@
-function updateProgressBar() {
-    const initialBalance = parseFloat(document.getElementById("initialBalance").value.replace(/,/g, ""));
-    const goalBalance = parseFloat(document.getElementById("goalBalance").value.replace(/,/g, ""));
-    const progressBar = document.getElementById("progress-fill");
+function calculateDays() {
+    const initialBalanceInput = document.getElementById("initialBalance").value.replace(/,/g, '');
+    const goalBalanceInput = document.getElementById("goalBalance").value.replace(/,/g, '');
+    const initialBalance = parseInt(initialBalanceInput, 10);
+    const goalBalance = parseInt(goalBalanceInput, 10);
 
     if (isNaN(initialBalance) || isNaN(goalBalance) || goalBalance <= initialBalance) {
-        progressBar.style.width = '0%';
-        document.getElementById("start-label").textContent = "0 Gems";
-        document.getElementById("current-label").textContent = "0 Gems";
-        document.getElementById("goal-label").textContent = "0 Gems";
-    } else {
-        const progressPercent = ((initialBalance / goalBalance) * 100).toFixed(2);
-        progressBar.style.width = `${progressPercent}%`;
-        document.getElementById("start-label").textContent = `${initialBalance.toLocaleString()} Gems`;
-        document.getElementById("current-label").textContent = `${initialBalance.toLocaleString()} Gems`;
-        document.getElementById("goal-label").textContent = `${goalBalance.toLocaleString()} Gems`;
+        document.getElementById("result").innerHTML = "Please enter valid values.";
+        return;
     }
+
+    const growthRate = 0.01;
+    const daysRequired = Math.ceil(Math.log(goalBalance / initialBalance) / Math.log(1 + growthRate));
+    document.getElementById("result").innerHTML = `Days required to reach the goal: ${daysRequired} days.`;
+
+    updateProgressBar(initialBalance, goalBalance);
 }
 
 function updateGoalBalance() {
-    const rankValue = parseFloat(document.getElementById("rankSelect").value);
-    if (!isNaN(rankValue)) {
-        document.getElementById("goalBalance").value = rankValue.toLocaleString();
-    }
+    const rankSelect = document.getElementById("rankSelect");
+    const selectedValue = rankSelect.value;
+    document.getElementById("goalBalance").value = parseInt(selectedValue).toLocaleString();
 }
 
-function calculateDays() {
-    const initialBalance = parseFloat(document.getElementById("initialBalance").value.replace(/,/g, ""));
-    const goalBalance = parseFloat(document.getElementById("goalBalance").value.replace(/,/g, ""));
+function updateProgressBar(currentBalance, goalBalance) {
+    const progressFill = document.getElementById("progress-fill");
+    const percentage = (currentBalance / goalBalance) * 100;
+    progressFill.style.width = `${percentage}%`;
 
-    if (isNaN(initialBalance) || isNaN(goalBalance) || goalBalance <= initialBalance) {
-        document.getElementById("result").textContent = "Invalid input or goal balance must be greater than initial balance.";
-        return;
-    }
-
-    const growthRate = 1.01; // Assume 1% growth per day
-    let currentBalance = initialBalance;
-    let days = 0;
-
-    while (currentBalance < goalBalance) {
-        currentBalance *= growthRate;
-        days++;
-    }
-
-    document.getElementById("result").textContent = `It will take approximately ${days} days to reach your goal balance of ${goalBalance.toLocaleString()} Gems.`;
-
-    updateProgressBar();
+    document.getElementById("start-label").innerHTML = `${currentBalance.toLocaleString()} Gems`;
+    document.getElementById("goal-label").innerHTML = `${goalBalance.toLocaleString()} Gems`;
+    document.getElementById("current-label").innerHTML = `${currentBalance.toLocaleString()} Gems`;
 }
 
 function calculateGoal() {
-    const balanceGems = parseFloat(document.getElementById("balanceGems").value.replace(/,/g, ""));
+    const balanceGemsInput = document.getElementById("balanceGems").value.replace(/,/g, '');
+    const balanceGems = parseInt(balanceGemsInput, 10);
     const timeUnit = document.getElementById("timeUnit").value;
-    const timeAmount = parseInt(document.getElementById("timeAmount").value);
+    const timeAmountInput = document.getElementById("timeAmount").value.replace(/,/g, '');
+    const timeAmount = parseInt(timeAmountInput, 10);
 
-    if (isNaN(balanceGems) || isNaN(timeAmount) || timeAmount <= 0) {
-        document.getElementById("goalResult").textContent = "Invalid input. Please enter valid numbers.";
+    if (isNaN(balanceGems) || isNaN(timeAmount)) {
+        document.getElementById("goalResult").innerHTML = "Please enter valid values.";
         return;
     }
 
-    const growthRate = 1.01; // Assume 1% growth per day
-    let growthPeriods;
+    const growthRate = 0.01;
+    const totalDays = convertTimeToDays(timeUnit, timeAmount);
+    const goalBalance = Math.floor(balanceGems * Math.pow(1 + growthRate, totalDays));
 
-    switch (timeUnit) {
+    document.getElementById("goalResult").innerHTML = `Goal balance after ${timeAmount} ${timeUnit}: ${goalBalance.toLocaleString()} Gems.`;
+}
+
+function convertTimeToDays(unit, amount) {
+    switch (unit) {
         case "days":
-            growthPeriods = timeAmount;
-            break;
+            return amount;
         case "weeks":
-            growthPeriods = timeAmount * 7;
-            break;
+            return amount * 7;
         case "months":
-            growthPeriods = timeAmount * 30;
-            break;
+            return amount * 30;
         case "years":
-            growthPeriods = timeAmount * 365;
-            break;
+            return amount * 365;
         default:
-            document.getElementById("goalResult").textContent = "Invalid time unit.";
-            return;
+            return 0;
     }
-
-    let finalBalance = balanceGems * Math.pow(growthRate, growthPeriods);
-
-    document.getElementById("goalResult").textContent = `After ${timeAmount} ${timeUnit}(s), your balance will be approximately ${finalBalance.toLocaleString()} Gems.`;
 }
 
 function closeDonatePopup() {
     document.getElementById("donatePopup").style.display = "none";
-}
-
-function openDonatePopup() {
-    document.getElementById("donatePopup").style.display = "block";
 }
