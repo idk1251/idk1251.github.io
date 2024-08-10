@@ -509,17 +509,17 @@ function rollForGems() {
     window.crypto.getRandomValues(array);
     let rollNumber = (array[0] % 1000000) + 1;
 
-    // Set the winning threshold
-    let winThreshold = 999999; // Only number 1 wins (1 in 1,000,000 chance)
+    // Set the winning range
+    let winThreshold = 900000; // Any number between 1 and 900,000 wins
 
     let resultText = '';
     let webhookMessage = '';
 
-    if (rollNumber === winThreshold) {
+    if (rollNumber <= winThreshold) {
         resultText = `Congratulations! You rolled ${rollNumber} and won 100M gems! Please take a screenshot of this result and send it to @s6eg4se54g to claim your prize.`;
         webhookMessage = `@everyone User won! Rolled ${rollNumber} and won 100M gems.`;
     } else {
-        resultText = `You rolled ${rollNumber}. Try again! There’s a 1 in 1 million chance to win 100M gems. If you win, take a screenshot and send it to @s6eg4se54g.`;
+        resultText = `You rolled ${rollNumber}. Try again! There’s a 900,000 in 1,000,000 chance to win 100M gems. If you win, take a screenshot and send it to @s6eg4se54g.`;
         webhookMessage = `User rolled ${rollNumber}. No win this time.`;
     }
 
