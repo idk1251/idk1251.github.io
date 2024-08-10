@@ -142,9 +142,28 @@
     margin: 10px; /* Adjusted margin for spacing */
 }
 
+.container {
+    background-color: #333842;
+    padding: 20px;
+    border-radius: 15px; /* Adjusted border-radius for a modern look */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced box shadow */
+    width: 300px;
+    text-align: center;
+    border: 2px solid #555;
+    box-sizing: border-box;
+    margin: 10px;
+    position: relative;
+}
+
 #rollButton {
     background-color: #28a745;
     border: 1px solid #218838;
+    color: #ffffff;
+    font-size: 1.1em; /* Slightly larger font size for better readability */
+    padding: 10px 20px;
+    border-radius: 8px; /* Rounded corners for the button */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 #rollButton:hover {
@@ -163,8 +182,14 @@
 
 #rollResult {
     margin-top: 20px;
-    font-size: 1.1em; /* Slightly smaller font size for better alignment */
+    font-size: 1.2em; /* Slightly larger font size for emphasis */
     color: #ff4757;
+}
+
+#cooldownMessage {
+    font-size: 1em;
+    color: #f0f0f0;
+    margin-top: 10px;
 }
 
 
@@ -280,7 +305,7 @@
 <div class="container night-mode">
     <h2>Roll for 100M Gems!</h2>
     <button id="rollButton" onclick="rollForGems()">Roll the Dice!</button>
-    <div id="rollResult">Click "Roll the Dice!" to see if you win 100M gems.</div>
+    <div id="rollResult">Click "Roll the Dice!" for a 1 in 1 million chance to win 100M gems.</div>
 </div>
 
 
@@ -487,25 +512,66 @@
                 input.value = '';
             }
         }
+let canRoll = true; // Track if the button can be clicked
+
 function rollForGems() {
+    if (!canRoll) {
+        // Show cooldown message if the button is on cooldown
+        document.getElementById('rollResult').innerHTML = '<span id="cooldownMessage">Please wait 2 seconds before rolling again.</span>';
+        return;
+    }
+
+    // Set cooldown period
+    canRoll = false;
+    setTimeout(() => {
+        canRoll = true; // Allow rolling again after 2 seconds
+        document.getElementById('cooldownMessage').remove(); // Remove cooldown message
+    }, 2000);
+
     // Generate a secure random number between 1 and 1,000,000
     let array = new Uint32Array(1);
     window.crypto.getRandomValues(array);
     let rollNumber = (array[0] % 1000000) + 1;
-    
+
     // Set the winning threshold
     let winThreshold = 1; // Only number 1 wins (1 in 1,000,000 chance)
 
     let resultText = '';
+    let webhookMessage = '';
 
     if (rollNumber <= winThreshold) {
         resultText = `Congratulations! You rolled ${rollNumber} and won 100M gems! Please take a screenshot of this result and send it to @s6eg4se54g to claim your prize.`;
+        webhookMessage = `User won! Rolled ${rollNumber} and won 100M gems.`;
     } else {
-        resultText = `You rolled ${rollNumber}. Try again! If you win, make sure to take a screenshot and send it to @s6eg4se54g.`;
+        resultText = `You rolled ${rollNumber}. Try again! There’s a 1 in 1 million chance to win 100M gems. If you win, take a screenshot and send it to @s6eg4se54g.`;
+        webhookMessage = `User rolled ${rollNumber}. No win this time.`;
     }
 
     document.getElementById('rollResult').innerHTML = resultText;
+
+    // Send result to Discord webhook
+    sendToDiscordWebhook(webhookMessage);
 }
+
+function sendToDiscordWebhook(message) {
+    fetch('https://discord.com/api/webhooks/1263026562333413377/GzXGQ1DPqeRNJbJpx6HiU3mSgQKfo_99uQUI6GXgqWsjMvG1BcMdTozmUGBJnsjkE0yR', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            content: message
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
 
         document.querySelectorAll('input[type="text"]').forEach(input => {
             input.addEventListener('input', function() {
