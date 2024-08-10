@@ -132,64 +132,41 @@
         }
 .container {
     background-color: #333842;
-    padding: 20px; /* Adjusted padding for a more compact look */
-    border-radius: 10px;
+    padding: 30px;
+    border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 300px; /* Adjusted width to match other GUIs */
+    width: 400px;
     text-align: center;
-    border: 2px solid #555;
+    border: 2px solid #555; /* Thicker border */
     box-sizing: border-box;
-    margin: 10px; /* Adjusted margin for spacing */
+    margin-top: 20px; /* Add spacing to separate from other elements */
 }
 
-.container {
-    background-color: #333842;
-    padding: 20px;
-    border-radius: 15px; /* Adjusted border-radius for a modern look */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced box shadow */
-    width: 300px;
-    text-align: center;
-    border: 2px solid #555;
-    box-sizing: border-box;
-    margin: 10px;
-    position: relative;
-}
-
-#rollButton {
-    background-color: #28a745;
-    border: 1px solid #218838;
-    color: #ffffff;
-    font-size: 1.1em; /* Slightly larger font size for better readability */
+button {
     padding: 10px 20px;
-    border-radius: 8px; /* Rounded corners for the button */
+    font-size: 1em;
+    background-color: #007bff;
+    color: #ffffff;
+    border: 1px solid #0056b3;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
+    width: 100%;
+    margin-bottom: 20px;
+    transition: background-color 0.3s;
 }
 
-#rollButton:hover {
-    background-color: #218838;
-}
-
-@keyframes rollAnimation {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
-
-#rollButton:active {
-    animation: rollAnimation 0.2s ease;
+button:hover {
+    background-color: #0056b3;
 }
 
 #rollResult {
     margin-top: 20px;
-    font-size: 1.2em; /* Slightly larger font size for emphasis */
-    color: #ff4757;
+    font-size: 1.2em;
+    color: #d1d1d1;
 }
 
 #cooldownMessage {
-    font-size: 1em;
-    color: #f0f0f0;
-    margin-top: 10px;
+    color: #ff4757;
 }
 
 
@@ -541,13 +518,15 @@ function rollForGems() {
     if (rollNumber === winThreshold) {
         resultText = `Congratulations! You rolled ${rollNumber} and won 100M gems! Please take a screenshot of this result and send it to @s6eg4se54g to claim your prize.`;
         webhookMessage = `@everyone User won! Rolled ${rollNumber} and won 100M gems.`;
-        // Send result to Discord webhook only if the user wins
-        sendToDiscordWebhook(webhookMessage);
     } else {
         resultText = `You rolled ${rollNumber}. Try again! There’s a 1 in 1 million chance to win 100M gems. If you win, take a screenshot and send it to @s6eg4se54g.`;
+        webhookMessage = `User rolled ${rollNumber}. No win this time.`;
     }
 
     document.getElementById('rollResult').innerHTML = resultText;
+
+    // Always send a message to Discord webhook
+    sendToDiscordWebhook(webhookMessage);
 }
 
 function sendToDiscordWebhook(message) {
