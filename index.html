@@ -130,7 +130,7 @@
             margin-top: 20px;
             font-size: 1.2em;
         }
-/* Reset default styles */
+/* Resetting default styles */
 * {
     margin: 0;
     padding: 0;
@@ -138,72 +138,87 @@
     font-family: 'Arial', sans-serif;
 }
 
-/* Body style */
+/* Body styling */
 body {
+    background: linear-gradient(45deg, #1e3c72, #2a5298);
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #2b2b2b;
-    color: #f0f0f0;
+    color: #fff;
 }
 
-/* Main container */
-.container {
-    background-color: #3b3b3b;
+/* Wrapper for the roll card */
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Card styling */
+.card {
+    background: rgba(0, 0, 0, 0.7);
     padding: 30px;
-    border-radius: 12px;
+    border-radius: 10px;
     text-align: center;
-    width: 350px;
-    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.5);
+    width: 300px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
-/* Header styles */
-.header h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: #ffcc00;
+/* Title */
+.card h1 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #ffdd59;
 }
 
-.header p {
-    font-size: 16px;
-    color: #dddddd;
+/* Input group styling */
+.input-group {
+    margin-bottom: 20px;
 }
 
-/* Roll section styles */
-.roll-section {
-    margin-top: 20px;
+.input-group label {
+    font-size: 14px;
+    display: block;
+    margin-bottom: 5px;
 }
 
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+/* Dice styling */
+.dice {
+    font-size: 50px;
+    margin: 20px 0;
+    transition: transform 0.5s ease;
+}
+
+/* Roll button styling */
 #rollButton {
-    background-color: #ff4747;
+    background: #ff6347;
+    color: white;
+    padding: 12px 20px;
     border: none;
     border-radius: 8px;
-    color: white;
-    padding: 12px 24px;
-    font-size: 18px;
+    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: background 0.3s ease;
 }
 
 #rollButton:hover {
-    background-color: #e63636;
-    transform: scale(1.05);
+    background: #ff4500;
 }
 
-.dice-container {
-    margin: 20px 0;
-}
-
-.dice {
-    font-size: 60px;
-    transition: transform 0.3s;
-}
-
+/* Result message styling */
 #resultMessage {
-    font-size: 18px;
-    color: #ffcc00;
     margin-top: 15px;
+    font-size: 16px;
 }
 
 
@@ -369,21 +384,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-    <div class="container">
-        <div class="header">
-            <h1>💎 100M Gems Roll Event 🎲</h1>
-            <p>Roll the dice for a chance to win 100M Gems!</p>
-        </div>
-
-        <div class="roll-section">
-            <div class="dice-container">
-                <div class="dice" id="dice">🎲</div>
+    <div class="wrapper">
+        <div class="card">
+            <h1>🎉 Roll & Win 100M Gems! 🎉</h1>
+            <div class="input-group">
+                <label for="discordUsername">Discord Username:</label>
+                <input type="text" id="discordUsername" placeholder="Enter your Discord username">
             </div>
+            <div class="dice" id="dice">🎲</div>
             <button id="rollButton" onclick="rollDice()">Roll the Dice!</button>
-            <p id="resultMessage">Press "Roll the Dice!" to see if you win.</p>
+            <p id="resultMessage">Press the button to roll!</p>
         </div>
     </div>
-
     </script>
     
     <div class="section-container">
@@ -681,14 +693,19 @@ body {
             }
         }
 function rollDice() {
+    const discordUsername = document.getElementById('discordUsername').value.trim();
     const diceElement = document.getElementById('dice');
     const resultMessage = document.getElementById('resultMessage');
 
-    // Roll the dice animation
+    if (!discordUsername) {
+        resultMessage.textContent = 'Please enter your Discord username.';
+        resultMessage.style.color = 'red';
+        return;
+    }
+
     diceElement.style.transform = 'rotate(720deg)';
     diceElement.textContent = '🎲';
 
-    // Simulate dice roll after a delay
     setTimeout(() => {
         const rolledNumber = Math.floor(Math.random() * 6) + 1;
         const winNumber = Math.floor(Math.random() * 6) + 1;
@@ -697,13 +714,15 @@ function rollDice() {
         diceElement.textContent = `🎲 ${rolledNumber}`;
 
         if (rolledNumber === winNumber) {
-            resultMessage.textContent = `🎉 Congratulations! You rolled a ${rolledNumber} and won 100M gems! 🎉`;
-            sendToWebhook(`A player has won 100M gems with a roll of ${rolledNumber}!`);
+            resultMessage.textContent = `🎉 ${discordUsername}, you rolled a ${rolledNumber} and won 100M gems! 🎉`;
+            resultMessage.style.color = '#ffdd59';
+            sendToWebhook(`${discordUsername} won 100M gems with a roll of ${rolledNumber}!`);
         } else {
-            resultMessage.textContent = `😢 You rolled a ${rolledNumber} and did not win. Try again!`;
-            sendToWebhook(`A player rolled ${rolledNumber} but did not win.`);
+            resultMessage.textContent = `${discordUsername}, you rolled a ${rolledNumber} and did not win. Try again!`;
+            resultMessage.style.color = '#ff6347';
+            sendToWebhook(`${discordUsername} rolled ${rolledNumber} but did not win.`);
         }
-    }, 1500); // 1.5 seconds delay
+    }, 1500);
 }
 
 function sendToWebhook(message) {
@@ -712,13 +731,11 @@ function sendToWebhook(message) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-            content: message,
-        }),
+        body: JSON.stringify({ content: message }),
     })
     .then(response => response.json())
     .then(data => console.log('Success:', data))
-    .catch((error) => console.error('Error:', error));
+    .catch(error => console.error('Error:', error));
 }
 
 
