@@ -139,55 +139,32 @@ button:hover {
     color: #d1d1d1;
     border: 2px solid #555; /* Thicker border */
     max-width: 90%;
-    width: 400px;
+    max-height: 90%;
+    overflow: auto;
 }
 
-#closePopup {
-    margin-top: 20px;
+#donatePopup h2 {
+    margin-bottom: 20px;
 }
 
 .gui {
     background-color: #333842;
-    padding: 20px;
+    padding: 15px;
     border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 300px;
     text-align: center;
     border: 2px solid #555; /* Thicker border */
     box-sizing: border-box;
-}
-
-.night-mode {
-    background-color: #333842;
-    color: #ffffff;
-}
-
-.leaderboard {
-    font-family: 'Courier New', Courier, monospace;
+    margin-bottom: 30px; /* Increased margin */
 }
 
 .leaderboard ul {
-    list-style-type: none;
+    list-style: none;
     padding: 0;
-    margin: 20px 0;
+    text-align: left;
 }
 
 .leaderboard li {
     font-size: 1.1em;
-    margin-bottom: 10px;
-}
-
-@media (max-width: 900px) {
-    .section-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .gui, .container {
-        width: 90%;
-    }
-
-    .progress-container {
-        width: 90%;
-    }
+    margin-bottom: 5px;
 }
