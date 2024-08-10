@@ -38,7 +38,7 @@
             position: relative;
             width: 100%;
             height: 30px;
-            background-color: #d9534f; /* Changed from grey to red */
+            background-color: #555;
             border-radius: 15px;
             overflow: hidden;
             margin-bottom: 10px;
@@ -277,19 +277,11 @@
 
         <div class="container night-mode">
             <h2>Calculate Goal Balance after X Time</h2>
-            <label for="balanceGems">Balance (Gems): </label>
-            <input type="text" id="balanceGems" placeholder="e.g., 1,000" class="night-mode">
+            <label for="initialBalance2">Balance (Gems): </label>
+            <input type="text" id="initialBalance2" value="1,000" class="night-mode">
 
-            <label for="timeUnit">Time Unit: </label>
-            <select id="timeUnit" class="night-mode">
-                <option value="days">Days</option>
-                <option value="weeks">Weeks</option>
-                <option value="months">Months</option>
-                <option value="years">Years</option>
-            </select>
-
-            <label for="timeAmount">Time Amount: </label>
-            <input type="text" id="timeAmount" placeholder="e.g., 30" class="night-mode">
+            <label for="timeInput">Time Period: </label>
+            <input type="text" id="timeInput" placeholder="e.g., 30 days, 2 weeks, 6 months, 1 year" class="night-mode">
 
             <button onclick="calculateGoal()">Calculate Goal</button>
             <div id="goalResult">Enter time period and click "Calculate Goal" to see the results.</div>
@@ -322,10 +314,12 @@
 
     <script>
         function formatNumber(num) {
+            // Format number with commas
             return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         }
 
         function parseInput(value) {
+            // Parse input with commas removed
             return parseFloat(value.replace(/,/g, '')) || 0;
         }
 
@@ -366,33 +360,39 @@
             document.getElementById('first30Days').innerHTML = first30DaysText;
             document.getElementById('last30Days').innerHTML = last30DaysText;
 
-            updateProgressBar(); // Only update progress bar in this function
+            // Update progress bar
+            updateProgressBar();
         }
 
         function calculateGoal() {
-            let balanceGems = parseInput(document.getElementById('balanceGems').value);
-            let timeAmount = parseInput(document.getElementById('timeAmount').value);
-            let timeUnit = document.getElementById('timeUnit').value;
+            let initialBalance = parseInput(document.getElementById('initialBalance2').value);
+            let timeInput = document.getElementById('timeInput').value;
             let dailyInterestRate = 0.009;
 
             let days = 0;
 
-            switch (timeUnit) {
-                case 'days':
-                    days = timeAmount;
-                    break;
-                case 'weeks':
-                    days = timeAmount * 7;
-                    break;
-                case 'months':
-                    days = timeAmount * 30;
-                    break;
-                case 'years':
-                    days = timeAmount * 365;
-                    break;
+            // Parse time input
+            let timeParts = timeInput.match(/(\d+)\s*(days|weeks|months|years)/i);
+            if (timeParts) {
+                let amount = parseInt(timeParts[1]);
+                let unit = timeParts[2].toLowerCase();
+                switch (unit) {
+                    case 'days':
+                        days = amount;
+                        break;
+                    case 'weeks':
+                        days = amount * 7;
+                        break;
+                    case 'months':
+                        days = amount * 30;
+                        break;
+                    case 'years':
+                        days = amount * 365;
+                        break;
+                }
             }
 
-            let balance = balanceGems;
+            let balance = initialBalance;
 
             for (let i = 0; i < days; i++) {
                 let profit = balance * dailyInterestRate;
@@ -400,6 +400,9 @@
             }
 
             document.getElementById('goalResult').innerHTML = After <span class="highlight">${formatNumber(days)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.;
+
+            // Update progress bar
+            updateProgressBar();
         }
 
         function updateGoalBalance() {
@@ -407,14 +410,15 @@
             let goalBalance = select.value;
             document.getElementById('goalBalance').value = formatNumber(parseFloat(goalBalance));
 
-            updateProgressBar(); // Only update progress bar in this function
+            // Update progress bar
+            updateProgressBar();
         }
 
         function updateProgressBar() {
             let initialBalance = parseInput(document.getElementById('initialBalance').value);
             let goalBalance = parseInput(document.getElementById('goalBalance').value);
 
-            let percentage = Math.min((initialBalance / goalBalance) * 100, 100);
+            let percentage = Math.min((initialBalance / goalBalance) * 100, 100); // Calculate percentage and cap it at 100%
             let progressFill = document.getElementById('progress-fill');
             let currentLabel = document.getElementById('current-label');
             let goalLabel = document.getElementById('goal-label');
@@ -437,6 +441,7 @@
         }
 
         function formatInput(input) {
+            // Automatically format numbers with commas
             let value = input.value.replace(/,/g, '');
             if (!isNaN(value) && value !== '') {
                 input.value = formatNumber(parseFloat(value));
@@ -445,6 +450,7 @@
             }
         }
 
+        // Format inputs on keyup and paste
         document.querySelectorAll('input[type="text"]').forEach(input => {
             input.addEventListener('input', function() {
                 formatInput(this);
