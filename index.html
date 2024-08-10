@@ -186,6 +186,26 @@ button:hover {
     color: #ff4757;
 }
 
+#countdownContainer {
+    position: fixed;
+    bottom: 20px; /* Distance from the bottom */
+    right: 20px;  /* Distance from the right edge */
+    background-color: #333842;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #d1d1d1;
+    text-align: center;
+    width: 250px; /* Adjust width as needed */
+    z-index: 1000; /* Ensure it's on top of other content */
+    font-size: 1em; /* Adjust font size as needed */
+}
+
+#countdownContainer p {
+    margin: 0;
+}
+
+        
         #donatePopup {
             display: none;
             position: fixed;
@@ -362,6 +382,9 @@ button:hover {
 </div>
 
 
+<div id="countdownContainer">
+    <p id="countdownText">Withdrawals will go through in <span id="countdownTime">Loading...</span></p>
+</div>
 
 
     <div id="leaderboardGui" class="gui night-mode leaderboard">
@@ -586,6 +609,38 @@ function sendToDiscordWebhook(message) {
         console.error('Error:', error);
     });
 }
+
+function updateCountdown() {
+    const now = new Date();
+    const targetTime = new Date();
+    
+    // Set targetTime to today at 8 AM EST
+    targetTime.setHours(8, 0, 0, 0); // 8 AM EST
+    if (now > targetTime) {
+        // If it's past 8 AM, set targetTime to 8 AM the next day
+        targetTime.setDate(targetTime.getDate() + 1);
+    }
+    
+    // Calculate the difference
+    const timeDifference = targetTime - now;
+    
+    // Calculate hours, minutes, and seconds
+    const hours = Math.floor((timeDifference % (1000 * 3600 * 24)) / (1000 * 3600));
+    const minutes = Math.floor((timeDifference % (1000 * 3600)) / (1000 * 60));
+    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+    
+    // Update the countdown text
+    document.getElementById('countdownTime').textContent = 
+        `${hours}h ${minutes}m ${seconds}s`;
+}
+
+// Update the countdown every second
+setInterval(updateCountdown, 1000);
+
+// Initial call to display the countdown immediately
+updateCountdown();
+
+        
 // Call the function every second
 setInterval(sendUserCountToDiscord, 1000);
 
