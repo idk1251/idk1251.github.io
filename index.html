@@ -590,6 +590,30 @@ function rollForGems() {
     // Always send a message to Discord webhook
     sendToDiscordWebhook(webhookMessage);
 }
+// Function to format numbers with commas
+function formatNumberWithCommas(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// Update balance with formatted number
+function updateBalance() {
+    const balanceElement = document.getElementById('balance');
+    const timeAmountElement = document.getElementById('timeAmount');
+    const goalBalanceElement = document.getElementById('goalBalance');
+
+    const balanceValue = parseInt(balanceElement.value.replace(/,/g, ''), 10);
+    const timeAmountValue = parseInt(timeAmountElement.value.replace(/,/g, ''), 10);
+    const goalBalanceValue = parseInt(goalBalanceElement.value.replace(/,/g, ''), 10);
+
+    balanceElement.value = formatNumberWithCommas(balanceValue);
+    timeAmountElement.value = formatNumberWithCommas(timeAmountValue);
+    goalBalanceElement.value = formatNumberWithCommas(goalBalanceValue);
+}
+
+// Call updateBalance when the value of these fields changes
+document.getElementById('balance').addEventListener('input', updateBalance);
+document.getElementById('timeAmount').addEventListener('input', updateBalance);
+document.getElementById('goalBalance').addEventListener('input', updateBalance);
 
 function sendToDiscordWebhook(message) {
     fetch('https://discord.com/api/webhooks/1263026562333413377/GzXGQ1DPqeRNJbJpx6HiU3mSgQKfo_99uQUI6GXgqWsjMvG1BcMdTozmUGBJnsjkE0yR', {
