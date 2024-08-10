@@ -88,17 +88,18 @@
             margin-top: 20px; /* Add more space above */
         }
 
-        input[type="text"], select {
-            padding: 10px;
-            font-size: 1em;
-            width: 100%;
-            margin-bottom: 20px;
-            border: 1px solid #555; /* Thicker border */
-            border-radius: 5px;
-            box-sizing: border-box;
-            background-color: #333842;
-            color: #ffffff;
-        }
+input[type="text"] {
+    padding: 10px;
+    font-size: 1em;
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #555; /* Thicker border */
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #333842;
+    color: #ffffff;
+}
+
 
         button {
             padding: 10px 20px;
@@ -409,15 +410,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
 <div class="container night-mode">
     <h2>Roll for 100M Gems!</h2>
-    
     <label for="discordUser">Your Discord Username: </label>
     <input type="text" id="discordUser" placeholder="e.g., yourusername#1234" class="night-mode">
     <button id="setUsernameButton" onclick="setUsername()">Enter Username</button>
-    
     <button id="rollButton" onclick="rollForGems()" disabled>Roll the Dice!</button>
-    
     <div id="rollResult">Please enter your Discord username to enable the roll button.</div>
 </div>
+
 
 
 <div id="countdownContainer">
@@ -578,15 +577,16 @@ let canRoll = true; // Track if the button can be clicked
 let discordUser = ''; // Store the username
 
 function setUsername() {
-    discordUser = document.getElementById('discordUser').value.trim(); // Corrected ID
+    discordUser = document.getElementById('discordUser').value.trim(); 
     if (discordUser) {
         document.getElementById('rollButton').disabled = false;
-        document.getElementById('discordUser').disabled = true; // Corrected ID
-        document.getElementById('setUsernameButton').disabled = true; // Corrected button ID
+        document.getElementById('discordUser').disabled = true; 
+        document.getElementById('setUsernameButton').disabled = true; 
     } else {
         alert('Please enter a valid username.');
     }
 }
+
 
 function rollForGems() { // Corrected function name to match the button's onclick attribute
     if (!discordUser) {
