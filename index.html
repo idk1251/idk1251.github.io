@@ -321,8 +321,8 @@ button:hover {
        <script>
 // Function to format numbers with commas
 function formatInputWithCommas(input) {
-    // Skip formatting for the input with placeholder "Your Discord Username"
-    if (input.placeholder === "Your Discord Username") {
+    // Skip formatting for inputs with specific placeholder
+    if (input.placeholder === "Roll for 100M Gems!") {
         return;
     }
 
@@ -347,6 +347,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+
 
     </script>
     
