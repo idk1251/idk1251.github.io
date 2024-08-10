@@ -319,6 +319,32 @@ button:hover {
 
 
        <script>
+
+  // Function to format numbers with commas
+function formatInputWithCommas(input) {
+    // Remove existing commas and non-numeric characters
+    let value = input.value.replace(/,/g, '');
+    
+    // Check if the value is a valid number
+    if (!isNaN(value) && value !== '') {
+        // Format the number with commas
+        input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    } else {
+        input.value = '';
+    }
+}
+
+// Add event listeners to inputs to format on input
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('input[type="text"]');
+    inputs.forEach(input => {
+        input.addEventListener('input', function() {
+            formatInputWithCommas(this);
+        });
+    });
+});
+         
+           
 // Function to format numbers with commas
 function formatInputWithCommas(input) {
     // Remove existing commas and non-numeric characters
