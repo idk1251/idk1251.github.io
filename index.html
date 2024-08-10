@@ -335,14 +335,15 @@ function formatInputWithCommas(input) {
 
 // Add event listeners to specific inputs to format on input
 document.addEventListener('DOMContentLoaded', function() {
-    // Select inputs by specific classes or ids that should be formatted
-    const inputsToFormat = document.querySelectorAll('.format-number');
-    inputsToFormat.forEach(input => {
+    // Select inputs that should be formatted
+    const numberInputs = document.querySelectorAll('input.number-format');
+    numberInputs.forEach(input => {
         input.addEventListener('input', function() {
             formatInputWithCommas(this);
         });
     });
 });
+
 
     </script>
     
