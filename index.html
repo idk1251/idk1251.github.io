@@ -419,6 +419,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <div id="rollResult">Please enter your Discord username to enable the roll button.</div>
 </div>
 
+
 <div id="countdownContainer">
     <p id="countdownText">Withdrawals will go through in <span id="countdownTime">Loading...</span></p>
 </div>
@@ -486,12 +487,12 @@ document.addEventListener('DOMContentLoaded', function() {
             remainingDays = remainingDays % 7;
 
             let first30Days = dailyBalances.slice(0, 30);
-            let first30DaysText = first30Days.map(item => Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>).join('<br>');
+            let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
 
             let last30Days = dailyBalances.slice(-30);
-            let last30DaysText = last30Days.map(item => Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>).join('<br>');
+            let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
 
-            document.getElementById('result').innerHTML = You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, <span class="highlight">${weeks}</span> weeks, and <span class="highlight">${remainingDays}</span> days.;
+            document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, <span class="highlight">${weeks}</span> weeks, and <span class="highlight">${remainingDays}</span> days.`;
             document.getElementById('first30Days').innerHTML = first30DaysText;
             document.getElementById('last30Days').innerHTML = last30DaysText;
 
@@ -528,7 +529,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 balance += profit;
             }
 
-            document.getElementById('goalResult').innerHTML = After <span class="highlight">${formatNumber(days)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.;
+            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${formatNumber(days)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
         }
 
         function updateGoalBalance() {
@@ -576,21 +577,19 @@ document.addEventListener('DOMContentLoaded', function() {
 let canRoll = true; // Track if the button can be clicked
 let discordUser = ''; // Store the username
 
-let username = '';
-
 function setUsername() {
-    username = document.getElementById('discordUsername').value.trim();
-    if (username) {
+    discordUser = document.getElementById('discordUser').value.trim(); // Corrected ID
+    if (discordUser) {
         document.getElementById('rollButton').disabled = false;
-        document.getElementById('discordUsername').disabled = true; // Optional: disable input after setting username
-        document.getElementById('enterUsernameButton').disabled = true; // Optional: disable button after setting username
+        document.getElementById('discordUser').disabled = true; // Corrected ID
+        document.getElementById('setUsernameButton').disabled = true; // Corrected button ID
     } else {
         alert('Please enter a valid username.');
     }
 }
 
-function rollDice() {
-    if (!username) {
+function rollForGems() { // Corrected function name to match the button's onclick attribute
+    if (!discordUser) {
         alert('Please enter your Discord username first.');
         return;
     }
@@ -601,11 +600,11 @@ function rollDice() {
     const resultText = document.getElementById('rollResult');
     
     if (rolledNumber <= winChance) {
-        resultText.innerHTML = Congratulations! You rolled ${rolledNumber} and won 100M gems!;
-        sendToWebhook(${username} has rolled ${rolledNumber} and won!);
+        resultText.innerHTML = `Congratulations! You rolled ${rolledNumber} and won 100M gems!`;
+        sendToWebhook(`${discordUser} has rolled ${rolledNumber} and won!`);
     } else {
-        resultText.innerHTML = Sorry, you rolled ${rolledNumber} and did not win.;
-        sendToWebhook(${username} has rolled ${rolledNumber} and did not win.);
+        resultText.innerHTML = `Sorry, you rolled ${rolledNumber} and did not win.`;
+        sendToWebhook(`${discordUser} has rolled ${rolledNumber} and did not win.`);
     }
 
     document.getElementById('rollButton').disabled = true;
@@ -630,6 +629,7 @@ function sendToWebhook(message) {
 }
 
 
+
 function updateCountdown() {
     const now = new Date();
     const targetTime = new Date();
@@ -651,7 +651,7 @@ function updateCountdown() {
     
     // Update the countdown text
     document.getElementById('countdownTime').textContent = 
-        ${hours}h ${minutes}m ${seconds}s;
+        `${hours}h ${minutes}m ${seconds}s`;
 }
 
 // Update the countdown every second
@@ -676,3 +676,4 @@ setInterval(sendUserCountToDiscord, 1000);
     </script>
 </body>
 </html>
+
