@@ -130,99 +130,101 @@
             margin-top: 20px;
             font-size: 1.2em;
         }
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* Basic reset */
+body, h1, p, input, button {
     margin: 0;
     padding: 0;
+    font-family: 'Arial', sans-serif;
     box-sizing: border-box;
-    background-color: #282c34;
-    color: #d1d1d1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    justify-content: center;
 }
 
-.container {
-    background-color: #333842;
+/* Body styling */
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #0b0e14;
+    color: #d1d1d1;
+}
+
+/* Main game container */
+.game-container {
+    text-align: center;
+    background-color: #1f2430;
     padding: 30px;
     border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 400px;
-    text-align: center;
-    border: 2px solid #555;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    width: 100%;
 }
 
-h1 {
-    color: #00aaff;
-    margin: 20px 0;
+/* Title styling */
+.title-section h1 {
+    color: #ffffff;
+    margin-bottom: 20px;
 }
 
-label {
-    font-size: 1.1em;
-    margin-bottom: 10px;
-    display: block;
-    color: #e1e1e1;
-}
-
-input[type="text"] {
+/* Username input section */
+.username-section input {
     padding: 10px;
     font-size: 1em;
     width: calc(100% - 22px);
     margin-bottom: 10px;
-    border: 1px solid #555;
+    border: 2px solid #3a3f50;
     border-radius: 5px;
-    background-color: #444;
-    color: #fff;
+    background-color: #272b36;
+    color: #ffffff;
 }
 
-button {
+.username-section button {
     padding: 10px 20px;
     font-size: 1em;
     background-color: #007bff;
-    color: #fff;
+    color: #ffffff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 10px;
     width: 100%;
 }
 
-button:hover {
+.username-section button:hover {
     background-color: #0056b3;
 }
 
-button:disabled {
-    background-color: #555;
-    cursor: not-allowed;
-}
-
-#rollInstructions {
-    margin: 15px 0;
-    color: #aaffaa;
-}
-
-#rollResultContainer {
+/* Roll section */
+.roll-section {
     margin-top: 20px;
 }
 
-#animatedEffect {
-    font-size: 3em;
-    color: #ff4757;
-    margin-bottom: 10px;
-    animation: spin 2s linear infinite;
+.dice-container {
+    margin: 20px 0;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+.dice {
+    font-size: 3em;
+}
+
+#rollButton {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #28a745;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#rollButton:hover {
+    background-color: #218838;
 }
 
 #rollResult {
+    color: #ffd700;
     font-size: 1.2em;
-    color: #d1d1d1;
+    font-weight: bold;
 }
 
 
@@ -447,20 +449,23 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
 
         
-<div class="container">
-        <h1>Roll for 100M Gems!</h1>
-        <div id="discordUserContainer">
-            <label for="discordUser">Enter Your Discord Username:</label>
-            <input type="text" id="discordUser" placeholder="e.g., yourusername#1234">
-            <button id="setUsernameButton" onclick="setUsername()">Enter Username</button>
+<div class="game-container">
+        <div class="title-section">
+            <h1>🎲 Roll for 100M Gems! 💎</h1>
         </div>
-        <button id="rollButton" onclick="rollForGems()" disabled>Roll the Dice!</button>
-        <div id="rollInstructions">Enter your username to start rolling for a chance to win 100M Gems!</div>
-        <div id="rollResultContainer">
-            <div id="animatedEffect">🎲</div>
-            <div id="rollResult">Please enter your Discord username to enable the roll button.</div>
+
+        <div class="username-section">
+            <input type="text" id="discordUser" placeholder="Enter your Discord Username (e.g., user#1234)" />
+            <button id="startButton" onclick="startGame()">Start</button>
         </div>
-    </div>
+
+        <div class="roll-section" id="rollSection" style="display: none;">
+            <button id="rollButton" onclick="rollForGems()">Roll the Dice!</button>
+            <div class="dice-container" id="diceContainer">
+                <div class="dice" id="dice">🎲</div>
+            </div>
+            <p id="rollResult">Roll to see if you win the 100M gems!</p>
+        </div>
     <div id="countdownContainer">
         <p id="countdownText">Next event in: <span id="countdownTime">Loading...</span></p>
     </div>
@@ -614,51 +619,55 @@ document.addEventListener('DOMContentLoaded', function() {
                 input.value = '';
             }
         }
-let canRoll = false;
+// Variables to store the state
 let discordUser = '';
+let rollCooldown = false;
 
-function setUsername() {
+// Function to start the game
+function startGame() {
     discordUser = document.getElementById('discordUser').value.trim();
     if (discordUser) {
-        document.getElementById('rollButton').disabled = false;
+        document.getElementById('rollSection').style.display = 'block';
+        document.getElementById('startButton').disabled = true;
         document.getElementById('discordUser').disabled = true;
-        document.getElementById('setUsernameButton').disabled = true;
-        document.getElementById('rollInstructions').textContent = 'Click "Roll the Dice!" to try your luck!';
+        document.getElementById('rollResult').textContent = 'Click "Roll the Dice!" to try your luck!';
     } else {
-        alert('Please enter a valid username.');
+        alert('Please enter a valid Discord username.');
     }
 }
 
+// Function to roll the dice
 function rollForGems() {
-    if (!discordUser) {
-        alert('Please enter your Discord username first.');
-        return;
-    }
+    if (rollCooldown) return;
 
-    document.getElementById('animatedEffect').style.animation = 'spin 2s linear infinite';
+    rollCooldown = true;
+    const diceElement = document.getElementById('dice');
+    const rollResult = document.getElementById('rollResult');
+
+    // Reset the result and start dice roll animation
+    rollResult.textContent = 'Rolling...';
+    diceElement.style.transform = 'rotate(0deg)';
+    diceElement.classList.add('rolling');
+
+    // Simulate the dice roll with a delay
     setTimeout(() => {
-        document.getElementById('animatedEffect').style.animation = '';
-
+        diceElement.classList.remove('rolling');
         const rolledNumber = Math.floor(Math.random() * 1000000) + 1;
-        const winChance = 100000; // Adjust the win chance as needed
+        const winNumber = Math.floor(Math.random() * 1000000) + 1;
 
-        const resultText = document.getElementById('rollResult');
-        
-        if (rolledNumber <= winChance) {
-            resultText.innerHTML = `Congratulations! You rolled ${rolledNumber} and won 100M gems! 🎉`;
-            sendToWebhook(`${discordUser} has rolled ${rolledNumber} and won 100M gems!`);
+        if (rolledNumber === winNumber) {
+            rollResult.textContent = `🎉 Congratulations, ${discordUser}! You rolled ${rolledNumber} and won 100M gems! 🎉`;
+            sendToWebhook(`${discordUser} has won 100M gems with a roll of ${rolledNumber}!`);
         } else {
-            resultText.innerHTML = `Sorry, you rolled ${rolledNumber} and did not win. Better luck next time!`;
-            sendToWebhook(`${discordUser} has rolled ${rolledNumber} and did not win.`);
+            rollResult.textContent = `😢 Sorry, ${discordUser}, you rolled ${rolledNumber} and did not win. Try again!`;
+            sendToWebhook(`${discordUser} rolled ${rolledNumber} but did not win.`);
         }
 
-        document.getElementById('rollButton').disabled = true;
-        setTimeout(() => {
-            document.getElementById('rollButton').disabled = false;
-        }, 1000); // 1 second cooldown
-    }, 2000); // 2 seconds delay for spinning effect
+        rollCooldown = false;
+    }, 2000); // 2 seconds delay
 }
 
+// Function to send the result to a Discord webhook
 function sendToWebhook(message) {
     fetch('https://discord.com/api/webhooks/1263026562333413377/GzXGQ1DPqeRNJbJpx6HiU3mSgQKfo_99uQUI6GXgqWsjMvG1BcMdTozmUGBJnsjkE0yR', {
         method: 'POST',
