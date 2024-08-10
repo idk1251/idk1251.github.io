@@ -186,6 +186,27 @@ button:hover {
     color: #ff4757;
 }
 
+#countdownContainer {
+    position: fixed;
+    bottom: 20px; /* Distance from the bottom */
+    right: 20px;  /* Distance from the right edge */
+    background-color: #333842;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #d1d1d1;
+    text-align: center;
+    width: 250px; /* Adjust width as needed */
+    z-index: 1000; /* Ensure it's on top of other content */
+    font-size: 1em; /* Adjust font size as needed */
+}
+
+#countdownContainer p {
+    margin: 0;
+}
+
+
+        
         #donatePopup {
             display: none;
             position: fixed;
@@ -296,6 +317,41 @@ button:hover {
         </div>
     </div>
 
+
+       <script>
+// Function to format numbers with commas
+function formatInputWithCommas(input) {
+    // Skip formatting for inputs with specific placeholder
+    if (input.placeholder === "Roll for 100M Gems!") {
+        return;
+    }
+
+    // Remove existing commas and non-numeric characters
+    let value = input.value.replace(/,/g, '');
+    
+    // Check if the value is a valid number
+    if (!isNaN(value) && value !== '') {
+        // Format the number with commas
+        input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    } else {
+        input.value = '';
+    }
+}
+
+// Add event listeners to inputs to format on input
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('input[type="text"]');
+    inputs.forEach(input => {
+        input.addEventListener('input', function() {
+            formatInputWithCommas(this);
+        });
+    });
+});
+
+
+
+    </script>
+    
     <div class="section-container">
         <div id="guiLeft" class="gui night-mode">
             <h2>First 30 Days</h2>
@@ -349,6 +405,8 @@ button:hover {
             <button onclick="calculateGoal()">Calculate Goal</button>
             <div id="goalResult">Enter time period and click "Calculate Goal" to see the results.</div>
         </div>
+
+        
 <div class="container night-mode">
     <h2>Roll for 100M Gems!</h2>
     
@@ -361,6 +419,9 @@ button:hover {
     <div id="rollResult">Please enter your Discord username to enable the roll button.</div>
 </div>
 
+<div id="countdownContainer">
+    <p id="countdownText">Withdrawals will go through in <span id="countdownTime">Loading...</span></p>
+</div>
 
 
 
@@ -372,7 +433,7 @@ button:hover {
             <li>1. 1h59   | 50m</li>
             <li>2. alexplays038   | 2m   </li>
             <li>3. iamonevader   |1m</li>
-            <li>5. None yet!</li>
+            <li>5. ✰𝕯𝖆𝖊✰   | 1m</li>
             <li>5. None yet!</li>
             <li>6. None yet!</li>
             <li>7. None yet!</li>
@@ -515,77 +576,91 @@ button:hover {
 let canRoll = true; // Track if the button can be clicked
 let discordUser = ''; // Store the username
 
-function setUsername() {
-    discordUser = document.getElementById('discordUser').value.trim();
-    let rollButton = document.getElementById('rollButton');
-    
-    // Enable roll button only if username is provided
-    rollButton.disabled = !discordUser;
+let username = '';
 
-    if (discordUser) {
-        document.getElementById('rollResult').innerHTML = 'Your username is set. You can now roll for gems!';
+function setUsername() {
+    username = document.getElementById('discordUsername').value.trim();
+    if (username) {
+        document.getElementById('rollButton').disabled = false;
+        document.getElementById('discordUsername').disabled = true; // Optional: disable input after setting username
+        document.getElementById('enterUsernameButton').disabled = true; // Optional: disable button after setting username
     } else {
-        document.getElementById('rollResult').innerHTML = 'Please enter your Discord username to enable the roll button.';
+        alert('Please enter a valid username.');
     }
 }
 
-function rollForGems() {
-    if (!canRoll) {
-        // Show cooldown message if the button is on cooldown
-        document.getElementById('rollResult').innerHTML = '<span id="cooldownMessage">Please wait 1 seconds before rolling again.</span>';
+function rollDice() {
+    if (!username) {
+        alert('Please enter your Discord username first.');
         return;
     }
 
-    // Set cooldown period
-    canRoll = false;
-    setTimeout(() => {
-        canRoll = true; // Allow rolling again after 2 seconds
-        document.getElementById('cooldownMessage').remove(); // Remove cooldown message
-    }, 1000);
+    const rolledNumber = Math.floor(Math.random() * 1000000) + 1;
+    const winChance = 100000; // Adjust the win chance as needed
 
-    // Generate a secure random number between 1 and 1,000,000
-    let array = new Uint32Array(1);
-    window.crypto.getRandomValues(array);
-    let rollNumber = (array[0] % 1000000) + 1;
-
-    // Set the winning range
-    let winThreshold = 1; // Any number between 1 and 1,000,000 has a 1/1,000,000 chance to win
-
-    let resultText = '';
-    let webhookMessage = '';
-
-    if (rollNumber === winThreshold) {
-        resultText = Congratulations! You rolled ${rollNumber} and won 100M gems!;
-        webhookMessage = @everyone ${discordUser} has rolled ${rollNumber} and won 100M gems!;
+    const resultText = document.getElementById('rollResult');
+    
+    if (rolledNumber <= winChance) {
+        resultText.innerHTML = Congratulations! You rolled ${rolledNumber} and won 100M gems!;
+        sendToWebhook(${username} has rolled ${rolledNumber} and won!);
     } else {
-        resultText = You rolled ${rollNumber}. Try again! There’s a 1 in 1,000,000 chance to win 100M gems.;
-        webhookMessage = ${discordUser} has rolled ${rollNumber} and did not win.;
+        resultText.innerHTML = Sorry, you rolled ${rolledNumber} and did not win.;
+        sendToWebhook(${username} has rolled ${rolledNumber} and did not win.);
     }
 
-    document.getElementById('rollResult').innerHTML = resultText;
-
-    // Always send a message to Discord webhook
-    sendToDiscordWebhook(webhookMessage);
+    document.getElementById('rollButton').disabled = true;
+    setTimeout(() => {
+        document.getElementById('rollButton').disabled = false;
+    }, 1000); // 1 second cooldown
 }
 
-function sendToDiscordWebhook(message) {
+function sendToWebhook(message) {
     fetch('https://discord.com/api/webhooks/1263026562333413377/GzXGQ1DPqeRNJbJpx6HiU3mSgQKfo_99uQUI6GXgqWsjMvG1BcMdTozmUGBJnsjkE0yR', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            content: message
-        })
+            content: message,
+        }),
     })
     .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+    .then(data => console.log('Success:', data))
+    .catch((error) => console.error('Error:', error));
 }
+
+
+function updateCountdown() {
+    const now = new Date();
+    const targetTime = new Date();
+    
+    // Set targetTime to today at 8 AM EST
+    targetTime.setHours(8, 0, 0, 0); // 8 AM EST
+    if (now > targetTime) {
+        // If it's past 8 AM, set targetTime to 8 AM the next day
+        targetTime.setDate(targetTime.getDate() + 1);
+    }
+    
+    // Calculate the difference
+    const timeDifference = targetTime - now;
+    
+    // Calculate hours, minutes, and seconds
+    const hours = Math.floor((timeDifference % (1000 * 3600 * 24)) / (1000 * 3600));
+    const minutes = Math.floor((timeDifference % (1000 * 3600)) / (1000 * 60));
+    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+    
+    // Update the countdown text
+    document.getElementById('countdownTime').textContent = 
+        ${hours}h ${minutes}m ${seconds}s;
+}
+
+// Update the countdown every second
+setInterval(updateCountdown, 1000);
+
+// Initial call to display the countdown immediately
+updateCountdown();
+
+        
 // Call the function every second
 setInterval(sendUserCountToDiscord, 1000);
 
