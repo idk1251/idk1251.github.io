@@ -11,7 +11,7 @@
             padding: 0;
             box-sizing: border-box;
             transition: background-color 0.3s, color 0.3s;
-            background-color: #1e1e1e; /* Default to night mode */
+            background-color: #1e1e1e;
             color: #d1d1d1;
             overflow-x: hidden;
             display: flex;
@@ -38,7 +38,7 @@
             position: relative;
             width: 100%;
             height: 30px;
-            background-color: #d9534f; /* Changed from grey to red */
+            background-color: #d9534f;
             border-radius: 15px;
             overflow: hidden;
             margin-bottom: 10px;
@@ -77,7 +77,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 400px;
             text-align: center;
-            border: 2px solid #555; /* Thicker border */
+            border: 2px solid #555;
             box-sizing: border-box;
         }
 
@@ -85,7 +85,7 @@
             font-size: 1.1em;
             margin-bottom: 10px;
             display: block;
-            margin-top: 20px; /* Add more space above */
+            margin-top: 20px;
         }
 
         input[type="text"], select {
@@ -93,7 +93,7 @@
             font-size: 1em;
             width: 100%;
             margin-bottom: 20px;
-            border: 1px solid #555; /* Thicker border */
+            border: 1px solid #555;
             border-radius: 5px;
             box-sizing: border-box;
             background-color: #333842;
@@ -117,58 +117,16 @@
             background-color: #0056b3;
         }
 
-        #donateButton {
-            background-color: #ff4757;
-            border: 1px solid #e73b4d;
-        }
-
-        #donateButton:hover {
-            background-color: #e73b4d;
-        }
-
         #result, #goalResult {
             margin-top: 20px;
             font-size: 1.2em;
-        }
-
-        #donatePopup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            z-index: 10;
-            background-color: #333842;
-            color: #d1d1d1;
-            border: 2px solid #555; /* Thicker border */
-            max-width: 90%;
-            max-height: 80%;
-            overflow-y: auto;
-        }
-
-        #closePopup {
-            margin-top: 20px;
-            width: 100%;
-            border: 1px solid #555; /* Thicker border */
-        }
-
-        .guis-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            align-items: center;
         }
 
         .gui {
             width: 300px;
             height: 400px;
             overflow-y: auto;
-            border: 2px solid #555; /* Thicker border */
+            border: 2px solid #555;
             border-radius: 10px;
             background: rgba(40, 44, 52, 0.8);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -187,7 +145,7 @@
 
         .leaderboard {
             text-align: left;
-            height: 400px; /* Fixed height for consistent scrolling */
+            height: 400px;
             overflow-y: auto;
         }
 
@@ -207,22 +165,21 @@
             color: #d1d1d1;
         }
 
-        /* Custom scrollbar styles */
         ::-webkit-scrollbar {
-            width: 12px; /* Width of the scrollbar */
+            width: 12px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #2c2f36; /* Track color */
+            background: #2c2f36;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #555; /* Handle color */
+            background: #555;
             border-radius: 6px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #777; /* Handle color on hover */
+            background: #777;
         }
     </style>
 </head>
@@ -312,27 +269,31 @@
                 <li>10. None yet!</li>
             </ul>
         </div>
-
-        <div id="donatePopup" class="night-mode">
-            <h2>Donate Here:</h2>
-            <p>/gift @s6eg4se54g</p>
-            <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
-        </div>
     </div>
 
     <script>
-        function formatNumber(num) {
-            return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        // Function to remove commas and parse the input value as a number
+        function parseInput(input) {
+            return parseFloat(input.replace(/,/g, ''));
         }
 
-        function parseInput(value) {
-            return parseFloat(value.replace(/,/g, '')) || 0;
+        // Function to format a number with commas
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         }
 
         function calculateDays() {
             let initialBalance = parseInput(document.getElementById('initialBalance').value);
             let goalBalance = parseInput(document.getElementById('goalBalance').value);
-            let dailyInterestRate = 0.009;
+            const dailyInterestRate = 0.009; // 0.9% daily interest
+
+            if (initialBalance >= goalBalance) {
+                document.getElementById('result').innerHTML = 'Your initial balance is already equal to or greater than your goal!';
+                document.getElementById('first30Days').innerHTML = '';
+                document.getElementById('last30Days').innerHTML = '';
+                updateProgressBar(); // Ensure progress bar shows full
+                return;
+            }
 
             let days = 0;
             let balance = initialBalance;
@@ -349,6 +310,21 @@
                 days++;
             }
 
+            // Display the first 30 days
+            let first30DaysHTML = '';
+            for (let i = 0; i < Math.min(30, dailyBalances.length); i++) {
+                first30DaysHTML += `Day ${dailyBalances[i].day}: Balance: ${formatNumber(dailyBalances[i].balance.toFixed(2))} Gems (Profit: ${formatNumber(dailyBalances[i].profit.toFixed(2))} Gems)<br>`;
+            }
+            document.getElementById('first30Days').innerHTML = first30DaysHTML;
+
+            // Display the last 30 days
+            let last30DaysHTML = '';
+            for (let i = Math.max(0, dailyBalances.length - 30); i < dailyBalances.length; i++) {
+                last30DaysHTML += `Day ${dailyBalances[i].day}: Balance: ${formatNumber(dailyBalances[i].balance.toFixed(2))} Gems (Profit: ${formatNumber(dailyBalances[i].profit.toFixed(2))} Gems)<br>`;
+            }
+            document.getElementById('last30Days').innerHTML = last30DaysHTML;
+
+            // Display result as years, months, weeks, and days
             let years = Math.floor(days / 365);
             let remainingDays = days % 365;
             let months = Math.floor(remainingDays / 30);
@@ -356,103 +332,68 @@
             let weeks = Math.floor(remainingDays / 7);
             remainingDays = remainingDays % 7;
 
-            let first30Days = dailyBalances.slice(0, 30);
-            let first30DaysText = first30Days.map(item => Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>).join('<br>');
+            document.getElementById('result').innerHTML = `It will take ${years} years, ${months} months, ${weeks} weeks, and ${remainingDays} days to reach your goal balance of ${formatNumber(goalBalance)} Gems.`;
 
-            let last30Days = dailyBalances.slice(-30);
-            let last30DaysText = last30Days.map(item => Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>).join('<br>');
-
-            document.getElementById('result').innerHTML = You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, <span class="highlight">${weeks}</span> weeks, and <span class="highlight">${remainingDays}</span> days.;
-            document.getElementById('first30Days').innerHTML = first30DaysText;
-            document.getElementById('last30Days').innerHTML = last30DaysText;
-
-            updateProgressBar(); // Only update progress bar in this function
+            updateProgressBar(initialBalance, goalBalance, balance);
         }
 
         function calculateGoal() {
-            let balanceGems = parseInput(document.getElementById('balanceGems').value);
-            let timeAmount = parseInput(document.getElementById('timeAmount').value);
+            let balance = parseInput(document.getElementById('balanceGems').value);
             let timeUnit = document.getElementById('timeUnit').value;
-            let dailyInterestRate = 0.009;
+            let timeAmount = parseInt(document.getElementById('timeAmount').value);
+            const dailyInterestRate = 0.009; // 0.9% daily interest
 
-            let days = 0;
-
-            switch (timeUnit) {
-                case 'days':
-                    days = timeAmount;
-                    break;
-                case 'weeks':
-                    days = timeAmount * 7;
-                    break;
-                case 'months':
-                    days = timeAmount * 30;
-                    break;
-                case 'years':
-                    days = timeAmount * 365;
-                    break;
+            if (isNaN(balance) || isNaN(timeAmount) || timeAmount < 0) {
+                document.getElementById('goalResult').innerHTML = 'Please enter valid values.';
+                return;
             }
 
-            let balance = balanceGems;
+            let totalDays = timeAmount;
+            if (timeUnit === 'weeks') {
+                totalDays *= 7;
+            } else if (timeUnit === 'months') {
+                totalDays *= 30;
+            } else if (timeUnit === 'years') {
+                totalDays *= 365;
+            }
 
-            for (let i = 0; i < days; i++) {
+            for (let i = 0; i < totalDays; i++) {
                 let profit = balance * dailyInterestRate;
                 balance += profit;
             }
 
-            document.getElementById('goalResult').innerHTML = After <span class="highlight">${formatNumber(days)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.;
+            document.getElementById('goalResult').innerHTML = `After ${timeAmount} ${timeUnit}, your balance will be ${formatNumber(balance.toFixed(2))} Gems.`;
         }
 
         function updateGoalBalance() {
-            let select = document.getElementById('rankSelect');
-            let goalBalance = select.value;
-            document.getElementById('goalBalance').value = formatNumber(parseFloat(goalBalance));
+            const rankSelect = document.getElementById('rankSelect');
+            const goalBalanceInput = document.getElementById('goalBalance');
 
-            updateProgressBar(); // Only update progress bar in this function
+            if (rankSelect.value) {
+                goalBalanceInput.value = formatNumber(rankSelect.value);
+            } else {
+                goalBalanceInput.value = '';
+            }
         }
 
-        function updateProgressBar() {
-            let initialBalance = parseInput(document.getElementById('initialBalance').value);
-            let goalBalance = parseInput(document.getElementById('goalBalance').value);
+        function updateProgressBar(initialBalance = 0, goalBalance = 0, currentBalance = 0) {
+            const progressFill = document.getElementById('progress-fill');
+            const startLabel = document.getElementById('start-label');
+            const currentLabel = document.getElementById('current-label');
+            const goalLabel = document.getElementById('goal-label');
 
-            let percentage = Math.min((initialBalance / goalBalance) * 100, 100);
-            let progressFill = document.getElementById('progress-fill');
-            let currentLabel = document.getElementById('current-label');
-            let goalLabel = document.getElementById('goal-label');
-
-            progressFill.style.width = percentage + '%';
-            currentLabel.textContent = formatNumber(initialBalance) + ' Gems';
+            startLabel.textContent = formatNumber(initialBalance) + ' Gems';
+            currentLabel.textContent = formatNumber(currentBalance) + ' Gems';
             goalLabel.textContent = formatNumber(goalBalance) + ' Gems';
 
-            if (initialBalance === 0) {
-                document.getElementById('current-label').textContent = '0 Gems';
-            }
-
-            if (goalBalance === 0) {
-                document.getElementById('goal-label').textContent = '0 Gems';
-            }
-        }
-
-        function closeDonatePopup() {
-            document.getElementById('donatePopup').style.display = 'none';
-        }
-
-        function formatInput(input) {
-            let value = input.value.replace(/,/g, '');
-            if (!isNaN(value) && value !== '') {
-                input.value = formatNumber(parseFloat(value));
+            if (goalBalance > 0) {
+                const progressPercent = Math.min((currentBalance / goalBalance) * 100, 100);
+                progressFill.style.width = progressPercent + '%';
             } else {
-                input.value = '';
+                progressFill.style.width = '0%';
             }
         }
 
-        document.querySelectorAll('input[type="text"]').forEach(input => {
-            input.addEventListener('input', function() {
-                formatInput(this);
-            });
-            input.addEventListener('blur', function() {
-                formatInput(this);
-            });
-        });
     </script>
 </body>
 </html>
