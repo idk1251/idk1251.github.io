@@ -620,8 +620,24 @@ function sendToDiscordWebhook(message) {
     });
 }
 
-// Initialize input fields
-setupInputFields();
+// Initializes event listeners and setups
+function init() {
+    setupInputFields();
+
+    document.getElementById('calculateDaysButton').addEventListener('click', calculateDays);
+    document.getElementById('calculateGoalButton').addEventListener('click', calculateGoal);
+    document.getElementById('rankSelect').addEventListener('change', updateGoalBalance);
+    document.getElementById('rollButton').addEventListener('click', rollForGems);
+    document.getElementById('discordUser').addEventListener('input', setUsername);
+
+    document.getElementById('donateCloseButton').addEventListener('click', closeDonatePopup);
+
+    // Initial setup
+    updateGoalBalance(); // Set initial goal balance
+}
+
+// Call init to set up event listeners and initial settings
+document.addEventListener('DOMContentLoaded', init);
 
     </script>
 </body>
