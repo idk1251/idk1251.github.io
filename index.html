@@ -332,6 +332,51 @@ function calculateDays() {
     document.getElementById('result').innerText = `${formattedDays} days to reach the goal.`;
 }
 
+
+
+function rollForGems() {
+    // Get the value of the Discord username input field
+    const discordUser = document.getElementById('discordUser').value;
+
+    // If the user hasn't entered a username, alert them
+    if (!discordUser) {
+        alert('Please enter your Discord username first.');
+        return;
+    }
+
+    // Generate a random number between 1 and 1,000,000
+    const rolledNumber = Math.floor(Math.random() * 1000000) + 1;
+    const winChance = 100000; // Adjust the win chance as needed
+
+    // Find the paragraph where we'll show the result
+    const resultText = document.getElementById('rollResult');
+    
+    // Determine if the user wins or loses
+    if (rolledNumber <= winChance) {
+        resultText.innerHTML = `Congratulations! You rolled ${rolledNumber} and won 100M gems!`;
+        sendToWebhook(`${discordUser} has rolled ${rolledNumber} and won!`);
+    } else {
+        resultText.innerHTML = `Sorry, you rolled ${rolledNumber} and did not win.`;
+        sendToWebhook(`${discordUser} has rolled ${rolledNumber} and did not win.`);
+    }
+
+    // Disable the button for 1 second to prevent spam clicking
+    document.getElementById('rollButton').disabled = true;
+    setTimeout(() => {
+        document.getElementById('rollButton').disabled = false;
+    }, 1000);
+}
+
+// Mock function for sendToWebhook - you'll replace this with your actual webhook function
+function sendToWebhook(message) {
+    console.log("Sending to webhook:", message);
+}
+
+
+
+
+
+           
 function rollForGems() {
     let rolls = parseInt(document.getElementById('numberOfRolls').value, 10) || 1;
     let results = [];
