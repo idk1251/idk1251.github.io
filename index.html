@@ -389,129 +389,161 @@ button:hover {
     </div>
 
     <script>
-        function formatNumber(num) {
-            return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-        }
+// Function to format numbers with commas
+function formatNumber(num) {
+    return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
 
-        function parseInput(value) {
-            return parseFloat(value.replace(/,/g, '')) || 0;
-        }
+// Function to parse input values, removing commas and converting them to float
+function parseInput(value) {
+    return parseFloat(value.replace(/,/g, '')) || 0;
+}
 
-        function calculateDays() {
-            let initialBalance = parseInput(document.getElementById('initialBalance').value);
-            let goalBalance = parseInput(document.getElementById('goalBalance').value);
-            let dailyInterestRate = 0.009;
+// Function to format input fields with commas
+function formatInput(input) {
+    let value = input.value.replace(/,/g, '');
+    if (!isNaN(value) && value !== '') {
+        input.value = formatNumber(parseFloat(value));
+    } else {
+        input.value = '';
+    }
+}
 
-            let days = 0;
-            let balance = initialBalance;
-            let dailyBalances = [];
+// Prevent non-numeric input and format as commas
+function preventNonNumericInput(event) {
+    const input = event.target;
+    const key = event.key;
+    if (!/[\d,]/.test(key) && key !== 'Backspace' && key !== 'ArrowLeft' && key !== 'ArrowRight' && key !== 'Tab') {
+        event.preventDefault();
+    }
+}
 
-            while (balance < goalBalance) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
-                dailyBalances.push({
-                    day: days + 1,
-                    balance: balance,
-                    profit: profit
-                });
-                days++;
-            }
+// Set up event listeners for input fields
+function setupInputFields() {
+    document.querySelectorAll('input[type="text"]').forEach(input => {
+        input.addEventListener('input', function() {
+            formatInput(this);
+        });
+        input.addEventListener('keydown', preventNonNumericInput);
+        input.addEventListener('blur', function() {
+            formatInput(this);
+        });
+    });
+}
 
-            let years = Math.floor(days / 365);
-            let remainingDays = days % 365;
-            let months = Math.floor(remainingDays / 30);
-            remainingDays = remainingDays % 30;
-            let weeks = Math.floor(remainingDays / 7);
-            remainingDays = remainingDays % 7;
+// Function to calculate the number of days to reach the goal balance
+function calculateDays() {
+    let initialBalance = parseInput(document.getElementById('initialBalance').value);
+    let goalBalance = parseInput(document.getElementById('goalBalance').value);
+    let dailyInterestRate = 0.009;
 
-            let first30Days = dailyBalances.slice(0, 30);
-            let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
+    let days = 0;
+    let balance = initialBalance;
+    let dailyBalances = [];
 
-            let last30Days = dailyBalances.slice(-30);
-            let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
+    while (balance < goalBalance) {
+        let profit = balance * dailyInterestRate;
+        balance += profit;
+        dailyBalances.push({
+            day: days + 1,
+            balance: balance,
+            profit: profit
+        });
+        days++;
+    }
 
-            document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, <span class="highlight">${weeks}</span> weeks, and <span class="highlight">${remainingDays}</span> days.`;
-            document.getElementById('first30Days').innerHTML = first30DaysText;
-            document.getElementById('last30Days').innerHTML = last30DaysText;
+    let years = Math.floor(days / 365);
+    let remainingDays = days % 365;
+    let months = Math.floor(remainingDays / 30);
+    remainingDays = remainingDays % 30;
+    let weeks = Math.floor(remainingDays / 7);
+    remainingDays = remainingDays % 7;
 
-            updateProgressBar(); // Only update progress bar in this function
-        }
+    let first30Days = dailyBalances.slice(0, 30);
+    let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
 
-        function calculateGoal() {
-            let balanceGems = parseInput(document.getElementById('balanceGems').value);
-            let timeAmount = parseInput(document.getElementById('timeAmount').value);
-            let timeUnit = document.getElementById('timeUnit').value;
-            let dailyInterestRate = 0.009;
+    let last30Days = dailyBalances.slice(-30);
+    let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
 
-            let days = 0;
+    document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, <span class="highlight">${weeks}</span> weeks, and <span class="highlight">${remainingDays}</span> days.`;
+    document.getElementById('first30Days').innerHTML = first30DaysText;
+    document.getElementById('last30Days').innerHTML = last30DaysText;
 
-            switch (timeUnit) {
-                case 'days':
-                    days = timeAmount;
-                    break;
-                case 'weeks':
-                    days = timeAmount * 7;
-                    break;
-                case 'months':
-                    days = timeAmount * 30;
-                    break;
-                case 'years':
-                    days = timeAmount * 365;
-                    break;
-            }
+    updateProgressBar(); // Update progress bar
+}
 
-            let balance = balanceGems;
+// Function to calculate the goal balance after a certain period
+function calculateGoal() {
+    let balanceGems = parseInput(document.getElementById('balanceGems').value);
+    let timeAmount = parseInput(document.getElementById('timeAmount').value);
+    let timeUnit = document.getElementById('timeUnit').value;
+    let dailyInterestRate = 0.009;
 
-            for (let i = 0; i < days; i++) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
-            }
+    let days = 0;
 
-            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${formatNumber(days)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
-        }
+    switch (timeUnit) {
+        case 'days':
+            days = timeAmount;
+            break;
+        case 'weeks':
+            days = timeAmount * 7;
+            break;
+        case 'months':
+            days = timeAmount * 30;
+            break;
+        case 'years':
+            days = timeAmount * 365;
+            break;
+    }
 
-        function updateGoalBalance() {
-            let select = document.getElementById('rankSelect');
-            let goalBalance = select.value;
-            document.getElementById('goalBalance').value = formatNumber(parseFloat(goalBalance));
+    let balance = balanceGems;
 
-            updateProgressBar(); // Only update progress bar in this function
-        }
+    for (let i = 0; i < days; i++) {
+        let profit = balance * dailyInterestRate;
+        balance += profit;
+    }
 
-        function updateProgressBar() {
-            let initialBalance = parseInput(document.getElementById('initialBalance').value);
-            let goalBalance = parseInput(document.getElementById('goalBalance').value);
+    document.getElementById('goalResult').innerHTML = `After <span class="highlight">${formatNumber(days)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
+}
 
-            let percentage = Math.min((initialBalance / goalBalance) * 100, 100);
-            let progressFill = document.getElementById('progress-fill');
-            let currentLabel = document.getElementById('current-label');
-            let goalLabel = document.getElementById('goal-label');
+// Function to update the goal balance based on selected rank
+function updateGoalBalance() {
+    let select = document.getElementById('rankSelect');
+    let goalBalance = select.value;
+    document.getElementById('goalBalance').value = formatNumber(parseFloat(goalBalance));
 
-            progressFill.style.width = percentage + '%';
-            currentLabel.textContent = formatNumber(initialBalance) + ' Gems';
-            goalLabel.textContent = formatNumber(goalBalance) + ' Gems';
+    updateProgressBar(); // Update progress bar
+}
 
-            if (initialBalance === 0) {
-                document.getElementById('current-label').textContent = '0 Gems';
-            }
+// Function to update the progress bar based on initial and goal balance
+function updateProgressBar() {
+    let initialBalance = parseInput(document.getElementById('initialBalance').value);
+    let goalBalance = parseInput(document.getElementById('goalBalance').value);
 
-            if (goalBalance === 0) {
-                document.getElementById('goal-label').textContent = '0 Gems';
-            }
-        }
+    let percentage = Math.min((initialBalance / goalBalance) * 100, 100);
+    let progressFill = document.getElementById('progress-fill');
+    let currentLabel = document.getElementById('current-label');
+    let goalLabel = document.getElementById('goal-label');
 
-        function closeDonatePopup() {
-            document.getElementById('donatePopup').style.display = 'none';
-        }
+    progressFill.style.width = percentage + '%';
+    currentLabel.textContent = formatNumber(initialBalance) + ' Gems';
+    goalLabel.textContent = formatNumber(goalBalance) + ' Gems';
 
-        function formatInput(input) {
-            let value = input.value.replace(/,/g, '');
-            if (!isNaN(value) && value !== '') {
-                input.value = formatNumber(parseFloat(value));
-            } else {
-                input.value = '';
-            }
-        }
+    if (initialBalance === 0) {
+        currentLabel.textContent = '0 Gems';
+    }
+
+    if (goalBalance === 0) {
+        goalLabel.textContent = '0 Gems';
+    }
+}
+
+// Function to close the donation popup
+function closeDonatePopup() {
+    document.getElementById('donatePopup').style.display = 'none';
+}
+
+// Function to handle Discord username entry and roll functionality
 let canRoll = true; // Track if the button can be clicked
 let discordUser = ''; // Store the username
 
@@ -532,15 +564,16 @@ function setUsername() {
 function rollForGems() {
     if (!canRoll) {
         // Show cooldown message if the button is on cooldown
-        document.getElementById('rollResult').innerHTML = '<span id="cooldownMessage">Please wait 1 seconds before rolling again.</span>';
+        document.getElementById('rollResult').innerHTML = '<span id="cooldownMessage">Please wait 1 second before rolling again.</span>';
         return;
     }
 
     // Set cooldown period
     canRoll = false;
     setTimeout(() => {
-        canRoll = true; // Allow rolling again after 2 seconds
-        document.getElementById('cooldownMessage').remove(); // Remove cooldown message
+        canRoll = true; // Allow rolling again after 1 second
+        let cooldownMessage = document.getElementById('cooldownMessage');
+        if (cooldownMessage) cooldownMessage.remove(); // Remove cooldown message
     }, 1000);
 
     // Generate a secure random number between 1 and 1,000,000
@@ -559,15 +592,17 @@ function rollForGems() {
         webhookMessage = `@everyone ${discordUser} has rolled ${rollNumber} and won 100M gems!`;
     } else {
         resultText = `You rolled ${rollNumber}. Try again! There’s a 1 in 1,000,000 chance to win 100M gems.`;
-        webhookMessage = `${discordUser} has rolled ${rollNumber} and did not win.`;
+        webhookMessage = `${discordUser} rolled ${rollNumber}.`;
     }
 
+    // Display the result
     document.getElementById('rollResult').innerHTML = resultText;
 
-    // Always send a message to Discord webhook
+    // Send result to Discord webhook
     sendToDiscordWebhook(webhookMessage);
 }
 
+// Function to send messages to a Discord webhook
 function sendToDiscordWebhook(message) {
     fetch('https://discord.com/api/webhooks/1263026562333413377/GzXGQ1DPqeRNJbJpx6HiU3mSgQKfo_99uQUI6GXgqWsjMvG1BcMdTozmUGBJnsjkE0yR', {
         method: 'POST',
@@ -586,18 +621,34 @@ function sendToDiscordWebhook(message) {
         console.error('Error:', error);
     });
 }
+
 // Call the function every second
-setInterval(sendUserCountToDiscord, 1000);
+setInterval(() => {
+    let countdownElement = document.getElementById('countdown');
+    if (countdownElement) {
+        let now = new Date().getTime();
+        let endTime = new Date("2024-12-31T23:59:59").getTime(); // Set your end time here
+        let distance = endTime - now;
 
+        if (distance < 0) {
+            countdownElement.innerHTML = "EXPIRED";
+        } else {
+            let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        document.querySelectorAll('input[type="text"]').forEach(input => {
-            input.addEventListener('input', function() {
-                formatInput(this);
-            });
-            input.addEventListener('blur', function() {
-                formatInput(this);
-            });
-        });
+            countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+    }
+}, 1000);
+
+// Initialize input fields and progress bars on page load
+window.onload = function() {
+    setupInputFields();
+    updateProgressBar();
+};
+
     </script>
 </body>
 </html>
