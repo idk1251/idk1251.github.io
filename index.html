@@ -319,9 +319,13 @@ button:hover {
 
 
        <script>
-
-  // Function to format numbers with commas
+// Function to format numbers with commas
 function formatInputWithCommas(input) {
+    // Skip formatting for the input with placeholder "Your Discord Username"
+    if (input.placeholder === "Your Discord Username") {
+        return;
+    }
+
     // Remove existing commas and non-numeric characters
     let value = input.value.replace(/,/g, '');
     
@@ -343,33 +347,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-         
-           
-// Function to format numbers with commas
-function formatInputWithCommas(input) {
-    // Remove existing commas and non-numeric characters
-    let value = input.value.replace(/,/g, '');
-    
-    // Check if the value is a valid number
-    if (!isNaN(value) && value !== '') {
-        // Format the number with commas
-        input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    } else {
-        input.value = '';
-    }
-}
-
-// Add event listeners to specific inputs to format on input
-document.addEventListener('DOMContentLoaded', function() {
-    // Select inputs that should be formatted
-    const numberInputs = document.querySelectorAll('input.number-format');
-    numberInputs.forEach(input => {
-        input.addEventListener('input', function() {
-            formatInputWithCommas(this);
-        });
-    });
-});
-
 
     </script>
     
