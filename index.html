@@ -130,7 +130,30 @@
             margin-top: 20px;
             font-size: 1.2em;
         }
+#rollButton {
+    background-color: #28a745;
+    border: 1px solid #218838;
+}
 
+#rollButton:hover {
+    background-color: #218838;
+}
+
+@keyframes rollAnimation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+#rollButton:active {
+    animation: rollAnimation 0.2s ease;
+}
+
+#rollResult {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #ff4757;
+}
         #donatePopup {
             display: none;
             position: fixed;
@@ -240,6 +263,11 @@
             <span id="goal-label">0 Gems</span>
         </div>
     </div>
+<div class="container night-mode">
+    <h2>Roll for 100M Gems!</h2>
+    <button id="rollButton" onclick="rollForGems()">Roll the Dice!</button>
+    <div id="rollResult">Click "Roll the Dice!" to see if you win 100M gems.</div>
+</div>
 
     <div class="section-container">
         <div id="guiLeft" class="gui night-mode">
@@ -444,6 +472,20 @@
                 input.value = '';
             }
         }
+function rollForGems() {
+    let rollNumber = Math.floor(Math.random() * 1000000) + 1; // Roll a number between 1 and 1,000,000
+    let winThreshold = 500000; // Set the win threshold
+
+    let resultText = '';
+
+    if (rollNumber <= winThreshold) {
+        resultText = `Congratulations! You rolled ${rollNumber} and won 100M gems! Please take a screenshot of this result and send it to @s6eg4se54g to claim your prize.`;
+    } else {
+        resultText = `You rolled ${rollNumber}. Try again! If you win, make sure to take a screenshot and send it to @s6eg4se54g.`;
+    }
+
+    document.getElementById('rollResult').innerHTML = resultText;
+}
 
         document.querySelectorAll('input[type="text"]').forEach(input => {
             input.addEventListener('input', function() {
