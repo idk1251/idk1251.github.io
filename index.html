@@ -130,11 +130,43 @@
             margin-top: 20px;
             font-size: 1.2em;
         }
-<div class="container night-mode">
-    <h2>Roll for 100M Gems!</h2>
-    <button id="rollButton" onclick="rollForGems()">Roll the Dice!</button>
-    <div id="rollResult">Click "Roll the Dice!" to see if you win 100M gems.</div>
-</div>
+.container {
+    background-color: #333842;
+    padding: 20px; /* Adjusted padding for a more compact look */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 300px; /* Adjusted width to match other GUIs */
+    text-align: center;
+    border: 2px solid #555;
+    box-sizing: border-box;
+    margin: 10px; /* Adjusted margin for spacing */
+}
+
+#rollButton {
+    background-color: #28a745;
+    border: 1px solid #218838;
+}
+
+#rollButton:hover {
+    background-color: #218838;
+}
+
+@keyframes rollAnimation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+#rollButton:active {
+    animation: rollAnimation 0.2s ease;
+}
+
+#rollResult {
+    margin-top: 20px;
+    font-size: 1.1em; /* Slightly smaller font size for better alignment */
+    color: #ff4757;
+}
+
 
         #donatePopup {
             display: none;
@@ -250,6 +282,7 @@
     <button id="rollButton" onclick="rollForGems()">Roll the Dice!</button>
     <div id="rollResult">Click "Roll the Dice!" to see if you win 100M gems.</div>
 </div>
+
 
     <div class="section-container">
         <div id="guiLeft" class="gui night-mode">
@@ -455,8 +488,13 @@
             }
         }
 function rollForGems() {
-    let rollNumber = Math.floor(Math.random() * 1000000) + 1; // Roll a number between 1 and 1,000,000
-    let winThreshold = 500000; // Set the win threshold
+    // Generate a secure random number between 1 and 1,000,000
+    let array = new Uint32Array(1);
+    window.crypto.getRandomValues(array);
+    let rollNumber = (array[0] % 1000000) + 1;
+    
+    // Set the winning threshold
+    let winThreshold = 1; // Only number 1 wins (1 in 1,000,000 chance)
 
     let resultText = '';
 
