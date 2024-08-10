@@ -130,31 +130,42 @@
             margin-top: 20px;
             font-size: 1.2em;
         }
-.container {
+/* Roll for 100M Gems section */
+#rollForGemsContainer {
     background-color: #333842;
-    padding: 30px;
+    padding: 20px;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 2px solid #555; /* Thicker border */
     width: 400px;
     text-align: center;
-    border: 2px solid #555; /* Thicker border */
-    box-sizing: border-box;
     margin-top: 20px; /* Add spacing to separate from other elements */
 }
 
-input[type="text"] {
-    padding: 10px;
-    font-size: 1em;
-    width: 100%;
+#rollForGemsContainer h2 {
+    color: #007bff;
     margin-bottom: 20px;
-    border: 1px solid #555; /* Thicker border */
-    border-radius: 5px;
-    box-sizing: border-box;
-    background-color: #333842;
-    color: #ffffff;
 }
 
-button {
+#rollForGemsContainer label {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    display: block;
+}
+
+#rollForGemsContainer input[type="text"] {
+    padding: 10px;
+    font-size: 1em;
+    width: calc(100% - 22px); /* Adjust width to account for padding and border */
+    margin-bottom: 20px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #333842;
+    color: #ffffff;
+    box-sizing: border-box;
+}
+
+#rollForGemsContainer button {
     padding: 10px 20px;
     font-size: 1em;
     background-color: #007bff;
@@ -166,25 +177,23 @@ button {
     margin-bottom: 20px;
     transition: background-color 0.3s;
 }
-button:disabled {
+
+#rollForGemsContainer button:hover {
+    background-color: #0056b3;
+}
+
+#rollForGemsContainer button:disabled {
     background-color: #555;
     border: 1px solid #444;
     cursor: not-allowed;
 }
 
-button:hover {
-    background-color: #0056b3;
-}
-
-#rollResult {
-    margin-top: 20px;
+.roll-result {
     font-size: 1.2em;
     color: #d1d1d1;
+    margin-top: 20px;
 }
 
-#cooldownMessage {
-    color: #ff4757;
-}
 
 #countdownContainer {
     position: fixed;
@@ -407,17 +416,19 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
 
         
-<div class="container night-mode">
+<div class="container night-mode" id="rollForGemsContainer">
     <h2>Roll for 100M Gems!</h2>
     
-    <label for="discordUser">Your Discord Username: </label>
+    <label for="discordUser">Your Discord Username:</label>
     <input type="text" id="discordUser" placeholder="e.g., yourusername#1234" class="night-mode">
+
     <button id="setUsernameButton" onclick="setUsername()">Enter Username</button>
     
     <button id="rollButton" onclick="rollForGems()" disabled>Roll the Dice!</button>
     
-    <div id="rollResult">Please enter your Discord username to enable the roll button.</div>
+    <div id="rollResult" class="roll-result">Please enter your Discord username to enable the roll button.</div>
 </div>
+
 
 
 <div id="countdownContainer">
@@ -578,17 +589,17 @@ let canRoll = true; // Track if the button can be clicked
 let discordUser = ''; // Store the username
 
 function setUsername() {
-    discordUser = document.getElementById('discordUser').value.trim(); // Corrected ID
+    discordUser = document.getElementById('discordUser').value.trim();
     if (discordUser) {
         document.getElementById('rollButton').disabled = false;
-        document.getElementById('discordUser').disabled = true; // Corrected ID
-        document.getElementById('setUsernameButton').disabled = true; // Corrected button ID
+        document.getElementById('discordUser').disabled = true;
+        document.getElementById('setUsernameButton').disabled = true;
     } else {
         alert('Please enter a valid username.');
     }
 }
 
-function rollForGems() { // Corrected function name to match the button's onclick attribute
+function rollForGems() {
     if (!discordUser) {
         alert('Please enter your Discord username first.');
         return;
@@ -627,6 +638,7 @@ function sendToWebhook(message) {
     .then(data => console.log('Success:', data))
     .catch((error) => console.error('Error:', error));
 }
+
 
 
 
