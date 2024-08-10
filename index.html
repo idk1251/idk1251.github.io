@@ -6,129 +6,136 @@
     <title>EXP Calculator</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
             margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            transition: background-color 0.3s, color 0.3s;
-            background-color: #1e1e1e; /* Default to night mode */
-            color: #d1d1d1;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            justify-content: center;
+            padding: 20px;
         }
 
         h1 {
-            color: #007bff;
+            color: #333;
             text-align: center;
-            margin: 30px 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .container input[type="text"], 
+        .container select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .container button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .container button:hover {
+            background-color: #0056b3;
+        }
+
+        .result-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+        }
+
+        .highlight {
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .section-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .section-container div {
+            width: 48%;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+            box-sizing: border-box;
         }
 
         .progress-container {
-            width: 80%;
-            max-width: 800px;
-            margin: 20px auto;
-            text-align: center;
+            margin: 20px 0;
         }
 
         .progress-bar {
             position: relative;
-            width: 100%;
             height: 30px;
-            background-color: #d9534f; /* Changed from grey to red */
+            background-color: #e9ecef;
             border-radius: 15px;
             overflow: hidden;
-            margin-bottom: 10px;
         }
 
         .progress-fill {
             height: 100%;
+            background-color: #007bff;
             width: 0;
-            background-color: #00ff00;
-            transition: width 0.3s ease;
+            border-radius: 15px;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+            transition: width 0.3s ease-in-out;
         }
 
         .progress-labels {
             display: flex;
             justify-content: space-between;
-            font-size: 1.1em;
+            margin-top: 5px;
         }
 
-        #current-label {
-            color: #00ff00;
-        }
-
-        .section-container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 20px;
-            flex-wrap: wrap;
-            padding: 20px;
-        }
-
-        .container {
-            background-color: #333842;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 400px;
-            text-align: center;
-            border: 2px solid #555; /* Thicker border */
-            box-sizing: border-box;
-        }
-
-        label {
-            font-size: 1.1em;
-            margin-bottom: 10px;
-            display: block;
-            margin-top: 20px; /* Add more space above */
-        }
-
-        input[type="text"], select {
+        .gui {
+            border: 2px solid #007bff;
             padding: 10px;
-            font-size: 1em;
-            width: 100%;
-            margin-bottom: 20px;
-            border: 1px solid #555; /* Thicker border */
-            border-radius: 5px;
-            box-sizing: border-box;
-            background-color: #333842;
-            color: #ffffff;
+            border-radius: 10px;
+            background-color: #fff;
         }
 
-        button {
-            padding: 10px 20px;
-            font-size: 1em;
-            background-color: #007bff;
-            color: #ffffff;
-            border: 1px solid #0056b3;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            margin-bottom: 20px;
-            transition: background-color 0.3s;
+        .leaderboard {
+            background-color: #fff;
+            border: 2px solid #28a745;
         }
 
-        button:hover {
-            background-color: #0056b3;
+        ul {
+            list-style-type: none;
+            padding: 0;
         }
 
-        #donateButton {
-            background-color: #ff4757;
-            border: 1px solid #e73b4d;
+        ul li {
+            padding: 8px 0;
+            border-bottom: 1px solid #ccc;
         }
 
-        #donateButton:hover {
-            background-color: #e73b4d;
-        }
-
-        #result, #goalResult {
-            margin-top: 20px;
-            font-size: 1.2em;
+        ul li:last-child {
+            border-bottom: none;
         }
 
         #donatePopup {
@@ -137,96 +144,25 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            z-index: 10;
-            background-color: #333842;
-            color: #d1d1d1;
-            border: 2px solid #555; /* Thicker border */
-            max-width: 90%;
-            max-height: 80%;
-            overflow-y: auto;
+            background-color: white;
+            border: 2px solid #007bff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
         }
 
         #closePopup {
-            margin-top: 20px;
-            width: 100%;
-            border: 1px solid #555; /* Thicker border */
-        }
-
-        .guis-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .gui {
-            width: 300px;
-            height: 400px;
-            overflow-y: auto;
-            border: 2px solid #555; /* Thicker border */
-            border-radius: 10px;
-            background: rgba(40, 44, 52, 0.8);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            padding: 15px;
-            box-sizing: border-box;
-        }
-
-        .profit {
-            color: #00ff00;
-        }
-
-        .highlight {
-            color: #ff4757;
-            font-weight: bold;
-        }
-
-        .leaderboard {
-            text-align: left;
-            height: 400px; /* Fixed height for consistent scrolling */
-            overflow-y: auto;
-        }
-
-        .leaderboard h2 {
-            text-align: center;
-            color: #ff4757;
-        }
-
-        .leaderboard ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .leaderboard li {
-            padding: 5px 0;
-            border-bottom: 1px solid #555;
-            color: #d1d1d1;
-        }
-
-        /* Custom scrollbar styles */
-        ::-webkit-scrollbar {
-            width: 12px; /* Width of the scrollbar */
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #2c2f36; /* Track color */
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #555; /* Handle color */
-            border-radius: 6px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #777; /* Handle color on hover */
+            margin-top: 10px;
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
         }
     </style>
 </head>
-<body class="night-mode">
+<body>
     <h1>EXP Balance Calculator</h1>
     <h1>(by s6eg4se54g)</h1>
     
@@ -242,21 +178,21 @@
     </div>
 
     <div class="section-container">
-        <div id="guiLeft" class="gui night-mode">
+        <div id="guiLeft" class="gui">
             <h2>First 30 Days</h2>
             <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div class="container night-mode">
+        <div class="container">
             <h2>Calculate Days to Reach Goal</h2>
             <label for="initialBalance">Balance (Gems): </label>
-            <input type="text" id="initialBalance" value="1,000" class="night-mode">
+            <input type="text" id="initialBalance" value="1,000">
 
             <label for="goalBalance">Goal Balance (Gems): </label>
-            <input type="text" id="goalBalance" value="5,000" class="night-mode">
+            <input type="text" id="goalBalance" value="5,000">
 
             <label for="rankSelect">Select Goal Rank: </label>
-            <select id="rankSelect" class="night-mode" onchange="updateGoalBalance()">
+            <select id="rankSelect" onchange="updateGoalBalance()">
                 <option value="">Select a Rank</option>
                 <option value="96000000">Donator ― 96M+</option>
                 <option value="320000000">Ethereal ― 320M+</option>
@@ -270,18 +206,18 @@
             <div id="result">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div id="guiRight" class="gui night-mode">
+        <div id="guiRight" class="gui">
             <h2>Last 30 Days</h2>
             <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div class="container night-mode">
+        <div class="container">
             <h2>Calculate Goal Balance after X Time</h2>
             <label for="balanceGems">Balance (Gems): </label>
-            <input type="text" id="balanceGems" placeholder="e.g., 1,000" class="night-mode">
+            <input type="text" id="balanceGems" placeholder="e.g., 1,000">
 
             <label for="timeUnit">Time Unit: </label>
-            <select id="timeUnit" class="night-mode">
+            <select id="timeUnit">
                 <option value="days">Days</option>
                 <option value="weeks">Weeks</option>
                 <option value="months">Months</option>
@@ -289,19 +225,19 @@
             </select>
 
             <label for="timeAmount">Time Amount: </label>
-            <input type="text" id="timeAmount" placeholder="e.g., 30" class="night-mode">
+            <input type="text" id="timeAmount" placeholder="e.g., 30">
 
             <button onclick="calculateGoal()">Calculate Goal</button>
             <div id="goalResult">Enter time period and click "Calculate Goal" to see the results.</div>
         </div>
 
-        <div id="leaderboardGui" class="gui night-mode leaderboard">
+        <div id="leaderboardGui" class="gui leaderboard">
             <h2>Donation leaderboard!</h2>
             <h2>/gift @s6eg4se54g</h2>
             <h3>Top 10 Donators</h3>
             <ul>
                 <li>1. 1h59   | 50m</li>
-                <li>2. alexplays038   | 2m   </li>
+                <li>2. alexplays038   | 2m</li>
                 <li>3. iamonevader   |1m</li>
                 <li>5. None yet!</li>
                 <li>5. None yet!</li>
@@ -313,12 +249,14 @@
             </ul>
         </div>
 
-        <div id="donatePopup" class="night-mode">
+        <div id="donatePopup">
             <h2>Donate Here:</h2>
             <p>/gift @s6eg4se54g</p>
-            <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
+            <button id="closePopup" onclick="closeDonatePopup()">Close</button>
         </div>
     </div>
+
+    <button onclick="downloadPDF()">Download PDF Results</button>
 
     <script>
         function formatNumber(num) {
@@ -332,90 +270,62 @@
         function calculateDays() {
             let initialBalance = parseInput(document.getElementById('initialBalance').value);
             let goalBalance = parseInput(document.getElementById('goalBalance').value);
-            let dailyInterestRate = 0.009;
+            let dailyInterestRate = 0.10; // 10% daily growth rate
 
-            let days = 0;
-            let balance = initialBalance;
-            let dailyBalances = [];
-
-            while (balance < goalBalance) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
-                dailyBalances.push({
-                    day: days + 1,
-                    balance: balance,
-                    profit: profit
-                });
-                days++;
+            if (initialBalance <= 0 || goalBalance <= 0 || initialBalance >= goalBalance) {
+                document.getElementById('result').textContent = 'Invalid input. Please ensure balances are positive and the goal balance is higher than the initial balance.';
+                return;
             }
 
-            let years = Math.floor(days / 365);
-            let remainingDays = days % 365;
-            let months = Math.floor(remainingDays / 30);
-            remainingDays = remainingDays % 30;
-            let weeks = Math.floor(remainingDays / 7);
-            remainingDays = remainingDays % 7;
+            let days = Math.log(goalBalance / initialBalance) / Math.log(1 + dailyInterestRate);
 
-            let first30Days = dailyBalances.slice(0, 30);
-            let first30DaysText = first30Days.map(item => Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>).join('<br>');
+            let first30Days = initialBalance * Math.pow(1 + dailyInterestRate, 30);
+            let last30Days = goalBalance / Math.pow(1 + dailyInterestRate, 30);
 
-            let last30Days = dailyBalances.slice(-30);
-            let last30DaysText = last30Days.map(item => Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>).join('<br>');
+            document.getElementById('result').textContent = 'It will take approximately ' + Math.ceil(days) + ' days to reach your goal balance of ' + formatNumber(goalBalance) + ' Gems.';
+            document.getElementById('first30Days').textContent = 'After the first 30 days, your balance would be approximately ' + formatNumber(first30Days) + ' Gems.';
+            document.getElementById('last30Days').textContent = '30 days before reaching your goal, your balance would have been approximately ' + formatNumber(last30Days) + ' Gems.';
 
-            document.getElementById('result').innerHTML = You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, <span class="highlight">${weeks}</span> weeks, and <span class="highlight">${remainingDays}</span> days.;
-            document.getElementById('first30Days').innerHTML = first30DaysText;
-            document.getElementById('last30Days').innerHTML = last30DaysText;
-
-            updateProgressBar(); // Only update progress bar in this function
+            updateProgressBar(initialBalance, goalBalance);
         }
 
         function calculateGoal() {
             let balanceGems = parseInput(document.getElementById('balanceGems').value);
-            let timeAmount = parseInput(document.getElementById('timeAmount').value);
             let timeUnit = document.getElementById('timeUnit').value;
-            let dailyInterestRate = 0.009;
+            let timeAmount = parseInput(document.getElementById('timeAmount').value);
+            let dailyInterestRate = 0.10; // 10% daily growth rate
 
-            let days = 0;
+            let timeFactor = 1;
 
-            switch (timeUnit) {
-                case 'days':
-                    days = timeAmount;
-                    break;
-                case 'weeks':
-                    days = timeAmount * 7;
-                    break;
-                case 'months':
-                    days = timeAmount * 30;
-                    break;
-                case 'years':
-                    days = timeAmount * 365;
-                    break;
+            if (timeUnit === 'days') {
+                timeFactor = 1;
+            } else if (timeUnit === 'weeks') {
+                timeFactor = 7;
+            } else if (timeUnit === 'months') {
+                timeFactor = 30;
+            } else if (timeUnit === 'years') {
+                timeFactor = 365;
             }
 
-            let balance = balanceGems;
+            let totalTime = timeAmount * timeFactor;
+            let goalBalance = balanceGems * Math.pow(1 + dailyInterestRate, totalTime);
 
-            for (let i = 0; i < days; i++) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
-            }
-
-            document.getElementById('goalResult').innerHTML = After <span class="highlight">${formatNumber(days)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.;
+            document.getElementById('goalResult').textContent = 'After ' + timeAmount + ' ' + timeUnit + '(s), your balance would be approximately ' + formatNumber(goalBalance) + ' Gems.';
         }
 
         function updateGoalBalance() {
-            let select = document.getElementById('rankSelect');
-            let goalBalance = select.value;
-            document.getElementById('goalBalance').value = formatNumber(parseFloat(goalBalance));
+            let rankSelect = document.getElementById('rankSelect');
+            let goalBalanceInput = document.getElementById('goalBalance');
 
-            updateProgressBar(); // Only update progress bar in this function
+            if (rankSelect.value) {
+                goalBalanceInput.value = formatNumber(parseInt(rankSelect.value));
+            }
         }
 
-        function updateProgressBar() {
-            let initialBalance = parseInput(document.getElementById('initialBalance').value);
-            let goalBalance = parseInput(document.getElementById('goalBalance').value);
-
-            let percentage = Math.min((initialBalance / goalBalance) * 100, 100);
+        function updateProgressBar(initialBalance, goalBalance) {
             let progressFill = document.getElementById('progress-fill');
+            let percentage = (initialBalance / goalBalance) * 100;
+
             let currentLabel = document.getElementById('current-label');
             let goalLabel = document.getElementById('goal-label');
 
@@ -453,6 +363,29 @@
                 formatInput(this);
             });
         });
+
+        async function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+
+            const doc = new jsPDF();
+            doc.setFontSize(16);
+            doc.text('EXP Balance Calculator Results', 10, 10);
+
+            doc.setFontSize(12);
+            doc.text('Days to Reach Goal:', 10, 20);
+            doc.text(document.getElementById('result').textContent, 10, 30);
+
+            doc.text('First 30 Days:', 10, 40);
+            doc.text(document.getElementById('first30Days').textContent, 10, 50);
+
+            doc.text('Last 30 Days:', 10, 70);
+            doc.text(document.getElementById('last30Days').textContent, 10, 90);
+
+            doc.text('Goal Balance After X Time:', 10, 110);
+            doc.text(document.getElementById('goalResult').textContent, 10, 120);
+
+            doc.save('results.pdf');
+        }
     </script>
 </body>
 </html>
