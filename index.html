@@ -130,68 +130,99 @@
             margin-top: 20px;
             font-size: 1.2em;
         }
-/* Roll for 100M Gems section */
-#rollForGemsContainer {
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #282c34;
+    color: #d1d1d1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    justify-content: center;
+}
+
+.container {
     background-color: #333842;
-    padding: 20px;
+    padding: 30px;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border: 2px solid #555; /* Thicker border */
     width: 400px;
     text-align: center;
-    margin-top: 20px; /* Add spacing to separate from other elements */
+    border: 2px solid #555;
 }
 
-#rollForGemsContainer h2 {
-    color: #007bff;
-    margin-bottom: 20px;
+h1 {
+    color: #00aaff;
+    margin: 20px 0;
 }
 
-#rollForGemsContainer label {
+label {
     font-size: 1.1em;
     margin-bottom: 10px;
     display: block;
+    color: #e1e1e1;
 }
 
-#rollForGemsContainer input[type="text"] {
+input[type="text"] {
     padding: 10px;
     font-size: 1em;
-    width: calc(100% - 22px); /* Adjust width to account for padding and border */
-    margin-bottom: 20px;
+    width: calc(100% - 22px);
+    margin-bottom: 10px;
     border: 1px solid #555;
     border-radius: 5px;
-    background-color: #333842;
-    color: #ffffff;
-    box-sizing: border-box;
+    background-color: #444;
+    color: #fff;
 }
 
-#rollForGemsContainer button {
+button {
     padding: 10px 20px;
     font-size: 1em;
     background-color: #007bff;
-    color: #ffffff;
-    border: 1px solid #0056b3;
+    color: #fff;
+    border: none;
     border-radius: 5px;
     cursor: pointer;
-    width: 100%;
-    margin-bottom: 20px;
     transition: background-color 0.3s;
+    margin-top: 10px;
+    width: 100%;
 }
 
-#rollForGemsContainer button:hover {
+button:hover {
     background-color: #0056b3;
 }
 
-#rollForGemsContainer button:disabled {
+button:disabled {
     background-color: #555;
-    border: 1px solid #444;
     cursor: not-allowed;
 }
 
-.roll-result {
+#rollInstructions {
+    margin: 15px 0;
+    color: #aaffaa;
+}
+
+#rollResultContainer {
+    margin-top: 20px;
+}
+
+#animatedEffect {
+    font-size: 3em;
+    color: #ff4757;
+    margin-bottom: 10px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#rollResult {
     font-size: 1.2em;
     color: #d1d1d1;
-    margin-top: 20px;
 }
 
 
@@ -416,25 +447,23 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
 
         
-<div class="container night-mode" id="rollForGemsContainer">
-    <h2>Roll for 100M Gems!</h2>
-    
-    <label for="discordUser">Your Discord Username:</label>
-    <input type="text" id="discordUser" placeholder="e.g., yourusername#1234" class="night-mode">
-
-    <button id="setUsernameButton" onclick="setUsername()">Enter Username</button>
-    
-    <button id="rollButton" onclick="rollForGems()" disabled>Roll the Dice!</button>
-    
-    <div id="rollResult" class="roll-result">Please enter your Discord username to enable the roll button.</div>
-</div>
-
-
-
-<div id="countdownContainer">
-    <p id="countdownText">Withdrawals will go through in <span id="countdownTime">Loading...</span></p>
-</div>
-
+<div class="container">
+        <h1>Roll for 100M Gems!</h1>
+        <div id="discordUserContainer">
+            <label for="discordUser">Enter Your Discord Username:</label>
+            <input type="text" id="discordUser" placeholder="e.g., yourusername#1234">
+            <button id="setUsernameButton" onclick="setUsername()">Enter Username</button>
+        </div>
+        <button id="rollButton" onclick="rollForGems()" disabled>Roll the Dice!</button>
+        <div id="rollInstructions">Enter your username to start rolling for a chance to win 100M Gems!</div>
+        <div id="rollResultContainer">
+            <div id="animatedEffect">🎲</div>
+            <div id="rollResult">Please enter your Discord username to enable the roll button.</div>
+        </div>
+    </div>
+    <div id="countdownContainer">
+        <p id="countdownText">Next event in: <span id="countdownTime">Loading...</span></p>
+    </div>
 
 
     <div id="leaderboardGui" class="gui night-mode leaderboard">
@@ -585,8 +614,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 input.value = '';
             }
         }
-let canRoll = true; // Track if the button can be clicked
-let discordUser = ''; // Store the username
+let canRoll = false;
+let discordUser = '';
 
 function setUsername() {
     discordUser = document.getElementById('discordUser').value.trim();
@@ -594,6 +623,7 @@ function setUsername() {
         document.getElementById('rollButton').disabled = false;
         document.getElementById('discordUser').disabled = true;
         document.getElementById('setUsernameButton').disabled = true;
+        document.getElementById('rollInstructions').textContent = 'Click "Roll the Dice!" to try your luck!';
     } else {
         alert('Please enter a valid username.');
     }
@@ -605,23 +635,28 @@ function rollForGems() {
         return;
     }
 
-    const rolledNumber = Math.floor(Math.random() * 1000000) + 1;
-    const winChance = 100000; // Adjust the win chance as needed
-
-    const resultText = document.getElementById('rollResult');
-    
-    if (rolledNumber <= winChance) {
-        resultText.innerHTML = `Congratulations! You rolled ${rolledNumber} and won 100M gems!`;
-        sendToWebhook(`${discordUser} has rolled ${rolledNumber} and won!`);
-    } else {
-        resultText.innerHTML = `Sorry, you rolled ${rolledNumber} and did not win.`;
-        sendToWebhook(`${discordUser} has rolled ${rolledNumber} and did not win.`);
-    }
-
-    document.getElementById('rollButton').disabled = true;
+    document.getElementById('animatedEffect').style.animation = 'spin 2s linear infinite';
     setTimeout(() => {
-        document.getElementById('rollButton').disabled = false;
-    }, 1000); // 1 second cooldown
+        document.getElementById('animatedEffect').style.animation = '';
+
+        const rolledNumber = Math.floor(Math.random() * 1000000) + 1;
+        const winChance = 100000; // Adjust the win chance as needed
+
+        const resultText = document.getElementById('rollResult');
+        
+        if (rolledNumber <= winChance) {
+            resultText.innerHTML = `Congratulations! You rolled ${rolledNumber} and won 100M gems! 🎉`;
+            sendToWebhook(`${discordUser} has rolled ${rolledNumber} and won 100M gems!`);
+        } else {
+            resultText.innerHTML = `Sorry, you rolled ${rolledNumber} and did not win. Better luck next time!`;
+            sendToWebhook(`${discordUser} has rolled ${rolledNumber} and did not win.`);
+        }
+
+        document.getElementById('rollButton').disabled = true;
+        setTimeout(() => {
+            document.getElementById('rollButton').disabled = false;
+        }, 1000); // 1 second cooldown
+    }, 2000); // 2 seconds delay for spinning effect
 }
 
 function sendToWebhook(message) {
@@ -638,8 +673,6 @@ function sendToWebhook(message) {
     .then(data => console.log('Success:', data))
     .catch((error) => console.error('Error:', error));
 }
-
-
 
 
 function updateCountdown() {
