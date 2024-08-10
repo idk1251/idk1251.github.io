@@ -35,7 +35,24 @@ function calculateDays() {
 
     document.getElementById("result").innerHTML = `It will take approximately ${years} years, ${months} months, and ${days} days to reach your goal balance of ${goalBalance.toLocaleString()} Gems.`;
 
+    // Update progress bar and labels
     updateProgressBar(initialBalance, goalBalance);
+
+    // Calculate and display first and last 30 days
+    const first30DaysGrowth = calculateGrowth(initialBalance, 30);
+    const last30DaysGrowth = calculateGrowth(goalBalance, -30); // Assuming a negative growth rate for last 30 days
+
+    document.getElementById("first30Days").innerHTML = `Growth in the first 30 days: ${first30DaysGrowth.toLocaleString()} Gems.`;
+    document.getElementById("last30Days").innerHTML = `Growth in the last 30 days: ${last30DaysGrowth.toLocaleString()} Gems.`;
+}
+
+function calculateGrowth(initialBalance, days) {
+    const growthRate = 0.01;
+    if (days > 0) {
+        return Math.floor(initialBalance * Math.pow(1 + growthRate, days));
+    } else {
+        return Math.floor(initialBalance / Math.pow(1 + growthRate, -days));
+    }
 }
 
 function updateGoalBalance() {
