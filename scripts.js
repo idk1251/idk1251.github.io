@@ -1,3 +1,18 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const inputs = document.querySelectorAll('input[type="text"]');
+    inputs.forEach(input => {
+        input.addEventListener('input', formatNumber);
+    });
+});
+
+function formatNumber(event) {
+    let value = event.target.value.replace(/,/g, '');
+    if (!isNaN(value) && value.trim() !== '') {
+        value = Number(value).toLocaleString();
+        event.target.value = value;
+    }
+}
+
 function calculateDays() {
     const initialBalanceInput = document.getElementById("initialBalance").value.replace(/,/g, '');
     const goalBalanceInput = document.getElementById("goalBalance").value.replace(/,/g, '');
@@ -11,7 +26,14 @@ function calculateDays() {
 
     const growthRate = 0.01;
     const daysRequired = Math.ceil(Math.log(goalBalance / initialBalance) / Math.log(1 + growthRate));
-    document.getElementById("result").innerHTML = `Days required to reach the goal: ${daysRequired} days.`;
+    
+    // Convert daysRequired to years, months, and days
+    const years = Math.floor(daysRequired / 365);
+    const remainingDaysAfterYears = daysRequired % 365;
+    const months = Math.floor(remainingDaysAfterYears / 30);
+    const days = remainingDaysAfterYears % 30;
+
+    document.getElementById("result").innerHTML = `It will take approximately ${years} years, ${months} months, and ${days} days to reach your goal balance of ${goalBalance.toLocaleString()} Gems.`;
 
     updateProgressBar(initialBalance, goalBalance);
 }
@@ -27,9 +49,9 @@ function updateProgressBar(currentBalance, goalBalance) {
     const percentage = (currentBalance / goalBalance) * 100;
     progressFill.style.width = `${percentage}%`;
 
-    document.getElementById("start-label").innerHTML = `${currentBalance.toLocaleString()} Gems`;
-    document.getElementById("goal-label").innerHTML = `${goalBalance.toLocaleString()} Gems`;
+    document.getElementById("start-label").innerHTML = `0 Gems`;
     document.getElementById("current-label").innerHTML = `${currentBalance.toLocaleString()} Gems`;
+    document.getElementById("goal-label").innerHTML = `${goalBalance.toLocaleString()} Gems`;
 }
 
 function calculateGoal() {
