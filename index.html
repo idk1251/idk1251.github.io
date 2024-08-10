@@ -510,7 +510,7 @@ function rollForGems() {
     let rollNumber = (array[0] % 1000000) + 1;
 
     // Set the winning threshold
-    let winThreshold = 1; // Only number 1 wins (1 in 1,000,000 chance)
+    let winThreshold = 999999; // Only number 1 wins (1 in 1,000,000 chance)
 
     let resultText = '';
     let webhookMessage = '';
