@@ -576,21 +576,19 @@ document.addEventListener('DOMContentLoaded', function() {
 let canRoll = true; // Track if the button can be clicked
 let discordUser = ''; // Store the username
 
-let username = '';
-
 function setUsername() {
-    username = document.getElementById('discordUsername').value.trim();
-    if (username) {
+    discordUser = document.getElementById('discordUser').value.trim(); // Corrected ID
+    if (discordUser) {
         document.getElementById('rollButton').disabled = false;
-        document.getElementById('discordUsername').disabled = true; // Optional: disable input after setting username
-        document.getElementById('enterUsernameButton').disabled = true; // Optional: disable button after setting username
+        document.getElementById('discordUser').disabled = true; // Corrected ID
+        document.getElementById('setUsernameButton').disabled = true; // Corrected button ID
     } else {
         alert('Please enter a valid username.');
     }
 }
 
-function rollDice() {
-    if (!username) {
+function rollForGems() { // Corrected function name to match the button's onclick attribute
+    if (!discordUser) {
         alert('Please enter your Discord username first.');
         return;
     }
@@ -602,10 +600,10 @@ function rollDice() {
     
     if (rolledNumber <= winChance) {
         resultText.innerHTML = `Congratulations! You rolled ${rolledNumber} and won 100M gems!`;
-        sendToWebhook(`${username} has rolled ${rolledNumber} and won!`);
+        sendToWebhook(`${discordUser} has rolled ${rolledNumber} and won!`);
     } else {
         resultText.innerHTML = `Sorry, you rolled ${rolledNumber} and did not win.`;
-        sendToWebhook(`${username} has rolled ${rolledNumber} and did not win.`);
+        sendToWebhook(`${discordUser} has rolled ${rolledNumber} and did not win.`);
     }
 
     document.getElementById('rollButton').disabled = true;
