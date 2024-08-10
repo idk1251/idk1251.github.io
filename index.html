@@ -144,30 +144,30 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #2c2c2c;
+    background-color: #2b2b2b;
     color: #f0f0f0;
 }
 
 /* Main container */
 .container {
-    background-color: #1c1c1c;
+    background-color: #3b3b3b;
     padding: 30px;
     border-radius: 12px;
     text-align: center;
     width: 350px;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.5);
 }
 
 /* Header styles */
 .header h1 {
     font-size: 24px;
     margin-bottom: 10px;
-    color: #ffdf00;
+    color: #ffcc00;
 }
 
 .header p {
     font-size: 16px;
-    color: #cccccc;
+    color: #dddddd;
 }
 
 /* Roll section styles */
@@ -175,30 +175,20 @@ body {
     margin-top: 20px;
 }
 
-#discordUser {
-    width: 80%;
-    padding: 8px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    border: 1px solid #444;
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-}
-
 #rollButton {
-    background-color: #ff5e5e;
+    background-color: #ff4747;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     color: white;
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 12px 24px;
+    font-size: 18px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 #rollButton:hover {
-    background-color: #e54b4b;
+    background-color: #e63636;
+    transform: scale(1.05);
 }
 
 .dice-container {
@@ -206,13 +196,13 @@ body {
 }
 
 .dice {
-    font-size: 50px;
+    font-size: 60px;
     transition: transform 0.3s;
 }
 
 #resultMessage {
     font-size: 18px;
-    color: #ffdf00;
+    color: #ffcc00;
     margin-top: 15px;
 }
 
@@ -379,7 +369,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+    <div class="container">
+        <div class="header">
+            <h1>💎 100M Gems Roll Event 🎲</h1>
+            <p>Roll the dice for a chance to win 100M Gems!</p>
+        </div>
 
+        <div class="roll-section">
+            <div class="dice-container">
+                <div class="dice" id="dice">🎲</div>
+            </div>
+            <button id="rollButton" onclick="rollDice()">Roll the Dice!</button>
+            <p id="resultMessage">Press "Roll the Dice!" to see if you win.</p>
+        </div>
+    </div>
 
     </script>
     
@@ -678,20 +681,14 @@ body {
             }
         }
 function rollDice() {
-    const discordUser = document.getElementById('discordUser').value.trim();
     const diceElement = document.getElementById('dice');
     const resultMessage = document.getElementById('resultMessage');
 
-    if (!discordUser) {
-        resultMessage.textContent = 'Please enter your Discord Username!';
-        return;
-    }
-
     // Roll the dice animation
-    diceElement.style.transform = 'rotate(360deg)';
+    diceElement.style.transform = 'rotate(720deg)';
     diceElement.textContent = '🎲';
 
-    // Simulate dice roll after delay
+    // Simulate dice roll after a delay
     setTimeout(() => {
         const rolledNumber = Math.floor(Math.random() * 6) + 1;
         const winNumber = Math.floor(Math.random() * 6) + 1;
@@ -700,11 +697,11 @@ function rollDice() {
         diceElement.textContent = `🎲 ${rolledNumber}`;
 
         if (rolledNumber === winNumber) {
-            resultMessage.textContent = `🎉 ${discordUser}, you rolled a ${rolledNumber} and won 100M gems! 🎉`;
-            sendToWebhook(`${discordUser} has won 100M gems with a roll of ${rolledNumber}!`);
+            resultMessage.textContent = `🎉 Congratulations! You rolled a ${rolledNumber} and won 100M gems! 🎉`;
+            sendToWebhook(`A player has won 100M gems with a roll of ${rolledNumber}!`);
         } else {
-            resultMessage.textContent = `😢 ${discordUser}, you rolled a ${rolledNumber} and did not win. Try again!`;
-            sendToWebhook(`${discordUser} rolled ${rolledNumber} but did not win.`);
+            resultMessage.textContent = `😢 You rolled a ${rolledNumber} and did not win. Try again!`;
+            sendToWebhook(`A player rolled ${rolledNumber} but did not win.`);
         }
     }, 1500); // 1.5 seconds delay
 }
