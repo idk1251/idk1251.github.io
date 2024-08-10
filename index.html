@@ -568,6 +568,24 @@ function rollForGems() {
     sendToDiscordWebhook(webhookMessage);
 }
 
+function sendToDiscordWebhook(message) {
+    fetch('https://discord.com/api/webhooks/1263026562333413377/GzXGQ1DPqeRNJbJpx6HiU3mSgQKfo_99uQUI6GXgqWsjMvG1BcMdTozmUGBJnsjkE0yR', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            content: message
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
 // Call the function every second
 setInterval(sendUserCountToDiscord, 1000);
 
