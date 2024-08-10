@@ -351,11 +351,16 @@ button:hover {
         </div>
 <div class="container night-mode">
     <h2>Roll for 100M Gems!</h2>
+    
     <label for="discordUser">Your Discord Username: </label>
-    <input type="text" id="discordUser" placeholder="e.g., yourusername#1234" class="night-mode" oninput="checkUsername()">
+    <input type="text" id="discordUser" placeholder="e.g., yourusername#1234" class="night-mode">
+    <button id="setUsernameButton" onclick="setUsername()">Enter Username</button>
+    
     <button id="rollButton" onclick="rollForGems()" disabled>Roll the Dice!</button>
-    <div id="rollResult">Please enter your Discord username to roll.</div>
+    
+    <div id="rollResult">Please enter your Discord username to enable the roll button.</div>
 </div>
+
 
 
 
@@ -508,13 +513,20 @@ button:hover {
             }
         }
 let canRoll = true; // Track if the button can be clicked
+let discordUser = ''; // Store the username
 
-function checkUsername() {
-    let discordUser = document.getElementById('discordUser').value.trim();
+function setUsername() {
+    discordUser = document.getElementById('discordUser').value.trim();
     let rollButton = document.getElementById('rollButton');
     
     // Enable roll button only if username is provided
     rollButton.disabled = !discordUser;
+
+    if (discordUser) {
+        document.getElementById('rollResult').innerHTML = 'Your username is set. You can now roll for gems!';
+    } else {
+        document.getElementById('rollResult').innerHTML = 'Please enter your Discord username to enable the roll button.';
+    }
 }
 
 function rollForGems() {
@@ -531,9 +543,6 @@ function rollForGems() {
         document.getElementById('cooldownMessage').remove(); // Remove cooldown message
     }, 2000);
 
-    // Get Discord username
-    let discordUser = document.getElementById('discordUser').value.trim() || 'Unknown User';
-
     // Generate a secure random number between 1 and 1,000,000
     let array = new Uint32Array(1);
     window.crypto.getRandomValues(array);
@@ -546,10 +555,10 @@ function rollForGems() {
     let webhookMessage = '';
 
     if (rollNumber === winThreshold) {
-        resultText = `Congratulations! You rolled ${rollNumber} and won 100M gems! Please take a screenshot of this result and send it to @s6eg4se54g to claim your prize.`;
+        resultText = `Congratulations! You rolled ${rollNumber} and won 100M gems!`;
         webhookMessage = `@everyone ${discordUser} has rolled ${rollNumber} and won 100M gems!`;
     } else {
-        resultText = `You rolled ${rollNumber}. Try again! There’s a 1 in 1,000,000 chance to win 100M gems. If you win, take a screenshot and send it to @s6eg4se54g.`;
+        resultText = `You rolled ${rollNumber}. Try again! There’s a 1 in 1,000,000 chance to win 100M gems.`;
         webhookMessage = `${discordUser} has rolled ${rollNumber} and did not win.`;
     }
 
@@ -557,74 +566,6 @@ function rollForGems() {
 
     // Always send a message to Discord webhook
     sendToDiscordWebhook(webhookMessage);
-}
-
-function sendToDiscordWebhook(message) {
-    fetch('https://discord.com/api/webhooks/1263026562333413377/GzXGQ1DPqeRNJbJpx6HiU3mSgQKfo_99uQUI6GXgqWsjMvG1BcMdTozmUGBJnsjkE0yR', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            content: message
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-}
-
-
-function sendToDiscordWebhook(message) {
-    fetch('https://discord.com/api/webhooks/1263026562333413377/GzXGQ1DPqeRNJbJpx6HiU3mSgQKfo_99uQUI6GXgqWsjMvG1BcMdTozmUGBJnsjkE0yR', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            content: message
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-}
-
-// Function to get the current user count
-function getUserCount() {
-    // This is a placeholder for your user count source
-    // In a real scenario, replace this with an API call or a method to get the actual user count
-    return Math.floor(Math.random() * 100); // Random number for demo purposes
-}
-
-// Function to send user count to Discord webhook
-function sendUserCountToDiscord() {
-    let userCount = getUserCount();
-
-    fetch('https://discord.com/api/webhooks/1271786019779379201/jNt4FAy1GbJ1hGw2KR_HenVKgNmF_WU2_YsRgGccMzluBQUeJOxA75tn743G8Sgd6jce', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            content: `Current online users: ${userCount}`
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
 }
 
 // Call the function every second
