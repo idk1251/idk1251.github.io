@@ -283,9 +283,8 @@ button:hover {
 </head>
 <body class="night-mode">
     <h1>EXP Balance Calculator</h1>
-    <h2>www.pickcenters.com</h2>
-    <h3>Share the calculator with your friends!</h3>
-
+    <h1>www.pickcenters.com</h1>
+     <h1>Share the calculator with your friends!</h1>
     <div class="progress-container">
         <div class="progress-bar">
             <div id="progress-fill" class="progress-fill"></div>
@@ -298,21 +297,21 @@ button:hover {
     </div>
 
     <div class="section-container">
-        <div id="guiLeft" class="gui">
+        <div id="guiLeft" class="gui night-mode">
             <h2>First 30 Days</h2>
             <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div class="container">
+        <div class="container night-mode">
             <h2>Calculate Days to Reach Goal</h2>
             <label for="initialBalance">Balance (Gems): </label>
-            <input type="text" id="initialBalance" value="1,000">
+            <input type="text" id="initialBalance" value="1,000" class="night-mode">
 
             <label for="goalBalance">Goal Balance (Gems): </label>
-            <input type="text" id="goalBalance" value="5,000">
+            <input type="text" id="goalBalance" value="5,000" class="night-mode">
 
             <label for="rankSelect">Select Goal Rank: </label>
-            <select id="rankSelect">
+            <select id="rankSelect" class="night-mode" onchange="updateGoalBalance()">
                 <option value="">Select a Rank</option>
                 <option value="96000000">Donator ― 96M+</option>
                 <option value="320000000">Ethereal ― 320M+</option>
@@ -322,22 +321,22 @@ button:hover {
                 <option value="12000000000">Divine ― 12B+</option>
             </select>
 
-            <button id="calculateDaysButton">Calculate Days</button>
+            <button onclick="calculateDays()">Calculate Days</button>
             <div id="result">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div id="guiRight" class="gui">
+        <div id="guiRight" class="gui night-mode">
             <h2>Last 30 Days</h2>
             <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div class="container">
+        <div class="container night-mode">
             <h2>Calculate Goal Balance after X Time</h2>
             <label for="balanceGems">Balance (Gems): </label>
-            <input type="text" id="balanceGems" placeholder="e.g., 1,000">
+            <input type="text" id="balanceGems" placeholder="e.g., 1,000" class="night-mode">
 
             <label for="timeUnit">Time Unit: </label>
-            <select id="timeUnit">
+            <select id="timeUnit" class="night-mode">
                 <option value="days">Days</option>
                 <option value="weeks">Weeks</option>
                 <option value="months">Months</option>
@@ -345,186 +344,302 @@ button:hover {
             </select>
 
             <label for="timeAmount">Time Amount: </label>
-            <input type="text" id="timeAmount" placeholder="e.g., 30">
+            <input type="text" id="timeAmount" placeholder="e.g., 30" class="night-mode">
 
-            <button id="calculateGoalButton">Calculate Goal</button>
+            <button onclick="calculateGoal()">Calculate Goal</button>
             <div id="goalResult">Enter time period and click "Calculate Goal" to see the results.</div>
         </div>
+<div class="container night-mode">
+    <h2>Roll for 100M Gems!</h2>
+    
+    <label for="discordUser">Your Discord Username: </label>
+    <input type="text" id="discordUser" placeholder="Enter your Discord username">
+    <button id="setUsernameButton" onclick="setUsername()">Enter Username</button>
+    
+    <button id="rollButton" onclick="rollForGems()" disabled>Roll the Dice!</button>
+    
+    <div id="rollResult">Please enter your Discord username to enable the roll button.</div>
+</div>
 
-        <div class="container">
-            <h2>Roll for 100M Gems!</h2>
-            <label for="discordUser">Your Discord Username: </label>
-            <input type="text" id="discordUser" placeholder="Enter your Discord username">
-            <button id="rollButton" disabled>Roll the Dice!</button>
-            <div id="rollResult">Please enter your Discord username to enable the roll button.</div>
-        </div>
 
-        <div id="leaderboardGui" class="gui leaderboard">
-            <h2>Donation Leaderboard</h2>
-            <h3>Top 10 Donators</h3>
-            <ul>
-                <li>1. 1h59   | 50m</li>
-                <li>2. alexplays038   | 2m</li>
-                <li>3. iamonevader   |1m</li>
-                <li>5. None yet!</li>
-                <li>6. None yet!</li>
-                <li>7. None yet!</li>
-                <li>8. None yet!</li>
-                <li>9. None yet!</li>
-                <li>10. None yet!</li>
-            </ul>
-        </div>
 
+
+    <div id="leaderboardGui" class="gui night-mode leaderboard">
+        <h2>Donation leaderboard!</h2>
+        <h2>/gift @s6eg4se54g</h2>
+        <h3>Top 10 Donators</h3>
+        <ul>
+            <li>1. 1h59   | 50m</li>
+            <li>2. alexplays038   | 2m   </li>
+            <li>3. iamonevader   |1m</li>
+            <li>5. None yet!</li>
+            <li>5. None yet!</li>
+            <li>6. None yet!</li>
+            <li>7. None yet!</li>
+            <li>8. None yet!</li>
+            <li>9. None yet!</li>
+            <li>10. None yet!</li>
+        </ul>
+    </div>
         <div id="donatePopup" class="night-mode">
             <h2>Donate Here:</h2>
             <p>/gift @s6eg4se54g</p>
-            <button id="closePopup">Close</button>
+            <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
         </div>
     </div>
 
     <script>
-        // Formats a number with commas for thousands
-        function formatNumber(num) {
-            return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+// Formats a number with commas for thousands
+function formatNumber(num) {
+    return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+// Parses the input value, removing commas and converting it to a float
+function parseInput(value) {
+    return parseFloat(value.replace(/,/g, '')) || 0;
+}
+
+// Formats the input field's value with commas
+function formatInput(input) {
+    let value = input.value.replace(/,/g, '');
+    if (!isNaN(value) && value !== '') {
+        input.value = formatNumber(parseFloat(value));
+    } else {
+        input.value = '';
+    }
+}
+
+// Prevents non-numeric input and handles formatting
+function preventNonNumericInput(event) {
+    if (event.key.length === 1 && !/\d/.test(event.key)) {
+        event.preventDefault();
+    }
+}
+
+// Sets up event listeners for the input fields
+function setupInputFields() {
+    document.querySelectorAll('input[type="text"]').forEach(input => {
+        input.addEventListener('input', function() {
+            formatInput(this);
+        });
+        input.addEventListener('blur', function() {
+            formatInput(this);
+        });
+        // Removed preventNonNumericInput for username field
+    });
+}
+
+// Calculates days to reach goal balance
+function calculateDays() {
+    let initialBalance = parseInput(document.getElementById('initialBalance').value);
+    let goalBalance = parseInput(document.getElementById('goalBalance').value);
+    let dailyInterestRate = 0.009;
+
+    let days = 0;
+    let balance = initialBalance;
+    let dailyBalances = [];
+
+    while (balance < goalBalance) {
+        let profit = balance * dailyInterestRate;
+        balance += profit;
+        dailyBalances.push({
+            day: days + 1,
+            balance: balance,
+            profit: profit
+        });
+        days++;
+    }
+
+    let years = Math.floor(days / 365);
+    let remainingDays = days % 365;
+    let months = Math.floor(remainingDays / 30);
+    remainingDays = remainingDays % 30;
+    let weeks = Math.floor(remainingDays / 7);
+    remainingDays = remainingDays % 7;
+
+    let first30Days = dailyBalances.slice(0, 30);
+    let first30DaysText = first30Days.map(item => Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>).join('<br>');
+
+    let last30Days = dailyBalances.slice(-30);
+    let last30DaysText = last30Days.map(item => Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>).join('<br>');
+
+    document.getElementById('result').innerHTML = You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, <span class="highlight">${weeks}</span> weeks, and <span class="highlight">${remainingDays}</span> days.;
+    document.getElementById('first30Days').innerHTML = first30DaysText;
+    document.getElementById('last30Days').innerHTML = last30DaysText;
+
+    updateProgressBar(); // Update progress bar
+}
+
+// Calculates the goal balance after a specified time period
+function calculateGoal() {
+    let balanceGems = parseInput(document.getElementById('balanceGems').value);
+    let timeAmount = parseInput(document.getElementById('timeAmount').value);
+    let timeUnit = document.getElementById('timeUnit').value;
+    let dailyInterestRate = 0.009;
+
+    let days = 0;
+
+    switch (timeUnit) {
+        case 'days':
+            days = timeAmount;
+            break;
+        case 'weeks':
+            days = timeAmount * 7;
+            break;
+        case 'months':
+            days = timeAmount * 30;
+            break;
+        case 'years':
+            days = timeAmount * 365;
+            break;
+    }
+
+    let balance = balanceGems;
+
+    for (let i = 0; i < days; i++) {
+        let profit = balance * dailyInterestRate;
+        balance += profit;
+    }
+
+    document.getElementById('goalResult').innerHTML = After <span class="highlight">${formatNumber(days)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.;
+}
+
+// Updates the goal balance when a new rank is selected
+function updateGoalBalance() {
+    let select = document.getElementById('rankSelect');
+    let goalBalance = select.value;
+    document.getElementById('goalBalance').value = formatNumber(parseFloat(goalBalance));
+
+    updateProgressBar(); // Update progress bar
+}
+
+// Updates the progress bar based on current and goal balance
+function updateProgressBar() {
+    let initialBalance = parseInput(document.getElementById('initialBalance').value);
+    let goalBalance = parseInput(document.getElementById('goalBalance').value);
+
+    let percentage = Math.min((initialBalance / goalBalance) * 100, 100);
+    let progressFill = document.getElementById('progress-fill');
+    let currentLabel = document.getElementById('current-label');
+    let goalLabel = document.getElementById('goal-label');
+
+    progressFill.style.width = percentage + '%';
+    currentLabel.textContent = formatNumber(initialBalance) + ' Gems';
+    goalLabel.textContent = formatNumber(goalBalance) + ' Gems';
+
+    if (initialBalance === 0) {
+        document.getElementById('current-label').textContent = '0 Gems';
+    }
+
+    if (goalBalance === 0) {
+        document.getElementById('goal-label').textContent = '0 Gems';
+    }
+}
+
+// Handles the visibility of the donate popup
+function closeDonatePopup() {
+    document.getElementById('donatePopup').style.display = 'none';
+}
+
+// Sets up the username for rolling functionality
+let canRoll = true; // Track if the button can be clicked
+let discordUser = ''; // Store the username
+
+function setUsername() {
+    discordUser = document.getElementById('discordUser').value.trim();
+    let rollButton = document.getElementById('rollButton');
+    
+    // Enable roll button only if username is provided
+    rollButton.disabled = !discordUser;
+
+    if (discordUser) {
+        document.getElementById('rollResult').innerHTML = 'Your username is set. You can now roll for gems!';
+    } else {
+        document.getElementById('rollResult').innerHTML = 'Please enter your Discord username to enable the roll button.';
+    }
+}
+
+// Rolls the dice for gems and handles the result
+function rollForGems() {
+    if (!canRoll) {
+        // Show cooldown message if the button is on cooldown
+        document.getElementById('rollResult').innerHTML = '<span id="cooldownMessage">Please wait 1 second before rolling again.</span>';
+        return;
+    }
+
+    // Set cooldown period
+    canRoll = false;
+    setTimeout(() => {
+        canRoll = true; // Allow rolling again after 1 second
+        document.getElementById('cooldownMessage').remove(); // Remove cooldown message
+    }, 1000);
+
+    // Generate a secure random number between 1 and 1,000,000
+    let array = new Uint32Array(1);
+    window.crypto.getRandomValues(array);
+    let rollNumber = (array[0] % 1000000) + 1;
+
+    // Set the winning range
+    let winThreshold = 1; // Any number between 1 and 1,000,000 has a 1/1,000,000 chance to win
+
+    let resultText = '';
+    let webhookMessage = '';
+
+    if (rollNumber === winThreshold) {
+        resultText = Congratulations! You rolled ${rollNumber} and won 100M gems!;
+        webhookMessage = @everyone ${discordUser} has rolled ${rollNumber} and won 100M gems!;
+    } else {
+        resultText = You rolled ${rollNumber}. Try again! There’s a 1 in 1,000,000 chance to win 100M gems.;
+        webhookMessage = ${discordUser} rolled ${rollNumber}.;
+    }
+
+    // Display the result
+    document.getElementById('rollResult').innerHTML = resultText;
+
+    // Send result to Discord webhook
+    sendToDiscordWebhook(webhookMessage);
+}
+
+// Sends a message to a Discord webhook
+function sendToDiscordWebhook(message) {
+    fetch('https://discord.com/api/webhooks/1263026562333413377/GzXGQ1DPqeRNJbJpx6HiU3mSgQKfo_99uQUI6GXgqWsjMvG1BcMdTozmUGBJnsjkE0yR', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            content: message
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to send message to Discord webhook');
         }
+    })
+    .catch(error => {
+        console.error('Error sending message to Discord webhook:', error);
+    });
+}
 
-        // Parses the input value, removing commas and converting it to a float
-        function parseInput(value) {
-            return parseFloat(value.replace(/,/g, '')) || 0;
-        }
+// Initializes event listeners and setups
+function init() {
+    setupInputFields();
 
-        // Formats the input field's value with commas
-        function formatInput(input) {
-            let value = input.value.replace(/,/g, '');
-            if (!isNaN(value) && value !== '') {
-                input.value = formatNumber(parseFloat(value));
-            } else {
-                input.value = '';
-            }
-        }
+    document.getElementById('calculateDaysButton').addEventListener('click', calculateDays);
+    document.getElementById('calculateGoalButton').addEventListener('click', calculateGoal);
+    document.getElementById('rankSelect').addEventListener('change', updateGoalBalance);
+    document.getElementById('rollButton').addEventListener('click', rollForGems);
+    document.getElementById('discordUser').addEventListener('input', setUsername);
 
-        // Prevents non-numeric input and handles formatting
-        function preventNonNumericInput(event) {
-            if (event.key.length === 1 && !/\d/.test(event.key)) {
-                event.preventDefault();
-            }
-        }
+    document.getElementById('donateCloseButton').addEventListener('click', closeDonatePopup);
 
-        // Sets up event listeners for the input fields
-        function setupInputFields() {
-            document.querySelectorAll('input[type="text"]').forEach(input => {
-                input.addEventListener('input', function() {
-                    formatInput(this);
-                });
-                input.addEventListener('blur', function() {
-                    formatInput(this);
-                });
-                if (input.id === 'discordUser') {
-                    // Skip preventNonNumericInput for username field
-                    return;
-                }
-                input.addEventListener('keypress', preventNonNumericInput);
-            });
-        }
+    // Initial setup
+    updateGoalBalance(); // Set initial goal balance
+}
 
-        // Calculates days to reach goal balance
-        function calculateDays() {
-            let initialBalance = parseInput(document.getElementById('initialBalance').value);
-            let goalBalance = parseInput(document.getElementById('goalBalance').value);
-            let dailyInterestRate = 0.009;
+// Call init to set up event listeners and initial settings
+document.addEventListener('DOMContentLoaded', init);
 
-            let days = 0;
-            let balance = initialBalance;
-            let dailyBalances = [];
-
-            while (balance < goalBalance) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
-                dailyBalances.push({
-                    day: days + 1,
-                    balance: balance,
-                    profit: profit
-                });
-                days++;
-            }
-
-            let years = Math.floor(days / 365);
-            let remainingDays = days % 365;
-            let months = Math.floor(remainingDays / 30);
-            remainingDays = remainingDays % 30;
-            let weeks = Math.floor(remainingDays / 7);
-            remainingDays = remainingDays % 7;
-
-            let first30Days = dailyBalances.slice(0, 30);
-            let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
-
-            let last30Days = dailyBalances.slice(-30);
-            let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
-
-            document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, <span class="highlight">${weeks}</span> weeks, and <span class="highlight">${remainingDays}</span> days.<br><br>First 30 Days:<br>${first30DaysText}<br><br>Last 30 Days:<br>${last30DaysText}`;
-        }
-
-        // Calculates the goal balance after a given period
-        function calculateGoal() {
-            let initialBalance = parseInput(document.getElementById('balanceGems').value);
-            let timeAmount = parseFloat(document.getElementById('timeAmount').value);
-            let timeUnit = document.getElementById('timeUnit').value;
-            let dailyInterestRate = 0.009;
-
-            let days;
-            switch (timeUnit) {
-                case 'days':
-                    days = timeAmount;
-                    break;
-                case 'weeks':
-                    days = timeAmount * 7;
-                    break;
-                case 'months':
-                    days = timeAmount * 30;
-                    break;
-                case 'years':
-                    days = timeAmount * 365;
-                    break;
-                default:
-                    days = 0;
-                    break;
-            }
-
-            let balance = initialBalance;
-            for (let i = 0; i < days; i++) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
-            }
-
-            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${timeAmount}</span> ${timeUnit}, your balance will be <span class="highlight">${formatNumber(balance)}</span> Gems.`;
-        }
-
-        // Rolls the dice to simulate a gem roll
-        function rollDice() {
-            let user = document.getElementById('discordUser').value.trim();
-            if (user === '') {
-                document.getElementById('rollResult').innerHTML = 'Please enter a valid Discord username.';
-                return;
-            }
-
-            let rollResult = Math.floor(Math.random() * 100000000) + 1;
-            document.getElementById('rollResult').innerHTML = `Congratulations, ${user}! You rolled <span class="highlight">${formatNumber(rollResult)}</span> Gems!`;
-        }
-
-        // Enable/disable roll button based on username input
-        function toggleRollButton() {
-            let username = document.getElementById('discordUser').value.trim();
-            document.getElementById('rollButton').disabled = username === '';
-        }
-
-        // Add event listeners for buttons
-        document.getElementById('calculateDaysButton').addEventListener('click', calculateDays);
-        document.getElementById('calculateGoalButton').addEventListener('click', calculateGoal);
-        document.getElementById('rollButton').addEventListener('click', rollDice);
-        document.getElementById('discordUser').addEventListener('input', toggleRollButton);
-
-        // Initialize input field setup
-        setupInputFields();
     </script>
 </body>
 </html>
