@@ -1,252 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EXP Calculator</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            transition: background-color 0.3s, color 0.3s;
-            background-color: #1e1e1e;
-            /* Default to night mode */
-            color: #d1d1d1;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            justify-content: center;
-        }
-
-        h1 {
-            color: #007bff;
-            text-align: center;
-            margin: 30px 0;
-        }
-
-        .progress-container {
-            width: 80%;
-            max-width: 800px;
-            margin: 20px auto;
-            text-align: center;
-        }
-
-        .progress-bar {
-            position: relative;
-            width: 100%;
-            height: 30px;
-            background-color: #d9534f;
-            /* Changed from grey to red */
-            border-radius: 15px;
-            overflow: hidden;
-            margin-bottom: 10px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            width: 0;
-            background-color: #00ff00;
-            transition: width 0.3s ease;
-        }
-
-        .progress-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.1em;
-        }
-
-        #current-label {
-            color: #00ff00;
-        }
-
-        .section-container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 20px;
-            flex-wrap: wrap;
-            padding: 20px;
-        }
-
-        .container {
-            background-color: #333842;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 400px;
-            text-align: center;
-            border: 2px solid #555;
-            /* Thicker border */
-            box-sizing: border-box;
-        }
-
-        label {
-            font-size: 1.1em;
-            margin-bottom: 10px;
-            display: block;
-            margin-top: 20px;
-            /* Add more space above */
-        }
-
-        input[type="text"],
-        select {
-            padding: 10px;
-            font-size: 1em;
-            width: 100%;
-            margin-bottom: 20px;
-            border: 1px solid #555;
-            /* Thicker border */
-            border-radius: 5px;
-            box-sizing: border-box;
-            background-color: #333842;
-            color: #ffffff;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 1em;
-            background-color: #007bff;
-            color: #ffffff;
-            border: 1px solid #0056b3;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            margin-bottom: 20px;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        #donateButton {
-            background-color: #ff4757;
-            border: 1px solid #e73b4d;
-        }
-
-        #donateButton:hover {
-            background-color: #e73b4d;
-        }
-
-        #result,
-        #goalResult {
-            margin-top: 20px;
-            font-size: 1.2em;
-        }
-
-        #donatePopup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            z-index: 10;
-            background-color: #333842;
-            color: #d1d1d1;
-            border: 2px solid #555;
-            /* Thicker border */
-            max-width: 90%;
-            max-height: 80%;
-            overflow-y: auto;
-        }
-
-        #closePopup {
-            margin-top: 20px;
-            width: 100%;
-            border: 1px solid #555;
-            /* Thicker border */
-        }
-
-        .guis-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .gui {
-            width: 300px;
-            height: 400px;
-            overflow-y: auto;
-            border: 2px solid #555;
-            /* Thicker border */
-            border-radius: 10px;
-            background: rgba(40, 44, 52, 0.8);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            padding: 15px;
-            box-sizing: border-box;
-        }
-
-        .profit {
-            color: #00ff00;
-        }
-
-        .highlight {
-            color: #ff4757;
-            font-weight: bold;
-        }
-
-        .leaderboard {
-            text-align: left;
-            height: 400px;
-            /* Fixed height for consistent scrolling */
-            overflow-y: auto;
-        }
-
-        .leaderboard h2 {
-            text-align: center;
-            color: #ff4757;
-        }
-
-        .leaderboard ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .leaderboard li {
-            padding: 5px 0;
-            border-bottom: 1px solid #555;
-            color: #d1d1d1;
-        }
-
-        /* Custom scrollbar styles */
-        ::-webkit-scrollbar {
-            width: 12px;
-            /* Width of the scrollbar */
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #2c2f36;
-            /* Track color */
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #555;
-            /* Handle color */
-            border-radius: 6px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #777;
-            /* Handle color on hover */
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
-
 <body class="night-mode">
     <h1>EXP Balance Calculator</h1>
     <h1>(by s6eg4se54g)</h1>
-
+    
     <div class="progress-container">
         <div class="progress-bar">
             <div id="progress-fill" class="progress-fill"></div>
@@ -291,111 +54,52 @@
             <h2>Last 30 Days</h2>
             <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
+
+        <div class="container night-mode">
+            <h2>Calculate Goal Balance after X Time</h2>
+            <label for="balanceGems">Balance (Gems): </label>
+            <input type="text" id="balanceGems" placeholder="e.g., 1,000" class="night-mode">
+
+            <label for="timeUnit">Time Unit: </label>
+            <select id="timeUnit" class="night-mode">
+                <option value="days">Days</option>
+                <option value="weeks">Weeks</option>
+                <option value="months">Months</option>
+                <option value="years">Years</option>
+            </select>
+
+            <label for="timeAmount">Time Amount: </label>
+            <input type="text" id="timeAmount" placeholder="e.g., 30" class="night-mode">
+
+            <button onclick="calculateGoal()">Calculate Goal</button>
+            <div id="goalResult">Enter time period and click "Calculate Goal" to see the results.</div>
+        </div>
+
+        <div id="leaderboardGui" class="gui night-mode leaderboard">
+            <h2>Donation leaderboard!</h2>
+            <h2>/gift @s6eg4se54g</h2>
+            <h3>Top 10 Donators</h3>
+            <ul>
+                <li>1. 1h59   | 50m</li>
+                <li>2. alexplays038   | 2m   </li>
+                <li>3. iamonevader   |1m</li>
+                <li>5. None yet!</li>
+                <li>5. None yet!</li>
+                <li>6. None yet!</li>
+                <li>7. None yet!</li>
+                <li>8. None yet!</li>
+                <li>9. None yet!</li>
+                <li>10. None yet!</li>
+            </ul>
+        </div>
+
+        <div id="donatePopup" class="night-mode">
+            <h2>Donate Here:</h2>
+            <p>/gift @s6eg4se54g</p>
+            <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
+        </div>
     </div>
 
-    <div id="goalResult" class="highlight"></div>
-
-    <div class="leaderboard night-mode">
-        <h2>Leaderboard</h2>
-        <ul id="leaderboardList">
-            <li>1. <span class="highlight">Player1</span> - 10,000,000 Gems</li>
-            <li>2. <span class="highlight">Player2</span> - 9,000,000 Gems</li>
-            <li>3. <span class="highlight">Player3</span> - 8,000,000 Gems</li>
-        </ul>
-    </div>
-
-    <button id="donateButton" class="night-mode" onclick="togglePopup()">Donate</button>
-
-    <div id="donatePopup" class="night-mode">
-        <h2>Support the Development!</h2>
-        <p>If you'd like to support the development of this tool, consider making a donation.</p>
-        <button id="closePopup" class="night-mode" onclick="togglePopup()">Close</button>
-    </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            updateProgressBar();
-            formatInputWithCommas(document.getElementById("initialBalance"));
-            formatInputWithCommas(document.getElementById("goalBalance"));
-        });
-
-        function togglePopup() {
-            const popup = document.getElementById("donatePopup");
-            popup.style.display = (popup.style.display === "none" || popup.style.display === "") ? "block" : "none";
-        }
-
-        function updateProgressBar() {
-            const initialBalance = parseInt(document.getElementById("initialBalance").value.replace(/,/g, ''), 10) || 0;
-            const goalBalance = parseInt(document.getElementById("goalBalance").value.replace(/,/g, ''), 10) || 0;
-            const currentBalance = initialBalance;  // Assuming current balance is the initial balance for this example
-            const progressBarFill = document.getElementById("progress-fill");
-            const startLabel = document.getElementById("start-label");
-            const currentLabel = document.getElementById("current-label");
-            const goalLabel = document.getElementById("goal-label");
-
-            startLabel.textContent = `${initialBalance.toLocaleString()} Gems`;
-            currentLabel.textContent = `${currentBalance.toLocaleString()} Gems`;
-            goalLabel.textContent = `${goalBalance.toLocaleString()} Gems`;
-
-            const progress = Math.min(100, (currentBalance / goalBalance) * 100);
-            progressBarFill.style.width = progress + "%";
-        }
-
-        function updateGoalBalance() {
-            const rankSelect = document.getElementById("rankSelect");
-            const goalBalanceInput = document.getElementById("goalBalance");
-            if (rankSelect.value) {
-                goalBalanceInput.value = parseInt(rankSelect.value).toLocaleString();
-            }
-            updateProgressBar();
-        }
-
-        function formatInputWithCommas(input) {
-            input.addEventListener("input", function () {
-                const value = input.value.replace(/,/g, '');
-                if (!isNaN(value)) {
-                    input.value = parseInt(value).toLocaleString();
-                }
-                updateProgressBar();
-            });
-        }
-
-        function calculateDays() {
-            const initialBalance = parseInt(document.getElementById("initialBalance").value.replace(/,/g, ''), 10);
-            const goalBalance = parseInt(document.getElementById("goalBalance").value.replace(/,/g, ''), 10);
-            const resultDiv = document.getElementById("result");
-
-            if (isNaN(initialBalance) || isNaN(goalBalance) || initialBalance <= 0 || goalBalance <= initialBalance) {
-                resultDiv.innerHTML = "Please enter valid numbers for balance and goal.";
-                return;
-            }
-
-            const dailyProfit = 9536983; // Example value for profit per day
-            const totalDays = Math.ceil((goalBalance - initialBalance) / dailyProfit);
-            const first30DaysData = [];
-            const last30DaysData = [];
-            let currentBalance = initialBalance;
-            let totalProfit = 0;
-
-            for (let i = 1; i <= totalDays; i++) {
-                const profit = Math.floor(currentBalance * 0.01) + 50000;
-                currentBalance += profit;
-                totalProfit += profit;
-
-                if (i <= 30) {
-                    first30DaysData.push(`Day ${i}: Balance: ${currentBalance.toLocaleString()} Gems | Profit: <span class="profit">${profit.toLocaleString()}</span> Gems`);
-                }
-
-                if (i > totalDays - 30) {
-                    last30DaysData.push(`Day ${i}: Balance: ${currentBalance.toLocaleString()} Gems | Profit: <span class="profit">${profit.toLocaleString()}</span> Gems`);
-                }
-            }
-
-            document.getElementById("first30Days").innerHTML = first30DaysData.join('<br>');
-            document.getElementById("last30Days").innerHTML = last30DaysData.join('<br>');
-            resultDiv.innerHTML = `It will take approximately ${totalDays} days to reach your goal of ${goalBalance.toLocaleString()} Gems.`;
-        }
-    </script>
+    <script src="scripts.js"></script>
 </body>
-
 </html>
