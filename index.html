@@ -5,71 +5,131 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EXP Calculator</title>
     <style>
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    transition: background-color 0.3s, color 0.3s;
-    background-color: #1e1e1e;
-    color: #d1d1d1;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    justify-content: center;
-}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: #1e1e1e; /* Default to night mode */
+            color: #d1d1d1;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            justify-content: center;
+        }
 
-h1 {
-    color: #007bff;
-    text-align: center;
-    margin: 30px 0;
-}
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin: 30px 0;
+        }
 
-.progress-container {
-    width: 80%;
-    max-width: 800px;
-    margin: 20px auto;
-    text-align: center;
-}
+        .progress-container {
+            width: 80%;
+            max-width: 800px;
+            margin: 20px auto;
+            text-align: center;
+        }
 
-.progress-bar {
-    position: relative;
-    width: 100%;
-    height: 30px;
-    background-color: #d9534f;
-    border-radius: 15px;
-    overflow: hidden;
-    margin-bottom: 10px;
-}
+        .progress-bar {
+            position: relative;
+            width: 100%;
+            height: 30px;
+            background-color: #d9534f; /* Changed from grey to red */
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
 
-.progress-fill {
-    height: 100%;
-    width: 0;
-    background-color: #00ff00;
-    transition: width 0.3s ease;
-}
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            background-color: #00ff00;
+            transition: width 0.3s ease;
+        }
 
-.progress-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 1.1em;
-}
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1em;
+        }
 
-#current-label {
-    color: #00ff00;
-}
+        #current-label {
+            color: #00ff00;
+        }
 
-.section-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 20px;
-    flex-wrap: wrap;
-    padding: 20px;
-}
+        .section-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
 
+        .container {
+            background-color: #333842;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+            border: 2px solid #555; /* Thicker border */
+            box-sizing: border-box;
+        }
+
+        label {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            display: block;
+            margin-top: 20px; /* Add more space above */
+        }
+
+        input[type="text"], select {
+            padding: 10px;
+            font-size: 1em;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid #555; /* Thicker border */
+            border-radius: 5px;
+            box-sizing: border-box;
+            background-color: #333842;
+            color: #ffffff;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: #ffffff;
+            border: 1px solid #0056b3;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #donateButton {
+            background-color: #ff4757;
+            border: 1px solid #e73b4d;
+        }
+
+        #donateButton:hover {
+            background-color: #e73b4d;
+        }
+
+        #result, #goalResult {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
 .container {
     background-color: #333842;
     padding: 30px;
@@ -77,24 +137,17 @@ h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 400px;
     text-align: center;
-    border: 2px solid #555;
+    border: 2px solid #555; /* Thicker border */
     box-sizing: border-box;
-    margin-top: 20px;
+    margin-top: 20px; /* Add spacing to separate from other elements */
 }
 
-label {
-    font-size: 1.1em;
-    margin-bottom: 10px;
-    display: block;
-    margin-top: 20px;
-}
-
-input[type="text"], select {
+input[type="text"] {
     padding: 10px;
     font-size: 1em;
     width: 100%;
     margin-bottom: 20px;
-    border: 1px solid #555;
+    border: 1px solid #555; /* Thicker border */
     border-radius: 5px;
     box-sizing: border-box;
     background-color: #333842;
@@ -113,29 +166,14 @@ button {
     margin-bottom: 20px;
     transition: background-color 0.3s;
 }
-
-button:hover {
-    background-color: #0056b3;
-}
-
 button:disabled {
     background-color: #555;
     border: 1px solid #444;
     cursor: not-allowed;
 }
 
-#donateButton {
-    background-color: #ff4757;
-    border: 1px solid #e73b4d;
-}
-
-#donateButton:hover {
-    background-color: #e73b4d;
-}
-
-#result, #goalResult {
-    margin-top: 20px;
-    font-size: 1.2em;
+button:hover {
+    background-color: #0056b3;
 }
 
 #rollResult {
@@ -150,116 +188,118 @@ button:disabled {
 
 #countdownContainer {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 20px; /* Distance from the bottom */
+    right: 20px;  /* Distance from the right edge */
     background-color: #333842;
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     color: #d1d1d1;
     text-align: center;
-    width: 250px;
-    z-index: 1000;
-    font-size: 1em;
+    width: 250px; /* Adjust width as needed */
+    z-index: 1000; /* Ensure it's on top of other content */
+    font-size: 1em; /* Adjust font size as needed */
 }
 
 #countdownContainer p {
     margin: 0;
 }
 
-#donatePopup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    z-index: 10;
-    background-color: #333842;
-    color: #d1d1d1;
-    border: 2px solid #555;
-    max-width: 90%;
-    max-height: 80%;
-    overflow-y: auto;
-}
 
-#closePopup {
-    margin-top: 20px;
-    width: 100%;
-    border: 1px solid #555;
-}
+        
+        #donatePopup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            z-index: 10;
+            background-color: #333842;
+            color: #d1d1d1;
+            border: 2px solid #555; /* Thicker border */
+            max-width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+        }
 
-.guis-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    align-items: center;
-}
+        #closePopup {
+            margin-top: 20px;
+            width: 100%;
+            border: 1px solid #555; /* Thicker border */
+        }
 
-.gui {
-    width: 300px;
-    height: 400px;
-    overflow-y: auto;
-    border: 2px solid #555;
-    border-radius: 10px;
-    background: rgba(40, 44, 52, 0.8);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    box-sizing: border-box;
-}
+        .guis-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
 
-.profit {
-    color: #00ff00;
-}
+        .gui {
+            width: 300px;
+            height: 400px;
+            overflow-y: auto;
+            border: 2px solid #555; /* Thicker border */
+            border-radius: 10px;
+            background: rgba(40, 44, 52, 0.8);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            box-sizing: border-box;
+        }
 
-.highlight {
-    color: #ff4757;
-    font-weight: bold;
-}
+        .profit {
+            color: #00ff00;
+        }
 
-.leaderboard {
-    text-align: left;
-    height: 400px;
-    overflow-y: auto;
-}
+        .highlight {
+            color: #ff4757;
+            font-weight: bold;
+        }
 
-.leaderboard h2 {
-    text-align: center;
-    color: #ff4757;
-}
+        .leaderboard {
+            text-align: left;
+            height: 400px; /* Fixed height for consistent scrolling */
+            overflow-y: auto;
+        }
 
-.leaderboard ul {
-    list-style-type: none;
-    padding: 0;
-}
+        .leaderboard h2 {
+            text-align: center;
+            color: #ff4757;
+        }
 
-.leaderboard li {
-    padding: 5px 0;
-    border-bottom: 1px solid #555;
-    color: #d1d1d1;
-}
+        .leaderboard ul {
+            list-style-type: none;
+            padding: 0;
+        }
 
-::-webkit-scrollbar {
-    width: 12px;
-}
+        .leaderboard li {
+            padding: 5px 0;
+            border-bottom: 1px solid #555;
+            color: #d1d1d1;
+        }
 
-::-webkit-scrollbar-track {
-    background: #2c2f36;
-}
+        /* Custom scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 12px; /* Width of the scrollbar */
+        }
 
-::-webkit-scrollbar-thumb {
-    background: #555;
-    border-radius: 6px;
-}
+        ::-webkit-scrollbar-track {
+            background: #2c2f36; /* Track color */
+        }
 
-::-webkit-scrollbar-thumb:hover {
-    background: #777;
-}
+        ::-webkit-scrollbar-thumb {
+            background: #555; /* Handle color */
+            border-radius: 6px;
+        }
 
+        ::-webkit-scrollbar-thumb:hover {
+            background: #777; /* Handle color on hover */
+        }
     </style>
 </head>
 <body class="night-mode">
@@ -278,155 +318,25 @@ button:disabled {
     </div>
 
 
-
-
-
-
-    
        <script>
 // Function to format numbers with commas
 function formatInputWithCommas(input) {
+    // Skip formatting for inputs with specific placeholder
     if (input.placeholder === "Roll for 100M Gems!") {
         return;
     }
+
+    // Remove existing commas and non-numeric characters
     let value = input.value.replace(/,/g, '');
+    
+    // Check if the value is a valid number
     if (!isNaN(value) && value !== '') {
+        // Format the number with commas
         input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     } else {
         input.value = '';
     }
 }
-
-// Add event listeners to inputs to format on input
-document.addEventListener('DOMContentLoaded', function() {
-    const inputs = document.querySelectorAll('input[type="text"]');
-    inputs.forEach(input => {
-        input.addEventListener('input', function() {
-            formatInputWithCommas(this);
-        });
-    });
-});
-
-function formatNumber(num) {
-    return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-}
-
-function parseInput(value) {
-    return parseFloat(value.replace(/,/g, '')) || 0;
-}
-
-function calculateDays() {
-    let initialBalance = parseInput(document.getElementById('initialBalance').value);
-    let goalBalance = parseInput(document.getElementById('goalBalance').value);
-    let dailyInterestRate = 0.009;
-
-    let days = 0;
-    let balance = initialBalance;
-
-    while (balance < goalBalance) {
-        balance += balance * dailyInterestRate;
-        days++;
-    }
-
-    let formattedDays = formatNumber(days);
-    document.getElementById('result').innerText = `${formattedDays} days to reach the goal.`;
-}
-
-
-
-function rollForGems() {
-    // Get the value of the Discord username input field
-    const discordUser = document.getElementById('discordUser').value;
-
-    // If the user hasn't entered a username, alert them
-    if (!discordUser) {
-        alert('Please enter your Discord username first.');
-        return;
-    }
-
-    // Generate a random number between 1 and 1,000,000
-    const rolledNumber = Math.floor(Math.random() * 1000000) + 1;
-    const winChance = 100000; // Adjust the win chance as needed
-
-    // Find the paragraph where we'll show the result
-    const resultText = document.getElementById('rollResult');
-    
-    // Determine if the user wins or loses
-    if (rolledNumber <= winChance) {
-        resultText.innerHTML = `Congratulations! You rolled ${rolledNumber} and won 100M gems!`;
-        sendToWebhook(`${discordUser} has rolled ${rolledNumber} and won!`);
-    } else {
-        resultText.innerHTML = `Sorry, you rolled ${rolledNumber} and did not win.`;
-        sendToWebhook(`${discordUser} has rolled ${rolledNumber} and did not win.`);
-    }
-
-    // Disable the button for 1 second to prevent spam clicking
-    document.getElementById('rollButton').disabled = true;
-    setTimeout(() => {
-        document.getElementById('rollButton').disabled = false;
-    }, 1000);
-}
-
-// Mock function for sendToWebhook - you'll replace this with your actual webhook function
-function sendToWebhook(message) {
-    console.log("Sending to webhook:", message);
-}
-
-
-
-
-
-           
-function rollForGems() {
-    let rolls = parseInt(document.getElementById('numberOfRolls').value, 10) || 1;
-    let results = [];
-    for (let i = 0; i < rolls; i++) {
-        let result = Math.floor(Math.random() * 1000000000) + 1;
-        results.push(formatNumber(result));
-    }
-    document.getElementById('rollResult').innerText = `Results: ${results.join(', ')}`;
-}
-
-function updateCountdown() {
-    let now = new Date();
-    let nextCountdown = new Date();
-    let offset = -5 * 60 * 60 * 1000; // EST offset
-    nextCountdown.setUTCHours(13, 0, 0, 0); // 8 AM EST in UTC
-    nextCountdown.setTime(nextCountdown.getTime() + offset);
-
-    if (now > nextCountdown) {
-        nextCountdown.setDate(nextCountdown.getDate() + 1);
-    }
-
-    let timeDiff = nextCountdown - now;
-    let hours = Math.floor(timeDiff / (1000 * 60 * 60));
-    let minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-    let seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-
-    document.getElementById('countdownContainer').innerHTML = `
-        Time until 8 AM EST:<br>
-        ${hours} hours ${minutes} minutes ${seconds} seconds
-    `;
-}
-
-setInterval(updateCountdown, 1000);
-
-document.getElementById('calculateButton').addEventListener('click', calculateDays);
-document.getElementById('rollButton').addEventListener('click', rollForGems);
-
-document.getElementById('donateButton').addEventListener('click', function() {
-    document.getElementById('donatePopup').style.display = 'block';
-});
-
-document.getElementById('closePopup').addEventListener('click', function() {
-    document.getElementById('donatePopup').style.display = 'none';
-});
-
-
-
-
-
-           
 
 // Add event listeners to inputs to format on input
 document.addEventListener('DOMContentLoaded', function() {
@@ -678,7 +588,7 @@ function setUsername() {
     }
 }
 
-function rollForGems() { 
+function rollForGems() { // Corrected function name to match the button's onclick attribute
     if (!discordUser) {
         alert('Please enter your Discord username first.');
         return;
