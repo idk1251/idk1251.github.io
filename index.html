@@ -319,24 +319,31 @@ button:hover {
 
 
        <script>
-        // JavaScript code from above
-        function formatInputWithCommas(input) {
-            let value = input.value.replace(/,/g, '');
-            if (!isNaN(value) && value !== '') {
-                input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            } else {
-                input.value = '';
-            }
-        }
+// Function to format numbers with commas
+function formatInputWithCommas(input) {
+    // Remove existing commas and non-numeric characters
+    let value = input.value.replace(/,/g, '');
+    
+    // Check if the value is a valid number
+    if (!isNaN(value) && value !== '') {
+        // Format the number with commas
+        input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    } else {
+        input.value = '';
+    }
+}
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const inputs = document.querySelectorAll('input[type="text"]');
-            inputs.forEach(input => {
-                input.addEventListener('input', function() {
-                    formatInputWithCommas(this);
-                });
-            });
+// Add event listeners to specific inputs to format on input
+document.addEventListener('DOMContentLoaded', function() {
+    // Select inputs by specific classes or ids that should be formatted
+    const inputsToFormat = document.querySelectorAll('.format-number');
+    inputsToFormat.forEach(input => {
+        input.addEventListener('input', function() {
+            formatInputWithCommas(this);
         });
+    });
+});
+
     </script>
     
     <div class="section-container">
