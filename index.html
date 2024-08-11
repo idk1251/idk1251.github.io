@@ -499,6 +499,7 @@
 
         .container {
             display: flex;
+            flex-wrap: wrap;
             width: 1000px;
             background-color: #333842;
             padding: 20px;
@@ -508,14 +509,15 @@
             gap: 20px;
         }
 
-        .controls {
-            flex: 1;
-        }
-
-        .results {
-            flex: 2;
-            overflow-y: auto;
-            max-height: 500px;
+        .calculator {
+            flex: 1 1 45%; /* Each calculator will take up to 45% of the container width */
+            background-color: #2c2f35;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid #555;
+            max-width: 45%; /* Ensure calculators don’t exceed 45% of container width */
+            min-width: 300px; /* Ensure calculators don’t get too small */
         }
 
         label {
@@ -565,9 +567,9 @@
 <body>
     <h1>Financial Calculators</h1>
     <div class="container">
-        <div class="controls">
+        <div class="calculator">
             <!-- Projected Balance Comparison -->
-            <h1>Projected Balance Comparison</h1>
+            <h2>Projected Balance Comparison</h2>
             <label for="comparisonInitialBalance">Initial Balance (Gems): </label>
             <input type="text" id="comparisonInitialBalance" value="1,000">
 
@@ -584,9 +586,9 @@
             <div id="comparisonResult">Enter values and click "Compare Balances" to see the results.</div>
         </div>
 
-        <div class="results">
+        <div class="calculator">
             <!-- Earnings Over Time -->
-            <h1>Earnings Calculator</h1>
+            <h2>Earnings Calculator</h2>
             <label for="initialBalance">Initial Balance (Gems): </label>
             <input type="text" id="initialBalance" value="1,000">
 
@@ -706,7 +708,7 @@
             // Format results
             let formatResults = (resultsArray, timeLabel) => {
                 return resultsArray.map(item => 
-                    `${timeLabel} ${item[timeLabel]}: Balance: ${formatNumber(item.balance)} | Profit: ${formatNumber(item.profit)}`
+                    `${timeLabel.charAt(0).toUpperCase() + timeLabel.slice(1)} ${item[timeLabel]}: Balance: ${formatNumber(item.balance)} | Profit: ${formatNumber(item.profit)}`
                 ).join('<br>');
             };
 
