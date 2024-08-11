@@ -477,7 +477,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Earnings Over Time</title>
+    <title>Financial Calculators</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -487,9 +487,14 @@
             background-color: #1e1e1e;
             color: #d1d1d1;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
+        }
+
+        h1 {
+            color: #007bff;
+            margin-bottom: 20px;
         }
 
         .container {
@@ -513,19 +518,13 @@
             max-height: 500px;
         }
 
-        h1 {
-            color: #007bff;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
         label {
             font-size: 1.1em;
             margin-bottom: 10px;
             display: block;
         }
 
-        input[type="text"] {
+        input[type="text"], select {
             padding: 10px;
             font-size: 1em;
             width: 100%;
@@ -552,6 +551,11 @@
             background-color: #0056b3;
         }
 
+        #comparisonResult, #earningsResult {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
         .highlight {
             color: #ff4757;
             font-weight: bold;
@@ -559,8 +563,29 @@
     </style>
 </head>
 <body>
+    <h1>Financial Calculators</h1>
     <div class="container">
         <div class="controls">
+            <!-- Projected Balance Comparison -->
+            <h1>Projected Balance Comparison</h1>
+            <label for="comparisonInitialBalance">Initial Balance (Gems): </label>
+            <input type="text" id="comparisonInitialBalance" value="1,000">
+
+            <label for="comparisonDays">Number of Days: </label>
+            <input type="text" id="comparisonDays" value="30">
+
+            <label for="interestRate1">Interest Rate 1 (%): </label>
+            <input type="text" id="interestRate1" value="0.9">
+
+            <label for="interestRate2">Interest Rate 2 (%): </label>
+            <input type="text" id="interestRate2" value="1.5">
+
+            <button onclick="compareBalances()">Compare Balances</button>
+            <div id="comparisonResult">Enter values and click "Compare Balances" to see the results.</div>
+        </div>
+
+        <div class="results">
+            <!-- Earnings Over Time -->
             <h1>Earnings Calculator</h1>
             <label for="initialBalance">Initial Balance (Gems): </label>
             <input type="text" id="initialBalance" value="1,000">
@@ -569,9 +594,6 @@
             <input type="text" id="dailyInterestRate" value="0.9">
 
             <button onclick="calculateEarnings()">Calculate Earnings</button>
-        </div>
-
-        <div class="results">
             <div id="earningsResult">Enter values and click "Calculate Earnings" to see the results.</div>
         </div>
     </div>
@@ -583,6 +605,30 @@
 
         function parseInput(value) {
             return parseFloat(value.replace(/,/g, '')) || 0;
+        }
+
+        function calculateBalance(initialBalance, days, dailyInterestRate) {
+            let balance = initialBalance;
+            for (let i = 0; i < days; i++) {
+                balance += balance * (dailyInterestRate / 100);
+            }
+            return balance;
+        }
+
+        function compareBalances() {
+            let initialBalance = parseInput(document.getElementById('comparisonInitialBalance').value);
+            let days = parseInput(document.getElementById('comparisonDays').value);
+            let interestRate1 = parseInput(document.getElementById('interestRate1').value);
+            let interestRate2 = parseInput(document.getElementById('interestRate2').value);
+
+            let finalBalance1 = calculateBalance(initialBalance, days, interestRate1);
+            let finalBalance2 = calculateBalance(initialBalance, days, interestRate2);
+
+            document.getElementById('comparisonResult').innerHTML = `
+                With an initial balance of ${formatNumber(initialBalance)} gems over ${days} days:<br>
+                - Interest Rate ${interestRate1}%: <span class="highlight">${formatNumber(finalBalance1)}</span> gems<br>
+                - Interest Rate ${interestRate2}%: <span class="highlight">${formatNumber(finalBalance2)}</span> gems
+            `;
         }
 
         function calculateEarnings() {
