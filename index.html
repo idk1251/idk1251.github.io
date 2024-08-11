@@ -470,3 +470,167 @@
 </body>
 </html>
 
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earnings Over Time</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #1e1e1e;
+            color: #d1d1d1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            width: 1000px;
+            background-color: #333842;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 2px solid #555;
+            gap: 20px;
+        }
+
+        .controls {
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .results {
+            flex: 2;
+            overflow-y: auto;
+        }
+
+        h1 {
+            color: #007bff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        label {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1em;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            background-color: #333842;
+            color: #ffffff;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: #ffffff;
+            border: 1px solid #0056b3;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #earningsResult {
+            margin-top: 20px;
+            font-size: 1em;
+            line-height: 1.5;
+        }
+
+        .highlight {
+            color: #ff4757;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="controls">
+            <h1>Earnings Calculator</h1>
+            <label for="initialBalance">Initial Balance (Gems): </label>
+            <input type="text" id="initialBalance" value="1,000">
+
+            <label for="dailyInterestRate">Daily Interest Rate (%): </label>
+            <input type="text" id="dailyInterestRate" value="0.9">
+
+            <button onclick="calculateEarnings()">Calculate Earnings</button>
+        </div>
+
+        <div class="results">
+            <div id="earningsResult">Enter values and click "Calculate Earnings" to see the results.</div>
+        </div>
+    </div>
+
+    <script>
+        function formatNumber(num) {
+            return num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function parseInput(value) {
+            return parseFloat(value.replace(/,/g, '')) || 0;
+        }
+
+        function calculateEarnings() {
+            let initialBalance = parseInput(document.getElementById('initialBalance').value);
+            let dailyInterestRate = parseInput(document.getElementById('dailyInterestRate').value) / 100;
+            
+            let hourlyInterestRate = dailyInterestRate / 24;
+            let earningsText = '';
+
+            function generateEarnings(period, rate, days) {
+                let balance = initialBalance;
+                let earnings = [];
+                for (let i = 1; i <= days; i++) {
+                    let profit = balance * rate;
+                    balance += profit;
+                    earnings.push({
+                        day: i,
+                        balance: formatNumber(balance),
+                        profit: formatNumber(profit)
+                    });
+                }
+                return earnings;
+            }
+
+            function formatEarnings(earnings) {
+                return earnings.map(e => `Day ${e.day}: Balance: ${e.balance} | Profit: ${e.profit}`).join('<br>');
+            }
+
+            let hourlyEarnings = generateEarnings(24, hourlyInterestRate, 30);
+            let dailyEarnings = generateEarnings(1, dailyInterestRate, 30);
+            let weeklyEarnings = generateEarnings(7, dailyInterestRate * 7, 30);
+            let monthlyEarnings = generateEarnings(30, dailyInterestRate * 30, 30);
+            let yearlyEarnings = generateEarnings(365, dailyInterestRate * 365, 30);
+
+            earningsText += `<h2>Hourly Earnings (30 Days)</h2><div>${formatEarnings(hourlyEarnings)}</div>`;
+            earningsText += `<h2>Daily Earnings (30 Days)</h2><div>${formatEarnings(dailyEarnings)}</div>`;
+            earningsText += `<h2>Weekly Earnings (30 Days)</h2><div>${formatEarnings(weeklyEarnings)}</div>`;
+            earningsText += `<h2>Monthly Earnings (30 Days)</h2><div>${formatEarnings(monthlyEarnings)}</div>`;
+            earningsText += `<h2>Yearly Earnings (30 Days)</h2><div>${formatEarnings(yearlyEarnings)}</div>`;
+
+            document.getElementById('earningsResult').innerHTML = earningsText;
+        }
+    </script>
+</body>
+</html>
