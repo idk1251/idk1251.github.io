@@ -256,32 +256,40 @@
             <h3>Top 10 Donators</h3>
             <ul>
                 <li>1. 320M+ ― Catalyst</li>
-                <li>2. 120M+ ― Catalyst</li>
-                <li>3. 64M+ ― Catalyst</li>
-                <li>4. 32M+ ― Luminary</li>
-                <li>5. 16M+ ― Radiant</li>
-                <li>6. 8M+ ― Radiant</li>
-                <li>7. 4M+ ― Ethereal</li>
-                <li>8. 1M+ ― Donator</li>
-                <li>9. None yet!</li>
-                <li>10. None yet!</li>
+                <li>2. 160M+ ― Radiant</li>
+                <li>3. 96M+ ― Luminary</li>
+                <li>4. 80M+ ― Divine</li>
+                <li>5. 72M+ ― Ethereal</li>
+                <li>6. 65M+ ― Donator</li>
+                <li>7. 60M+ ― Radiant</li>
+                <li>8. 55M+ ― Catalyst</li>
+                <li>9. 50M+ ― Luminary</li>
+                <li>10. 45M+ ― Divine</li>
             </ul>
-        </div>
-
-        <div id="donatePopup" class="night-mode">
-            <h2>Donate Here:</h2>
-            <p>/gift @s6eg4se54g</p>
-            <button id="closePopup" onclick="closeDonatePopup()" class="night-mode">Close</button>
         </div>
     </div>
 
-    <script>
-        function formatNumber(num) {
-            return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-        }
+    <div id="donatePopup">
+        <h2>Donate to support!</h2>
+        <p>If you'd like to support the development, please consider donating!</p>
+        <button id="closePopup" onclick="closePopup()">Close</button>
+    </div>
 
+    <button id="donateButton" onclick="showDonatePopup()">Donate</button>
+
+    <script>
         function parseInput(value) {
             return parseFloat(value.replace(/,/g, '')) || 0;
+        }
+
+        function formatNumber(number) {
+            return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function updateGoalBalance() {
+            const goalSelect = document.getElementById('rankSelect');
+            const goalBalance = document.getElementById('goalBalance');
+            goalBalance.value = goalSelect.value ? formatNumber(goalSelect.value) : '';
         }
 
         function calculateDays() {
@@ -309,117 +317,61 @@
             let months = Math.floor(remainingDays / 30);
             remainingDays = remainingDays % 30;
 
+            // Update results in the "Result" section
+            document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, and <span class="highlight">${remainingDays}</span> days.`;
+
+            // Update the "First 30 Days" section
             let first30Days = dailyBalances.slice(0, 30);
             let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
+            document.getElementById('first30Days').innerHTML = first30DaysText;
 
+            // Update the "Last 30 Days" section
             let last30Days = dailyBalances.slice(-30);
             let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
-
-            document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, and <span class="highlight">${remainingDays}</span> days.`;
-            document.getElementById('first30Days').innerHTML = first30DaysText;
             document.getElementById('last30Days').innerHTML = last30DaysText;
         }
 
         function calculateGoal() {
             let initialBalance = parseInput(document.getElementById('initialBalance2').value);
-            let time = parseInput(document.getElementById('timeInput').value);
+            let timeValue = parseFloat(document.getElementById('timeInput').value);
             let timeUnit = document.getElementById('timeUnit').value;
             let dailyInterestRate = 0.009;
 
-            // Convert time to days based on selected unit
+            let days = 0;
             switch (timeUnit) {
+                case 'days':
+                    days = timeValue;
+                    break;
                 case 'weeks':
-                    time *= 7;
+                    days = timeValue * 7;
                     break;
                 case 'months':
-                    time *= 30;
+                    days = timeValue * 30;
                     break;
                 case 'years':
-                    time *= 365;
+                    days = timeValue * 365;
                     break;
             }
 
             let balance = initialBalance;
-
-            for (let i = 0; i < time; i++) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
+            for (let i = 0; i < days; i++) {
+                balance += balance * dailyInterestRate;
             }
 
-            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${formatNumber(time)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
+            document.getElementById('goalResult').innerHTML = `After ${timeValue} ${timeUnit}, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
         }
 
-        function updateGoalBalance() {
-            let select = document.getElementById('rankSelect');
-            let goalBalance = select.value;
-            document.getElementById('goalBalance').value = formatNumber(parseFloat(goalBalance));
+        function showDonatePopup() {
+            document.getElementById('donatePopup').style.display = 'block';
         }
 
-        function closeDonatePopup() {
+        function closePopup() {
             document.getElementById('donatePopup').style.display = 'none';
         }
-
-        function formatInput(input) {
-            let value = input.value.replace(/,/g, '');
-            if (!isNaN(value) && value !== '') {
-                input.value = formatNumber(parseFloat(value));
-            } else {
-                input.value = '';
-            }
-        }
-
-
-// Update call in the existing calculator logic
-function calculateDays() {
-    let initialBalance = parseInput(document.getElementById('initialBalance').value);
-    let goalBalance = parseInput(document.getElementById('goalBalance').value);
-    let dailyInterestRate = 0.009;
-
-    let days = 0;
-    let balance = initialBalance;
-    let dailyBalances = [];
-
-    while (balance < goalBalance) {
-        let profit = balance * dailyInterestRate;
-        balance += profit;
-        dailyBalances.push({
-            day: days + 1,
-            balance: balance,
-            profit: profit
-        });
-        days++;
-    }
-
-    let years = Math.floor(days / 365);
-    let remainingDays = days % 365;
-    let months = Math.floor(remainingDays / 30);
-    remainingDays = remainingDays % 30;
-
-    document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, and <span class="highlight">${remainingDays}</span> days.`;
-
-    // Send data to the progress bar
-    sendProgressBarUpdate(initialBalance, goalBalance);
-}
-
-// Listen for messages in the progress bar page
-window.addEventListener('message', function(event) {
-    if (event.data.currentBalance !== undefined && event.data.goalBalance !== undefined) {
-        updateProgressBar(event.data.currentBalance, event.data.goalBalance);
-    }
-});
-
-
-        document.querySelectorAll('input[type="text"]').forEach(input => {
-            input.addEventListener('input', function() {
-                formatInput(this);
-            });
-            input.addEventListener('blur', function() {
-                formatInput(this);
-            });
-        });
     </script>
 </body>
 </html>
+
 
 
 <!DOCTYPE html>
