@@ -130,97 +130,61 @@
             margin-top: 20px;
             font-size: 1.2em;
         }
-/* Resetting default styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
-}
-
-/* Body styling */
-body {
-    background: linear-gradient(45deg, #1e3c72, #2a5298);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    color: #fff;
-}
-
-/* Wrapper for the roll card */
-.wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-
-/* Card styling */
-.card {
-    background: rgba(0, 0, 0, 0.7);
+.container {
+    background-color: #333842;
     padding: 30px;
-    border-radius: 10px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
     text-align: center;
-    width: 300px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    border: 2px solid #555; /* Thicker border */
+    box-sizing: border-box;
+    margin-top: 20px; /* Add spacing to separate from other elements */
 }
 
-/* Title */
-.card h1 {
-    font-size: 22px;
-    margin-bottom: 20px;
-    color: #ffdd59;
-}
-
-/* Input group styling */
-.input-group {
-    margin-bottom: 20px;
-}
-
-.input-group label {
-    font-size: 14px;
-    display: block;
-    margin-bottom: 5px;
-}
-
-.input-group input {
-    width: 100%;
+input[type="text"] {
     padding: 10px;
+    font-size: 1em;
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #555; /* Thicker border */
     border-radius: 5px;
-    border: 1px solid #ddd;
-    font-size: 14px;
+    box-sizing: border-box;
+    background-color: #333842;
+    color: #ffffff;
 }
 
-/* Dice styling */
-.dice {
-    font-size: 50px;
-    margin: 20px 0;
-    transition: transform 0.5s ease;
-}
-
-/* Roll button styling */
-#rollButton {
-    background: #ff6347;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #007bff;
+    color: #ffffff;
+    border: 1px solid #0056b3;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    width: 100%;
+    margin-bottom: 20px;
+    transition: background-color 0.3s;
+}
+button:disabled {
+    background-color: #555;
+    border: 1px solid #444;
+    cursor: not-allowed;
 }
 
-#rollButton:hover {
-    background: #ff4500;
+button:hover {
+    background-color: #0056b3;
 }
 
-/* Result message styling */
-#resultMessage {
-    margin-top: 15px;
-    font-size: 16px;
+#rollResult {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #d1d1d1;
 }
 
+#cooldownMessage {
+    color: #ff4757;
+}
 
 #countdownContainer {
     position: fixed;
@@ -384,18 +348,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-    <div class="wrapper">
-        <div class="card">
-            <h1>🎉 Roll & Win 100M Gems! 🎉</h1>
-            <div class="input-group">
-                <label for="discordUsername">Discord Username:</label>
-                <input type="text" id="discordUsername" placeholder="Enter your Discord username">
-            </div>
-            <div class="dice" id="dice">🎲</div>
-            <button id="rollButton" onclick="rollDice()">Roll the Dice!</button>
-            <p id="resultMessage">Press the button to roll!</p>
-        </div>
-    </div>
+
+
     </script>
     
     <div class="section-container">
@@ -453,95 +407,23 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
 
         
-/* Reset default styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
-}
+<div class="container night-mode">
+    <h2>Roll for 100M Gems!</h2>
+    
+    <label for="discordUser">Your Discord Username: </label>
+    <input type="text" id="discordUser" placeholder="e.g., yourusername#1234" class="night-mode">
+    <button id="setUsernameButton" onclick="setUsername()">Enter Username</button>
+    
+    <button id="rollButton" onclick="rollForGems()" disabled>Roll the Dice!</button>
+    
+    <div id="rollResult">Please enter your Discord username to enable the roll button.</div>
+</div>
 
-/* Body style */
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #2c2c2c;
-    color: #f0f0f0;
-}
 
-/* Main container */
-.container {
-    background-color: #1c1c1c;
-    padding: 30px;
-    border-radius: 12px;
-    text-align: center;
-    width: 350px;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
-}
+<div id="countdownContainer">
+    <p id="countdownText">Withdrawals will go through in <span id="countdownTime">Loading...</span></p>
+</div>
 
-/* Header styles */
-.header h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: #ffdf00;
-}
-
-.header p {
-    font-size: 16px;
-    color: #cccccc;
-}
-
-/* Roll section styles */
-.roll-section {
-    margin-top: 20px;
-}
-
-#discordUser {
-    width: 80%;
-    padding: 8px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    border: 1px solid #444;
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-}
-
-#rollButton {
-    background-color: #ff5e5e;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-#rollButton:hover {
-    background-color: #e54b4b;
-}
-
-.dice-container {
-    margin: 20px 0;
-}
-
-.dice {
-    font-size: 50px;
-    transition: transform 0.3s;
-}
-
-#resultMessage {
-    font-size: 18px;
-    color: #ffdf00;
-    margin-top: 15px;
-}
-
-    <div id="countdownContainer">
-        <p id="countdownText">Next event in: <span id="countdownTime">Loading...</span></p>
-    </div>
 
 
     <div id="leaderboardGui" class="gui night-mode leaderboard">
@@ -605,12 +487,12 @@ body {
             remainingDays = remainingDays % 7;
 
             let first30Days = dailyBalances.slice(0, 30);
-            let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
+            let first30DaysText = first30Days.map(item => Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>).join('<br>');
 
             let last30Days = dailyBalances.slice(-30);
-            let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
+            let last30DaysText = last30Days.map(item => Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>).join('<br>');
 
-            document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, <span class="highlight">${weeks}</span> weeks, and <span class="highlight">${remainingDays}</span> days.`;
+            document.getElementById('result').innerHTML = You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, <span class="highlight">${weeks}</span> weeks, and <span class="highlight">${remainingDays}</span> days.;
             document.getElementById('first30Days').innerHTML = first30DaysText;
             document.getElementById('last30Days').innerHTML = last30DaysText;
 
@@ -647,7 +529,7 @@ body {
                 balance += profit;
             }
 
-            document.getElementById('goalResult').innerHTML = `After <span class="highlight">${formatNumber(days)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
+            document.getElementById('goalResult').innerHTML = After <span class="highlight">${formatNumber(days)}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.;
         }
 
         function updateGoalBalance() {
@@ -692,37 +574,43 @@ body {
                 input.value = '';
             }
         }
-function rollDice() {
-    const discordUsername = document.getElementById('discordUsername').value.trim();
-    const diceElement = document.getElementById('dice');
-    const resultMessage = document.getElementById('resultMessage');
+let canRoll = true; // Track if the button can be clicked
+let discordUser = ''; // Store the username
 
-    if (!discordUsername) {
-        resultMessage.textContent = 'Please enter your Discord username.';
-        resultMessage.style.color = 'red';
+function setUsername() {
+    discordUser = document.getElementById('discordUser').value.trim(); // Corrected ID
+    if (discordUser) {
+        document.getElementById('rollButton').disabled = false;
+        document.getElementById('discordUser').disabled = true; // Corrected ID
+        document.getElementById('setUsernameButton').disabled = true; // Corrected button ID
+    } else {
+        alert('Please enter a valid username.');
+    }
+}
+
+function rollForGems() { // Corrected function name to match the button's onclick attribute
+    if (!discordUser) {
+        alert('Please enter your Discord username first.');
         return;
     }
 
-    diceElement.style.transform = 'rotate(720deg)';
-    diceElement.textContent = '🎲';
+    const rolledNumber = Math.floor(Math.random() * 1000000) + 1;
+    const winChance = 100000; // Adjust the win chance as needed
 
+    const resultText = document.getElementById('rollResult');
+    
+    if (rolledNumber <= winChance) {
+        resultText.innerHTML = Congratulations! You rolled ${rolledNumber} and won 100M gems!;
+        sendToWebhook(${discordUser} has rolled ${rolledNumber} and won!);
+    } else {
+        resultText.innerHTML = Sorry, you rolled ${rolledNumber} and did not win.;
+        sendToWebhook(${discordUser} has rolled ${rolledNumber} and did not win.);
+    }
+
+    document.getElementById('rollButton').disabled = true;
     setTimeout(() => {
-        const rolledNumber = Math.floor(Math.random() * 6) + 1;
-        const winNumber = Math.floor(Math.random() * 6) + 1;
-
-        diceElement.style.transform = 'rotate(0deg)';
-        diceElement.textContent = `🎲 ${rolledNumber}`;
-
-        if (rolledNumber === winNumber) {
-            resultMessage.textContent = `🎉 ${discordUsername}, you rolled a ${rolledNumber} and won 100M gems! 🎉`;
-            resultMessage.style.color = '#ffdd59';
-            sendToWebhook(`${discordUsername} won 100M gems with a roll of ${rolledNumber}!`);
-        } else {
-            resultMessage.textContent = `${discordUsername}, you rolled a ${rolledNumber} and did not win. Try again!`;
-            resultMessage.style.color = '#ff6347';
-            sendToWebhook(`${discordUsername} rolled ${rolledNumber} but did not win.`);
-        }
-    }, 1500);
+        document.getElementById('rollButton').disabled = false;
+    }, 1000); // 1 second cooldown
 }
 
 function sendToWebhook(message) {
@@ -731,11 +619,13 @@ function sendToWebhook(message) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ content: message }),
+        body: JSON.stringify({
+            content: message,
+        }),
     })
     .then(response => response.json())
     .then(data => console.log('Success:', data))
-    .catch(error => console.error('Error:', error));
+    .catch((error) => console.error('Error:', error));
 }
 
 
@@ -761,7 +651,7 @@ function updateCountdown() {
     
     // Update the countdown text
     document.getElementById('countdownTime').textContent = 
-        `${hours}h ${minutes}m ${seconds}s`;
+        ${hours}h ${minutes}m ${seconds}s;
 }
 
 // Update the countdown every second
@@ -786,4 +676,3 @@ setInterval(sendUserCountToDiscord, 1000);
     </script>
 </body>
 </html>
-
