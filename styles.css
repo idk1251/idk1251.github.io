@@ -1,1 +1,39 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+#countdown, #winner {
+    font-size: 20px;
+    margin: 20px;
+}
+
+#wheel-container {
+    margin: 20px auto;
+}
+
+#controls {
+    margin: 20px;
+}
+
+input[type="text"], button {
+    font-size: 16px;
+    padding: 10px;
+    margin: 5px;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+}
+
+button:hover {
+    background-color: #45a049;
+}
 
