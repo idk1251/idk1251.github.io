@@ -27,42 +27,6 @@
             margin: 30px 0;
         }
 
-
-        .progress-container {
-            width: 80%;
-            max-width: 800px;
-            margin: 20px auto;
-            text-align: center;
-        }
-
-        .progress-bar {
-            position: relative;
-            width: 100%;
-            height: 30px;
-            background-color: #d9534f; /* Changed from grey to red */
-            border-radius: 15px;
-            overflow: hidden;
-            margin-bottom: 10px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            width: 0;
-            background-color: #00ff00;
-            transition: width 0.3s ease;
-        }
-
-        .progress-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.1em;
-        }
-
-        #current-label {
-            color: #00ff00;
-        }
-
-
         .section-container {
             display: flex;
             justify-content: center;
@@ -231,19 +195,6 @@
 <body class="night-mode">
     <h1>EXP Balance Calculator</h1>
 <h1>(by s6eg4se54g)</h1>
-
-<div class="progress-container">
-        <div class="progress-bar">
-            <div id="progress-fill" class="progress-fill"></div>
-        </div>
-        <div class="progress-labels">
-            <span id="start-label">0 Gems</span>
-            <span id="current-label">0 Gems</span>
-            <span id="goal-label">0 Gems</span>
-        </div>
-    </div>
-
-    
     <div class="section-container">
         <!-- GUI Containers in the new order -->
         <div id="guiLeft" class="gui night-mode">
@@ -367,33 +318,6 @@
             document.getElementById('goalResult').innerHTML = `After <span class="highlight">${days}</span> days, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
         }
 
-updateProgressBar(); // Only update progress bar in this function
-        }
-
-        function updateProgressBar() {
-            let initialBalance = parseInput(document.getElementById('initialBalance').value);
-            let goalBalance = parseInput(document.getElementById('goalBalance').value);
-
-            let percentage = Math.min((initialBalance / goalBalance) * 100, 100);
-            let progressFill = document.getElementById('progress-fill');
-            let currentLabel = document.getElementById('current-label');
-            let goalLabel = document.getElementById('goal-label');
-
-            progressFill.style.width = percentage + '%';
-            currentLabel.textContent = formatNumber(initialBalance) + ' Gems';
-            goalLabel.textContent = formatNumber(goalBalance) + ' Gems';
-
-            if (initialBalance === 0) {
-                document.getElementById('current-label').textContent = '0 Gems';
-            }
-
-            if (goalBalance === 0) {
-                document.getElementById('goal-label').textContent = '0 Gems';
-            }
-        }
-
-
-        
         function closeDonatePopup() {
             document.getElementById('donatePopup').style.display = 'none';
         }
