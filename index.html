@@ -7,19 +7,37 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="countdown">Countdown: <span id="timer"></span></div>
-    <div id="wheel-container">
-        <canvas id="wheel" width="500" height="500"></canvas>
-    </div>
-    <div id="controls">
-        <input type="text" id="discord-username" placeholder="Enter Discord Username">
-        <button id="enter-btn">Enter</button>
-        <button id="start-btn">Start Giveaway</button>
-        <button id="update-settings-btn">Update Settings</button>
-    </div>
-    <div id="winner">
-        <h2>Winner: <span id="winner-name"></span></h2>
-    </div>
+    <header>
+        <h1>Giveaway Spin Wheel</h1>
+    </header>
+    <main>
+        <section id="countdown-section">
+            <h2>Countdown</h2>
+            <div id="countdown-timer">00:00</div>
+        </section>
+        <section id="wheel-section">
+            <h2>Spin the Wheel!</h2>
+            <canvas id="wheel" width="500" height="500"></canvas>
+            <button id="spin-btn">Spin the Wheel</button>
+        </section>
+        <section id="entry-section">
+            <h2>Enter the Giveaway</h2>
+            <input type="text" id="discord-username" placeholder="Enter your Discord username">
+            <button id="enter-btn">Enter</button>
+        </section>
+        <section id="winner-section">
+            <h2>Winner</h2>
+            <div id="winner-name">None</div>
+        </section>
+        <section id="admin-section">
+            <h2>Admin Controls</h2>
+            <input type="number" id="countdown-input" placeholder="Countdown (minutes)">
+            <button id="update-settings-btn">Update Countdown</button>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Giveaway Spin Wheel</p>
+    </footer>
     <script src="script.js"></script>
 </body>
 </html>
