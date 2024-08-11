@@ -368,6 +368,59 @@
             }
         }
 
+        // Assuming you have opened the progress bar page in a separate window or iframe
+const progressBarWindow = window.open('progress-bar.html', 'ProgressBar');
+
+// Function to send data
+function sendProgressBarUpdate(currentBalance, goalBalance) {
+    if (progressBarWindow) {
+        progressBarWindow.postMessage({
+            currentBalance: currentBalance,
+            goalBalance: goalBalance
+        }, '*');
+    }
+}
+
+// Update call in the existing calculator logic
+function calculateDays() {
+    let initialBalance = parseInput(document.getElementById('initialBalance').value);
+    let goalBalance = parseInput(document.getElementById('goalBalance').value);
+    let dailyInterestRate = 0.009;
+
+    let days = 0;
+    let balance = initialBalance;
+    let dailyBalances = [];
+
+    while (balance < goalBalance) {
+        let profit = balance * dailyInterestRate;
+        balance += profit;
+        dailyBalances.push({
+            day: days + 1,
+            balance: balance,
+            profit: profit
+        });
+        days++;
+    }
+
+    let years = Math.floor(days / 365);
+    let remainingDays = days % 365;
+    let months = Math.floor(remainingDays / 30);
+    remainingDays = remainingDays % 30;
+
+    document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, and <span class="highlight">${remainingDays}</span> days.`;
+
+    // Send data to the progress bar
+    sendProgressBarUpdate(initialBalance, goalBalance);
+}
+
+// Listen for messages in the progress bar page
+window.addEventListener('message', function(event) {
+    if (event.data.currentBalance !== undefined && event.data.goalBalance !== undefined) {
+        updateProgressBar(event.data.currentBalance, event.data.goalBalance);
+    }
+});
+
+
         document.querySelectorAll('input[type="text"]').forEach(input => {
             input.addEventListener('input', function() {
                 formatInput(this);
@@ -387,70 +440,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXP Calculator with Progress Bar</title>
+    <title>Progress Bar Integration</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
             background-color: #1e1e1e;
             color: #d1d1d1;
-            overflow-x: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            justify-content: center;
-        }
-
-        .container {
-            background-color: #333842;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 400px;
-            text-align: center;
-            border: 2px solid #555;
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
-        label {
-            font-size: 1.1em;
-            margin-bottom: 10px;
-            display: block;
-            margin-top: 20px;
-        }
-
-        input[type="text"], select {
-            padding: 10px;
-            font-size: 1em;
-            width: 100%;
-            margin-bottom: 20px;
-            border: 1px solid #555;
-            border-radius: 5px;
-            background-color: #333842;
-            color: #ffffff;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 1em;
-            background-color: #007bff;
-            color: #ffffff;
-            border: 1px solid #0056b3;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            margin-bottom: 20px;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        .goal-bar-container {
+        .progress-bar-container {
             width: 100%;
             max-width: 800px;
             background-color: #2c2f36;
@@ -462,7 +466,7 @@
             position: relative;
         }
 
-        .goal-bar-labels {
+        .progress-bar-labels {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -471,7 +475,7 @@
             color: #ffffff;
         }
 
-        .goal-bar {
+        .progress-bar {
             width: 100%;
             height: 20px;
             background-color: #1e1e1e;
@@ -481,15 +485,15 @@
             border: 1px solid #444;
         }
 
-        .goal-bar-fill {
+        .progress-bar-fill {
             height: 100%;
-            width: 0%;
+            width: 0%; /* Start with 0% */
             background: linear-gradient(90deg, #007bff, #00c6ff);
             border-radius: 10px;
             transition: width 0.6s ease-in-out;
         }
 
-        #goalPercentageLabel {
+        #progressPercentageLabel {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -501,78 +505,44 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Calculate Days to Reach Goal</h2>
-        <label for="initialBalance">Balance (Gems): </label>
-        <input type="text" id="initialBalance" value="1,000">
-
-        <label for="goalBalance">Goal Balance (Gems): </label>
-        <input type="text" id="goalBalance" value="5,000">
-
-        <button onclick="calculateDays()">Calculate Days</button>
-
-        <div class="goal-bar-container">
-            <div class="goal-bar-labels">
-                <div id="currentBalanceLabel">Current: 0 Gems</div>
-                <div id="goalPercentageLabel">0%</div>
-                <div id="goalBalanceLabel">Goal: 0 Gems</div>
-            </div>
-            <div class="goal-bar">
-                <div class="goal-bar-fill" id="goalBarFill"></div>
-            </div>
+    <div class="progress-bar-container">
+        <div class="progress-bar-labels">
+            <div id="currentBalanceLabel">Current: 0 Gems</div>
+            <div id="progressPercentageLabel">0%</div>
+            <div id="goalBalanceLabel">Goal: 0 Gems</div>
         </div>
-
-        <div id="result">Enter values and click "Calculate Days" to see the results.</div>
+        <div class="progress-bar">
+            <div class="progress-bar-fill" id="progressBarFill"></div>
+        </div>
     </div>
 
     <script>
+        // Function to update the progress bar
+        function updateProgressBar(currentBalance, goalBalance) {
+            if (goalBalance <= 0) return;
+
+            const percentage = Math.min((currentBalance / goalBalance) * 100, 100);
+            document.getElementById('progressBarFill').style.width = `${percentage}%`;
+            document.getElementById('progressPercentageLabel').textContent = `${Math.round(percentage)}%`;
+            document.getElementById('currentBalanceLabel').textContent = `Current: ${formatNumber(currentBalance)} Gems`;
+            document.getElementById('goalBalanceLabel').textContent = `Goal: ${formatNumber(goalBalance)} Gems`;
+        }
+
+        // Function to format numbers with commas
         function formatNumber(num) {
             return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         }
 
-        function parseInput(value) {
-            return parseFloat(value.replace(/,/g, '')) || 0;
+        // Example usage (Replace with actual data integration)
+        function exampleUpdate() {
+            // Simulate current and goal balance (replace with actual values)
+            const currentBalance = 1500;
+            const goalBalance = 5000;
+            updateProgressBar(currentBalance, goalBalance);
         }
 
-        function updateGoalBar(currentBalance, goalBalance) {
-            if (goalBalance <= 0) return;
-
-            const percentage = Math.min((currentBalance / goalBalance) * 100, 100);
-            const goalBarFill = document.getElementById('goalBarFill');
-            const goalPercentageLabel = document.getElementById('goalPercentageLabel');
-            const currentBalanceLabel = document.getElementById('currentBalanceLabel');
-            const goalBalanceLabel = document.getElementById('goalBalanceLabel');
-
-            goalBarFill.style.width = `${percentage}%`;
-            goalPercentageLabel.textContent = `${Math.round(percentage)}%`;
-            currentBalanceLabel.textContent = `Current: ${formatNumber(currentBalance)} Gems`;
-            goalBalanceLabel.textContent = `Goal: ${formatNumber(goalBalance)} Gems`;
-        }
-
-        function calculateDays() {
-            let initialBalance = parseInput(document.getElementById('initialBalance').value);
-            let goalBalance = parseInput(document.getElementById('goalBalance').value);
-            let dailyInterestRate = 0.009;
-
-            let days = 0;
-            let balance = initialBalance;
-
-            while (balance < goalBalance) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
-                days++;
-            }
-
-            let years = Math.floor(days / 365);
-            let remainingDays = days % 365;
-            let months = Math.floor(remainingDays / 30);
-            remainingDays = remainingDays % 30;
-
-            document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, and <span class="highlight">${remainingDays}</span> days.`;
-            
-            // Update the progress bar
-            updateGoalBar(balance, goalBalance);
-        }
+        // Initialize example update
+        exampleUpdate();
     </script>
 </body>
 </html>
