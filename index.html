@@ -422,20 +422,19 @@ window.addEventListener('message', function(event) {
 </html>
 
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Profit Tracker</title>
+    <title>Projected Balance Comparison</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            background-color: #1e1e1e; /* Default to night mode */
+            background-color: #1e1e1e;
             color: #d1d1d1;
             display: flex;
             flex-direction: column;
@@ -454,7 +453,7 @@ window.addEventListener('message', function(event) {
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 350px;
+            width: 400px;
             text-align: center;
             border: 2px solid #555;
         }
@@ -465,7 +464,7 @@ window.addEventListener('message', function(event) {
             display: block;
         }
 
-        input[type="text"] {
+        input[type="text"], select {
             padding: 10px;
             font-size: 1em;
             width: 100%;
@@ -491,50 +490,34 @@ window.addEventListener('message', function(event) {
             background-color: #0056b3;
         }
 
-        #trackerResult {
+        #comparisonResult {
             margin-top: 20px;
             font-size: 1.2em;
-        }
-
-        .profit {
-            color: #00ff00;
         }
 
         .highlight {
             color: #ff4757;
             font-weight: bold;
         }
-
-        /* Custom scrollbar styles */
-        ::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #2c2f36;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #555;
-            border-radius: 6px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #777;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Daily Profit Tracker</h1>
-        <label for="trackerInitialBalance">Initial Balance (Gems): </label>
-        <input type="text" id="trackerInitialBalance" value="1,000">
+        <h1>Projected Balance Comparison</h1>
+        <label for="comparisonInitialBalance">Initial Balance (Gems): </label>
+        <input type="text" id="comparisonInitialBalance" value="1,000">
 
-        <label for="trackerDays">Number of Days: </label>
-        <input type="text" id="trackerDays" value="30">
+        <label for="comparisonDays">Number of Days: </label>
+        <input type="text" id="comparisonDays" value="30">
 
-        <button onclick="trackDailyProfit()">Track Daily Profit</button>
-        <div id="trackerResult">Enter values and click "Track Daily Profit" to see the results.</div>
+        <label for="interestRate1">Interest Rate 1 (%): </label>
+        <input type="text" id="interestRate1" value="0.9">
+
+        <label for="interestRate2">Interest Rate 2 (%): </label>
+        <input type="text" id="interestRate2" value="1.5">
+
+        <button onclick="compareBalances()">Compare Balances</button>
+        <div id="comparisonResult">Enter values and click "Compare Balances" to see the results.</div>
     </div>
 
     <script>
@@ -546,21 +529,28 @@ window.addEventListener('message', function(event) {
             return parseFloat(value.replace(/,/g, '')) || 0;
         }
 
-        function trackDailyProfit() {
-            let initialBalance = parseInput(document.getElementById('trackerInitialBalance').value);
-            let days = parseInput(document.getElementById('trackerDays').value);
-            let dailyInterestRate = 0.009; // 0.9%
-
+        function calculateBalance(initialBalance, days, dailyInterestRate) {
             let balance = initialBalance;
-            let resultHtml = '<h2>Daily Profits:</h2>';
-
-            for (let i = 1; i <= days; i++) {
-                let profit = balance * dailyInterestRate;
-                balance += profit;
-                resultHtml += `Day ${i}: Balance: ${formatNumber(balance)} | Profit: <span class="profit">${formatNumber(profit)}</span><br>`;
+            for (let i = 0; i < days; i++) {
+                balance += balance * (dailyInterestRate / 100);
             }
+            return balance;
+        }
 
-            document.getElementById('trackerResult').innerHTML = resultHtml;
+        function compareBalances() {
+            let initialBalance = parseInput(document.getElementById('comparisonInitialBalance').value);
+            let days = parseInput(document.getElementById('comparisonDays').value);
+            let interestRate1 = parseInput(document.getElementById('interestRate1').value);
+            let interestRate2 = parseInput(document.getElementById('interestRate2').value);
+
+            let finalBalance1 = calculateBalance(initialBalance, days, interestRate1);
+            let finalBalance2 = calculateBalance(initialBalance, days, interestRate2);
+
+            document.getElementById('comparisonResult').innerHTML = `
+                With an initial balance of ${formatNumber(initialBalance)} gems over ${days} days:<br>
+                - Interest Rate ${interestRate1}%: <span class="highlight">${formatNumber(finalBalance1)}</span> gems<br>
+                - Interest Rate ${interestRate2}%: <span class="highlight">${formatNumber(finalBalance2)}</span> gems
+            `;
         }
     </script>
 </body>
