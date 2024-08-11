@@ -1,9 +1,9 @@
-// server.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
+// Admin IP address
 const adminIP = '178.117.160.221';
 
 app.use(bodyParser.json());
@@ -49,4 +49,5 @@ app.post('/settings', restrictToAdmin, (req, res) => {
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
+
 
