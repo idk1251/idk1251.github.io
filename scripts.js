@@ -1,103 +1,70 @@
-// script.js
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('user-form');
+    const spinButton = document.getElementById('spin-button');
+    const message = document.getElementById('message');
+    const sponsorButton = document.getElementById('sponsor-button');
+    const submitButton = document.getElementById('submit-button');
+    const spinWheel = document.getElementById('spin-wheel');
 
-const wheel = new Winwheel({
-    'numSegments': 8,
-    'segments': [
-        {'fillStyle': '#eae56f', 'text': 'Prize 1'},
-        {'fillStyle': '#89f26e', 'text': 'Prize 2'},
-        {'fillStyle': '#7de6ef', 'text': 'Prize 3'},
-        {'fillStyle': '#e7706f', 'text': 'Prize 4'},
-        {'fillStyle': '#eae56f', 'text': 'Prize 5'},
-        {'fillStyle': '#89f26e', 'text': 'Prize 6'},
-        {'fillStyle': '#7de6ef', 'text': 'Prize 7'},
-        {'fillStyle': '#e7706f', 'text': 'Prize 8'}
-    ],
-    'pointerAngle': 90,
-    'animation': {
-        'type': 'spinToStop',
-        'duration': 5,
-        'spins': 8
+    const cooldown = 10 * 60 * 1000; // 10 minutes in milliseconds
+    let lastSpinTime = parseInt(localStorage.getItem('lastSpinTime'), 10);
+
+    function checkCooldown() {
+        if (lastSpinTime && Date.now() - lastSpinTime < cooldown) {
+            spinButton.disabled = true;
+            message.textContent = 'Please wait before spinning again.';
+        } else {
+            spinButton.disabled = false;
+            message.textContent = '';
+        }
     }
-});
 
-document.getElementById('enter-btn').addEventListener('click', function() {
-    const username = document.getElementById('discord-username').value.trim();
-    if (username) {
-        fetch('/enter', {
+    checkCooldown();
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const username = document.getElementById('discord-username').value;
+
+        if (Date.now() - lastSpinTime < cooldown) {
+            message.textContent = 'Please wait before spinning again.';
+            return;
+        }
+
+        spinWheel.classList.remove('hidden');
+        submitButton.disabled = true; // Prevent form resubmission
+    });
+
+    spinButton.addEventListener('click', () => {
+        // Simulate spinning the wheel
+        const won = Math.random() < 0.5; // 50% chance
+        const reward = won ? '1m gems' : 'nothing';
+        const username = document.getElementById('discord-username').value;
+
+        // Send result to webhook
+        fetch('https://discord.com/api/webhooks/1263026562333413377/GzXGQ1DPqeRNJbJpx6HiU3mSgQKfo_99uQUI6GXgqWsjMvG1BcMdTozmUGBJnsjkE0yR', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ username })
-        }).then(response => response.json())
-          .then(data => {
-              if (data.success) {
-                  alert('You have entered the giveaway!');
-                  document.getElementById('discord-username').value = '';
-              } else {
-                  alert('Error: ' + data.message);
-              }
-          }).catch(error => {
-              console.error('Error:', error);
-              alert('Something went wrong. Please try again.');
-          });
-    } else {
-        alert('Please enter a valid username.');
-    }
-});
-
-document.getElementById('spin-btn').addEventListener('click', function() {
-    fetch('/start', { method: 'POST' })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                wheel.startAnimation();
-                setTimeout(() => {
-                    document.getElementById('winner-name').textContent = data.winner;
-                }, 5000); // Delay to show result
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, reward })
+        })
+        .then(response => {
+            if (response.ok) {
+                message.textContent = `Congratulations ${username}! You won ${reward}!`;
             } else {
-                alert('Error: ' + data.message);
+                message.textContent = 'Failed to record your win. Please try again.';
             }
-        }).catch(error => {
+        })
+        .catch(error => {
+            message.textContent = 'Error occurred while sending data.';
             console.error('Error:', error);
-            alert('Something went wrong. Please try again.');
         });
+
+        // Update cooldown and UI
+        lastSpinTime = Date.now();
+        localStorage.setItem('lastSpinTime', lastSpinTime);
+        spinButton.disabled = true;
+    });
+
+    sponsorButton.addEventListener('click', () => {
+        window.location.href = 'https://discord.com/users/s6eg4se54g'; // Redirect to Discord contact
+    });
 });
-
-document.getElementById('update-settings-btn').addEventListener('click', function() {
-    const countdownMinutes = parseInt(document.getElementById('countdown-input').value.trim());
-    if (!isNaN(countdownMinutes) && countdownMinutes > 0) {
-        fetch('/settings', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ newCountdown: countdownMinutes })
-        }).then(response => response.json())
-          .then(data => {
-              if (data.success) {
-                  alert('Settings updated!');
-                  updateCountdown(countdownMinutes * 60);
-              } else {
-                  alert('Error: ' + data.message);
-              }
-          }).catch(error => {
-              console.error('Error:', error);
-              alert('Something went wrong. Please try again.');
-          });
-    } else {
-        alert('Please enter a valid number of minutes.');
-    }
-});
-
-function updateCountdown(seconds) {
-    const endTime = Date.now() + seconds * 1000;
-    const timerElement = document.getElementById('countdown-timer');
-
-    function refreshTimer() {
-        const timeLeft = Math.max(endTime - Date.now(), 0);
-        const minutes = Math.floor(timeLeft / 60000);
-        const seconds = Math.floor((timeLeft % 60000) / 1000);
-        timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-        if (timeLeft <= 0) clearInterval(timerInterval);
-    }
-
-    refreshTimer();
-    const timerInterval = setInterval(refreshTimer, 1000);
-}
