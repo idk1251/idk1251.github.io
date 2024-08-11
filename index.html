@@ -379,3 +379,98 @@
     </script>
 </body>
 </html>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Bar</title>
+    <style>
+        .goal-bar-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #2c2f36;
+            border-radius: 25px;
+            margin: 40px auto;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            position: relative;
+        }
+
+        .goal-bar-labels {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #ffffff;
+        }
+
+        .goal-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #444;
+        }
+
+        .goal-bar-fill {
+            height: 100%;
+            width: 0%; /* Start with 0% */
+            background: linear-gradient(90deg, #007bff, #00c6ff);
+            border-radius: 10px;
+            transition: width 0.6s ease-in-out;
+        }
+
+        #goalPercentageLabel {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="goal-bar-container">
+        <div class="goal-bar-labels">
+            <div id="currentBalanceLabel">Current: 0 Gems</div>
+            <div id="goalPercentageLabel">0%</div>
+            <div id="goalBalanceLabel">Goal: 0 Gems</div>
+        </div>
+        <div class="goal-bar">
+            <div class="goal-bar-fill" id="goalBarFill"></div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to update the goal bar
+        function updateGoalBar(currentBalance, goalBalance) {
+            if (goalBalance <= 0) return;
+
+            const percentage = Math.min((currentBalance / goalBalance) * 100, 100);
+            const goalBarFill = document.getElementById('goalBarFill');
+            const goalPercentageLabel = document.getElementById('goalPercentageLabel');
+            const currentBalanceLabel = document.getElementById('currentBalanceLabel');
+            const goalBalanceLabel = document.getElementById('goalBalanceLabel');
+
+            goalBarFill.style.width = `${percentage}%`;
+            goalPercentageLabel.textContent = `${Math.round(percentage)}%`;
+            currentBalanceLabel.textContent = `Current: ${currentBalance.toLocaleString()} Gems`;
+            goalBalanceLabel.textContent = `Goal: ${goalBalance.toLocaleString()} Gems`;
+        }
+
+        // Example usage
+        updateGoalBar(500000, 1000000); // Current balance, Goal balance
+    </script>
+</body>
+</html>
+
