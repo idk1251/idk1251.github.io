@@ -97,30 +97,6 @@
             font-size: 1.2em;
         }
 
-        #donatePopup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            z-index: 10;
-            background-color: #333842;
-            color: #d1d1d1;
-            border: 2px solid #555; /* Thicker border */
-            max-width: 90%;
-            max-height: 80%;
-            overflow-y: auto;
-        }
-
-        #closePopup {
-            margin-top: 20px;
-            width: 100%;
-            border: 1px solid #555; /* Thicker border */
-        }
 
         .guis-container {
             display: flex;
@@ -269,13 +245,6 @@
         </div>
     </div>
 
-    <div id="donatePopup">
-        <h2>Donate to support!</h2>
-        <p>If you'd like to support the development, please consider donating!</p>
-        <button id="closePopup" onclick="closePopup()">Close</button>
-    </div>
-
-    <button id="donateButton" onclick="showDonatePopup()">Donate</button>
 
     <script>
         function parseInput(value) {
@@ -361,13 +330,6 @@
             document.getElementById('goalResult').innerHTML = `After ${timeValue} ${timeUnit}, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
         }
 
-        function showDonatePopup() {
-            document.getElementById('donatePopup').style.display = 'block';
-        }
-
-        function closePopup() {
-            document.getElementById('donatePopup').style.display = 'none';
-        }
     </script>
 </body>
 </html>
