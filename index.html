@@ -505,12 +505,12 @@
 
         .controls {
             flex: 1;
-            max-width: 300px;
         }
 
         .results {
             flex: 2;
             overflow-y: auto;
+            max-height: 500px;
         }
 
         h1 {
@@ -552,12 +552,6 @@
             background-color: #0056b3;
         }
 
-        #earningsResult {
-            margin-top: 20px;
-            font-size: 1em;
-            line-height: 1.5;
-        }
-
         .highlight {
             color: #ff4757;
             font-weight: bold;
@@ -594,42 +588,89 @@
         function calculateEarnings() {
             let initialBalance = parseInput(document.getElementById('initialBalance').value);
             let dailyInterestRate = parseInput(document.getElementById('dailyInterestRate').value) / 100;
-            
-            let hourlyInterestRate = dailyInterestRate / 24;
-            let earningsText = '';
 
-            function generateEarnings(period, rate, days) {
-                let balance = initialBalance;
-                let earnings = [];
-                for (let i = 1; i <= days; i++) {
-                    let profit = balance * rate;
-                    balance += profit;
-                    earnings.push({
-                        day: i,
-                        balance: formatNumber(balance),
-                        profit: formatNumber(profit)
+            // Calculate earnings for different time periods
+            let results = {
+                hourly: [],
+                daily: [],
+                weekly: [],
+                monthly: [],
+                yearly: []
+            };
+
+            let balance = initialBalance;
+            let hours = 0;
+            let days = 0;
+            let weeks = 0;
+            let months = 0;
+            let years = 0;
+            let intervals = {
+                hour: 1,
+                day: 24,
+                week: 168,
+                month: 730, // Approximate days in a month
+                year: 8760 // Approximate hours in a year
+            };
+
+            while (hours <= intervals.year) {
+                let hourlyInterestRate = Math.pow(1 + dailyInterestRate, 1 / 24) - 1;
+                let profit = balance * hourlyInterestRate;
+                balance += profit;
+                results.hourly.push({
+                    hour: hours + 1,
+                    balance: balance,
+                    profit: profit
+                });
+                hours++;
+                if (hours % intervals.hour === 0) {
+                    let dailyProfit = balance * dailyInterestRate;
+                    results.daily.push({
+                        day: days + 1,
+                        balance: balance,
+                        profit: dailyProfit
                     });
+                    days++;
+                    if (days % 7 === 0) {
+                        results.weekly.push({
+                            week: weeks + 1,
+                            balance: balance,
+                            profit: dailyProfit * 7
+                        });
+                        weeks++;
+                    }
+                    if (days % 30 === 0) {
+                        results.monthly.push({
+                            month: months + 1,
+                            balance: balance,
+                            profit: dailyProfit * 30
+                        });
+                        months++;
+                    }
+                    if (days % 365 === 0) {
+                        results.yearly.push({
+                            year: years + 1,
+                            balance: balance,
+                            profit: dailyProfit * 365
+                        });
+                        years++;
+                    }
                 }
-                return earnings;
             }
 
-            function formatEarnings(earnings) {
-                return earnings.map(e => `Day ${e.day}: Balance: ${e.balance} | Profit: ${e.profit}`).join('<br>');
-            }
+            // Format results
+            let formatResults = (resultsArray, timeLabel) => {
+                return resultsArray.map(item => 
+                    `${timeLabel} ${item[timeLabel]}: Balance: ${formatNumber(item.balance)} | Profit: ${formatNumber(item.profit)}`
+                ).join('<br>');
+            };
 
-            let hourlyEarnings = generateEarnings(24, hourlyInterestRate, 30);
-            let dailyEarnings = generateEarnings(1, dailyInterestRate, 30);
-            let weeklyEarnings = generateEarnings(7, dailyInterestRate * 7, 30);
-            let monthlyEarnings = generateEarnings(30, dailyInterestRate * 30, 30);
-            let yearlyEarnings = generateEarnings(365, dailyInterestRate * 365, 30);
-
-            earningsText += `<h2>Hourly Earnings (30 Days)</h2><div>${formatEarnings(hourlyEarnings)}</div>`;
-            earningsText += `<h2>Daily Earnings (30 Days)</h2><div>${formatEarnings(dailyEarnings)}</div>`;
-            earningsText += `<h2>Weekly Earnings (30 Days)</h2><div>${formatEarnings(weeklyEarnings)}</div>`;
-            earningsText += `<h2>Monthly Earnings (30 Days)</h2><div>${formatEarnings(monthlyEarnings)}</div>`;
-            earningsText += `<h2>Yearly Earnings (30 Days)</h2><div>${formatEarnings(yearlyEarnings)}</div>`;
-
-            document.getElementById('earningsResult').innerHTML = earningsText;
+            document.getElementById('earningsResult').innerHTML = `
+                <strong>Hourly Earnings:</strong><br>${formatResults(results.hourly, 'hour')}<br><br>
+                <strong>Daily Earnings:</strong><br>${formatResults(results.daily, 'day')}<br><br>
+                <strong>Weekly Earnings:</strong><br>${formatResults(results.weekly, 'week')}<br><br>
+                <strong>Monthly Earnings:</strong><br>${formatResults(results.monthly, 'month')}<br><br>
+                <strong>Yearly Earnings:</strong><br>${formatResults(results.yearly, 'year')}
+            `;
         }
     </script>
 </body>
