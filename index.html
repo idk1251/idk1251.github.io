@@ -5,28 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EXP Calculator</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        /* Base styles */
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: background-color 0.3s, color 0.3s;
-            background-color: #1e1e1e; /* Default to night mode */
-            color: #d1d1d1;
-            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212; /* Deeper night mode */
+            color: #e0e0e0;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
             justify-content: center;
+            padding: 20px;
         }
 
         h1 {
-            color: #007bff;
+            color: #00aaff;
             text-align: center;
-            margin: 30px 0;
+            margin: 20px 0;
+            font-size: 2.5em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: color 0.3s;
         }
 
+        h1:hover {
+            color: #0077cc;
+        }
+
+        /* Section containers */
         .section-container {
             display: flex;
             justify-content: center;
@@ -34,92 +46,82 @@
             gap: 20px;
             flex-wrap: wrap;
             padding: 20px;
+            width: 100%;
+            max-width: 1200px;
         }
 
+        /* Panel containers */
         .container {
             background-color: #333842;
-            padding: 30px;
+            padding: 25px;
             border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 400px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
             text-align: center;
-            border: 2px solid #555; /* Thicker border */
-            box-sizing: border-box;
+            transition: transform 0.3s;
         }
 
+        .container:hover {
+            transform: scale(1.05);
+        }
+
+        /* Label and input styling */
         label {
             font-size: 1.1em;
             margin-bottom: 10px;
             display: block;
-            margin-top: 20px; /* Add more space above */
+            margin-top: 20px;
         }
 
         input[type="text"], select {
-            padding: 10px;
+            padding: 12px;
             font-size: 1em;
             width: 100%;
             margin-bottom: 20px;
-            border: 1px solid #555; /* Thicker border */
+            border: 1px solid #777;
             border-radius: 5px;
-            box-sizing: border-box;
-            background-color: #333842;
+            background-color: #2b2f38;
             color: #ffffff;
+            transition: border-color 0.3s;
         }
 
+        input[type="text"]:focus, select:focus {
+            border-color: #00aaff;
+            outline: none;
+        }
+
+        /* Button styling */
         button {
-            padding: 10px 20px;
-            font-size: 1em;
-            background-color: #007bff;
+            padding: 12px 20px;
+            font-size: 1.1em;
+            background-color: #00aaff;
             color: #ffffff;
-            border: 1px solid #0056b3;
+            border: none;
             border-radius: 5px;
             cursor: pointer;
             width: 100%;
             margin-bottom: 20px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.3s;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #0077cc;
+            transform: translateY(-3px);
         }
 
         #donateButton {
             background-color: #ff4757;
-            border: 1px solid #e73b4d;
         }
 
         #donateButton:hover {
             background-color: #e73b4d;
         }
 
+        /* Result styling */
         #result, #goalResult {
             margin-top: 20px;
             font-size: 1.2em;
-        }
-
-
-        .guis-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .gui {
-            width: 300px;
-            height: 400px;
-            overflow-y: auto;
-            border: 2px solid #555; /* Thicker border */
-            border-radius: 10px;
-            background: rgba(40, 44, 52, 0.8);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            padding: 15px;
-            box-sizing: border-box;
-        }
-
-        .profit {
-            color: #00ff00;
         }
 
         .highlight {
@@ -127,15 +129,38 @@
             font-weight: bold;
         }
 
+        /* GUI Container */
+        .gui {
+            width: 100%;
+            max-width: 300px;
+            height: 400px;
+            overflow-y: auto;
+            border: 2px solid #555;
+            border-radius: 10px;
+            background: rgba(40, 44, 52, 0.85);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            transition: transform 0.3s;
+        }
+
+        .gui:hover {
+            transform: scale(1.05);
+        }
+
+        .profit {
+            color: #00ff00;
+        }
+
         .leaderboard {
             text-align: left;
-            height: 400px; /* Fixed height for consistent scrolling */
+            height: 400px;
             overflow-y: auto;
         }
 
         .leaderboard h2 {
             text-align: center;
             color: #ff4757;
+            margin-bottom: 10px;
         }
 
         .leaderboard ul {
@@ -144,50 +169,62 @@
         }
 
         .leaderboard li {
-            padding: 5px 0;
+            padding: 8px 0;
             border-bottom: 1px solid #555;
-            color: #d1d1d1;
         }
 
-        /* Custom scrollbar styles */
+        /* Custom scrollbar */
         ::-webkit-scrollbar {
-            width: 12px; /* Width of the scrollbar */
+            width: 10px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #2c2f36; /* Track color */
+            background: #2c2f36;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #555; /* Handle color */
-            border-radius: 6px;
+            background: #555;
+            border-radius: 5px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #777; /* Handle color on hover */
+            background: #777;
         }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .container, .gui {
+                max-width: 100%;
+                padding: 20px;
+            }
+        }
+
     </style>
 </head>
-<body class="night-mode">
+<body>
     <h1>EXP Balance Calculator</h1>
     <h1>(by s6eg4se54g)</h1>
     <div class="section-container">
         <!-- GUI Containers in the new order -->
-        <div id="guiLeft" class="gui night-mode">
+        <div id="guiLeft" class="gui">
             <h2>First 30 Days</h2>
             <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div class="container night-mode">
+        <div class="container">
             <h2>Calculate Days to Reach Goal</h2>
             <label for="initialBalance">Balance (Gems): </label>
-            <input type="text" id="initialBalance" value="1,000" class="night-mode">
+            <input type="text" id="initialBalance" value="1,000">
 
             <label for="goalBalance">Goal Balance (Gems): </label>
-            <input type="text" id="goalBalance" value="5,000" class="night-mode">
+            <input type="text" id="goalBalance" value="5,000">
 
             <label for="rankSelect">Select Goal Rank: </label>
-            <select id="rankSelect" class="night-mode" onchange="updateGoalBalance()">
+            <select id="rankSelect" onchange="updateGoalBalance()">
                 <option value="">Select a Rank</option>
                 <option value="96000000">Donator ― 96M+</option>
                 <option value="320000000">Ethereal ― 320M+</option>
@@ -201,21 +238,21 @@
             <div id="result">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div id="guiRight" class="gui night-mode">
+        <div id="guiRight" class="gui">
             <h2>Last 30 Days</h2>
             <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div class="container night-mode">
+        <div class="container">
             <h2>Calculate Goal Balance after X Time</h2>
             <label for="initialBalance2">Balance (Gems): </label>
-            <input type="text" id="initialBalance2" value="1,000" class="night-mode">
+            <input type="text" id="initialBalance2" value="1,000">
 
             <label for="timeInput">Amount of Time: </label>
-            <input type="text" id="timeInput" value="30" class="night-mode">
+            <input type="text" id="timeInput" value="30">
 
             <label for="timeUnit">Time Unit: </label>
-            <select id="timeUnit" class="night-mode">
+            <select id="timeUnit">
                 <option value="days">Days</option>
                 <option value="weeks">Weeks</option>
                 <option value="months">Months</option>
@@ -226,8 +263,8 @@
             <div id="goalResult">Enter time and click "Calculate Goal" to see the results.</div>
         </div>
 
-        <div id="leaderboardGui" class="gui night-mode leaderboard">
-            <h2>Donation leaderboard!</h2>
+        <div id="leaderboardGui" class="gui leaderboard">
+            <h2>Donation Leaderboard!</h2>
             <h2>/gift @s6eg4se54g</h2>
             <h3>Top 10 Donators</h3>
             <ul>
@@ -244,7 +281,6 @@
             </ul>
         </div>
     </div>
-
 
     <script>
         function parseInput(value) {
@@ -333,143 +369,3 @@
     </script>
 </body>
 </html>
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projected Balance Comparison</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            background-color: #1e1e1e;
-            color: #d1d1d1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            justify-content: center;
-        }
-
-        h1 {
-            color: #007bff;
-            margin-bottom: 20px;
-        }
-
-        .container {
-            background-color: #333842;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 400px;
-            text-align: center;
-            border: 2px solid #555;
-        }
-
-        label {
-            font-size: 1.1em;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        input[type="text"], select {
-            padding: 10px;
-            font-size: 1em;
-            width: 100%;
-            margin-bottom: 20px;
-            border: 1px solid #555;
-            border-radius: 5px;
-            background-color: #333842;
-            color: #ffffff;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 1em;
-            background-color: #007bff;
-            color: #ffffff;
-            border: 1px solid #0056b3;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        #comparisonResult {
-            margin-top: 20px;
-            font-size: 1.2em;
-        }
-
-        .highlight {
-            color: #ff4757;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Projected Balance Comparison</h1>
-        <label for="comparisonInitialBalance">Initial Balance (Gems): </label>
-        <input type="text" id="comparisonInitialBalance" value="1,000">
-
-        <label for="comparisonDays">Number of Days: </label>
-        <input type="text" id="comparisonDays" value="30">
-
-        <label for="interestRate1">Interest Rate 1 (%): </label>
-        <input type="text" id="interestRate1" value="0.9">
-
-        <label for="interestRate2">Interest Rate 2 (%): </label>
-        <input type="text" id="interestRate2" value="1.5">
-
-        <button onclick="compareBalances()">Compare Balances</button>
-        <div id="comparisonResult">Enter values and click "Compare Balances" to see the results.</div>
-    </div>
-
-    <script>
-        function formatNumber(num) {
-            return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
-        }
-
-        function parseInput(value) {
-            return parseFloat(value.replace(/,/g, '')) || 0;
-        }
-
-        function calculateBalance(initialBalance, days, dailyInterestRate) {
-            let balance = initialBalance;
-            for (let i = 0; i < days; i++) {
-                balance += balance * (dailyInterestRate / 100);
-            }
-            return balance;
-        }
-
-        function compareBalances() {
-            let initialBalance = parseInput(document.getElementById('comparisonInitialBalance').value);
-            let days = parseInput(document.getElementById('comparisonDays').value);
-            let interestRate1 = parseInput(document.getElementById('interestRate1').value);
-            let interestRate2 = parseInput(document.getElementById('interestRate2').value);
-
-            let finalBalance1 = calculateBalance(initialBalance, days, interestRate1);
-            let finalBalance2 = calculateBalance(initialBalance, days, interestRate2);
-
-            document.getElementById('comparisonResult').innerHTML = `
-                With an initial balance of ${formatNumber(initialBalance)} gems over ${days} days:<br>
-                - Interest Rate ${interestRate1}%: <span class="highlight">${formatNumber(finalBalance1)}</span> gems<br>
-                - Interest Rate ${interestRate2}%: <span class="highlight">${formatNumber(finalBalance2)}</span> gems
-            `;
-        }
-    </script>
-</body>
-</html>
-
-
-
-
