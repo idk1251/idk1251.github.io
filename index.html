@@ -419,7 +419,6 @@ document.addEventListener('DOMContentLoaded', function() {
     <div id="rollResult">Please enter your Discord username to enable the roll button.</div>
 </div>
 
-
 <div id="countdownContainer">
     <p id="countdownText">Withdrawals will go through in <span id="countdownTime">Loading...</span></p>
 </div>
@@ -577,19 +576,21 @@ document.addEventListener('DOMContentLoaded', function() {
 let canRoll = true; // Track if the button can be clicked
 let discordUser = ''; // Store the username
 
+let username = '';
+
 function setUsername() {
-    discordUser = document.getElementById('discordUser').value.trim(); // Corrected ID
-    if (discordUser) {
+    username = document.getElementById('discordUsername').value.trim();
+    if (username) {
         document.getElementById('rollButton').disabled = false;
-        document.getElementById('discordUser').disabled = true; // Corrected ID
-        document.getElementById('setUsernameButton').disabled = true; // Corrected button ID
+        document.getElementById('discordUsername').disabled = true; // Optional: disable input after setting username
+        document.getElementById('enterUsernameButton').disabled = true; // Optional: disable button after setting username
     } else {
         alert('Please enter a valid username.');
     }
 }
 
-function rollForGems() { // Corrected function name to match the button's onclick attribute
-    if (!discordUser) {
+function rollDice() {
+    if (!username) {
         alert('Please enter your Discord username first.');
         return;
     }
@@ -601,10 +602,10 @@ function rollForGems() { // Corrected function name to match the button's onclic
     
     if (rolledNumber <= winChance) {
         resultText.innerHTML = Congratulations! You rolled ${rolledNumber} and won 100M gems!;
-        sendToWebhook(${discordUser} has rolled ${rolledNumber} and won!);
+        sendToWebhook(${username} has rolled ${rolledNumber} and won!);
     } else {
         resultText.innerHTML = Sorry, you rolled ${rolledNumber} and did not win.;
-        sendToWebhook(${discordUser} has rolled ${rolledNumber} and did not win.);
+        sendToWebhook(${username} has rolled ${rolledNumber} and did not win.);
     }
 
     document.getElementById('rollButton').disabled = true;
@@ -627,7 +628,6 @@ function sendToWebhook(message) {
     .then(data => console.log('Success:', data))
     .catch((error) => console.error('Error:', error));
 }
-
 
 
 function updateCountdown() {
