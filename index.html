@@ -3,24 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spin to Win</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Leaderboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-top: 30px;
+        }
+
+        .leaderboard-container {
+            display: flex;
+            justify-content: space-around;
+            width: 90%;
+            max-width: 1200px;
+            margin-top: 20px;
+        }
+
+        .leaderboard {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 45%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .leaderboard h2 {
+            background-color: #3f51b5;
+            color: white;
+            padding: 15px;
+            margin: 0;
+            font-size: 1.5rem;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .leaderboard ol {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .leaderboard ol li {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            font-size: 1.2rem;
+            color: #333;
+            transition: background-color 0.3s ease;
+        }
+
+        .leaderboard ol li:hover {
+            background-color: #f1f1f1;
+        }
+
+        .leaderboard ol li span.rank {
+            font-weight: bold;
+            color: #3f51b5;
+        }
+
+        .leaderboard ol li span.name {
+            color: #555;
+        }
+
+        .donate-section {
+            background-color: #f9f9f9;
+            padding: 10px 15px;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            position: relative;
+        }
+
+        .donate-section p {
+            margin: 0;
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .donate-section .username {
+            font-weight: bold;
+            color: #3f51b5;
+        }
+
+        .progress-bar-container {
+            background-color: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 10px 0;
+            height: 20px;
+        }
+
+        .progress-bar {
+            background-color: #4caf50;
+            height: 100%;
+            width: 50%; /* Start with 50% */
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .leaderboard-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .leaderboard {
+                width: 80%;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Spin to Win</h1>
-        <form id="user-form" class="form">
-            <label for="discord-username">Enter your Discord username:</label>
-            <input type="text" id="discord-username" name="discord-username" required>
-            <button type="submit" id="submit-button">Spin the Wheel!</button>
-        </form>
-        <div id="spin-wheel" class="hidden">
-            <div class="wheel"></div>
-            <button id="spin-button">Spin!</button>
+
+    <h1>Top 10 Leaderboards</h1>
+
+    <div class="leaderboard-container">
+        <!-- Willg's Leaderboard -->
+        <div class="leaderboard">
+            <h2>willg's Leaderboard</h2>
+            <ol>
+                <li><span class="rank">1</span> <span class="name">None yet!</span></li>
+                <li><span class="rank">2</span> <span class="name">None yet!</span></li>
+                <li><span class="rank">3</span> <span class="name">None yet!</span></li>
+                <li><span class="rank">4</span> <span class="name">None yet!</span></li>
+                <li><span class="rank">5</span> <span class="name">None yet!</span></li>
+                <li><span class="rank">6</span> <span class="name">None yet!</span></li>
+                <li><span class="rank">7</span> <span class="name">None yet!</span></li>
+                <li><span class="rank">8</span> <span class="name">None yet!</span></li>
+                <li><span class="rank">9</span> <span class="name">None yet!</span></li>
+                <li><span class="rank">10</span> <span class="name">None yet!</span></li>
+            </ol>
+            <div class="donate-section">
+                <div class="progress-bar-container">
+                    <div class="progress-bar"></div>
+                </div>
+                <div class="progress-labels">
+                    <span>0</span>
+                    <span>1,000,000,000</span>
+                </div>
+                <p>Want to be on top? Donate to <span class="username">willg1537</span></p>
+            </div>
         </div>
-        <p id="message" class="message"></p>
-        <button id="sponsor-button" class="sponsor-button">Sponsor & Contact Us</button>
+
+        <!-- S6's Leaderboard -->
+        <div class="leaderboard">
+            <h2>s6's Leaderboard</h2>
+            <ol>
+                <li><span class="rank">1</span> <span class="name">None yet!</span></li>
+                <li><span class="rank">2</span> <span class="name">None yet!</span></li>
+                <li><span class="rank">3</span> <span class="name">None yet!</span></li>
+                <li><span class="rank">4</span> <span class="name">None yet!</span></li>
+                <li><span class="rank">5</span> <span class="name">None yet!</span></li>
+                <li><span class="rank">6</span> <span class="name">None yet!</span></li>
+                <li><span class="rank">7</span> <span class="name">None yet!</span></li>
+                <li><span class="rank">8</span> <span class="name">None yet!</span></li>
+                <li><span class="rank">9</span> <span class="name">None yet!</span></li>
+                <li><span class="rank">10</span> <span class="name">None yet!</span></li>
+            </ol>
+            <div class="donate-section">
+                <div class="progress-bar-container">
+                    <div class="progress-bar"></div>
+                </div>
+                <div class="progress-labels">
+                    <span>0</span>
+                    <span>1,000,000,000</span>
+                </div>
+                <p>Want to be on top? Donate to <span class="username">zirjagor</span></p>
+            </div>
+        </div>
     </div>
-    <script src="script.js"></script>
+
 </body>
 </html>
