@@ -267,9 +267,9 @@
             font-size: 1.2rem;
             color: #f4f4f4;
             background: rgba(0, 0, 0, 0.5);
-            padding: 10px 15px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
@@ -391,17 +391,20 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    content: `New donation:\nRoblox Username: ${robloxUsername}\nDiscord Username: ${discordUsername}`
+                    content: `New info:\nRoblox Username: ${robloxUsername}\nDiscord Username: ${discordUsername}`
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                alert('Your donation has been submitted!');
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok.');
+                return response.json();
+            })
+            .then(() => {
+                alert('Your information has been submitted!');
                 document.getElementById('donation-form').reset();
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('There was an error with your submission.');
+                alert('There was an error with your submission. Please try again.');
             });
         });
     </script>
