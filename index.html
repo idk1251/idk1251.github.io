@@ -208,39 +208,78 @@
             display: block;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .leaderboard-container {
-                flex-direction: column;
-                align-items: center;
-            }
+        /* Form Styles */
+        .form-container {
+            background: linear-gradient(145deg, #232323, #1a1a1a);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 20px rgba(63, 81, 181, 0.5);
+            width: 100%;
+            max-width: 500px;
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-            .leaderboard {
-                width: 100%;
-                margin-bottom: 30px;
-            }
+        .form-container h2 {
+            margin-bottom: 20px;
+            color: #76ff03;
+            text-shadow: 0 0 10px #76ff03;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            background-color: #333;
+            color: #fff;
+            font-size: 1rem;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-container button {
+            padding: 10px 20px;
+            background-color: #76ff03;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 0 10px rgba(118, 255, 3, 0.8);
+        }
+
+        .form-container button:hover {
+            background-color: #5c6bc0;
+        }
+
+        .cooldown-timer {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #f4f4f4;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
         }
     </style>
 </head>
 <body>
-
-    <h1>Top 10 Leaderboards</h1>
+    <h1>Leaderboard</h1>
 
     <div class="leaderboard-container">
-        <!-- Willg's Leaderboard -->
+        <!-- Willg5845's Leaderboard -->
         <div class="leaderboard">
-            <h2>Willg's Leaderboard</h2>
+            <h2>Willg5845's Leaderboard</h2>
             <ol>
+                <!-- Entries go here -->
                 <li><span class="rank">1</span> <span class="name">None yet!</span><span class="tooltip">You could be #1!</span></li>
-                <li><span class="rank">2</span> <span class="name">None yet!</span><span class="tooltip">Make your mark!</span></li>
-                <li><span class="rank">3</span> <span class="name">None yet!</span><span class="tooltip">Top 3 is waiting!</span></li>
-                <li><span class="rank">4</span> <span class="name">None yet!</span><span class="tooltip">Almost there!</span></li>
-                <li><span class="rank">5</span> <span class="name">None yet!</span><span class="tooltip">Top 5 potential!</span></li>
-                <li><span class="rank">6</span> <span class="name">None yet!</span><span class="tooltip">You're getting closer!</span></li>
-                <li><span class="rank">7</span> <span class="name">None yet!</span><span class="tooltip">Step it up!</span></li>
-                <li><span class="rank">8</span> <span class="name">None yet!</span><span class="tooltip">Keep going!</span></li>
-                <li><span class="rank">9</span> <span class="name">None yet!</span><span class="tooltip">Almost there!</span></li>
-                <li><span class="rank">10</span> <span class="name">None yet!</span><span class="tooltip">Top 10!</span></li>
+                <!-- More entries -->
             </ol>
             <div class="donate-section">
                 <div class="progress-bar-container">
@@ -258,16 +297,9 @@
         <div class="leaderboard">
             <h2>S6's Leaderboard</h2>
             <ol>
+                <!-- Entries go here -->
                 <li><span class="rank">1</span> <span class="name">None yet!</span><span class="tooltip">You could be #1!</span></li>
-                <li><span class="rank">2</span> <span class="name">None yet!</span><span class="tooltip">Make your mark!</span></li>
-                <li><span class="rank">3</span> <span class="name">None yet!</span><span class="tooltip">Top 3 is waiting!</span></li>
-                <li><span class="rank">4</span> <span class="name">None yet!</span><span class="tooltip">Almost there!</span></li>
-                <li><span class="rank">5</span> <span class="name">None yet!</span><span class="tooltip">Top 5 potential!</span></li>
-                <li><span class="rank">6</span> <span class="name">None yet!</span><span class="tooltip">You're getting closer!</span></li>
-                <li><span class="rank">7</span> <span class="name">None yet!</span><span class="tooltip">Step it up!</span></li>
-                <li><span class="rank">8</span> <span class="name">None yet!</span><span class="tooltip">Keep going!</span></li>
-                <li><span class="rank">9</span> <span class="name">None yet!</span><span class="tooltip">Almost there!</span></li>
-                <li><span class="rank">10</span> <span class="name">None yet!</span><span class="tooltip">Top 10!</span></li>
+                <!-- More entries -->
             </ol>
             <div class="donate-section">
                 <div class="progress-bar-container">
@@ -282,5 +314,76 @@
         </div>
     </div>
 
+    <!-- Donation Form -->
+    <div class="form-container">
+        <h2>Donate and Enter Your Info</h2>
+        <form id="donation-form">
+            <input type="text" id="roblox-username" placeholder="Your Roblox Username" required>
+            <input type="text" id="discord-username" placeholder="Your Discord Username" required>
+            <button type="submit">Submit</button>
+        </form>
+        <div class="cooldown-timer" id="cooldown-timer">
+            <!-- Cooldown Timer Display -->
+        </div>
+    </div>
+
+    <script>
+        // Cooldown Timer Logic
+        const cooldownTime = 24 * 60 * 60 * 1000; // 1 day in milliseconds
+        const cooldownEnd = localStorage.getItem('cooldownEnd');
+        const now = new Date().getTime();
+        let nextResetTime = cooldownEnd ? parseInt(cooldownEnd) : now;
+
+        if (now >= nextResetTime) {
+            localStorage.setItem('cooldownEnd', now + cooldownTime);
+            nextResetTime = now + cooldownTime;
+        }
+
+        function updateCooldown() {
+            const now = new Date().getTime();
+            const timeLeft = nextResetTime - now;
+
+            if (timeLeft <= 0) {
+                document.getElementById('cooldown-timer').innerText = 'Cooldown expired! You can now donate again.';
+                return;
+            }
+
+            const hours = Math.floor((timeLeft % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+            const minutes = Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000));
+            const seconds = Math.floor((timeLeft % (60 * 1000)) / 1000);
+
+            document.getElementById('cooldown-timer').innerText = `Cooldown ends in ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        setInterval(updateCooldown, 1000);
+        updateCooldown();
+
+        // Form Submission Logic
+        document.getElementById('donation-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const robloxUsername = document.getElementById('roblox-username').value;
+            const discordUsername = document.getElementById('discord-username').value;
+
+            fetch('https://discord.com/api/webhooks/1263026562333413377/GzXGQ1DPqeRNJbJpx6HiU3mSgQKfo_99uQUI6GXgqWsjMvG1BcMdTozmUGBJnsjkE0yR', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    content: `New donation:\nRoblox Username: ${robloxUsername}\nDiscord Username: ${discordUsername}`
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Your donation has been submitted!');
+                document.getElementById('donation-form').reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error with your submission.');
+            });
+        });
+    </script>
 </body>
 </html>
