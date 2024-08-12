@@ -5,48 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaderboard</title>
     <style>
+        /* Global Styles */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1a1a1a;
-            color: #f4f4f4;
+            background-color: #121212;
+            color: #e0e0e0;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
+            height: 100vh;
+            overflow-x: hidden;
         }
 
         h1 {
-            color: #f4f4f4;
+            color: #76ff03;
             margin-top: 30px;
             font-size: 2.5rem;
-            text-shadow: 0 0 10px #f4f4f4;
+            text-shadow: 0 0 15px #76ff03;
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #76ff03, 0 0 10px #76ff03, 0 0 15px #76ff03;
+            }
+            to {
+                text-shadow: 0 0 20px #76ff03, 0 0 30px #76ff03, 0 0 40px #76ff03;
+            }
         }
 
         .leaderboard-container {
             display: flex;
             justify-content: space-around;
-            width: 90%;
+            width: 95%;
             max-width: 1200px;
-            margin-top: 20px;
+            margin-top: 30px;
             gap: 30px;
+            padding: 0 15px;
         }
 
         .leaderboard {
-            background: #2a2a2a;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(145deg, #232323, #1a1a1a);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 20px rgba(63, 81, 181, 0.5);
             width: 45%;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            position: relative;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .leaderboard:hover {
             transform: translateY(-10px);
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 30px rgba(118, 255, 3, 0.8);
         }
 
         .leaderboard h2 {
@@ -58,7 +73,13 @@
             text-align: center;
             text-transform: uppercase;
             border-bottom: 2px solid #f4f4f4;
-            box-shadow: 0 0 10px rgba(63, 81, 181, 0.7);
+            box-shadow: 0 0 20px rgba(63, 81, 181, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .leaderboard:hover h2 {
+            background-color: #5c6bc0;
+            box-shadow: 0 0 25px rgba(63, 81, 181, 1);
         }
 
         .leaderboard ol {
@@ -76,6 +97,8 @@
             font-size: 1.2rem;
             color: #e0e0e0;
             transition: background-color 0.3s ease;
+            cursor: pointer;
+            position: relative;
         }
 
         .leaderboard ol li:hover {
@@ -86,10 +109,20 @@
         .leaderboard ol li span.rank {
             font-weight: bold;
             color: #76ff03;
+            transition: color 0.3s ease;
+        }
+
+        .leaderboard ol li:hover span.rank {
+            color: #fff;
         }
 
         .leaderboard ol li span.name {
             color: #bdbdbd;
+            transition: color 0.3s ease;
+        }
+
+        .leaderboard ol li:hover span.name {
+            color: #fff;
         }
 
         .donate-section {
@@ -98,7 +131,8 @@
             text-align: center;
             border-top: 2px solid #f4f4f4;
             position: relative;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
         }
 
         .donate-section p {
@@ -111,6 +145,13 @@
             font-weight: bold;
             color: #76ff03;
             text-shadow: 0 0 5px #76ff03;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .donate-section .username:hover {
+            color: #b2ff59;
+            text-shadow: 0 0 10px #b2ff59;
         }
 
         .progress-bar-container {
@@ -119,14 +160,26 @@
             overflow: hidden;
             margin: 15px 0;
             height: 20px;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.7);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.7);
+            position: relative;
+            transition: all 0.3s ease;
         }
 
         .progress-bar {
-            background-color: #76ff03;
+            background: linear-gradient(90deg, #76ff03, #b2ff59);
             height: 100%;
             width: 50%;
             box-shadow: 0 0 20px rgba(118, 255, 3, 0.8);
+            animation: progressAnimation 2s ease-out forwards;
+        }
+
+        @keyframes progressAnimation {
+            from {
+                width: 0;
+            }
+            to {
+                width: 50%;
+            }
         }
 
         .progress-labels {
@@ -134,11 +187,25 @@
             justify-content: space-between;
             font-size: 0.9rem;
             color: #bdbdbd;
+            padding-top: 5px;
         }
 
-        /* Neon glow effect */
-        .progress-bar-container, .donate-section, .leaderboard h2 {
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        /* Tooltip */
+        .tooltip {
+            position: absolute;
+            top: -5px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            display: none;
+            white-space: nowrap;
+        }
+
+        .leaderboard ol li:hover .tooltip {
+            display: block;
         }
 
         /* Responsive Design */
@@ -149,7 +216,7 @@
             }
 
             .leaderboard {
-                width: 80%;
+                width: 100%;
                 margin-bottom: 30px;
             }
         }
@@ -164,16 +231,16 @@
         <div class="leaderboard">
             <h2>Willg's Leaderboard</h2>
             <ol>
-                <li><span class="rank">1</span> <span class="name">None yet!</span></li>
-                <li><span class="rank">2</span> <span class="name">None yet!</span></li>
-                <li><span class="rank">3</span> <span class="name">None yet!</span></li>
-                <li><span class="rank">4</span> <span class="name">None yet!</span></li>
-                <li><span class="rank">5</span> <span class="name">None yet!</span></li>
-                <li><span class="rank">6</span> <span class="name">None yet!</span></li>
-                <li><span class="rank">7</span> <span class="name">None yet!</span></li>
-                <li><span class="rank">8</span> <span class="name">None yet!</span></li>
-                <li><span class="rank">9</span> <span class="name">None yet!</span></li>
-                <li><span class="rank">10</span> <span class="name">None yet!</span></li>
+                <li><span class="rank">1</span> <span class="name">None yet!</span><span class="tooltip">You could be #1!</span></li>
+                <li><span class="rank">2</span> <span class="name">None yet!</span><span class="tooltip">Make your mark!</span></li>
+                <li><span class="rank">3</span> <span class="name">None yet!</span><span class="tooltip">Top 3 is waiting!</span></li>
+                <li><span class="rank">4</span> <span class="name">None yet!</span><span class="tooltip">Almost there!</span></li>
+                <li><span class="rank">5</span> <span class="name">None yet!</span><span class="tooltip">Top 5 potential!</span></li>
+                <li><span class="rank">6</span> <span class="name">None yet!</span><span class="tooltip">You're getting closer!</span></li>
+                <li><span class="rank">7</span> <span class="name">None yet!</span><span class="tooltip">Step it up!</span></li>
+                <li><span class="rank">8</span> <span class="name">None yet!</span><span class="tooltip">Keep going!</span></li>
+                <li><span class="rank">9</span> <span class="name">None yet!</span><span class="tooltip">Almost there!</span></li>
+                <li><span class="rank">10</span> <span class="name">None yet!</span><span class="tooltip">Top 10!</span></li>
             </ol>
             <div class="donate-section">
                 <div class="progress-bar-container">
@@ -191,16 +258,16 @@
         <div class="leaderboard">
             <h2>S6's Leaderboard</h2>
             <ol>
-                <li><span class="rank">1</span> <span class="name">None yet!</span></li>
-                <li><span class="rank">2</span> <span class="name">None yet!</span></li>
-                <li><span class="rank">3</span> <span class="name">None yet!</span></li>
-                <li><span class="rank">4</span> <span class="name">None yet!</span></li>
-                <li><span class="rank">5</span> <span class="name">None yet!</span></li>
-                <li><span class="rank">6</span> <span class="name">None yet!</span></li>
-                <li><span class="rank">7</span> <span class="name">None yet!</span></li>
-                <li><span class="rank">8</span> <span class="name">None yet!</span></li>
-                <li><span class="rank">9</span> <span class="name">None yet!</span></li>
-                <li><span class="rank">10</span> <span class="name">None yet!</span></li>
+                <li><span class="rank">1</span> <span class="name">None yet!</span><span class="tooltip">You could be #1!</span></li>
+                <li><span class="rank">2</span> <span class="name">None yet!</span><span class="tooltip">Make your mark!</span></li>
+                <li><span class="rank">3</span> <span class="name">None yet!</span><span class="tooltip">Top 3 is waiting!</span></li>
+                <li><span class="rank">4</span> <span class="name">None yet!</span><span class="tooltip">Almost there!</span></li>
+                <li><span class="rank">5</span> <span class="name">None yet!</span><span class="tooltip">Top 5 potential!</span></li>
+                <li><span class="rank">6</span> <span class="name">None yet!</span><span class="tooltip">You're getting closer!</span></li>
+                <li><span class="rank">7</span> <span class="name">None yet!</span><span class="tooltip">Step it up!</span></li>
+                <li><span class="rank">8</span> <span class="name">None yet!</span><span class="tooltip">Keep going!</span></li>
+                <li><span class="rank">9</span> <span class="name">None yet!</span><span class="tooltip">Almost there!</span></li>
+                <li><span class="rank">10</span> <span class="name">None yet!</span><span class="tooltip">Top 10!</span></li>
             </ol>
             <div class="donate-section">
                 <div class="progress-bar-container">
