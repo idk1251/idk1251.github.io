@@ -394,18 +394,12 @@
                     content: `New info:\nRoblox Username: ${robloxUsername}\nDiscord Username: ${discordUsername}`
                 })
             })
-            .then(response => {
-                if (!response.ok) throw new Error('Network response was not ok.');
-                return response.json();
-            })
+            
             .then(() => {
                 alert('Your information has been submitted!');
                 document.getElementById('donation-form').reset();
             })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('There was an error with your submission. Please try again.');
-            });
+
         });
     </script>
 </body>
