@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +16,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             overflow-x: hidden;
         }
 
@@ -31,6 +32,7 @@
             from {
                 text-shadow: 0 0 5px #76ff03, 0 0 10px #76ff03, 0 0 15px #76ff03;
             }
+
             to {
                 text-shadow: 0 0 20px #76ff03, 0 0 30px #76ff03, 0 0 40px #76ff03;
             }
@@ -181,6 +183,7 @@
             from {
                 width: 0;
             }
+
             to {
                 width: 50%;
             }
@@ -266,141 +269,117 @@
             margin-top: 20px;
             font-size: 1.2rem;
             color: #f4f4f4;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+            display: none;
         }
     </style>
 </head>
+
 <body>
     <h1>Leaderboard</h1>
 
     <div class="leaderboard-container">
-        <!-- Willg5845's Leaderboard -->
         <div class="leaderboard">
-            <h2>Willg5845's Leaderboard</h2>
+            <h2>All-Time Top Donors</h2>
             <ol>
-                <!-- Top 10 Entries -->
-                <li><span class="rank">1</span> <span class="name">None yet!</span><span class="tooltip">You could be #1!</span></li>
-                <li><span class="rank">2</span> <span class="name">None yet!</span><span class="tooltip">You could be #2!</span></li>
-                <li><span class="rank">3</span> <span class="name">None yet!</span><span class="tooltip">You could be #3!</span></li>
-                <li><span class="rank">4</span> <span class="name">None yet!</span><span class="tooltip">You could be #4!</span></li>
-                <li><span class="rank">5</span> <span class="name">None yet!</span><span class="tooltip">You could be #5!</span></li>
-                <li><span class="rank">6</span> <span class="name">None yet!</span><span class="tooltip">You could be #6!</span></li>
-                <li><span class="rank">7</span> <span class="name">None yet!</span><span class="tooltip">You could be #7!</span></li>
-                <li><span class="rank">8</span> <span class="name">None yet!</span><span class="tooltip">You could be #8!</span></li>
-                <li><span class="rank">9</span> <span class="name">None yet!</span><span class="tooltip">You could be #9!</span></li>
-                <li><span class="rank">10</span> <span class="name">None yet!</span><span class="tooltip">You could be #10!</span></li>
+                <li>
+                    <span class="rank">1.</span> <span class="name">TopDonor123</span> - $500
+                    <div class="tooltip">Donated $500 on July 15th</div>
+                </li>
+                <li>
+                    <span class="rank">2.</span> <span class="name">GenerousGal</span> - $400
+                    <div class="tooltip">Donated $400 on July 12th</div>
+                </li>
+                <li>
+                    <span class="rank">3.</span> <span class="name">CharityChamp</span> - $350
+                    <div class="tooltip">Donated $350 on July 10th</div>
+                </li>
             </ol>
             <div class="donate-section">
+                <p>Thank you <span class="username">TopDonor123</span> for your generous support!</p>
                 <div class="progress-bar-container">
                     <div class="progress-bar"></div>
                 </div>
                 <div class="progress-labels">
-                    <span>0</span>
-                    <span>1,000,000,000</span>
+                    <span>Goal: $1000</span>
+                    <span>50% Reached</span>
                 </div>
-                <p>Want to be on top? Donate to <span class="username">Willg5845</span></p>
             </div>
         </div>
 
-        <!-- S6's Leaderboard -->
         <div class="leaderboard">
-            <h2>S6's Leaderboard</h2>
+            <h2>Monthly Top Donors</h2>
             <ol>
-                <!-- Top 10 Entries -->
-                <li><span class="rank">1</span> <span class="name">None yet!</span><span class="tooltip">You could be #1!</span></li>
-                <li><span class="rank">2</span> <span class="name">None yet!</span><span class="tooltip">You could be #2!</span></li>
-                <li><span class="rank">3</span> <span class="name">None yet!</span><span class="tooltip">You could be #3!</span></li>
-                <li><span class="rank">4</span> <span class="name">None yet!</span><span class="tooltip">You could be #4!</span></li>
-                <li><span class="rank">5</span> <span class="name">None yet!</span><span class="tooltip">You could be #5!</span></li>
-                <li><span class="rank">6</span> <span class="name">None yet!</span><span class="tooltip">You could be #6!</span></li>
-                <li><span class="rank">7</span> <span class="name">None yet!</span><span class="tooltip">You could be #7!</span></li>
-                <li><span class="rank">8</span> <span class="name">None yet!</span><span class="tooltip">You could be #8!</span></li>
-                <li><span class="rank">9</span> <span class="name">None yet!</span><span class="tooltip">You could be #9!</span></li>
-                <li><span class="rank">10</span> <span class="name">None yet!</span><span class="tooltip">You could be #10!</span></li>
+                <li>
+                    <span class="rank">1.</span> <span class="name">GenerousGal</span> - $400
+                    <div class="tooltip">Donated $400 on August 1st</div>
+                </li>
+                <li>
+                    <span class="rank">2.</span> <span class="name">CharityChamp</span> - $350
+                    <div class="tooltip">Donated $350 on August 3rd</div>
+                </li>
+                <li>
+                    <span class="rank">3.</span> <span class="name">TopDonor123</span> - $200
+                    <div class="tooltip">Donated $200 on August 5th</div>
+                </li>
             </ol>
             <div class="donate-section">
+                <p>Thank you <span class="username">GenerousGal</span> for your generous support this month!</p>
                 <div class="progress-bar-container">
-                    <div class="progress-bar"></div>
+                    <div class="progress-bar" style="width: 30%;"></div>
                 </div>
                 <div class="progress-labels">
-                    <span>0</span>
-                    <span>1,000,000,000</span>
+                    <span>Goal: $1000</span>
+                    <span>30% Reached</span>
                 </div>
-                <p>Want to be on top? Donate to <span class="username">zirjagor</span></p>
             </div>
         </div>
     </div>
 
-    <!-- Donation Form -->
     <div class="form-container">
-        <h2>Donate and Enter Your Info</h2>
-        <form id="donation-form">
-            <input type="text" id="roblox-username" placeholder="Your Roblox Username" required>
-            <input type="text" id="discord-username" placeholder="Your Discord Username" required>
-            <button type="submit">Submit</button>
+        <h2>Make a Donation</h2>
+        <form id="donationForm">
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            <input type="number" id="amount" name="amount" placeholder="Enter donation amount" min="1" required>
+            <button type="submit">Donate</button>
         </form>
-        <div class="cooldown-timer" id="cooldown-timer">
-            <!-- Cooldown Timer Display -->
-        </div>
+        <div id="cooldownMessage" class="cooldown-timer">You can donate again in: <span id="timer">10:00</span></div>
     </div>
 
     <script>
-        // Cooldown Timer Logic
-        const cooldownTime = 24 * 60 * 60 * 1000; // 1 day in milliseconds
-        const cooldownEnd = localStorage.getItem('cooldownEnd');
-        const now = new Date().getTime();
-        let nextResetTime = cooldownEnd ? parseInt(cooldownEnd) : now;
+        // Cooldown timer for donations
+        const donationForm = document.getElementById('donationForm');
+        const cooldownMessage = document.getElementById('cooldownMessage');
+        const timerDisplay = document.getElementById('timer');
 
-        if (now >= nextResetTime) {
-            localStorage.setItem('cooldownEnd', now + cooldownTime);
-            nextResetTime = now + cooldownTime;
-        }
-
-        function updateCooldown() {
-            const now = new Date().getTime();
-            const timeLeft = nextResetTime - now;
-
-            if (timeLeft <= 0) {
-                document.getElementById('cooldown-timer').innerText = 'Cooldown expired! You can now donate again.';
-                return;
-            }
-
-            const hours = Math.floor((timeLeft % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
-            const minutes = Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000));
-            const seconds = Math.floor((timeLeft % (60 * 1000)) / 1000);
-
-            document.getElementById('cooldown-timer').innerText = `Cooldown ends in ${hours}h ${minutes}m ${seconds}s`;
-        }
-
-        setInterval(updateCooldown, 1000);
-        updateCooldown();
-
-        // Form Submission Logic
-        document.getElementById('donation-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const robloxUsername = document.getElementById('roblox-username').value;
-            const discordUsername = document.getElementById('discord-username').value;
-
-            fetch('https://discord.com/api/webhooks/1263026562333413377/GzXGQ1DPqeRNJbJpx6HiU3mSgQKfo_99uQUI6GXgqWsjMvG1BcMdTozmUGBJnsjkE0yR', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    content: `New info:\nRoblox Username: ${robloxUsername}\nDiscord Username: ${discordUsername}`
-                })
-            })
-            
-            .then(() => {
-                alert('Your information has been submitted!');
-                document.getElementById('donation-form').reset();
-            })
-
+        donationForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            startCooldown(10 * 60); // 10 minutes cooldown
         });
+
+        function startCooldown(seconds) {
+            let time = seconds;
+            cooldownMessage.style.display = 'block';
+            donationForm.style.display = 'none';
+
+            const interval = setInterval(() => {
+                const minutes = Math.floor(time / 60);
+                const seconds = time % 60;
+                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+                if (time <= 0) {
+                    clearInterval(interval);
+                    cooldownMessage.style.display = 'none';
+                    donationForm.style.display = 'block';
+                }
+
+                time--;
+            }, 1000);
+        }
     </script>
 </body>
+
 </html>
