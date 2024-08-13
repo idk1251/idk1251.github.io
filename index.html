@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +15,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
+            height: 100vh;
             overflow-x: hidden;
         }
 
@@ -29,11 +28,10 @@
         }
 
         @keyframes glow {
-            from {
+            0% {
                 text-shadow: 0 0 5px #76ff03, 0 0 10px #76ff03, 0 0 15px #76ff03;
             }
-
-            to {
+            100% {
                 text-shadow: 0 0 20px #76ff03, 0 0 30px #76ff03, 0 0 40px #76ff03;
             }
         }
@@ -57,7 +55,6 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             position: relative;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             margin-bottom: 30px;
@@ -78,7 +75,7 @@
             text-transform: uppercase;
             border-bottom: 2px solid #f4f4f4;
             box-shadow: 0 0 20px rgba(63, 81, 181, 0.7);
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .leaderboard:hover h2 {
@@ -95,40 +92,51 @@
             overflow-y: auto;
         }
 
-        .leaderboard ol li {
+        .leaderboard li {
             display: flex;
             justify-content: space-between;
             padding: 15px 20px;
             border-bottom: 1px solid #3f3f3f;
             font-size: 1.2rem;
             color: #e0e0e0;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease;
             cursor: pointer;
             position: relative;
         }
 
-        .leaderboard ol li:hover {
+        .leaderboard li:hover {
             background-color: #3f51b5;
             color: #fff;
         }
 
-        .leaderboard ol li span.rank {
+        .leaderboard .rank {
             font-weight: bold;
             color: #76ff03;
-            transition: color 0.3s ease;
         }
 
-        .leaderboard ol li:hover span.rank {
-            color: #fff;
-        }
-
-        .leaderboard ol li span.name {
+        .leaderboard .name {
             color: #bdbdbd;
-            transition: color 0.3s ease;
         }
 
-        .leaderboard ol li:hover span.name {
+        .leaderboard li:hover .rank, .leaderboard li:hover .name {
             color: #fff;
+        }
+
+        .tooltip {
+            position: absolute;
+            top: -5px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            display: none;
+        }
+
+        .leaderboard li:hover .tooltip {
+            display: block;
         }
 
         .donate-section {
@@ -138,7 +146,6 @@
             border-top: 2px solid #f4f4f4;
             position: relative;
             box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.7);
-            overflow: hidden;
         }
 
         .donate-section p {
@@ -147,15 +154,14 @@
             color: #f4f4f4;
         }
 
-        .donate-section .username {
+        .username {
             font-weight: bold;
             color: #76ff03;
             text-shadow: 0 0 5px #76ff03;
-            position: relative;
             transition: color 0.3s ease;
         }
 
-        .donate-section .username:hover {
+        .username:hover {
             color: #b2ff59;
             text-shadow: 0 0 10px #b2ff59;
         }
@@ -167,8 +173,6 @@
             margin: 15px 0;
             height: 20px;
             box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.7);
-            position: relative;
-            transition: all 0.3s ease;
         }
 
         .progress-bar {
@@ -180,13 +184,8 @@
         }
 
         @keyframes progressAnimation {
-            from {
-                width: 0;
-            }
-
-            to {
-                width: 50%;
-            }
+            0% { width: 0; }
+            100% { width: 50%; }
         }
 
         .progress-labels {
@@ -197,25 +196,6 @@
             padding-top: 5px;
         }
 
-        /* Tooltip */
-        .tooltip {
-            position: absolute;
-            top: -5px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.75);
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            display: none;
-            white-space: nowrap;
-        }
-
-        .leaderboard ol li:hover .tooltip {
-            display: block;
-        }
-
-        /* Form Styles */
         .form-container {
             background: linear-gradient(145deg, #232323, #1a1a1a);
             padding: 20px;
@@ -269,117 +249,86 @@
             margin-top: 20px;
             font-size: 1.2rem;
             color: #f4f4f4;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 10px 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
-            display: none;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
-
 <body>
     <h1>Leaderboard</h1>
 
     <div class="leaderboard-container">
         <div class="leaderboard">
-            <h2>All-Time Top Donors</h2>
+            <h2>Willg5845</h2>
             <ol>
                 <li>
-                    <span class="rank">1.</span> <span class="name">TopDonor123</span> - $500
-                    <div class="tooltip">Donated $500 on July 15th</div>
+                    <span class="rank">1</span>
+                    <span class="name">Willg5845</span>
+                    <span class="tooltip">Highest score!</span>
                 </li>
                 <li>
-                    <span class="rank">2.</span> <span class="name">GenerousGal</span> - $400
-                    <div class="tooltip">Donated $400 on July 12th</div>
+                    <span class="rank">2</span>
+                    <span class="name">PlayerTwo</span>
                 </li>
                 <li>
-                    <span class="rank">3.</span> <span class="name">CharityChamp</span> - $350
-                    <div class="tooltip">Donated $350 on July 10th</div>
+                    <span class="rank">3</span>
+                    <span class="name">PlayerThree</span>
                 </li>
             </ol>
             <div class="donate-section">
-                <p>Thank you <span class="username">TopDonor123</span> for your generous support!</p>
+                <p>Donate to <span class="username">Willg5845</span></p>
                 <div class="progress-bar-container">
                     <div class="progress-bar"></div>
                 </div>
                 <div class="progress-labels">
+                    <span>50%</span>
                     <span>Goal: $1000</span>
-                    <span>50% Reached</span>
                 </div>
             </div>
         </div>
 
         <div class="leaderboard">
-            <h2>Monthly Top Donors</h2>
+            <h2>PlayerOne</h2>
             <ol>
                 <li>
-                    <span class="rank">1.</span> <span class="name">GenerousGal</span> - $400
-                    <div class="tooltip">Donated $400 on August 1st</div>
+                    <span class="rank">1</span>
+                    <span class="name">PlayerOne</span>
                 </li>
                 <li>
-                    <span class="rank">2.</span> <span class="name">CharityChamp</span> - $350
-                    <div class="tooltip">Donated $350 on August 3rd</div>
+                    <span class="rank">2</span>
+                    <span class="name">PlayerFour</span>
                 </li>
                 <li>
-                    <span class="rank">3.</span> <span class="name">TopDonor123</span> - $200
-                    <div class="tooltip">Donated $200 on August 5th</div>
+                    <span class="rank">3</span>
+                    <span class="name">PlayerFive</span>
                 </li>
             </ol>
             <div class="donate-section">
-                <p>Thank you <span class="username">GenerousGal</span> for your generous support this month!</p>
+                <p>Donate to <span class="username">PlayerOne</span></p>
                 <div class="progress-bar-container">
-                    <div class="progress-bar" style="width: 30%;"></div>
+                    <div class="progress-bar"></div>
                 </div>
                 <div class="progress-labels">
+                    <span>50%</span>
                     <span>Goal: $1000</span>
-                    <span>30% Reached</span>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="form-container">
-        <h2>Make a Donation</h2>
-        <form id="donationForm">
-            <input type="text" id="username" name="username" placeholder="Enter your username" required>
-            <input type="number" id="amount" name="amount" placeholder="Enter donation amount" min="1" required>
-            <button type="submit">Donate</button>
-        </form>
-        <div id="cooldownMessage" class="cooldown-timer">You can donate again in: <span id="timer">10:00</span></div>
+        <h2>Enter a New Leaderboard</h2>
+        <input type="text" placeholder="Leaderboard Name" />
+        <input type="text" placeholder="Player Name" />
+        <input type="number" placeholder="Player Rank" />
+        <button>Add Leaderboard</button>
+        <div class="cooldown-timer">Cooldown: 30s</div>
     </div>
 
     <script>
-        // Cooldown timer for donations
-        const donationForm = document.getElementById('donationForm');
-        const cooldownMessage = document.getElementById('cooldownMessage');
-        const timerDisplay = document.getElementById('timer');
-
-        donationForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            startCooldown(10 * 60); // 10 minutes cooldown
-        });
-
-        function startCooldown(seconds) {
-            let time = seconds;
-            cooldownMessage.style.display = 'block';
-            donationForm.style.display = 'none';
-
-            const interval = setInterval(() => {
-                const minutes = Math.floor(time / 60);
-                const seconds = time % 60;
-                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-
-                if (time <= 0) {
-                    clearInterval(interval);
-                    cooldownMessage.style.display = 'none';
-                    donationForm.style.display = 'block';
-                }
-
-                time--;
-            }, 1000);
-        }
+        // JavaScript for handling leaderboard interactions, animations, and form submission will go here.
     </script>
 </body>
-
 </html>
