@@ -347,3 +347,183 @@
 </html>
 
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP Calculator with Dice Upgrades</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: #1e1e1e; /* Default to night mode */
+            color: #d1d1d1;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            justify-content: center;
+        }
+
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .container {
+            background-color: #333842;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+            border: 2px solid #555; /* Thicker border */
+            box-sizing: border-box;
+        }
+
+        label {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            display: block;
+            margin-top: 20px; /* Add more space above */
+        }
+
+        input[type="text"], select {
+            padding: 10px;
+            font-size: 1em;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid #555; /* Thicker border */
+            border-radius: 5px;
+            box-sizing: border-box;
+            background-color: #333842;
+            color: #ffffff;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: #ffffff;
+            border: 1px solid #0056b3;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #donateButton {
+            background-color: #ff4757;
+            border: 1px solid #e73b4d;
+        }
+
+        #donateButton:hover {
+            background-color: #e73b4d;
+        }
+
+        #diceResult {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+        .highlight {
+            color: #ff4757;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>EXP Calculator with Dice Upgrades</h1>
+    
+    <div class="container">
+        <h2>Dice Upgrade Calculator</h2>
+        <label for="numberOfDice">Number of Dice: </label>
+        <input type="text" id="numberOfDice" value="450">
+
+        <label for="coinsAvailable">Coins Available: </label>
+        <input type="text" id="coinsAvailable" value="1000000">
+
+        <button onclick="calculateDiceUpgrades()">Calculate Upgrades</button>
+        <div id="diceResult">Enter values and click "Calculate Upgrades" to see the results.</div>
+    </div>
+
+    <script>
+        function parseInput(value) {
+            return parseFloat(value.replace(/,/g, '')) || 0;
+        }
+
+        function formatNumber(number) {
+            return number.toLocaleString('en-US');
+        }
+
+        function calculateDiceUpgrades() {
+            const diceCount = parseInput(document.getElementById('numberOfDice').value);
+            const coinsAvailable = parseInput(document.getElementById('coinsAvailable').value);
+            
+            const coinsPerGoldDice = 100;
+            const coinsPerMegaDice = 100000;
+            const coinsPerMegaDiceII = 300000;
+            
+            const diceToGold = 5;
+            const goldToMega = 30;
+            const megaToMegaII = 3;
+
+            const costToMegaDiceII = (coinsPerGoldDice * diceToGold) +
+                                     (coinsPerMegaDice * goldToMega) +
+                                     (coinsPerMegaDiceII * megaToMegaII);
+
+            let megaDiceIICount = 0;
+            let megaDiceCount = 0;
+            let goldDiceCount = 0;
+
+            if (coinsAvailable >= costToMegaDiceII) {
+                megaDiceIICount = Math.floor(coinsAvailable / costToMegaDiceII);
+                coinsAvailable -= megaDiceIICount * costToMegaDiceII;
+            }
+
+            const remainingCoinsForMegaDice = coinsAvailable;
+
+            const costToMakeMegaDice = (coinsPerGoldDice * diceToGold) + (coinsPerMegaDice * goldToMega);
+
+            if (remainingCoinsForMegaDice >= costToMakeMegaDice) {
+                megaDiceCount = Math.floor(remainingCoinsForMegaDice / costToMakeMegaDice);
+                coinsAvailable -= megaDiceCount * costToMakeMegaDice;
+            }
+
+            const remainingCoinsForGoldDice = coinsAvailable;
+
+            const costToMakeGoldDice = coinsPerGoldDice * diceToGold;
+
+            if (remainingCoinsForGoldDice >= costToMakeGoldDice) {
+                goldDiceCount = Math.floor(remainingCoinsForGoldDice / costToMakeGoldDice);
+                coinsAvailable -= goldDiceCount * costToMakeGoldDice;
+            }
+
+            // Calculate how many Mega Dice II we can make with the dice available
+            let totalDice = diceCount;
+            let totalMegaDiceII = Math.floor(totalDice / (diceToGold * goldToMega * megaToMegaII));
+
+            document.getElementById('diceResult').innerHTML = `
+                With ${formatNumber(diceCount)} dice and ${formatNumber(parseInput(document.getElementById('coinsAvailable').value))} coins, you can afford:
+                <ul>
+                    <li><span class="highlight">${formatNumber(megaDiceIICount)}</span> Mega Dice II (costs ${formatNumber(costToMegaDiceII)} coins each)</li>
+                    <li><span class="highlight">${formatNumber(megaDiceCount)}</span> Mega Dice (costs ${formatNumber(costToMakeMegaDice)} coins each)</li>
+                    <li><span class="highlight">${formatNumber(goldDiceCount)}</span> Gold Dice (costs ${formatNumber(costToMakeGoldDice)} coins each)</li>
+                </ul>
+                With ${formatNumber(diceCount)} dice, you can make <span class="highlight">${formatNumber(totalMegaDiceII)}</span> Mega Dice II.
+            `;
+        }
+    </script>
+</body>
+</html>
