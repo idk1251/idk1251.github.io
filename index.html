@@ -427,7 +427,7 @@
     <div class="container">
         <h2>Calculate Dice Upgrades</h2>
         <label for="numberOfDice">Number of Dice: </label>
-        <input type="text" id="numberOfDice" value="450">
+        <input type="text" id="numberOfDice" value="650">
 
         <label for="coinsAvailable">Coins Available: </label>
         <input type="text" id="coinsAvailable" value="1000000">
@@ -459,7 +459,7 @@
 
             const costToMakeGoldDice = coinsPerGoldDice * diceToGold;
             const costToMakeMegaDice = (coinsPerGoldDice * diceToGold) + (coinsPerMegaDice * goldToMega);
-            const costToMakeMegaDiceII = (coinsPerGoldDice * diceToGold * goldToMega) +
+            const costToMakeMegaDiceII = (coinsPerGoldDice * diceToGold * goldToMega) + 
                                          (coinsPerMegaDice * goldToMega) +
                                          (coinsPerMegaDiceII * megaToMegaII);
 
@@ -472,10 +472,9 @@
             // Calculate Mega Dice II first
             let diceForMegaDiceII = diceToGold * goldToMega * megaToMegaII;
             if (remainingCoins >= costToMakeMegaDiceII && remainingDice >= diceForMegaDiceII) {
-                megaDiceIICount = Math.min(
-                    Math.floor(remainingCoins / costToMakeMegaDiceII),
-                    Math.floor(remainingDice / diceForMegaDiceII)
-                );
+                megaDiceIICount = Math.floor(remainingCoins / costToMakeMegaDiceII);
+                let possibleMegaDiceIICount = Math.floor(remainingDice / diceForMegaDiceII);
+                megaDiceIICount = Math.min(megaDiceIICount, possibleMegaDiceIICount);
                 remainingCoins -= megaDiceIICount * costToMakeMegaDiceII;
                 remainingDice -= megaDiceIICount * diceForMegaDiceII;
             }
@@ -483,20 +482,18 @@
             // Calculate Mega Dice with remaining coins
             let diceForMegaDice = diceToGold * goldToMega;
             if (remainingCoins >= costToMakeMegaDice && remainingDice >= diceForMegaDice) {
-                megaDiceCount = Math.min(
-                    Math.floor(remainingCoins / costToMakeMegaDice),
-                    Math.floor(remainingDice / diceForMegaDice)
-                );
+                megaDiceCount = Math.floor(remainingCoins / costToMakeMegaDice);
+                let possibleMegaDiceCount = Math.floor(remainingDice / diceForMegaDice);
+                megaDiceCount = Math.min(megaDiceCount, possibleMegaDiceCount);
                 remainingCoins -= megaDiceCount * costToMakeMegaDice;
                 remainingDice -= megaDiceCount * diceForMegaDice;
             }
 
             // Calculate Gold Dice with remaining coins
             if (remainingCoins >= costToMakeGoldDice && remainingDice >= diceToGold) {
-                goldDiceCount = Math.min(
-                    Math.floor(remainingCoins / costToMakeGoldDice),
-                    Math.floor(remainingDice / diceToGold)
-                );
+                goldDiceCount = Math.floor(remainingCoins / costToMakeGoldDice);
+                let possibleGoldDiceCount = Math.floor(remainingDice / diceToGold);
+                goldDiceCount = Math.min(goldDiceCount, possibleGoldDiceCount);
                 remainingCoins -= goldDiceCount * costToMakeGoldDice;
                 remainingDice -= goldDiceCount * diceToGold;
             }
@@ -505,19 +502,15 @@
             document.getElementById('diceResult').innerHTML = `
                 With ${formatNumber(diceCount)} dice and ${formatNumber(parseInput(document.getElementById('coinsAvailable').value))} coins, you can afford:
                 <ul>
-                    <li><span class="highlight">${formatNumber(megaDiceIICount)}</span> Mega Dice II (costs ${formatNumber(costToMakeMegaDiceII)} coins each)</li>
-                    <li><span class="highlight">${formatNumber(megaDiceCount)}</span> Mega Dice (costs ${formatNumber(costToMakeMegaDice)} coins each)</li>
-                    <li><span class="highlight">${formatNumber(goldDiceCount)}</span> Gold Dice (costs ${formatNumber(costToMakeGoldDice)} coins each)</li>
+                    <li><span class="highlight">${formatNumber(megaDiceIICount)}</span> Mega Dice II (costs ${formatNumber(coinsPerMegaDiceII)} coins each)</li>
+                    <li><span class="highlight">${formatNumber(megaDiceCount)}</span> Mega Dice (costs ${formatNumber(coinsPerMegaDice)} coins each)</li>
+                    <li><span class="highlight">${formatNumber(goldDiceCount)}</span> Gold Dice (costs ${formatNumber(coinsPerGoldDice)} coins each)</li>
                 </ul>
                 With ${formatNumber(diceCount)} dice, you can make <span class="highlight">${formatNumber(Math.floor(diceCount / (diceToGold * goldToMega * megaToMegaII)))}</span> Mega Dice II.
                 <br>
                 Coins left after upgrades: <span class="highlight">${formatNumber(remainingCoins)}</span>
-                <br>
-                Remaining dice after upgrades: <span class="highlight">${formatNumber(remainingDice)}</span>
             `;
         }
     </script>
 </body>
 </html>
-
-
