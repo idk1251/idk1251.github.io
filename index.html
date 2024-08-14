@@ -3,332 +3,333 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaderboard</title>
+    <title>EXP Calculator</title>
     <style>
-        /* Global Styles */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #121212;
-            color: #e0e0e0;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: #1e1e1e; /* Default to night mode */
+            color: #d1d1d1;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
-            height: 100vh;
-            overflow-x: hidden;
+            min-height: 100vh;
+            justify-content: center;
         }
 
         h1 {
-            color: #76ff03;
-            margin-top: 30px;
-            font-size: 2.5rem;
-            text-shadow: 0 0 15px #76ff03;
-            animation: glow 1.5s infinite alternate;
+            color: #007bff;
+            text-align: center;
+            margin: 30px 0;
         }
 
-        @keyframes glow {
-            0% {
-                text-shadow: 0 0 5px #76ff03, 0 0 10px #76ff03, 0 0 15px #76ff03;
-            }
-            100% {
-                text-shadow: 0 0 20px #76ff03, 0 0 30px #76ff03, 0 0 40px #76ff03;
-            }
-        }
-
-        .leaderboard-container {
+        .section-container {
             display: flex;
-            justify-content: space-around;
-            width: 95%;
-            max-width: 1200px;
-            margin-top: 30px;
-            gap: 30px;
-            padding: 0 15px;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
             flex-wrap: wrap;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #333842;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+            border: 2px solid #555; /* Thicker border */
+            box-sizing: border-box;
+        }
+
+        label {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            display: block;
+            margin-top: 20px; /* Add more space above */
+        }
+
+        input[type="text"], select {
+            padding: 10px;
+            font-size: 1em;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid #555; /* Thicker border */
+            border-radius: 5px;
+            box-sizing: border-box;
+            background-color: #333842;
+            color: #ffffff;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: #ffffff;
+            border: 1px solid #0056b3;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #donateButton {
+            background-color: #ff4757;
+            border: 1px solid #e73b4d;
+        }
+
+        #donateButton:hover {
+            background-color: #e73b4d;
+        }
+
+        #result, #goalResult {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+
+        .guis-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .gui {
+            width: 300px;
+            height: 400px;
+            overflow-y: auto;
+            border: 2px solid #555; /* Thicker border */
+            border-radius: 10px;
+            background: rgba(40, 44, 52, 0.8);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        .profit {
+            color: #00ff00;
+        }
+
+        .highlight {
+            color: #ff4757;
+            font-weight: bold;
         }
 
         .leaderboard {
-            background: linear-gradient(145deg, #232323, #1a1a1a);
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 20px rgba(63, 81, 181, 0.5);
-            width: 45%;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin-bottom: 30px;
-        }
-
-        .leaderboard:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 0 30px rgba(118, 255, 3, 0.8);
-        }
-
-        .leaderboard h2 {
-            background-color: #3f51b5;
-            color: #fff;
-            padding: 20px;
-            margin: 0;
-            font-size: 1.8rem;
-            text-align: center;
-            text-transform: uppercase;
-            border-bottom: 2px solid #f4f4f4;
-            box-shadow: 0 0 20px rgba(63, 81, 181, 0.7);
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .leaderboard:hover h2 {
-            background-color: #5c6bc0;
-            box-shadow: 0 0 25px rgba(63, 81, 181, 1);
-        }
-
-        .leaderboard ol {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            flex-grow: 1;
-            max-height: 400px;
+            text-align: left;
+            height: 400px; /* Fixed height for consistent scrolling */
             overflow-y: auto;
         }
 
-        .leaderboard li {
-            display: flex;
-            justify-content: space-between;
-            padding: 15px 20px;
-            border-bottom: 1px solid #3f3f3f;
-            font-size: 1.2rem;
-            color: #e0e0e0;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .leaderboard li:hover {
-            background-color: #3f51b5;
-            color: #fff;
-        }
-
-        .leaderboard .rank {
-            font-weight: bold;
-            color: #76ff03;
-        }
-
-        .leaderboard .name {
-            color: #bdbdbd;
-        }
-
-        .leaderboard li:hover .rank, .leaderboard li:hover .name {
-            color: #fff;
-        }
-
-        .tooltip {
-            position: absolute;
-            top: -5px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.75);
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            white-space: nowrap;
-            display: none;
-        }
-
-        .leaderboard li:hover .tooltip {
-            display: block;
-        }
-
-        .donate-section {
-            background-color: #333;
-            padding: 15px 20px;
+        .leaderboard h2 {
             text-align: center;
-            border-top: 2px solid #f4f4f4;
-            position: relative;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.7);
+            color: #ff4757;
         }
 
-        .donate-section p {
-            margin: 0;
-            font-size: 1.1rem;
-            color: #f4f4f4;
+        .leaderboard ul {
+            list-style-type: none;
+            padding: 0;
         }
 
-        .username {
-            font-weight: bold;
-            color: #76ff03;
-            text-shadow: 0 0 5px #76ff03;
-            transition: color 0.3s ease;
+        .leaderboard li {
+            padding: 5px 0;
+            border-bottom: 1px solid #555;
+            color: #d1d1d1;
         }
 
-        .username:hover {
-            color: #b2ff59;
-            text-shadow: 0 0 10px #b2ff59;
+        /* Custom scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 12px; /* Width of the scrollbar */
         }
 
-        .progress-bar-container {
-            background-color: #444;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 15px 0;
-            height: 20px;
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.7);
+        ::-webkit-scrollbar-track {
+            background: #2c2f36; /* Track color */
         }
 
-        .progress-bar {
-            background: linear-gradient(90deg, #76ff03, #b2ff59);
-            height: 100%;
-            width: 50%;
-            box-shadow: 0 0 20px rgba(118, 255, 3, 0.8);
-            animation: progressAnimation 2s ease-out forwards;
+        ::-webkit-scrollbar-thumb {
+            background: #555; /* Handle color */
+            border-radius: 6px;
         }
 
-        @keyframes progressAnimation {
-            0% { width: 0; }
-            100% { width: 50%; }
-        }
-
-        .progress-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            color: #bdbdbd;
-            padding-top: 5px;
-        }
-
-        .form-container {
-            background: linear-gradient(145deg, #232323, #1a1a1a);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 20px rgba(63, 81, 181, 0.5);
-            width: 100%;
-            max-width: 500px;
-            margin-top: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .form-container h2 {
-            margin-bottom: 20px;
-            color: #76ff03;
-            text-shadow: 0 0 10px #76ff03;
-        }
-
-        .form-container input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            border: none;
-            outline: none;
-            background-color: #333;
-            color: #fff;
-            font-size: 1rem;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .form-container button {
-            padding: 10px 20px;
-            background-color: #76ff03;
-            border: none;
-            border-radius: 5px;
-            color: #fff;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            box-shadow: 0 0 10px rgba(118, 255, 3, 0.8);
-        }
-
-        .form-container button:hover {
-            background-color: #5c6bc0;
-        }
-
-        .cooldown-timer {
-            margin-top: 20px;
-            font-size: 1.2rem;
-            color: #f4f4f4;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        ::-webkit-scrollbar-thumb:hover {
+            background: #777; /* Handle color on hover */
         }
     </style>
 </head>
-<body>
-    <h1>Leaderboard</h1>
-
-    <div class="leaderboard-container">
-        <div class="leaderboard">
-            <h2>Willg5845</h2>
-            <ol>
-                <li>
-                    <span class="rank">1</span>
-                    <span class="name">Willg5845</span>
-                    <span class="tooltip">Highest score!</span>
-                </li>
-                <li>
-                    <span class="rank">2</span>
-                    <span class="name">PlayerTwo</span>
-                </li>
-                <li>
-                    <span class="rank">3</span>
-                    <span class="name">PlayerThree</span>
-                </li>
-            </ol>
-            <div class="donate-section">
-                <p>Donate to <span class="username">Willg5845</span></p>
-                <div class="progress-bar-container">
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="progress-labels">
-                    <span>50%</span>
-                    <span>Goal: $1000</span>
-                </div>
-            </div>
+<body class="night-mode">
+    <h1>EXP Balance Calculator</h1>
+    <h1>(by s6eg4se54g)</h1>
+    <div class="section-container">
+        <!-- GUI Containers in the new order -->
+        <div id="guiLeft" class="gui night-mode">
+            <h2>First 30 Days</h2>
+            <div id="first30Days">Enter values and click "Calculate Days" to see the results.</div>
         </div>
 
-        <div class="leaderboard">
-            <h2>PlayerOne</h2>
-            <ol>
-                <li>
-                    <span class="rank">1</span>
-                    <span class="name">PlayerOne</span>
-                </li>
-                <li>
-                    <span class="rank">2</span>
-                    <span class="name">PlayerFour</span>
-                </li>
-                <li>
-                    <span class="rank">3</span>
-                    <span class="name">PlayerFive</span>
-                </li>
-            </ol>
-            <div class="donate-section">
-                <p>Donate to <span class="username">PlayerOne</span></p>
-                <div class="progress-bar-container">
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="progress-labels">
-                    <span>50%</span>
-                    <span>Goal: $1000</span>
-                </div>
-            </div>
+        <div class="container night-mode">
+            <h2>Calculate Days to Reach Goal</h2>
+            <label for="initialBalance">Balance (Gems): </label>
+            <input type="text" id="initialBalance" value="1,000" class="night-mode">
+
+            <label for="goalBalance">Goal Balance (Gems): </label>
+            <input type="text" id="goalBalance" value="5,000" class="night-mode">
+
+            <label for="rankSelect">Select Goal Rank: </label>
+            <select id="rankSelect" class="night-mode" onchange="updateGoalBalance()">
+                <option value="">Select a Rank</option>
+                <option value="96000000">Donator ― 96M+</option>
+                <option value="320000000">Ethereal ― 320M+</option>
+                <option value="800000000">Luminary ― 800M+</option>
+                <option value="1600000000">Radiant ― 1.6B+</option>
+                <option value="4000000000">Catalyst ― 4B+</option>
+                <option value="12000000000">Divine ― 12B+</option>
+            </select>
+
+            <button onclick="calculateDays()">Calculate Days</button>
+            <div id="result">Enter values and click "Calculate Days" to see the results.</div>
+        </div>
+
+        <div id="guiRight" class="gui night-mode">
+            <h2>Last 30 Days</h2>
+            <div id="last30Days">Enter values and click "Calculate Days" to see the results.</div>
+        </div>
+
+        <div class="container night-mode">
+            <h2>Calculate Goal Balance after X Time</h2>
+            <label for="initialBalance2">Balance (Gems): </label>
+            <input type="text" id="initialBalance2" value="1,000" class="night-mode">
+
+            <label for="timeInput">Amount of Time: </label>
+            <input type="text" id="timeInput" value="30" class="night-mode">
+
+            <label for="timeUnit">Time Unit: </label>
+            <select id="timeUnit" class="night-mode">
+                <option value="days">Days</option>
+                <option value="weeks">Weeks</option>
+                <option value="months">Months</option>
+                <option value="years">Years</option>
+            </select>
+
+            <button onclick="calculateGoal()">Calculate Goal</button>
+            <div id="goalResult">Enter time and click "Calculate Goal" to see the results.</div>
+        </div>
+
+        <div id="leaderboardGui" class="gui night-mode leaderboard">
+            <h2>Donation leaderboard!</h2>
+            <h2>/gift @s6eg4se54g</h2>
+            <h3>Top 10 Donators</h3>
+            <ul>
+                <li>1. 320M+ ― Catalyst</li>
+                <li>2. 160M+ ― Radiant</li>
+                <li>3. 96M+ ― Luminary</li>
+                <li>4. 80M+ ― Divine</li>
+                <li>5. 72M+ ― Ethereal</li>
+                <li>6. 65M+ ― Donator</li>
+                <li>7. 60M+ ― Radiant</li>
+                <li>8. 55M+ ― Catalyst</li>
+                <li>9. 50M+ ― Luminary</li>
+                <li>10. 45M+ ― Divine</li>
+            </ul>
         </div>
     </div>
 
-    <div class="form-container">
-        <h2>Enter a New Leaderboard</h2>
-        <input type="text" placeholder="Leaderboard Name" />
-        <input type="text" placeholder="Player Name" />
-        <input type="number" placeholder="Player Rank" />
-        <button>Add Leaderboard</button>
-        <div class="cooldown-timer">Cooldown: 30s</div>
-    </div>
 
     <script>
-        // JavaScript for handling leaderboard interactions, animations, and form submission will go here.
+        function parseInput(value) {
+            return parseFloat(value.replace(/,/g, '')) || 0;
+        }
+
+        function formatNumber(number) {
+            return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function updateGoalBalance() {
+            const goalSelect = document.getElementById('rankSelect');
+            const goalBalance = document.getElementById('goalBalance');
+            goalBalance.value = goalSelect.value ? formatNumber(goalSelect.value) : '';
+        }
+
+        function calculateDays() {
+            let initialBalance = parseInput(document.getElementById('initialBalance').value);
+            let goalBalance = parseInput(document.getElementById('goalBalance').value);
+            let dailyInterestRate = 0.009;
+
+            let days = 0;
+            let balance = initialBalance;
+            let dailyBalances = [];
+
+            while (balance < goalBalance) {
+                let profit = balance * dailyInterestRate;
+                balance += profit;
+                dailyBalances.push({
+                    day: days + 1,
+                    balance: balance,
+                    profit: profit
+                });
+                days++;
+            }
+
+            let years = Math.floor(days / 365);
+            let remainingDays = days % 365;
+            let months = Math.floor(remainingDays / 30);
+            remainingDays = remainingDays % 30;
+
+            // Update results in the "Result" section
+            document.getElementById('result').innerHTML = `You will reach your goal in <span class="highlight">${years}</span> years, <span class="highlight">${months}</span> months, and <span class="highlight">${remainingDays}</span> days.`;
+
+            // Update the "First 30 Days" section
+            let first30Days = dailyBalances.slice(0, 30);
+            let first30DaysText = first30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
+            document.getElementById('first30Days').innerHTML = first30DaysText;
+
+            // Update the "Last 30 Days" section
+            let last30Days = dailyBalances.slice(-30);
+            let last30DaysText = last30Days.map(item => `Day ${item.day}: Balance: ${formatNumber(item.balance)} | Profit: <span class="profit">${formatNumber(item.profit)}</span>`).join('<br>');
+            document.getElementById('last30Days').innerHTML = last30DaysText;
+        }
+
+        function calculateGoal() {
+            let initialBalance = parseInput(document.getElementById('initialBalance2').value);
+            let timeValue = parseFloat(document.getElementById('timeInput').value);
+            let timeUnit = document.getElementById('timeUnit').value;
+            let dailyInterestRate = 0.009;
+
+            let days = 0;
+            switch (timeUnit) {
+                case 'days':
+                    days = timeValue;
+                    break;
+                case 'weeks':
+                    days = timeValue * 7;
+                    break;
+                case 'months':
+                    days = timeValue * 30;
+                    break;
+                case 'years':
+                    days = timeValue * 365;
+                    break;
+            }
+
+            let balance = initialBalance;
+            for (let i = 0; i < days; i++) {
+                balance += balance * dailyInterestRate;
+            }
+
+            document.getElementById('goalResult').innerHTML = `After ${timeValue} ${timeUnit}, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
+        }
+
     </script>
 </body>
 </html>
