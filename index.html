@@ -281,6 +281,26 @@
                 days++;
             }
 
+
+            function addCommaFormatting(inputElement) {
+    let value = inputElement.value.replace(/,/g, '');
+    if (!isNaN(value) && value !== '') {
+        inputElement.value = parseFloat(value).toLocaleString('en-US');
+    }
+}
+
+document.querySelectorAll('input[type="text"]').forEach(input => {
+    input.addEventListener('blur', function () {
+        addCommaFormatting(input);
+    });
+
+    input.addEventListener('focus', function () {
+        input.value = input.value.replace(/,/g, ''); // Remove commas when input is focused
+    });
+});
+
+
+            
             let years = Math.floor(days / 365);
             let remainingDays = days % 365;
             let months = Math.floor(remainingDays / 30);
@@ -444,6 +464,24 @@
         function formatNumber(number) {
             return number.toLocaleString('en-US');
         }
+
+
+        function addCommaFormatting(inputElement) {
+    let value = inputElement.value.replace(/,/g, '');
+    if (!isNaN(value) && value !== '') {
+        inputElement.value = parseFloat(value).toLocaleString('en-US');
+    }
+}
+
+document.querySelectorAll('input[type="text"]').forEach(input => {
+    input.addEventListener('blur', function () {
+        addCommaFormatting(input);
+    });
+
+    input.addEventListener('focus', function () {
+        input.value = input.value.replace(/,/g, ''); // Remove commas when input is focused
+    });
+});
 
         function calculateDiceUpgrades() {
             const diceCount = parseInput(document.getElementById('numberOfDice').value);
