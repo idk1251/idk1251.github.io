@@ -426,10 +426,10 @@
     
     <div class="container">
         <h2>Calculate Dice Upgrades</h2>
-        <label for="numberOfDice">Number of Dice: </label>
+        <label for="numberOfDice">Number of Lucky Dice: </label>
         <input type="text" id="numberOfDice" value="650">
 
-        <label for="coinsAvailable">Coins Available: </label>
+        <label for="coinsAvailable">RNG Coins Available: </label>
         <input type="text" id="coinsAvailable" value="1000000">
 
         <button onclick="calculateDiceUpgrades()">Calculate Upgrades</button>
@@ -449,73 +449,72 @@
             const diceCount = parseInput(document.getElementById('numberOfDice').value);
             const coinsAvailable = parseInput(document.getElementById('coinsAvailable').value);
             
-            const coinsPerGoldDice = 100;
+            const coinsPerLuckyDiceII = 100;
             const coinsPerMegaDice = 100000;
             const coinsPerMegaDiceII = 300000;
             
-            const diceToGold = 5;
-            const goldToMega = 30;
-            const megaToMegaII = 3;
+            const diceToLuckyDiceII = 5;
+            const luckyDiceIITomegaDice = 30;
+            const megaDiceToMegaDiceII = 3;
 
             // Costs to make higher tiers of dice
-            const costToMakeGoldDice = coinsPerGoldDice * diceToGold;
-            const costToMakeMegaDice = (coinsPerGoldDice * diceToGold) + (coinsPerMegaDice * goldToMega);
-            const costToMakeMegaDiceII = (coinsPerGoldDice * diceToGold * goldToMega) + 
-                                         (coinsPerMegaDice * goldToMega) +
-                                         (coinsPerMegaDiceII * megaToMegaII);
+            const costToMakeLuckyDiceII = coinsPerLuckyDiceII * diceToLuckyDiceII;
+            const costToMakeMegaDice = (coinsPerLuckyDiceII * diceToLuckyDiceII * luckyDiceIITomegaDice) + (coinsPerMegaDice);
+            const costToMakeMegaDiceII = (coinsPerLuckyDiceII * diceToLuckyDiceII * luckyDiceIITomegaDice * megaDiceToMegaDiceII) +
+                                         (coinsPerMegaDice * megaDiceToMegaDiceII) +
+                                         (coinsPerMegaDiceII);
 
             let megaDiceIICount = 0;
             let megaDiceCount = 0;
-            let goldDiceCount = 0;
+            let luckyDiceIICount = 0;
             let remainingCoins = coinsAvailable;
             let remainingDice = diceCount;
 
             // Calculate Mega Dice II first
-            while (remainingCoins >= costToMakeMegaDiceII && remainingDice >= diceToGold * goldToMega * megaToMegaII) {
+            while (remainingCoins >= costToMakeMegaDiceII && remainingDice >= diceToLuckyDiceII * luckyDiceIITomegaDice * megaDiceToMegaDiceII) {
                 let possibleMegaDiceIICount = Math.min(
                     Math.floor(remainingCoins / costToMakeMegaDiceII),
-                    Math.floor(remainingDice / (diceToGold * goldToMega * megaToMegaII))
+                    Math.floor(remainingDice / (diceToLuckyDiceII * luckyDiceIITomegaDice * megaDiceToMegaDiceII))
                 );
                 megaDiceIICount += possibleMegaDiceIICount;
                 remainingCoins -= possibleMegaDiceIICount * costToMakeMegaDiceII;
-                remainingDice -= possibleMegaDiceIICount * diceToGold * goldToMega * megaToMegaII;
+                remainingDice -= possibleMegaDiceIICount * diceToLuckyDiceII * luckyDiceIITomegaDice * megaDiceToMegaDiceII;
             }
 
             // Calculate Mega Dice next
-            while (remainingCoins >= costToMakeMegaDice && remainingDice >= diceToGold * goldToMega) {
+            while (remainingCoins >= costToMakeMegaDice && remainingDice >= diceToLuckyDiceII * luckyDiceIITomegaDice) {
                 let possibleMegaDiceCount = Math.min(
                     Math.floor(remainingCoins / costToMakeMegaDice),
-                    Math.floor(remainingDice / (diceToGold * goldToMega))
+                    Math.floor(remainingDice / (diceToLuckyDiceII * luckyDiceIITomegaDice))
                 );
                 megaDiceCount += possibleMegaDiceCount;
                 remainingCoins -= possibleMegaDiceCount * costToMakeMegaDice;
-                remainingDice -= possibleMegaDiceCount * diceToGold * goldToMega;
+                remainingDice -= possibleMegaDiceCount * diceToLuckyDiceII * luckyDiceIITomegaDice;
             }
 
-            // Calculate Gold Dice last
-            while (remainingCoins >= coinsPerGoldDice && remainingDice >= diceToGold) {
-                let possibleGoldDiceCount = Math.min(
-                    Math.floor(remainingCoins / coinsPerGoldDice),
-                    Math.floor(remainingDice / diceToGold)
+            // Calculate Lucky Dice II last
+            while (remainingCoins >= coinsPerLuckyDiceII && remainingDice >= diceToLuckyDiceII) {
+                let possibleLuckyDiceIICount = Math.min(
+                    Math.floor(remainingCoins / coinsPerLuckyDiceII),
+                    Math.floor(remainingDice / diceToLuckyDiceII)
                 );
-                goldDiceCount += possibleGoldDiceCount;
-                remainingCoins -= possibleGoldDiceCount * coinsPerGoldDice;
-                remainingDice -= possibleGoldDiceCount * diceToGold;
+                luckyDiceIICount += possibleLuckyDiceIICount;
+                remainingCoins -= possibleLuckyDiceIICount * coinsPerLuckyDiceII;
+                remainingDice -= possibleLuckyDiceIICount * diceToLuckyDiceII;
             }
 
             // Update result display
             document.getElementById('diceResult').innerHTML = `
-                With ${formatNumber(parseInput(document.getElementById('numberOfDice').value))} dice and ${formatNumber(parseInput(document.getElementById('coinsAvailable').value))} coins, you can afford:
+                With ${formatNumber(parseInput(document.getElementById('numberOfDice').value))} Lucky Dice and ${formatNumber(parseInput(document.getElementById('coinsAvailable').value))} RNG Coins, you can afford:
                 <ul>
-                    <li><span class="highlight">${formatNumber(megaDiceIICount)}</span> Mega Dice II (costs ${formatNumber(coinsPerMegaDiceII)} coins each)</li>
-                    <li><span class="highlight">${formatNumber(megaDiceCount)}</span> Mega Dice (costs ${formatNumber(coinsPerMegaDice)} coins each)</li>
-                    <li><span class="highlight">${formatNumber(goldDiceCount)}</span> Gold Dice (costs ${formatNumber(coinsPerGoldDice)} coins each)</li>
+                    <li><span class="highlight">${formatNumber(megaDiceIICount)}</span> Mega Lucky Dice II (costs ${formatNumber(coinsPerMegaDiceII)} RNG Coins each)</li>
+                    <li><span class="highlight">${formatNumber(megaDiceCount)}</span> Mega Lucky Dice (costs ${formatNumber(coinsPerMegaDice)} RNG Coins each)</li>
+                    <li><span class="highlight">${formatNumber(luckyDiceIICount)}</span> Lucky Dice II (costs ${formatNumber(coinsPerLuckyDiceII)} RNG Coins each)</li>
                 </ul>
-                With ${formatNumber(parseInput(document.getElementById('numberOfDice').value))} dice, you can make <span class="highlight">${formatNumber(Math.floor(parseInput(document.getElementById('numberOfDice').value) / (diceToGold * goldToMega * megaToMegaII)))}</span> Mega Dice II.
-                <br>
                 Coins left after upgrades: <span class="highlight">${formatNumber(remainingCoins)}</span>
             `;
         }
     </script>
 </body>
 </html>
+
