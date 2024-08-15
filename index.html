@@ -457,51 +457,47 @@
             const luckyDiceIITomegaDice = 30;
             const megaDiceToMegaDiceII = 3;
 
-            // Costs to make higher tiers of dice
-            const costToMakeLuckyDiceII = coinsPerLuckyDiceII * diceToLuckyDiceII;
-            const costToMakeMegaDice = (coinsPerLuckyDiceII * diceToLuckyDiceII * luckyDiceIITomegaDice) + (coinsPerMegaDice);
-            const costToMakeMegaDiceII = (coinsPerLuckyDiceII * diceToLuckyDiceII * luckyDiceIITomegaDice * megaDiceToMegaDiceII) +
-                                         (coinsPerMegaDice * megaDiceToMegaDiceII) +
-                                         (coinsPerMegaDiceII);
-
             let megaDiceIICount = 0;
             let megaDiceCount = 0;
             let luckyDiceIICount = 0;
             let remainingCoins = coinsAvailable;
             let remainingDice = diceCount;
 
-            // Calculate Mega Dice II first
-            while (remainingCoins >= costToMakeMegaDiceII && remainingDice >= diceToLuckyDiceII * luckyDiceIITomegaDice * megaDiceToMegaDiceII) {
-                let possibleMegaDiceIICount = Math.min(
-                    Math.floor(remainingCoins / costToMakeMegaDiceII),
-                    Math.floor(remainingDice / (diceToLuckyDiceII * luckyDiceIITomegaDice * megaDiceToMegaDiceII))
-                );
-                megaDiceIICount += possibleMegaDiceIICount;
-                remainingCoins -= possibleMegaDiceIICount * costToMakeMegaDiceII;
-                remainingDice -= possibleMegaDiceIICount * diceToLuckyDiceII * luckyDiceIITomegaDice * megaDiceToMegaDiceII;
+            // Step 1: Calculate Lucky Dice II (convert 5 Lucky Dice to 1 Lucky Dice II)
+            luckyDiceIICount = Math.floor(remainingDice / diceToLuckyDiceII);
+            let luckyDiceIICost = luckyDiceIICount * coinsPerLuckyDiceII;
+
+            if (luckyDiceIICost > remainingCoins) {
+                luckyDiceIICount = Math.floor(remainingCoins / coinsPerLuckyDiceII);
+                luckyDiceIICost = luckyDiceIICount * coinsPerLuckyDiceII;
             }
 
-            // Calculate Mega Dice next
-            while (remainingCoins >= costToMakeMegaDice && remainingDice >= diceToLuckyDiceII * luckyDiceIITomegaDice) {
-                let possibleMegaDiceCount = Math.min(
-                    Math.floor(remainingCoins / costToMakeMegaDice),
-                    Math.floor(remainingDice / (diceToLuckyDiceII * luckyDiceIITomegaDice))
-                );
-                megaDiceCount += possibleMegaDiceCount;
-                remainingCoins -= possibleMegaDiceCount * costToMakeMegaDice;
-                remainingDice -= possibleMegaDiceCount * diceToLuckyDiceII * luckyDiceIITomegaDice;
+            remainingCoins -= luckyDiceIICost;
+            remainingDice -= luckyDiceIICount * diceToLuckyDiceII;
+
+            // Step 2: Calculate Mega Lucky Dice (convert 30 Lucky Dice II to 1 Mega Lucky Dice)
+            megaDiceCount = Math.floor(luckyDiceIICount / luckyDiceIITomegaDice);
+            let megaDiceCost = megaDiceCount * coinsPerMegaDice;
+
+            if (megaDiceCost > remainingCoins) {
+                megaDiceCount = Math.floor(remainingCoins / coinsPerMegaDice);
+                megaDiceCost = megaDiceCount * coinsPerMegaDice;
             }
 
-            // Calculate Lucky Dice II last
-            while (remainingCoins >= coinsPerLuckyDiceII && remainingDice >= diceToLuckyDiceII) {
-                let possibleLuckyDiceIICount = Math.min(
-                    Math.floor(remainingCoins / coinsPerLuckyDiceII),
-                    Math.floor(remainingDice / diceToLuckyDiceII)
-                );
-                luckyDiceIICount += possibleLuckyDiceIICount;
-                remainingCoins -= possibleLuckyDiceIICount * coinsPerLuckyDiceII;
-                remainingDice -= possibleLuckyDiceIICount * diceToLuckyDiceII;
+            remainingCoins -= megaDiceCost;
+            luckyDiceIICount -= megaDiceCount * luckyDiceIITomegaDice;
+
+            // Step 3: Calculate Mega Lucky Dice II (convert 3 Mega Lucky Dice to 1 Mega Lucky Dice II)
+            megaDiceIICount = Math.floor(megaDiceCount / megaDiceToMegaDiceII);
+            let megaDiceIICost = megaDiceIICount * coinsPerMegaDiceII;
+
+            if (megaDiceIICost > remainingCoins) {
+                megaDiceIICount = Math.floor(remainingCoins / coinsPerMegaDiceII);
+                megaDiceIICost = megaDiceIICount * coinsPerMegaDiceII;
             }
+
+            remainingCoins -= megaDiceIICost;
+            megaDiceCount -= megaDiceIICount * megaDiceToMegaDiceII;
 
             // Update result display
             document.getElementById('diceResult').innerHTML = `
