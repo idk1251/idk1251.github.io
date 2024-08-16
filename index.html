@@ -482,6 +482,69 @@ body {
         .discord-container a:hover {
             text-decoration: underline;
         }
+        .suggestion-container {
+    background-color: #333842;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 350px;
+    text-align: center;
+    border: 2px solid #555;
+    box-sizing: border-box;
+}
+
+.suggestion-container h2 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.suggestion-container label {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    display: block;
+    margin-top: 20px;
+}
+
+.suggestion-container input[type="text"], .suggestion-container textarea {
+    padding: 10px;
+    font-size: 1em;
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #333842;
+    color: #ffffff;
+}
+
+.suggestion-container textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.suggestion-container button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #007bff;
+    color: #ffffff;
+    border: 1px solid #0056b3;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 20px;
+    transition: background-color 0.3s;
+}
+
+.suggestion-container button:hover {
+    background-color: #0056b3;
+}
+
+#suggestionResult {
+    margin-top: 20px;
+    font-size: 1.2em;
+    text-align: left;
+}
+
     </style>
 </head>
 <body>
@@ -587,6 +650,17 @@ body {
             <div id="rankResult">Enter values and click "Calculate Progress" to see the results.</div>
         </div>
     </div>
+<div class="suggestion-container">
+    <h2>Suggestion Box</h2>
+    <label for="discordUser">Discord Username:</label>
+    <input type="text" id="discordUser" placeholder="Enter your Discord username">
+
+    <label for="suggestionText">Your Suggestion:</label>
+    <textarea id="suggestionText" placeholder="Enter your suggestion here"></textarea>
+
+    <button onclick="submitSuggestion()">Submit Suggestion</button>
+    <div id="suggestionResult">Enter your suggestion and click "Submit Suggestion".</div>
+</div>
 
     <script>
         function parseInput(value) {
@@ -712,6 +786,7 @@ body {
             { name: "Warden", points: 850 },
             { name: "MAX QUESTS", points: 870 }
         ];
+        
 
         function calculateRankProgress() {
             const currentRank = parseInt(document.getElementById("currentRank").value);
@@ -746,6 +821,40 @@ body {
                 Two-Star Quests: <span class='highlight'>${twoStarQuests}</span><br>
                 One-Star Quests: <span class='highlight'>${oneStarQuests}</span>`;
         }
+
+        function submitSuggestion() {
+    const discordUser = document.getElementById('discordUser').value.trim();
+    const suggestionText = document.getElementById('suggestionText').value.trim();
+    const webhookUrl = "https://discord.com/api/webhooks/1274040797905551461/xvlEZF9Q3Nf0ulhXUIlIKc2fqANcxc7o5O_wT671bCPiZGl2UMbks3qffm0csWI4LNOL";
+
+    if (!discordUser || !suggestionText) {
+        document.getElementById('suggestionResult').innerHTML = 'Please fill in both fields.';
+        return;
+    }
+
+    const payload = {
+        content: `${discordUser} suggested: ${suggestionText}`
+    };
+
+    fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => {
+        if (response.ok) {
+            document.getElementById('suggestionResult').innerHTML = 'Suggestion submitted successfully!';
+        } else {
+            document.getElementById('suggestionResult').innerHTML = 'Failed to submit suggestion. Please try again.';
+        }
+    })
+    .catch(error => {
+        document.getElementById('suggestionResult').innerHTML = 'Error submitting suggestion.';
+    });
+}
+
     </script>
 </body>
 </html>
