@@ -360,7 +360,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dice Upgrade Calculator</title>
+    <title>Dice Upgrade Calculator & Rank Progression</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -392,6 +392,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             text-align: center;
             border: 2px solid #555;
             box-sizing: border-box;
+            margin-bottom: 20px;
         }
 
         label {
@@ -430,7 +431,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             background-color: #0056b3;
         }
 
-        #diceResult {
+        #diceResult, #rankResult {
             margin-top: 20px;
             font-size: 1.2em;
             text-align: left;
@@ -443,7 +444,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     </style>
 </head>
 <body>
-    <h1>Dice Upgrade Calculator</h1>
+    <h1>Dice Upgrade Calculator & Rank Progression</h1>
     
     <div class="container">
         <h2>Calculate Dice Upgrades</h2>
@@ -457,6 +458,79 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
         <div id="diceResult">Enter values and click "Calculate Upgrades" to see the results.</div>
     </div>
 
+    <div class="container">
+        <h2>Rank Progression Calculator</h2>
+        <label for="currentRank">Current Rank:</label>
+        <select id="currentRank">
+            <option value="0">Noob | 0</option>
+            <option value="13">Beginner | 13</option>
+            <option value="25">Rookie | 25</option>
+            <option value="32">Adventurer | 32</option>
+            <option value="46">Experienced | 46</option>
+            <option value="63">Pro | 63</option>
+            <option value="89">Elite | 89</option>
+            <option value="131">Expert | 131</option>
+            <option value="182">Master | 182</option>
+            <option value="259">Legend | 259</option>
+            <option value="319">Champion | 319</option>
+            <option value="341">Superstar | 341</option>
+            <option value="420">Guardian | 420</option>
+            <option value="454">Titan | 454</option>
+            <option value="484">Sentinel | 484</option>
+            <option value="512">Overlord | 512</option>
+            <option value="531">Immortal | 531</option>
+            <option value="552">Hacker | 552</option>
+            <option value="574">Mastermind | 574</option>
+            <option value="632">Ascendant | 632</option>
+            <option value="694">Tech Titan | 694</option>
+            <option value="754">Tech Sentinel | 754</option>
+            <option value="760">Tech Overlord | 760</option>
+            <option value="780">Celestial | 780</option>
+            <option value="790">Apex | 790</option>
+            <option value="810">Oracle | 810</option>
+            <option value="850">Warden | 850</option>
+            <option value="870">Max Quests | 870</option>
+        </select>
+
+        <label for="goalRank">Goal Rank:</label>
+        <select id="goalRank">
+            <option value="0">Noob | 0</option>
+            <option value="13">Beginner | 13</option>
+            <option value="25">Rookie | 25</option>
+            <option value="32">Adventurer | 32</option>
+            <option value="46">Experienced | 46</option>
+            <option value="63">Pro | 63</option>
+            <option value="89">Elite | 89</option>
+            <option value="131">Expert | 131</option>
+            <option value="182">Master | 182</option>
+            <option value="259">Legend | 259</option>
+            <option value="319">Champion | 319</option>
+            <option value="341">Superstar | 341</option>
+            <option value="420">Guardian | 420</option>
+            <option value="454">Titan | 454</option>
+            <option value="484">Sentinel | 484</option>
+            <option value="512">Overlord | 512</option>
+            <option value="531">Immortal | 531</option>
+            <option value="552">Hacker | 552</option>
+            <option value="574">Mastermind | 574</option>
+            <option value="632">Ascendant | 632</option>
+            <option value="694">Tech Titan | 694</option>
+            <option value="754">Tech Sentinel | 754</option>
+            <option value="760">Tech Overlord | 760</option>
+            <option value="780">Celestial | 780</option>
+            <option value="790">Apex | 790</option>
+            <option value="810">Oracle | 810</option>
+            <option value="850">Warden | 850</option>
+            <option value="870">Max Quests | 870</option>
+        </select>
+
+        <label for="currentStars">Current Stars: </label>
+        <input type="text" id="currentStars" value="0">
+
+        <button onclick="calculateRankProgress()">Calculate Progress</button>
+        <div id="rankResult">Enter values and click "Calculate Progress" to see the results.</div>
+    </div>
+
     <script>
         function parseInput(value) {
             return parseFloat(value.replace(/,/g, '')) || 0;
@@ -465,24 +539,6 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
         function formatNumber(number) {
             return number.toLocaleString('en-US');
         }
-
-
-        function addCommaFormatting(inputElement) {
-    let value = inputElement.value.replace(/,/g, '');
-    if (!isNaN(value) && value !== '') {
-        inputElement.value = parseFloat(value).toLocaleString('en-US');
-    }
-}
-
-document.querySelectorAll('input[type="text"]').forEach(input => {
-    input.addEventListener('blur', function () {
-        addCommaFormatting(input);
-    });
-
-    input.addEventListener('focus', function () {
-        input.value = input.value.replace(/,/g, ''); // Remove commas when input is focused
-    });
-});
 
         function calculateDiceUpgrades() {
             const diceCount = parseInput(document.getElementById('numberOfDice').value);
@@ -549,7 +605,64 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
                 Coins left after upgrades: <span class="highlight">${formatNumber(remainingCoins)}</span>
             `;
         }
+
+        function calculateRankProgress() {
+            const ranks = {
+                0: "Noob | 0",
+                13: "Beginner | 13",
+                25: "Rookie | 25",
+                32: "Adventurer | 32",
+                46: "Experienced | 46",
+                63: "Pro | 63",
+                89: "Elite | 89",
+                131: "Expert | 131",
+                182: "Master | 182",
+                259: "Legend | 259",
+                319: "Champion | 319",
+                341: "Superstar | 341",
+                420: "Guardian | 420",
+                454: "Titan | 454",
+                484: "Sentinel | 484",
+                512: "Overlord | 512",
+                531: "Immortal | 531",
+                552: "Hacker | 552",
+                574: "Mastermind | 574",
+                632: "Ascendant | 632",
+                694: "Tech Titan | 694",
+                754: "Tech Sentinel | 754",
+                760: "Tech Overlord | 760",
+                780: "Celestial | 780",
+                790: "Apex | 790",
+                810: "Oracle | 810",
+                850: "Warden | 850",
+                870: "Max Quests | 870"
+            };
+
+            const currentRankStars = parseInt(document.getElementById('currentRank').value);
+            const goalRankStars = parseInt(document.getElementById('goalRank').value);
+            const currentStars = parseInput(document.getElementById('currentStars').value);
+
+            if (goalRankStars <= currentRankStars) {
+                document.getElementById('rankResult').innerHTML = `Your goal rank must be higher than your current rank.`;
+                return;
+            }
+
+            const starsNeeded = goalRankStars - currentRankStars - currentStars;
+            const twoStars = Math.floor(starsNeeded / 2);
+            const threeStars = Math.floor(starsNeeded / 3);
+            const fourStars = Math.floor(starsNeeded / 4);
+
+            document.getElementById('rankResult').innerHTML = `
+                You need <span class="highlight">${formatNumber(starsNeeded)}</span> more stars to reach your goal rank.
+                <ul>
+                    <li><span class="highlight">${formatNumber(twoStars)}</span> Two-Star quests</li>
+                    <li><span class="highlight">${formatNumber(threeStars)}</span> Three-Star quests</li>
+                    <li><span class="highlight">${formatNumber(fourStars)}</span> Four-Star quests</li>
+                </ul>
+            `;
+        }
     </script>
 </body>
 </html>
+
 
