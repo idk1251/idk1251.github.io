@@ -442,29 +442,23 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
         }
 
         .discord-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        .discord-button {
-            background-color: #7289da;
-            color: #ffffff;
-            border: none;
-            border-radius: 5px;
-            padding: 15px 25px;
-            font-size: 1.2em;
-            cursor: pointer;
+            background-color: #2c2f36;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
             text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 20px;
-            width: 100%;
+            margin: 20px;
         }
 
-        .discord-button:hover {
-            background-color: #5b6eae;
+        .discord-container a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .discord-container a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -481,6 +475,13 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
 
             <button onclick="calculateDiceUpgrades()">Calculate Upgrades</button>
             <div id="diceResult">Enter values and click "Calculate Upgrades" to see the results.</div>
+        </div>
+
+        <!-- Discord Promotion GUI -->
+        <div class="discord-container">
+            <h2>Join Our Discord Server!</h2>
+            <p>Get big giveaways, the latest updates, and more.</p>
+            <a href="https://discord.gg/your-discord-link" target="_blank">Join Now!</a>
         </div>
 
         <!-- Rank Progression Calculator -->
@@ -556,11 +557,6 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             <button onclick="calculateRankProgress()">Calculate Progress</button>
             <div id="rankResult">Enter values and click "Calculate Progress" to see the results.</div>
         </div>
-
-        <!-- Discord Link Button -->
-        <div class="discord-container">
-            <a href="https://discord.gg/ZQ8ngPFQ" target="_blank" class="discord-button">Join Our Discord</a>
-        </div>
     </div>
 
     <script>
@@ -589,6 +585,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             });
         });
 
+        // Dice Upgrade Calculator Script
         function calculateDiceUpgrades() {
             const diceCount = parseInput(document.getElementById('numberOfDice').value);
             const coinsAvailable = parseInput(document.getElementById('coinsAvailable').value);
