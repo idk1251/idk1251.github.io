@@ -371,144 +371,123 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     <style>
         body {
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background-color: #1e1e1e;
-    color: #d1d1d1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    justify-content: center;
+    transform: scale(0.6);
+    transform-origin: top left; /* Adjust origin if needed */
 }
 
-@media (max-width: 800px) {
-    .calculators-container {
-        flex-direction: column;
-        align-items: center;
-    }
-    .container, .discord-container, .suggestion-container {
-        width: 100%;
-        max-width: 100%;
-    }
-}
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #1e1e1e;
+            color: #d1d1d1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            justify-content: center;
+        }
 
-.calculators-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    max-width: 1200px;
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-}
+        .calculators-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            max-width: 1200px;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
 
-.container, .discord-container, .suggestion-container {
-    background-color: #333842;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 350px;
-    text-align: center;
-    border: 2px solid #555;
-    box-sizing: border-box;
-}
+        .container, .discord-container {
+            background-color: #333842;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+            border: 2px solid #555;
+            box-sizing: border-box;
+        }
 
-.discord-container {
-    width: 300px; /* Adjust if necessary */
-    padding: 20px;
-}
+        .discord-container {
+            width: 300px;
+            padding: 20px;
+        }
 
-label {
-    font-size: 1.1em;
-    margin-bottom: 10px;
-    display: block;
-    margin-top: 20px;
-}
+        label {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            display: block;
+            margin-top: 20px;
+        }
 
-input[type="text"], select {
-    padding: 10px;
-    font-size: 1em;
-    width: 100%;
-    margin-bottom: 20px;
-    border: 1px solid #555;
-    border-radius: 5px;
-    box-sizing: border-box;
-    background-color: #333842;
-    color: #ffffff;
-}
+        input[type="text"], select {
+            padding: 10px;
+            font-size: 1em;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            box-sizing: border-box;
+            background-color: #333842;
+            color: #ffffff;
+        }
 
-textarea {
-    padding: 10px;
-    font-size: 1em;
-    width: 100%;
-    margin-bottom: 20px;
-    border: 1px solid #555;
-    border-radius: 5px;
-    box-sizing: border-box;
-    background-color: #333842;
-    color: #ffffff;
-    height: 100px;
-    resize: vertical;
-}
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: #ffffff;
+            border: 1px solid #0056b3;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
 
-button {
-    padding: 10px 20px;
-    font-size: 1em;
-    background-color: #007bff;
-    color: #ffffff;
-    border: 1px solid #0056b3;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-    margin-bottom: 20px;
-    transition: background-color 0.3s;
-}
+        button:hover {
+            background-color: #0056b3;
+        }
 
-button:hover {
-    background-color: #0056b3;
-}
+        #diceResult, #rankResult {
+            margin-top: 20px;
+            font-size: 1.2em;
+            text-align: left;
+        }
 
-#diceResult, #rankResult, #suggestionResult {
-    margin-top: 20px;
-    font-size: 1.2em;
-    text-align: left;
-}
+        .highlight {
+            color: #ff4757;
+            font-weight: bold;
+        }
 
-.highlight {
-    color: #ff4757;
-    font-weight: bold;
-}
+        .discord-container h2 {
+            margin: 0;
+            font-size: 1.3em;
+        }
 
-.discord-container h2 {
-    margin: 0;
-    font-size: 1.3em;
-}
+        .discord-container p {
+            margin: 10px 0;
+        }
 
-.discord-container p {
-    margin: 10px 0;
-}
+        .discord-container a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
 
-.discord-container a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
-    display: inline-block;
-    margin-top: 10px;
-}
-
-.discord-container a:hover {
-    text-decoration: underline;
-}
+        .discord-container a:hover {
+            text-decoration: underline;
+        }
 
 
     </style>
 </head>
 <body>
-<div class="calculators-container">
+    <div class="calculators-container">
         <!-- Dice Upgrade Calculator -->
         <div class="container">
             <h2>Dice Upgrade Calculator</h2>
@@ -611,225 +590,167 @@ button:hover {
         </div>
     </div>
 
-    <!-- Suggestion Box -->
-    <div class="suggestion-container">
-        <h2>Suggestion Box</h2>
-        <label for="discordUser">Discord Username:</label>
-        <input type="text" id="discordUser" placeholder="Enter your Discord username">
-
-        <label for="suggestionText">Your Suggestion:</label>
-        <textarea id="suggestionText" placeholder="Enter your suggestion here"></textarea>
-
-        <button onclick="submitSuggestion()">Submit Suggestion</button>
-        <div id="suggestionResult">Enter your suggestion and click "Submit Suggestion".</div>
-    </div>
 
     <script>
-        <script>
-    // Helper Function to Parse Input
-    function parseInput(value) {
-        return parseInt(value.replace(/,/g, '')) || 0;
-    }
-
-    // Helper Function to Format Numbers
-    function formatNumber(number) {
-        return number.toLocaleString();
-    }
-
-    // Dice Upgrade Calculator
-    function calculateDiceUpgrades() {
-        const diceCount = parseInput(document.getElementById('numberOfDice').value);
-        const coinsAvailable = parseInput(document.getElementById('coinsAvailable').value);
-
-        const coinsPerLuckyDiceII = 100;
-        const coinsPerMegaDice = 100000;
-        const coinsPerMegaDiceII = 300000;
-
-        const diceToLuckyDiceII = 5;
-        const luckyDiceIITomegaDice = 30;
-        const megaDiceToMegaDiceII = 3;
-
-        let megaDiceIICount = 0;
-        let megaDiceCount = 0;
-        let luckyDiceIICount = 0;
-        let remainingCoins = coinsAvailable;
-        let remainingDice = diceCount;
-
-        // Step 1: Calculate Lucky Dice II (convert 5 Lucky Dice to 1 Lucky Dice II)
-        luckyDiceIICount = Math.floor(remainingDice / diceToLuckyDiceII);
-        let luckyDiceIICost = luckyDiceIICount * coinsPerLuckyDiceII;
-
-        if (luckyDiceIICost > remainingCoins) {
-            luckyDiceIICount = Math.floor(remainingCoins / coinsPerLuckyDiceII);
-            luckyDiceIICost = luckyDiceIICount * coinsPerLuckyDiceII;
+        function parseInput(value) {
+            return parseFloat(value.replace(/,/g, '')) || 0;
         }
 
-        remainingCoins -= luckyDiceIICost;
-        remainingDice -= luckyDiceIICount * diceToLuckyDiceII;
-
-        // Step 2: Calculate Mega Lucky Dice (convert 30 Lucky Dice II to 1 Mega Lucky Dice)
-        megaDiceCount = Math.floor(luckyDiceIICount / luckyDiceIITomegaDice);
-        let megaDiceCost = megaDiceCount * coinsPerMegaDice;
-
-        if (megaDiceCost > remainingCoins) {
-            megaDiceCount = Math.floor(remainingCoins / coinsPerMegaDice);
-            megaDiceCost = megaDiceCount * coinsPerMegaDice;
+        function formatNumber(value) {
+            return parseFloat(value).toLocaleString('en-US');
         }
 
-        remainingCoins -= megaDiceCost;
-        luckyDiceIICount -= megaDiceCount * luckyDiceIITomegaDice;
-
-        // Step 3: Calculate Mega Lucky Dice II (convert 3 Mega Lucky Dice to 1 Mega Lucky Dice II)
-        megaDiceIICount = Math.floor(megaDiceCount / megaDiceToMegaDiceII);
-        let megaDiceIICost = megaDiceIICount * coinsPerMegaDiceII;
-
-        if (megaDiceIICost > remainingCoins) {
-            megaDiceIICount = Math.floor(remainingCoins / coinsPerMegaDiceII);
-            megaDiceIICost = megaDiceIICount * coinsPerMegaDiceII;
-        }
-
-        remainingCoins -= megaDiceIICost;
-        megaDiceCount -= megaDiceIICount * megaDiceToMegaDiceII;
-
-        // Update result display
-        document.getElementById('diceResult').innerHTML = 
-            `With ${formatNumber(diceCount)} Lucky Dice and ${formatNumber(coinsAvailable)} RNG Coins, you can afford:
-            <ul>
-                <li><span class="highlight">${formatNumber(megaDiceIICount)}</span> Mega Lucky Dice II (costs ${formatNumber(coinsPerMegaDiceII)} RNG Coins each)</li>
-                <li><span class="highlight">${formatNumber(megaDiceCount)}</span> Mega Lucky Dice (costs ${formatNumber(coinsPerMegaDice)} RNG Coins each)</li>
-                <li><span class="highlight">${formatNumber(luckyDiceIICount)}</span> Lucky Dice II (costs ${formatNumber(coinsPerLuckyDiceII)} RNG Coins each)</li>
-            </ul>
-            Coins left after upgrades: <span class="highlight">${formatNumber(remainingCoins)}</span>`;
-    }
-
-    // Rank Progression Calculator
-    const ranks = [
-        { name: "Noob", points: 0 },
-        { name: "Beginner", points: 13 },
-        { name: "Rookie", points: 25 },
-        { name: "Adventurer", points: 32 },
-        { name: "Experienced", points: 46 },
-        { name: "Pro", points: 63 },
-        { name: "Elite", points: 89 },
-        { name: "Expert", points: 131 },
-        { name: "Master", points: 182 },
-        { name: "Legend", points: 259 },
-        { name: "Champion", points: 319 },
-        { name: "Superstar", points: 341 },
-        { name: "Guardian", points: 420 },
-        { name: "Titan", points: 454 },
-        { name: "Sentinel", points: 484 },
-        { name: "Overlord", points: 512 },
-        { name: "Immortal", points: 531 },
-        { name: "Hacker", points: 552 },
-        { name: "Mastermind", points: 574 },
-        { name: "Ascendant", points: 632 },
-        { name: "Tech Titan", points: 694 },
-        { name: "Tech Sentinel", points: 754 },
-        { name: "Tech Overlord", points: 760 },
-        { name: "Tech Hacker", points: 760 },
-        { name: "Omniscient", points: 760 },
-        { name: "Celestial", points: 780 },
-        { name: "Apex", points: 790 },
-        { name: "Oracle", points: 810 },
-        { name: "Void Walker", points: 810 },
-        { name: "Warden", points: 850 },
-        { name: "MAX QUESTS", points: 870 }
-    ];
-
-    function calculateRankProgress() {
-        const currentRankPoints = parseInput(document.getElementById("currentRank").value);
-        const goalRankName = document.getElementById("goalRank").value.trim();
-        const currentStars = parseInput(document.getElementById("currentStars").value);
-
-        const goalRank = ranks.find(rank => rank.name === goalRankName);
-
-        if (!goalRank) {
-            document.getElementById("rankResult").innerHTML = "Please select a valid goal rank.";
-            return;
-        }
-
-        if (currentRankPoints >= goalRank.points) {
-            document.getElementById("rankResult").innerHTML = "You have already reached or surpassed this rank.";
-            return;
-        }
-
-        let totalPointsNeeded = 0;
-        let pointsEarned = currentStars;
-
-        for (let i = 0; i < ranks.length; i++) {
-            if (ranks[i].points > currentRankPoints && ranks[i].points <= goalRank.points) {
-                totalPointsNeeded += ranks[i].points;
+        function addCommaFormatting(inputElement) {
+            const value = inputElement.value.replace(/,/g, '');
+            if (!isNaN(value) && value !== '') {
+                inputElement.value = parseFloat(value).toLocaleString('en-US');
             }
         }
 
-        const pointsRemaining = totalPointsNeeded - pointsEarned;
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            input.addEventListener('blur', function () {
+                addCommaFormatting(input);
+            });
 
-        const fourStarQuests = Math.floor(pointsRemaining / 4);
-        const threeStarQuests = Math.floor((pointsRemaining % 4) / 3);
-        const twoStarQuests = Math.floor(((pointsRemaining % 4) % 3) / 2);
-        const oneStarQuests = ((pointsRemaining % 4) % 3) % 2;
-
-        document.getElementById("rankResult").innerHTML = 
-            `Points Remaining: <span class='highlight'>${formatNumber(pointsRemaining)}</span><br>
-            Four-Star Quests: <span class='highlight'>${fourStarQuests}</span><br>
-            Three-Star Quests: <span class='highlight'>${threeStarQuests}</span><br>
-            Two-Star Quests: <span class='highlight'>${twoStarQuests}</span><br>
-            One-Star Quests: <span class='highlight'>${oneStarQuests}</span>`;
-    }
-
-    // Suggestion Box
-    let cooldownActive = false;
-    const cooldownDuration = 60000; // 1 minute in milliseconds
-
-    function submitSuggestion() {
-        if (cooldownActive) {
-            document.getElementById('suggestionResult').innerHTML = 'Please wait before submitting another suggestion.';
-            return;
-        }
-
-        const discordUser = document.getElementById('discordUser').value.trim();
-        const suggestionText = document.getElementById('suggestionText').value.trim();
-        const webhookUrl = "https://discord.com/api/webhooks/1274040797905551461/xvlEZF9Q3Nf0ulhXUIlIKc2fqANcxc7o5O_wT671bCPiZGl2UMbks3qffm0csWI4LNOL";
-
-        if (!discordUser || !suggestionText) {
-            document.getElementById('suggestionResult').innerHTML = 'Please fill in both fields.';
-            return;
-        }
-
-        const payload = {
-            content: `${discordUser} suggested: ${suggestionText}`
-        };
-
-        cooldownActive = true;
-        document.querySelector('.suggestion-container button').disabled = true;
-
-        fetch(webhookUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        })
-        .then(response => {
-            if (response.ok) {
-                document.getElementById('suggestionResult').innerHTML = 'Suggestion submitted successfully!';
-            } else {
-                document.getElementById('suggestionResult').innerHTML = 'Failed to submit suggestion. Please try again.';
-            }
-        })
-        .catch(error => {
-            document.getElementById('suggestionResult').innerHTML = 'Error submitting suggestion.';
-        })
-        .finally(() => {
-            setTimeout(() => {
-                cooldownActive = false;
-                document.querySelector('.suggestion-container button').disabled = false;
-                document.getElementById('suggestionResult').innerHTML = 'You can now submit another suggestion.';
-            }, cooldownDuration);
+            input.addEventListener('focus', function () {
+                input.value = input.value.replace(/,/g, ''); // Remove commas when input is focused
+            });
         });
-    }
-</script>
+
+        function calculateDiceUpgrades() {
+            const diceCount = parseInput(document.getElementById('numberOfDice').value);
+            const coinsAvailable = parseInput(document.getElementById('coinsAvailable').value);
+
+            const coinsPerLuckyDiceII = 100;
+            const coinsPerMegaDice = 100000;
+            const coinsPerMegaDiceII = 300000;
+
+            const diceToLuckyDiceII = 5;
+            const luckyDiceIITomegaDice = 30;
+            const megaDiceToMegaDiceII = 3;
+
+            let megaDiceIICount = 0;
+            let megaDiceCount = 0;
+            let luckyDiceIICount = 0;
+            let remainingCoins = coinsAvailable;
+            let remainingDice = diceCount;
+
+            // Step 1: Calculate Lucky Dice II (convert 5 Lucky Dice to 1 Lucky Dice II)
+            luckyDiceIICount = Math.floor(remainingDice / diceToLuckyDiceII);
+            let luckyDiceIICost = luckyDiceIICount * coinsPerLuckyDiceII;
+
+            if (luckyDiceIICost > remainingCoins) {
+                luckyDiceIICount = Math.floor(remainingCoins / coinsPerLuckyDiceII);
+                luckyDiceIICost = luckyDiceIICount * coinsPerLuckyDiceII;
+            }
+
+            remainingCoins -= luckyDiceIICost;
+            remainingDice -= luckyDiceIICount * diceToLuckyDiceII;
+
+            // Step 2: Calculate Mega Lucky Dice (convert 30 Lucky Dice II to 1 Mega Lucky Dice)
+            megaDiceCount = Math.floor(luckyDiceIICount / luckyDiceIITomegaDice);
+            let megaDiceCost = megaDiceCount * coinsPerMegaDice;
+
+            if (megaDiceCost > remainingCoins) {
+                megaDiceCount = Math.floor(remainingCoins / coinsPerMegaDice);
+                megaDiceCost = megaDiceCount * coinsPerMegaDice;
+            }
+
+            remainingCoins -= megaDiceCost;
+            luckyDiceIICount -= megaDiceCount * luckyDiceIITomegaDice;
+
+            // Step 3: Calculate Mega Lucky Dice II (convert 3 Mega Lucky Dice to 1 Mega Lucky Dice II)
+            megaDiceIICount = Math.floor(megaDiceCount / megaDiceToMegaDiceII);
+            let megaDiceIICost = megaDiceIICount * coinsPerMegaDiceII;
+
+            if (megaDiceIICost > remainingCoins) {
+                megaDiceIICount = Math.floor(remainingCoins / coinsPerMegaDiceII);
+                megaDiceIICost = megaDiceIICount * coinsPerMegaDiceII;
+            }
+
+            remainingCoins -= megaDiceIICost;
+            megaDiceCount -= megaDiceIICount * megaDiceToMegaDiceII;
+
+            // Update result display
+            document.getElementById('diceResult').innerHTML = 
+                `With ${formatNumber(diceCount)} Lucky Dice and ${formatNumber(coinsAvailable)} RNG Coins, you can afford:
+                <ul>
+                    <li><span class="highlight">${formatNumber(megaDiceIICount)}</span> Mega Lucky Dice II (costs ${formatNumber(coinsPerMegaDiceII)} RNG Coins each)</li>
+                    <li><span class="highlight">${formatNumber(megaDiceCount)}</span> Mega Lucky Dice (costs ${formatNumber(coinsPerMegaDice)} RNG Coins each)</li>
+                    <li><span class="highlight">${formatNumber(luckyDiceIICount)}</span> Lucky Dice II (costs ${formatNumber(coinsPerLuckyDiceII)} RNG Coins each)</li>
+                </ul>
+                Coins left after upgrades: <span class="highlight">${formatNumber(remainingCoins)}</span>`;
+        }
+
+        const ranks = [
+            { name: "Noob", points: 0 },
+            { name: "Beginner", points: 13 },
+            { name: "Rookie", points: 25 },
+            { name: "Adventurer", points: 32 },
+            { name: "Experienced", points: 46 },
+            { name: "Pro", points: 63 },
+            { name: "Elite", points: 89 },
+            { name: "Expert", points: 131 },
+            { name: "Master", points: 182 },
+            { name: "Legend", points: 259 },
+            { name: "Champion", points: 319 },
+            { name: "Superstar", points: 341 },
+            { name: "Guardian", points: 420 },
+            { name: "Titan", points: 454 },
+            { name: "Sentinel", points: 484 },
+            { name: "Overlord", points: 512 },
+            { name: "Immortal", points: 531 },
+            { name: "Hacker", points: 552 },
+            { name: "Mastermind", points: 574 },
+            { name: "Ascendant", points: 632 },
+            { name: "Tech Titan", points: 694 },
+            { name: "Tech Sentinel", points: 754 },
+            { name: "Tech Overlord", points: 760 },
+            { name: "Tech Hacker", points: 760 },
+            { name: "Omniscient", points: 760 },
+            { name: "Celestial", points: 780 },
+            { name: "Apex", points: 790 },
+            { name: "Oracle", points: 810 },
+            { name: "Void Walker", points: 810 },
+            { name: "Warden", points: 850 },
+            { name: "MAX QUESTS", points: 870 }
+        ];
+        
+
+        function calculateRankProgress() {
+            const currentRank = parseInt(document.getElementById("currentRank").value);
+            const goalRank = parseInt(document.getElementById("goalRank").value);
+            const currentStars = parseInput(document.getElementById("currentStars").value);
+
+            if (currentRank >= goalRank) {
+                document.getElementById("rankResult").innerHTML = "Goal rank must be higher than current rank.";
+                return;
+            }
+
+            let totalPointsNeeded = 0;
+            let pointsEarned = currentStars;
+
+            for (let i = 0; i < ranks.length; i++) {
+                if (ranks[i].points > currentRank && ranks[i].points <= goalRank) {
+                    totalPointsNeeded += ranks[i].points;
+                }
+            }
+
+            const pointsRemaining = totalPointsNeeded - pointsEarned;
+
+            const fourStarQuests = Math.floor(pointsRemaining / 4);
+            const threeStarQuests = Math.floor((pointsRemaining % 4) / 3);
+            const twoStarQuests = Math.floor(((pointsRemaining % 4) % 3) / 2);
+            const oneStarQuests = ((pointsRemaining % 4) % 3) % 2;
+
+            document.getElementById("rankResult").innerHTML = 
+                `Points Remaining: <span class='highlight'>${formatNumber(pointsRemaining)}</span><br>
+                Four-Star Quests: <span class='highlight'>${fourStarQuests}</span><br>
+                Three-Star Quests: <span class='highlight'>${threeStarQuests}</span><br>
+                Two-Star Quests: <span class='highlight'>${twoStarQuests}</span><br>
+                One-Star Quests: <span class='highlight'>${oneStarQuests}</span>`;
+        }
+
 
 
     </script>
@@ -837,3 +758,133 @@ button:hover {
 </html>
 
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suggestion Box</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .suggestion-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .suggestion-container h1 {
+            margin-top: 0;
+        }
+        .suggestion-container label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .suggestion-container input[type="text"],
+        .suggestion-container textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .suggestion-container textarea {
+            height: 100px;
+        }
+        .suggestion-container button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .suggestion-container button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        .highlight {
+            color: #007bff;
+            font-weight: bold;
+        }
+        .result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="suggestion-container">
+        <h1>Submit Your Suggestion</h1>
+        <form id="suggestionForm">
+            <label for="discordUser">Your Discord Username:</label>
+            <input type="text" id="discordUser" name="discordUser" placeholder="e.g., YourName#1234">
+
+            <label for="suggestionText">Your Suggestion:</label>
+            <textarea id="suggestionText" name="suggestionText" placeholder="Type your suggestion here..."></textarea>
+
+            <button type="button" onclick="submitSuggestion()">Submit Suggestion</button>
+        </form>
+        <div id="suggestionResult" class="result"></div>
+    </div>
+
+    <script>
+        let cooldownActive = false;
+        const cooldownDuration = 60000; // 1 minute in milliseconds
+
+        function submitSuggestion() {
+            if (cooldownActive) {
+                document.getElementById('suggestionResult').innerHTML = 'Please wait before submitting another suggestion.';
+                return;
+            }
+
+            const discordUser = document.getElementById('discordUser').value.trim();
+            const suggestionText = document.getElementById('suggestionText').value.trim();
+            const webhookUrl = "https://discord.com/api/webhooks/1274040797905551461/xvlEZF9Q3Nf0ulhXUIlIKc2fqANcxc7o5O_wT671bCPiZGl2UMbks3qffm0csWI4LNOL";
+
+            if (!discordUser || !suggestionText) {
+                document.getElementById('suggestionResult').innerHTML = 'Please fill in both fields.';
+                return;
+            }
+
+            const payload = {
+                content: `${discordUser} suggested: ${suggestionText}`
+            };
+
+            cooldownActive = true;
+            document.querySelector('.suggestion-container button').disabled = true;
+
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('suggestionResult').innerHTML = 'Suggestion submitted successfully!';
+                } else {
+                    document.getElementById('suggestionResult').innerHTML = 'Failed to submit suggestion. Please try again.';
+                }
+            })
+            .catch(error => {
+                document.getElementById('suggestionResult').innerHTML = 'Error submitting suggestion.';
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    cooldownActive = false;
+                    document.querySelector('.suggestion-container button').disabled = false;
+                    document.getElementById('suggestionResult').innerHTML = 'You can now submit another suggestion.';
+                }, cooldownDuration);
+            });
+        }
+    </script>
+</body>
+</html>
