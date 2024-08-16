@@ -363,32 +363,37 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     <title>Calculators</title>
     <style>
         body {
+    <title>Dice Upgrade Calculator</title>
+    <style>
+        body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
             background-color: #1e1e1e;
             color: #d1d1d1;
+            overflow-x: hidden;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
         }
 
-        .flex-container {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin: 30px 0;
         }
 
         .container {
             background-color: #333842;
-            padding: 20px;
+            padding: 30px;
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 400px;
             text-align: center;
             border: 2px solid #555;
+            box-sizing: border-box;
         }
 
         label {
@@ -405,6 +410,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             margin-bottom: 20px;
             border: 1px solid #555;
             border-radius: 5px;
+            box-sizing: border-box;
             background-color: #333842;
             color: #ffffff;
         }
@@ -426,7 +432,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             background-color: #0056b3;
         }
 
-        #diceResult, #rankResult {
+        #diceResult {
             margin-top: 20px;
             font-size: 1.2em;
             text-align: left;
@@ -439,18 +445,19 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     </style>
 </head>
 <body>
-    <div class="flex-container">
-        <!-- Dice Upgrade Calculator -->
-        <div class="container">
-            <label for="numberOfDice">Number of Lucky Dice:</label>
-            <input type="text" id="numberOfDice" value="650">
+    <h1>Dice Upgrade Calculator</h1>
+    
+    <div class="container">
+        <h2>Calculate Dice Upgrades</h2>
+        <label for="numberOfDice">Number of Lucky Dice: </label>
+        <input type="text" id="numberOfDice" value="650">
 
-            <label for="coinsAvailable">RNG Coins Available:</label>
-            <input type="text" id="coinsAvailable" value="1,000,000">
+        <label for="coinsAvailable">RNG Coins Available: </label>
+        <input type="text" id="coinsAvailable" value="1000000">
 
-            <button onclick="calculateDiceUpgrades()">Calculate Upgrades</button>
-            <div id="diceResult">Enter values and click "Calculate Upgrades" to see the results.</div>
-        </div>
+        <button onclick="calculateDiceUpgrades()">Calculate Upgrades</button>
+        <div id="diceResult">Enter values and click "Calculate Upgrades" to see the results.</div>
+    </div>
 
         <!-- Rank Progression Calculator -->
         <div class="container">
@@ -560,17 +567,96 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
         });
 
         // Dice Upgrade Calculator Script (reverted to original)
+        function parseInput(value) {
+            return parseFloat(value.replace(/,/g, '')) || 0;
+        }
+
+        function formatNumber(number) {
+            return number.toLocaleString('en-US');
+        }
+
+
+        function addCommaFormatting(inputElement) {
+    let value = inputElement.value.replace(/,/g, '');
+    if (!isNaN(value) && value !== '') {
+        inputElement.value = parseFloat(value).toLocaleString('en-US');
+    }
+}
+
+document.querySelectorAll('input[type="text"]').forEach(input => {
+    input.addEventListener('blur', function () {
+        addCommaFormatting(input);
+    });
+
+    input.addEventListener('focus', function () {
+        input.value = input.value.replace(/,/g, ''); // Remove commas when input is focused
+    });
+});
+
         function calculateDiceUpgrades() {
-            var luckyDice = parseInt(document.getElementById("numberOfDice").value.replace(/,/g, ''));
-            var rngCoins = parseInt(document.getElementById("coinsAvailable").value.replace(/,/g, ''));
+            const diceCount = parseInput(document.getElementById('numberOfDice').value);
+            const coinsAvailable = parseInput(document.getElementById('coinsAvailable').value);
+            
+            const coinsPerLuckyDiceII = 100;
+            const coinsPerMegaDice = 100000;
+            const coinsPerMegaDiceII = 300000;
+            
+            const diceToLuckyDiceII = 5;
+            const luckyDiceIITomegaDice = 30;
+            const megaDiceToMegaDiceII = 3;
 
-            var upgrades = Math.floor(rngCoins / 1500000);
-            var remainingCoins = rngCoins % 1500000;
-            var finalDice = luckyDice + upgrades;
+            let megaDiceIICount = 0;
+            let megaDiceCount = 0;
+            let luckyDiceIICount = 0;
+            let remainingCoins = coinsAvailable;
+            let remainingDice = diceCount;
 
-            document.getElementById("diceResult").innerHTML = 
-                "Upgraded Dice: <span class='highlight'>" + finalDice.toLocaleString() + "</span><br>" +
-                "Remaining RNG Coins: <span class='highlight'>" + remainingCoins.toLocaleString() + "</span>";
+            // Step 1: Calculate Lucky Dice II (convert 5 Lucky Dice to 1 Lucky Dice II)
+            luckyDiceIICount = Math.floor(remainingDice / diceToLuckyDiceII);
+            let luckyDiceIICost = luckyDiceIICount * coinsPerLuckyDiceII;
+
+            if (luckyDiceIICost > remainingCoins) {
+                luckyDiceIICount = Math.floor(remainingCoins / coinsPerLuckyDiceII);
+                luckyDiceIICost = luckyDiceIICount * coinsPerLuckyDiceII;
+            }
+
+            remainingCoins -= luckyDiceIICost;
+            remainingDice -= luckyDiceIICount * diceToLuckyDiceII;
+
+            // Step 2: Calculate Mega Lucky Dice (convert 30 Lucky Dice II to 1 Mega Lucky Dice)
+            megaDiceCount = Math.floor(luckyDiceIICount / luckyDiceIITomegaDice);
+            let megaDiceCost = megaDiceCount * coinsPerMegaDice;
+
+            if (megaDiceCost > remainingCoins) {
+                megaDiceCount = Math.floor(remainingCoins / coinsPerMegaDice);
+                megaDiceCost = megaDiceCount * coinsPerMegaDice;
+            }
+
+            remainingCoins -= megaDiceCost;
+            luckyDiceIICount -= megaDiceCount * luckyDiceIITomegaDice;
+
+            // Step 3: Calculate Mega Lucky Dice II (convert 3 Mega Lucky Dice to 1 Mega Lucky Dice II)
+            megaDiceIICount = Math.floor(megaDiceCount / megaDiceToMegaDiceII);
+            let megaDiceIICost = megaDiceIICount * coinsPerMegaDiceII;
+
+            if (megaDiceIICost > remainingCoins) {
+                megaDiceIICount = Math.floor(remainingCoins / coinsPerMegaDiceII);
+                megaDiceIICost = megaDiceIICount * coinsPerMegaDiceII;
+            }
+
+            remainingCoins -= megaDiceIICost;
+            megaDiceCount -= megaDiceIICount * megaDiceToMegaDiceII;
+
+            // Update result display
+            document.getElementById('diceResult').innerHTML = 
+                With ${formatNumber(parseInput(document.getElementById('numberOfDice').value))} Lucky Dice and ${formatNumber(parseInput(document.getElementById('coinsAvailable').value))} RNG Coins, you can afford:
+                <ul>
+                    <li><span class="highlight">${formatNumber(megaDiceIICount)}</span> Mega Lucky Dice II (costs ${formatNumber(coinsPerMegaDiceII)} RNG Coins each)</li>
+                    <li><span class="highlight">${formatNumber(megaDiceCount)}</span> Mega Lucky Dice (costs ${formatNumber(coinsPerMegaDice)} RNG Coins each)</li>
+                    <li><span class="highlight">${formatNumber(luckyDiceIICount)}</span> Lucky Dice II (costs ${formatNumber(coinsPerLuckyDiceII)} RNG Coins each)</li>
+                </ul>
+                Coins left after upgrades: <span class="highlight">${formatNumber(remainingCoins)}</span>
+            ;
         }
 
         // Rank Progression Calculator Script
