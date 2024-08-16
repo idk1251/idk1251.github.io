@@ -379,9 +379,9 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
 
         .calculators-container {
             display: flex;
-            flex-wrap: wrap;
             gap: 20px;
             justify-content: center;
+            flex-wrap: wrap;
             max-width: 1200px;
             width: 100%;
             padding: 20px;
@@ -393,7 +393,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 400px;
+            width: 300px;
             text-align: center;
             border: 2px solid #555;
             box-sizing: border-box;
@@ -451,7 +451,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 400px;
+            width: 300px;
             text-align: center;
         }
 
@@ -474,6 +474,18 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
 
         .discord-container a:hover {
             text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .calculators-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .container, .discord-container {
+                width: 100%;
+                max-width: none;
+            }
         }
     </style>
 </head>
@@ -735,3 +747,4 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     </script>
 </body>
 </html>
+
