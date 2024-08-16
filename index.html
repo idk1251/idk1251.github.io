@@ -881,17 +881,17 @@ body {
         <!-- Additional Daily Investment Calculator -->
         <div class="additional-calculator">
             <h2>Additional Daily Investment Calculator</h2>
-            <label for="initialBalance3">Balance:</label>
-            <input type="text" id="initialBalance3" placeholder="0">
+            <label for="initialBalance">Balance:</label>
+            <input type="text" id="initialBalance" placeholder="0">
 
             <label for="dailyDeposit">Additional Daily Deposit:</label>
             <input type="text" id="dailyDeposit" placeholder="100">
 
-            <label for="goalBalance2">Goal Balance:</label>
-            <input type="text" id="goalBalance2" placeholder="1,000,000">
+            <label for="goalBalance">Goal Balance:</label>
+            <input type="text" id="goalBalance" placeholder="1,000,000">
 
-            <label for="rankSelect2">Select Goal Rank:</label>
-            <select id="rankSelect2">
+            <label for="rankSelect">Select Goal Rank:</label>
+            <select id="rankSelect">
                 <option value="">Select a Rank</option>
                 <option value="96000000">Donator ― 96M+</option>
                 <option value="320000000">Ethereal ― 320M+</option>
@@ -959,12 +959,13 @@ body {
         }
 
         function calculateInvestment() {
-            const initialBalance = parseFloat(document.getElementById('initialBalance3').value.replace(/,/g, '')) || 0;
+            const initialBalance = parseFloat(document.getElementById('initialBalance').value.replace(/,/g, '')) || 0;
             const dailyDeposit = parseFloat(document.getElementById('dailyDeposit').value.replace(/,/g, '')) || 0;
-            const goalBalance = parseFloat(document.getElementById('goalBalance2').value.replace(/,/g, '')) || 0;
+            const goalBalance = parseFloat(document.getElementById('goalBalance').value.replace(/,/g, '')) || 0;
+            const dailyInterestRate = 0.004; // 0.4% daily interest rate
 
-            if (dailyDeposit <= 0) {
-                document.getElementById('calcResult').innerText = 'Daily deposit must be greater than 0.';
+            if (dailyDeposit < 0) {
+                document.getElementById('calcResult').innerText = 'Daily deposit cannot be negative.';
                 return;
             }
 
@@ -973,20 +974,28 @@ body {
                 return;
             }
 
-            const daysRequired = Math.ceil((goalBalance - initialBalance) / dailyDeposit);
-            const weeksRequired = Math.ceil(daysRequired / 7);
-            const monthsRequired = Math.ceil(daysRequired / 30);
-            const yearsRequired = Math.ceil(daysRequired / 365);
+            let balance = initialBalance;
+            let days = 0;
+
+            while (balance < goalBalance) {
+                balance = (balance + dailyDeposit) * (1 + dailyInterestRate);
+                days++;
+            }
+
+            const weeks = Math.ceil(days / 7);
+            const months = Math.ceil(days / 30);
+            const years = Math.ceil(days / 365);
 
             document.getElementById('calcResult').innerText = `It will take approximately:
-- ${daysRequired} days
-- ${weeksRequired} weeks
-- ${monthsRequired} months
-- ${yearsRequired} years
+- ${days} days
+- ${weeks} weeks
+- ${months} months
+- ${years} years
 to reach your goal balance.`;
         }
     </script>
 </body>
 </html>
+
 
 
