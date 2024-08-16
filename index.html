@@ -388,6 +388,20 @@ body {
             justify-content: center;
         }
 
+
+@media (max-width: 800px) {
+    .calculators-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .container, .discord-container, .suggestion-container {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+        
         .calculators-container {
             display: flex;
             flex-wrap: wrap;
@@ -410,10 +424,10 @@ body {
             box-sizing: border-box;
         }
 
-        .discord-container {
-            width: 300px;
-            padding: 20px;
-        }
+.discord-container {
+    width: 300px; /* Adjust if necessary */
+    padding: 20px;
+}
 
         label {
             font-size: 1.1em;
@@ -482,16 +496,18 @@ body {
         .discord-container a:hover {
             text-decoration: underline;
         }
-        .suggestion-container {
+.container, .suggestion-container {
     background-color: #333842;
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 350px;
+    width: 350px; /* Ensure this width aligns with other GUIs */
     text-align: center;
     border: 2px solid #555;
     box-sizing: border-box;
 }
+
+
 
 .suggestion-container h2 {
     font-size: 1.5em;
