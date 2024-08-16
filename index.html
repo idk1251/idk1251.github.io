@@ -442,6 +442,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     <div class="flex-container">
         <!-- Dice Upgrade Calculator -->
         <div class="container">
+            <h2>Dice Upgrade Calculator</h2>
             <label for="numberOfDice">Number of Lucky Dice:</label>
             <input type="text" id="numberOfDice" value="650">
 
@@ -454,6 +455,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
 
         <!-- Rank Progression Calculator -->
         <div class="container">
+            <h2>Rank Progression Calculator</h2>
             <label for="currentRank">Current Rank:</label>
             <select id="currentRank">
                 <option value="0">Noob | 0</option>
@@ -559,18 +561,23 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             });
         });
 
-        // Dice Upgrade Calculator Script (reverted to original)
+        // Dice Upgrade Calculator Script
         function calculateDiceUpgrades() {
-            var luckyDice = parseInt(document.getElementById("numberOfDice").value.replace(/,/g, ''));
-            var rngCoins = parseInt(document.getElementById("coinsAvailable").value.replace(/,/g, ''));
+            const luckyDice = parseInt(document.getElementById("numberOfDice").value.replace(/,/g, ''));
+            const rngCoins = parseInt(document.getElementById("coinsAvailable").value.replace(/,/g, ''));
 
-            var upgrades = Math.floor(rngCoins / 1500000);
-            var remainingCoins = rngCoins % 1500000;
-            var finalDice = luckyDice + upgrades;
+            // Calculate the number of upgrades possible
+            const upgradeCost = 150000; // Cost for each upgrade
+            const maxUpgrades = Math.floor(rngCoins / upgradeCost);
+            const finalUpgrades = Math.min(maxUpgrades, luckyDice);
+
+            // Remaining coins after the upgrades
+            const remainingCoins = rngCoins - (finalUpgrades * upgradeCost);
+            const finalDice = luckyDice + finalUpgrades;
 
             document.getElementById("diceResult").innerHTML = 
-                "Upgraded Dice: <span class='highlight'>" + finalDice.toLocaleString() + "</span><br>" +
-                "Remaining RNG Coins: <span class='highlight'>" + remainingCoins.toLocaleString() + "</span>";
+                "Upgraded Dice: <span class='highlight'>" + formatNumber(finalDice) + "</span><br>" +
+                "Remaining RNG Coins: <span class='highlight'>" + formatNumber(remainingCoins) + "</span>";
         }
 
         // Rank Progression Calculator Script
@@ -635,7 +642,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             const oneStarQuests = ((pointsRemaining % 4) % 3) % 2;
 
             document.getElementById("rankResult").innerHTML = 
-                "Points Remaining: <span class='highlight'>" + pointsRemaining.toLocaleString() + "</span><br>" +
+                "Points Remaining: <span class='highlight'>" + formatNumber(pointsRemaining) + "</span><br>" +
                 "Four-Star Quests: <span class='highlight'>" + fourStarQuests + "</span><br>" +
                 "Three-Star Quests: <span class='highlight'>" + threeStarQuests + "</span><br>" +
                 "Two-Star Quests: <span class='highlight'>" + twoStarQuests + "</span><br>" +
@@ -644,5 +651,6 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     </script>
 </body>
 </html>
+
 
 
