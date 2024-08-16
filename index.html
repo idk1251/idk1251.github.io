@@ -360,7 +360,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dice Upgrade Calculator & Rank Progression</title>
+    <title>Calculators</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -442,18 +442,20 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
 </head>
 <body>
     <div class="flex-container">
+        <!-- Dice Upgrade Calculator -->
         <div class="container">
-            <h2>Calculate Dice Upgrades</h2>
-            <label for="numberOfDice">Number of Lucky Dice: </label>
+            <h2>Dice Upgrade Calculator</h2>
+            <label for="numberOfDice">Number of Lucky Dice:</label>
             <input type="text" id="numberOfDice" value="650">
 
-            <label for="coinsAvailable">RNG Coins Available: </label>
+            <label for="coinsAvailable">RNG Coins Available:</label>
             <input type="text" id="coinsAvailable" value="1000000">
 
             <button onclick="calculateDiceUpgrades()">Calculate Upgrades</button>
             <div id="diceResult">Enter values and click "Calculate Upgrades" to see the results.</div>
         </div>
 
+        <!-- Rank Progression Calculator -->
         <div class="container">
             <h2>Rank Progression Calculator</h2>
             <label for="currentRank">Current Rank:</label>
@@ -520,7 +522,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
                 <option value="870">Max Quests | 870</option>
             </select>
 
-            <label for="currentStars">Current Stars: </label>
+            <label for="currentStars">Current Stars:</label>
             <input type="text" id="currentStars" value="0">
 
             <button onclick="calculateRankProgress()">Calculate Progress</button>
@@ -529,6 +531,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     </div>
 
     <script>
+        // Dice Upgrade Calculator Script
         function parseInput(value) {
             return parseFloat(value.replace(/,/g, '')) || 0;
         }
@@ -536,6 +539,23 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
         function formatNumber(number) {
             return number.toLocaleString('en-US');
         }
+
+        function addCommaFormatting(inputElement) {
+            let value = inputElement.value.replace(/,/g, '');
+            if (!isNaN(value) && value !== '') {
+                inputElement.value = parseFloat(value).toLocaleString('en-US');
+            }
+        }
+
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            input.addEventListener('blur', function () {
+                addCommaFormatting(input);
+            });
+
+            input.addEventListener('focus', function () {
+                input.value = input.value.replace(/,/g, ''); // Remove commas when input is focused
+            });
+        });
 
         function calculateDiceUpgrades() {
             const diceCount = parseInput(document.getElementById('numberOfDice').value);
@@ -603,63 +623,69 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             `;
         }
 
+        // Rank Progression Calculator Script
         function calculateRankProgress() {
-            const ranks = {
-                0: "Noob | 0",
-                13: "Beginner | 13",
-                25: "Rookie | 25",
-                32: "Adventurer | 32",
-                46: "Experienced | 46",
-                63: "Pro | 63",
-                89: "Elite | 89",
-                131: "Expert | 131",
-                182: "Master | 182",
-                259: "Legend | 259",
-                319: "Champion | 319",
-                341: "Superstar | 341",
-                420: "Guardian | 420",
-                454: "Titan | 454",
-                484: "Sentinel | 484",
-                512: "Overlord | 512",
-                531: "Immortal | 531",
-                552: "Hacker | 552",
-                574: "Mastermind | 574",
-                632: "Ascendant | 632",
-                694: "Tech Titan | 694",
-                754: "Tech Sentinel | 754",
-                760: "Tech Overlord | 760",
-                780: "Celestial | 780",
-                790: "Apex | 790",
-                810: "Oracle | 810",
-                850: "Warden | 850",
-                870: "Max Quests | 870"
+            const rankValues = {
+                0: 0,
+                13: 13,
+                25: 25,
+                32: 32,
+                46: 46,
+                63: 63,
+                89: 89,
+                131: 131,
+                182: 182,
+                259: 259,
+                319: 319,
+                341: 341,
+                420: 420,
+                454: 454,
+                484: 484,
+                512: 512,
+                531: 531,
+                552: 552,
+                574: 574,
+                632: 632,
+                694: 694,
+                754: 754,
+                760: 760,
+                780: 780,
+                790: 790,
+                810: 810,
+                850: 850,
+                870: 870
             };
 
             const currentRankStars = parseInt(document.getElementById('currentRank').value);
             const goalRankStars = parseInt(document.getElementById('goalRank').value);
             const currentStars = parseInput(document.getElementById('currentStars').value);
 
-            if (goalRankStars <= currentRankStars) {
-                document.getElementById('rankResult').innerHTML = `Your goal rank must be higher than your current rank.`;
-                return;
+            let totalStarsNeeded = 0;
+
+            for (let rank in rankValues) {
+                if (rankValues[rank] > currentRankStars && rankValues[rank] <= goalRankStars) {
+                    totalStarsNeeded += rankValues[rank];
+                }
             }
 
-            let starsNeeded = goalRankStars - currentRankStars - currentStars;
+            totalStarsNeeded -= currentStars;  // Subtract current stars from total
+
+            if (totalStarsNeeded < 0) totalStarsNeeded = 0;  // Ensure no negative values
 
             // Distribute stars across the quests
-            let fourStars = Math.floor(starsNeeded / 4);
-            starsNeeded -= fourStars * 4;
+            let fourStars = Math.floor(totalStarsNeeded / 4);
+            totalStarsNeeded -= fourStars * 4;
 
-            let threeStars = Math.floor(starsNeeded / 3);
-            starsNeeded -= threeStars * 3;
+            let threeStars = Math.floor(totalStarsNeeded / 3);
+            totalStarsNeeded -= threeStars * 3;
 
-            let twoStars = Math.floor(starsNeeded / 2);
-            starsNeeded -= twoStars * 2;
+            let twoStars = Math.floor(totalStarsNeeded / 2);
+            totalStarsNeeded -= twoStars * 2;
 
-            let oneStars = starsNeeded;
+            let oneStars = totalStarsNeeded;
 
             document.getElementById('rankResult').innerHTML = `
-                You need <span class="highlight">${formatNumber(goalRankStars - currentRankStars - currentStars)}</span> more stars to reach your goal rank.
+                You need <span class="highlight">${formatNumber(fourStars * 4 + threeStars * 3 + twoStars * 2 + oneStars)}</span> more stars to reach your goal rank.
                 <ul>
                     <li><span class="highlight">${formatNumber(fourStars)}</span> Four-Star quests</li>
                     <li><span class="highlight">${formatNumber(threeStars)}</span> Three-Star quests</li>
@@ -671,5 +697,3 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     </script>
 </body>
 </html>
-
-
