@@ -440,6 +440,32 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             color: #ff4757;
             font-weight: bold;
         }
+
+        .discord-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .discord-button {
+            background-color: #7289da;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            padding: 15px 25px;
+            font-size: 1.2em;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .discord-button:hover {
+            background-color: #5b6eae;
+        }
     </style>
 </head>
 <body>
@@ -530,6 +556,11 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             <button onclick="calculateRankProgress()">Calculate Progress</button>
             <div id="rankResult">Enter values and click "Calculate Progress" to see the results.</div>
         </div>
+
+        <!-- Discord Link Button -->
+        <div class="discord-container">
+            <a href="https://discord.gg/ZQ8ngPFQ" target="_blank" class="discord-button">Join Our Discord</a>
+        </div>
     </div>
 
     <script>
@@ -558,7 +589,6 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             });
         });
 
-        // Dice Upgrade Calculator Script
         function calculateDiceUpgrades() {
             const diceCount = parseInput(document.getElementById('numberOfDice').value);
             const coinsAvailable = parseInput(document.getElementById('coinsAvailable').value);
@@ -695,6 +725,5 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     </script>
 </body>
 </html>
-
 
 
