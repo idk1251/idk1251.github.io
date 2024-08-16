@@ -444,12 +444,18 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
 .discord-container {
     background-color: #2c2f33; /* Darker background color */
     color: #ffffff; /* White text for contrast */
-    padding: 20px; /* Smaller padding */
     border-radius: 10px; /* Slightly smaller border-radius */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Slightly darker shadow */
     width: 300px; /* Smaller width */
     text-align: center;
     margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.discord-content {
+    padding: 20px; /* Smaller padding */
 }
 
 .discord-container h2 {
@@ -460,11 +466,16 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
 
 .discord-container p {
     font-size: 1.2em; /* Larger text size for the paragraph */
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     color: #99aab5; /* Light grey color for the text */
 }
 
-.discord-container a {
+.discord-button {
+    background-color: transparent; /* Make the button section background transparent */
+    padding: 10px;
+}
+
+.discord-button a {
     display: inline-block;
     padding: 8px 16px;
     font-size: 1.2em; /* Larger text size for the button */
@@ -475,9 +486,10 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     transition: background-color 0.3s;
 }
 
-.discord-container a:hover {
+.discord-button a:hover {
     background-color: #5b6eae; /* Slightly darker blue on hover */
 }
+
 
 
     </style>
@@ -497,10 +509,15 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             <div id="diceResult">Enter values and click "Calculate Upgrades" to see the results.</div>
         </div>
 <div class="discord-container">
-    <h2>Join Our Discord!</h2>
-    <p>Get updates, support, and chat with us.</p>
-    <a href="https://discord.gg/YOUR_INVITE_LINK" target="_blank">Join Now</a>
+    <div class="discord-content">
+        <h2>Join Our Discord!</h2>
+        <p>Get updates, support, and chat with us.</p>
+    </div>
+    <div class="discord-button">
+        <a href="https://discord.gg/YOUR_INVITE_LINK" target="_blank">Join Now</a>
+    </div>
 </div>
+
 
 
 
