@@ -355,6 +355,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
 </body>
 </html>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -381,9 +382,13 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             flex-wrap: wrap;
             gap: 20px;
             justify-content: center;
+            max-width: 1200px;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
-        .container {
+        .container, .discord-container {
             background-color: #333842;
             padding: 30px;
             border-radius: 15px;
@@ -448,13 +453,23 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 400px;
             text-align: center;
-            margin: 20px;
+        }
+
+        .discord-container h2 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        .discord-container p {
+            margin: 10px 0;
         }
 
         .discord-container a {
             color: #007bff;
             text-decoration: none;
             font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
         }
 
         .discord-container a:hover {
@@ -481,7 +496,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
         <div class="discord-container">
             <h2>Join Our Discord Server!</h2>
             <p>Get big giveaways, the latest updates, and more.</p>
-            <a href="https://discord.gg/your-discord-link" target="_blank">Join Now!</a>
+            <a href="https://discord.gg/ZQ8ngPFQ" target="_blank">Join Now!</a>
         </div>
 
         <!-- Rank Progression Calculator -->
@@ -564,14 +579,14 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             return parseFloat(value.replace(/,/g, '')) || 0;
         }
 
-        function formatNumber(number) {
-            return number.toLocaleString('en-US');
+        function formatNumber(value) {
+            return parseFloat(value).toLocaleString('en-US');
         }
 
         function addCommaFormatting(inputElement) {
-            let value = inputElement.value.replace(/,/g, '');
-            if (!isNaN(value) && value !== '') {
-                inputElement.value = parseFloat(value).toLocaleString('en-US');
+            let value = parseInput(inputElement.value);
+            if (value !== '') {
+                inputElement.value = formatNumber(value);
             }
         }
 
@@ -585,7 +600,6 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             });
         });
 
-        // Dice Upgrade Calculator Script
         function calculateDiceUpgrades() {
             const diceCount = parseInput(document.getElementById('numberOfDice').value);
             const coinsAvailable = parseInput(document.getElementById('coinsAvailable').value);
@@ -604,7 +618,6 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             let remainingCoins = coinsAvailable;
             let remainingDice = diceCount;
 
-            // Step 1: Calculate Lucky Dice II (convert 5 Lucky Dice to 1 Lucky Dice II)
             luckyDiceIICount = Math.floor(remainingDice / diceToLuckyDiceII);
             let luckyDiceIICost = luckyDiceIICount * coinsPerLuckyDiceII;
 
@@ -616,7 +629,6 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             remainingCoins -= luckyDiceIICost;
             remainingDice -= luckyDiceIICount * diceToLuckyDiceII;
 
-            // Step 2: Calculate Mega Lucky Dice (convert 30 Lucky Dice II to 1 Mega Lucky Dice)
             megaDiceCount = Math.floor(luckyDiceIICount / luckyDiceIITomegaDice);
             let megaDiceCost = megaDiceCount * coinsPerMegaDice;
 
@@ -628,7 +640,6 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             remainingCoins -= megaDiceCost;
             luckyDiceIICount -= megaDiceCount * luckyDiceIITomegaDice;
 
-            // Step 3: Calculate Mega Lucky Dice II (convert 3 Mega Lucky Dice to 1 Mega Lucky Dice II)
             megaDiceIICount = Math.floor(megaDiceCount / megaDiceToMegaDiceII);
             let megaDiceIICost = megaDiceIICount * coinsPerMegaDiceII;
 
@@ -640,7 +651,6 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             remainingCoins -= megaDiceIICost;
             megaDiceCount -= megaDiceIICount * megaDiceToMegaDiceII;
 
-            // Update result display
             document.getElementById('diceResult').innerHTML = 
                 `With ${formatNumber(diceCount)} Lucky Dice and ${formatNumber(coinsAvailable)} RNG Coins, you can afford:
                 <ul>
@@ -651,7 +661,6 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
                 Coins left after upgrades: <span class="highlight">${formatNumber(remainingCoins)}</span>`;
         }
 
-        // Rank Progression Calculator Script
         const ranks = [
             { name: "Noob", points: 0 },
             { name: "Beginner", points: 13 },
@@ -722,5 +731,6 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     </script>
 </body>
 </html>
+
 
 
