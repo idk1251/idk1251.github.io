@@ -845,7 +845,15 @@ body {
 
 
     <script>
+let cooldownActive = false;
+const cooldownDuration = 60000; // 1 minute in milliseconds
+
 function submitSuggestion() {
+    if (cooldownActive) {
+        document.getElementById('suggestionResult').innerHTML = 'Please wait before submitting another suggestion.';
+        return;
+    }
+
     const discordUser = document.getElementById('discordUser').value.trim();
     const suggestionText = document.getElementById('suggestionText').value.trim();
     const webhookUrl = "https://discord.com/api/webhooks/1274040797905551461/xvlEZF9Q3Nf0ulhXUIlIKc2fqANcxc7o5O_wT671bCPiZGl2UMbks3qffm0csWI4LNOL";
@@ -858,6 +866,9 @@ function submitSuggestion() {
     const payload = {
         content: `${discordUser} suggested: ${suggestionText}`
     };
+
+    cooldownActive = true;
+    document.querySelector('.suggestion-container button').disabled = true;
 
     fetch(webhookUrl, {
         method: 'POST',
@@ -875,8 +886,16 @@ function submitSuggestion() {
     })
     .catch(error => {
         document.getElementById('suggestionResult').innerHTML = 'Error submitting suggestion.';
+    })
+    .finally(() => {
+        setTimeout(() => {
+            cooldownActive = false;
+            document.querySelector('.suggestion-container button').disabled = false;
+            document.getElementById('suggestionResult').innerHTML = 'You can now submit another suggestion.';
+        }, cooldownDuration);
     });
 }
+
 
     </script>
 </body>
