@@ -769,12 +769,22 @@ body {
             background-color: #1e1e1e;
             color: #d1d1d1;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            min-height: 100vh;
             justify-content: center;
+            min-height: 100vh;
             margin: 0;
-            padding: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .flex-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            max-width: 1200px;
+            width: 100%;
         }
 
         .container {
@@ -845,28 +855,42 @@ body {
             color: #ff4757;
             font-weight: bold;
         }
+
+        @media (max-width: 768px) {
+            .flex-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .container {
+                width: 100%;
+                max-width: 400px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Suggestion Box</h2>
-        <label for="discordUser">Discord Username:</label>
-        <input type="text" id="discordUser" placeholder="Enter your Discord username">
+    <div class="flex-container">
+        <div class="container">
+            <h2>Suggestion Box</h2>
+            <label for="discordUser">Discord Username:</label>
+            <input type="text" id="discordUser" placeholder="Enter your Discord username">
 
-        <label for="suggestionText">Your Suggestion:</label>
-        <textarea id="suggestionText" placeholder="Enter your suggestion here"></textarea>
+            <label for="suggestionText">Your Suggestion:</label>
+            <textarea id="suggestionText" placeholder="Enter your suggestion here"></textarea>
 
-        <button onclick="submitSuggestion()">Submit Suggestion</button>
-        <div id="suggestionResult">Enter your suggestion and click "Submit Suggestion".</div>
-    </div>
+            <button onclick="submitSuggestion()">Submit Suggestion</button>
+            <div id="suggestionResult">Enter your suggestion and click "Submit Suggestion".</div>
+        </div>
 
-    <div class="container">
-        <h2>Coins Dice Calculator</h2>
-        <label for="coinsForDice">Enter Coins:</label>
-        <input type="text" id="coinsForDice" placeholder="Enter the number of coins">
+        <div class="container">
+            <h2>Coins Dice Calculator</h2>
+            <label for="coinsForDice">Enter Coins:</label>
+            <input type="text" id="coinsForDice" placeholder="Enter the number of coins">
 
-        <button onclick="calculateCoinsDice()">Calculate Dice</button>
-        <div id="coinsResult">Enter coins and click "Calculate Dice" to see the results.</div>
+            <button onclick="calculateCoinsDice()">Calculate Dice</button>
+            <div id="coinsResult">Enter coins and click "Calculate Dice" to see the results.</div>
+        </div>
     </div>
 
     <script>
