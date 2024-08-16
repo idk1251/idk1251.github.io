@@ -444,7 +444,6 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     <div class="flex-container">
         <!-- Dice Upgrade Calculator -->
         <div class="container">
-            <h2>Dice Upgrade Calculator</h2>
             <label for="numberOfDice">Number of Lucky Dice:</label>
             <input type="text" id="numberOfDice" value="650">
 
@@ -457,7 +456,6 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
 
         <!-- Rank Progression Calculator -->
         <div class="container">
-            <h2>Rank Progression Calculator</h2>
             <label for="currentRank">Current Rank:</label>
             <select id="currentRank">
                 <option value="0">Noob | 0</option>
@@ -537,7 +535,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     </div>
 
     <script>
-        // Common Functions
+        // Dice Upgrade Calculator Script
         function parseInput(value) {
             return parseFloat(value.replace(/,/g, '')) || 0;
         }
@@ -563,104 +561,161 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             });
         });
 
-        // Dice Upgrade Calculator Script
         function calculateDiceUpgrades() {
             const diceCount = parseInput(document.getElementById('numberOfDice').value);
             const coinsAvailable = parseInput(document.getElementById('coinsAvailable').value);
-
+            
             const coinsPerLuckyDiceII = 100;
-            const coinsPerMegaDice = 1200;
-            const diceRequiredForUpgrade = 650;
-            const maxUpgrades = 100; // Assume a maximum of 100 upgrades for calculation purposes
+            const coinsPerMegaDice = 100000;
+            const coinsPerMegaDiceII = 300000;
+            
+            const diceToLuckyDiceII = 50;
+            const megaDiceToMegaDiceII = 3;
 
-            let results = [];
-
+            let luckyDiceIICount = 0;
+            let megaDiceCount = 0;
+            let megaDiceIICount = 0;
+            let luckyDiceCount = 0;
+            let diceUsed = diceCount;
             let remainingCoins = coinsAvailable;
-            let currentDiceCount = diceCount;
 
-            for (let i = 0; i < maxUpgrades; i++) {
-                if (currentDiceCount < diceRequiredForUpgrade) break;
+            while (remainingCoins >= coinsPerMegaDiceII && diceUsed >= megaDiceToMegaDiceII) {
+                let affordableMegaDiceIICount = Math.floor(remainingCoins / coinsPerMegaDiceII);
+                let requiredMegaDiceCount = affordableMegaDiceIICount * megaDiceToMegaDiceII;
 
-                const upgradeCost = currentDiceCount < diceRequiredForUpgrade * 2 ? coinsPerLuckyDiceII : coinsPerMegaDice;
+                if (requiredMegaDiceCount > diceUsed) {
+                    affordableMegaDiceIICount = Math.floor(diceUsed / megaDiceToMegaDiceII);
+                }
 
-                if (remainingCoins < upgradeCost) break;
-
-                let upgradesPossible = Math.floor(remainingCoins / upgradeCost);
-
-                results.push(`Upgrade ${i + 1}: ${upgradesPossible} upgrades possible with ${formatNumber(upgradeCost)} coins each.`);
-
-                remainingCoins -= upgradesPossible * upgradeCost;
-                currentDiceCount -= diceRequiredForUpgrade * upgradesPossible;
+                if (affordableMegaDiceIICount > 0) {
+                    megaDiceIICount += affordableMegaDiceIICount;
+                    remainingCoins -= affordableMegaDiceIICount * coinsPerMegaDiceII;
+                    diceUsed -= affordableMegaDiceIICount * megaDiceToMegaDiceII;
+                }
             }
 
-            document.getElementById('diceResult').innerHTML = results.length ? results.join('<br>') : 'Not enough coins for any upgrades.';
+            while (remainingCoins >= coinsPerMegaDice && diceUsed >= diceToLuckyDiceII) {
+                let affordableMegaDiceCount = Math.floor(remainingCoins / coinsPerMegaDice);
+                let requiredDiceCount = affordableMegaDiceCount * diceToLuckyDiceII;
+
+                if (requiredDiceCount > diceUsed) {
+                    affordableMegaDiceCount = Math.floor(diceUsed / diceToLuckyDiceII);
+                }
+
+                if (affordableMegaDiceCount > 0) {
+                    megaDiceCount += affordableMegaDiceCount;
+                    remainingCoins -= affordableMegaDiceCount * coinsPerMegaDice;
+                    diceUsed -= affordableMegaDiceCount * diceToLuckyDiceII;
+                }
+            }
+
+            while (remainingCoins >= coinsPerLuckyDiceII && diceUsed >= 1) {
+                let affordableLuckyDiceIICount = Math.floor(remainingCoins / coinsPerLuckyDiceII);
+
+                if (affordableLuckyDiceIICount > diceUsed) {
+                    affordableLuckyDiceIICount = diceUsed;
+                }
+
+                if (affordableLuckyDiceIICount > 0) {
+                    luckyDiceIICount += affordableLuckyDiceIICount;
+                    remainingCoins -= affordableLuckyDiceIICount * coinsPerLuckyDiceII;
+                    diceUsed -= affordableLuckyDiceIICount;
+                }
+            }
+
+            document.getElementById('diceResult').innerHTML = `
+                Mega Dice II Needed: <span class="highlight">${formatNumber(megaDiceIICount)}</span><br>
+                Mega Dice Needed: <span class="highlight">${formatNumber(megaDiceCount)}</span><br>
+                Lucky Dice II Needed: <span class="highlight">${formatNumber(luckyDiceIICount)}</span><br>
+                Lucky Dice Needed: <span class="highlight">${formatNumber(luckyDiceCount)}</span><br>
+                Coins Remaining: <span class="highlight">${formatNumber(remainingCoins)}</span><br>
+                Dice Used: <span class="highlight">${formatNumber(diceCount - diceUsed)}</span><br>
+                Dice Remaining: <span class="highlight">${formatNumber(diceUsed)}</span>
+            `;
         }
 
         // Rank Progression Calculator Script
         function calculateRankProgress() {
-            const currentRank = parseFloat(document.getElementById('currentRank').value);
-            const goalRank = parseFloat(document.getElementById('goalRank').value);
+            const currentRankValue = parseInput(document.getElementById('currentRank').value);
+            const goalRankValue = parseInput(document.getElementById('goalRank').value);
             const currentStars = parseInput(document.getElementById('currentStars').value);
-
-            if (currentRank >= goalRank) {
-                document.getElementById('rankResult').innerHTML = 'Goal rank must be higher than current rank.';
+            
+            if (goalRankValue <= currentRankValue) {
+                document.getElementById('rankResult').innerHTML = 'Goal rank must be higher than the current rank.';
                 return;
             }
 
-            const rankProgression = [
-                { rank: 0, stars: 0 },
-                { rank: 13, stars: 50 },
-                { rank: 25, stars: 150 },
-                { rank: 32, stars: 250 },
-                { rank: 46, stars: 400 },
-                { rank: 63, stars: 650 },
-                { rank: 89, stars: 1000 },
-                { rank: 131, stars: 1500 },
-                { rank: 182, stars: 2100 },
-                { rank: 259, stars: 2800 },
-                { rank: 319, stars: 3600 },
-                { rank: 341, stars: 4500 },
-                { rank: 420, stars: 5500 },
-                { rank: 454, stars: 6600 },
-                { rank: 484, stars: 7800 },
-                { rank: 512, stars: 9100 },
-                { rank: 531, stars: 10500 },
-                { rank: 552, stars: 12100 },
-                { rank: 574, stars: 13800 },
-                { rank: 632, stars: 15700 },
-                { rank: 694, stars: 17700 },
-                { rank: 754, stars: 19800 },
-                { rank: 760, stars: 22000 },
-                { rank: 780, stars: 24400 },
-                { rank: 790, stars: 26900 },
-                { rank: 810, stars: 29500 },
-                { rank: 850, stars: 32200 },
-                { rank: 870, stars: 35000 }
+            const ranks = [
+                { rank: 0, questValues: [0, 0, 0, 0] },
+                { rank: 13, questValues: [4, 0, 0, 0] },
+                { rank: 25, questValues: [5, 0, 0, 0] },
+                { rank: 32, questValues: [7, 1, 0, 0] },
+                { rank: 46, questValues: [9, 1, 0, 0] },
+                { rank: 63, questValues: [13, 1, 0, 0] },
+                { rank: 89, questValues: [16, 2, 0, 0] },
+                { rank: 131, questValues: [20, 3, 0, 0] },
+                { rank: 182, questValues: [25, 4, 0, 0] },
+                { rank: 259, questValues: [30, 5, 0, 0] },
+                { rank: 319, questValues: [35, 6, 0, 0] },
+                { rank: 341, questValues: [40, 7, 0, 0] },
+                { rank: 420, questValues: [45, 8, 0, 0] },
+                { rank: 454, questValues: [50, 9, 0, 0] },
+                { rank: 484, questValues: [55, 10, 0, 0] },
+                { rank: 512, questValues: [60, 11, 0, 0] },
+                { rank: 531, questValues: [65, 12, 0, 0] },
+                { rank: 552, questValues: [70, 13, 0, 0] },
+                { rank: 574, questValues: [75, 14, 0, 0] },
+                { rank: 632, questValues: [80, 15, 0, 0] },
+                { rank: 694, questValues: [85, 16, 0, 0] },
+                { rank: 754, questValues: [90, 17, 0, 0] },
+                { rank: 760, questValues: [95, 18, 0, 0] },
+                { rank: 780, questValues: [100, 19, 0, 0] },
+                { rank: 790, questValues: [105, 20, 0, 0] },
+                { rank: 810, questValues: [110, 21, 0, 0] },
+                { rank: 850, questValues: [120, 22, 0, 0] }
             ];
 
-            let totalStarsRequired = 0;
+            const currentRankData = ranks.find(r => r.rank === currentRankValue);
+            const goalRankData = ranks.find(r => r.rank === goalRankValue);
 
-            for (let i = 0; i < rankProgression.length - 1; i++) {
-                const current = rankProgression[i];
-                const next = rankProgression[i + 1];
+            if (!currentRankData || !goalRankData) {
+                document.getElementById('rankResult').innerHTML = 'Invalid rank selected.';
+                return;
+            }
 
-                if (currentRank < current.rank) continue;
-                if (goalRank <= next.rank) {
-                    totalStarsRequired += (goalRank - current.rank) * (next.stars - current.stars) / (next.rank - current.rank);
-                    break;
+            let totalQuests = 0;
+            let remainingStars = currentStars;
+
+            // Calculate quests needed for current rank to goal rank
+            for (let rank = currentRankValue; rank < goalRankValue; rank++) {
+                const rankData = ranks.find(r => r.rank === rank);
+                if (!rankData) continue;
+                
+                let starsNeeded = rankData.questValues[0] - remainingStars;
+                if (starsNeeded > 0) {
+                    totalQuests += starsNeeded;
+                    remainingStars = 0;
                 } else {
-                    totalStarsRequired += (next.rank - current.rank) * (next.stars - current.stars) / (next.rank - current.rank);
-                    currentRank = next.rank;
+                    remainingStars -= rankData.questValues[0];
                 }
             }
 
-            const starsToGo = Math.max(0, totalStarsRequired - currentStars);
-            const result = starsToGo > 0 ? `You need ${formatNumber(starsToGo)} more stars to reach your goal.` : 'Congratulations! You have reached or exceeded your goal rank.';
+            const questsNeeded = ranks.find(r => r.rank === goalRankValue).questValues;
+            const quests = {
+                fourStar: questsNeeded[0],
+                threeStar: questsNeeded[1],
+                twoStar: questsNeeded[2],
+                oneStar: questsNeeded[3]
+            };
 
-            document.getElementById('rankResult').innerHTML = result;
+            document.getElementById('rankResult').innerHTML = `
+                Total Quests Needed: <span class="highlight">${formatNumber(totalQuests)}</span><br>
+                Four-Star Quests: <span class="highlight">${quests.fourStar}</span><br>
+                Three-Star Quests: <span class="highlight">${quests.threeStar}</span><br>
+                Two-Star Quests: <span class="highlight">${quests.twoStar}</span><br>
+                One-Star Quests: <span class="highlight">${quests.oneStar}</span>
+            `;
         }
     </script>
 </body>
 </html>
-
-
