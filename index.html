@@ -366,8 +366,10 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
             background-color: #1e1e1e;
             color: #d1d1d1;
+            overflow-x: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -377,18 +379,17 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
         .flex-container {
             display: flex;
             gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
         }
 
         .container {
             background-color: #333842;
-            padding: 20px;
+            padding: 30px;
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 400px;
             text-align: center;
             border: 2px solid #555;
+            box-sizing: border-box;
         }
 
         label {
@@ -405,6 +406,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             margin-bottom: 20px;
             border: 1px solid #555;
             border-radius: 5px;
+            box-sizing: border-box;
             background-color: #333842;
             color: #ffffff;
         }
@@ -442,11 +444,12 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     <div class="flex-container">
         <!-- Dice Upgrade Calculator -->
         <div class="container">
+            <h2>Dice Upgrade Calculator</h2>
             <label for="numberOfDice">Number of Lucky Dice:</label>
             <input type="text" id="numberOfDice" value="650">
 
             <label for="coinsAvailable">RNG Coins Available:</label>
-            <input type="text" id="coinsAvailable" value="1,000,000">
+            <input type="text" id="coinsAvailable" value="1000000">
 
             <button onclick="calculateDiceUpgrades()">Calculate Upgrades</button>
             <div id="diceResult">Enter values and click "Calculate Upgrades" to see the results.</div>
@@ -454,6 +457,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
 
         <!-- Rank Progression Calculator -->
         <div class="container">
+            <h2>Rank Progression Calculator</h2>
             <label for="currentRank">Current Rank:</label>
             <select id="currentRank">
                 <option value="0">Noob | 0</option>
@@ -533,7 +537,7 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     </div>
 
     <script>
-        // Utility functions
+        // Common Functions
         function parseInput(value) {
             return parseFloat(value.replace(/,/g, '')) || 0;
         }
@@ -555,92 +559,108 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             });
 
             input.addEventListener('focus', function () {
-                input.value = input.value.replace(/,/g, '');
+                input.value = input.value.replace(/,/g, ''); // Remove commas when input is focused
             });
         });
 
-        // Dice Upgrade Calculator Script (reverted to original)
+        // Dice Upgrade Calculator Script
         function calculateDiceUpgrades() {
-            var luckyDice = parseInt(document.getElementById("numberOfDice").value.replace(/,/g, ''));
-            var rngCoins = parseInt(document.getElementById("coinsAvailable").value.replace(/,/g, ''));
+            const diceCount = parseInput(document.getElementById('numberOfDice').value);
+            const coinsAvailable = parseInput(document.getElementById('coinsAvailable').value);
 
-            var upgrades = Math.floor(rngCoins / 1500000);
-            var remainingCoins = rngCoins % 1500000;
-            var finalDice = luckyDice + upgrades;
+            const coinsPerLuckyDiceII = 100;
+            const coinsPerMegaDice = 1200;
+            const diceRequiredForUpgrade = 650;
+            const maxUpgrades = 100; // Assume a maximum of 100 upgrades for calculation purposes
 
-            document.getElementById("diceResult").innerHTML = 
-                "Upgraded Dice: <span class='highlight'>" + finalDice.toLocaleString() + "</span><br>" +
-                "Remaining RNG Coins: <span class='highlight'>" + remainingCoins.toLocaleString() + "</span>";
+            let results = [];
+
+            let remainingCoins = coinsAvailable;
+            let currentDiceCount = diceCount;
+
+            for (let i = 0; i < maxUpgrades; i++) {
+                if (currentDiceCount < diceRequiredForUpgrade) break;
+
+                const upgradeCost = currentDiceCount < diceRequiredForUpgrade * 2 ? coinsPerLuckyDiceII : coinsPerMegaDice;
+
+                if (remainingCoins < upgradeCost) break;
+
+                let upgradesPossible = Math.floor(remainingCoins / upgradeCost);
+
+                results.push(`Upgrade ${i + 1}: ${upgradesPossible} upgrades possible with ${formatNumber(upgradeCost)} coins each.`);
+
+                remainingCoins -= upgradesPossible * upgradeCost;
+                currentDiceCount -= diceRequiredForUpgrade * upgradesPossible;
+            }
+
+            document.getElementById('diceResult').innerHTML = results.length ? results.join('<br>') : 'Not enough coins for any upgrades.';
         }
 
         // Rank Progression Calculator Script
-        const ranks = [
-            { name: "Noob", points: 0 },
-            { name: "Beginner", points: 13 },
-            { name: "Rookie", points: 25 },
-            { name: "Adventurer", points: 32 },
-            { name: "Experienced", points: 46 },
-            { name: "Pro", points: 63 },
-            { name: "Elite", points: 89 },
-            { name: "Expert", points: 131 },
-            { name: "Master", points: 182 },
-            { name: "Legend", points: 259 },
-            { name: "Champion", points: 319 },
-            { name: "Superstar", points: 341 },
-            { name: "Guardian", points: 420 },
-            { name: "Titan", points: 454 },
-            { name: "Sentinel", points: 484 },
-            { name: "Overlord", points: 512 },
-            { name: "Immortal", points: 531 },
-            { name: "Hacker", points: 552 },
-            { name: "Mastermind", points: 574 },
-            { name: "Ascendant", points: 632 },
-            { name: "Tech Titan", points: 694 },
-            { name: "Tech Sentinel", points: 754 },
-            { name: "Tech Overlord", points: 760 },
-            { name: "Tech Hacker", points: 760 },
-            { name: "Omniscient", points: 760 },
-            { name: "Celestial", points: 780 },
-            { name: "Apex", points: 790 },
-            { name: "Oracle", points: 810 },
-            { name: "Void Walker", points: 810 },
-            { name: "Warden", points: 850 },
-            { name: "MAX QUESTS", points: 870 }
-        ];
-
         function calculateRankProgress() {
-            const currentRank = parseInt(document.getElementById("currentRank").value);
-            const goalRank = parseInt(document.getElementById("goalRank").value);
-            const currentStars = parseInt(document.getElementById("currentStars").value.replace(/,/g, ''));
+            const currentRank = parseFloat(document.getElementById('currentRank').value);
+            const goalRank = parseFloat(document.getElementById('goalRank').value);
+            const currentStars = parseInput(document.getElementById('currentStars').value);
 
             if (currentRank >= goalRank) {
-                document.getElementById("rankResult").innerHTML = "Goal rank must be higher than current rank.";
+                document.getElementById('rankResult').innerHTML = 'Goal rank must be higher than current rank.';
                 return;
             }
 
-            let totalPointsNeeded = 0;
-            let pointsEarned = currentStars;
+            const rankProgression = [
+                { rank: 0, stars: 0 },
+                { rank: 13, stars: 50 },
+                { rank: 25, stars: 150 },
+                { rank: 32, stars: 250 },
+                { rank: 46, stars: 400 },
+                { rank: 63, stars: 650 },
+                { rank: 89, stars: 1000 },
+                { rank: 131, stars: 1500 },
+                { rank: 182, stars: 2100 },
+                { rank: 259, stars: 2800 },
+                { rank: 319, stars: 3600 },
+                { rank: 341, stars: 4500 },
+                { rank: 420, stars: 5500 },
+                { rank: 454, stars: 6600 },
+                { rank: 484, stars: 7800 },
+                { rank: 512, stars: 9100 },
+                { rank: 531, stars: 10500 },
+                { rank: 552, stars: 12100 },
+                { rank: 574, stars: 13800 },
+                { rank: 632, stars: 15700 },
+                { rank: 694, stars: 17700 },
+                { rank: 754, stars: 19800 },
+                { rank: 760, stars: 22000 },
+                { rank: 780, stars: 24400 },
+                { rank: 790, stars: 26900 },
+                { rank: 810, stars: 29500 },
+                { rank: 850, stars: 32200 },
+                { rank: 870, stars: 35000 }
+            ];
 
-            for (let i = 0; i < ranks.length; i++) {
-                if (ranks[i].points > currentRank && ranks[i].points <= goalRank) {
-                    totalPointsNeeded += ranks[i].points;
+            let totalStarsRequired = 0;
+
+            for (let i = 0; i < rankProgression.length - 1; i++) {
+                const current = rankProgression[i];
+                const next = rankProgression[i + 1];
+
+                if (currentRank < current.rank) continue;
+                if (goalRank <= next.rank) {
+                    totalStarsRequired += (goalRank - current.rank) * (next.stars - current.stars) / (next.rank - current.rank);
+                    break;
+                } else {
+                    totalStarsRequired += (next.rank - current.rank) * (next.stars - current.stars) / (next.rank - current.rank);
+                    currentRank = next.rank;
                 }
             }
 
-            const pointsRemaining = totalPointsNeeded - pointsEarned;
+            const starsToGo = Math.max(0, totalStarsRequired - currentStars);
+            const result = starsToGo > 0 ? `You need ${formatNumber(starsToGo)} more stars to reach your goal.` : 'Congratulations! You have reached or exceeded your goal rank.';
 
-            const fourStarQuests = Math.floor(pointsRemaining / 4);
-            const threeStarQuests = Math.floor((pointsRemaining % 4) / 3);
-            const twoStarQuests = Math.floor(((pointsRemaining % 4) % 3) / 2);
-            const oneStarQuests = ((pointsRemaining % 4) % 3) % 2;
-
-            document.getElementById("rankResult").innerHTML = 
-                "Points Remaining: <span class='highlight'>" + pointsRemaining.toLocaleString() + "</span><br>" +
-                "Four-Star Quests: <span class='highlight'>" + fourStarQuests + "</span><br>" +
-                "Three-Star Quests: <span class='highlight'>" + threeStarQuests + "</span><br>" +
-                "Two-Star Quests: <span class='highlight'>" + twoStarQuests + "</span><br>" +
-                "One-Star Quests: <span class='highlight'>" + oneStarQuests + "</span>";
+            document.getElementById('rankResult').innerHTML = result;
         }
     </script>
 </body>
 </html>
+
+
