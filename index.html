@@ -444,9 +444,9 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
 .discord-container {
     background-color: #2c2f33; /* Darker background color */
     color: #ffffff; /* White text for contrast */
-    border-radius: 10px; /* Slightly smaller border-radius */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Slightly darker shadow */
-    width: 300px; /* Smaller width */
+    border-radius: 12px; /* Slightly larger border-radius for a softer look */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Deeper shadow for more depth */
+    width: 350px; /* Slightly wider for better content fit */
     text-align: center;
     margin: 20px auto;
     display: flex;
@@ -455,40 +455,42 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
 }
 
 .discord-content {
-    padding: 20px; /* Smaller padding */
+    padding: 20px; /* Adequate padding for readability */
 }
 
 .discord-container h2 {
-    font-size: 1.5em; /* Larger text size for heading */
-    margin-bottom: 10px;
+    font-size: 1.6em; /* Slightly larger text size for heading */
+    margin-bottom: 15px; /* More spacing below heading */
     color: #7289da; /* Discord's brand blue color for the heading */
 }
 
 .discord-container p {
-    font-size: 1.2em; /* Larger text size for the paragraph */
-    margin-bottom: 0px;
+    font-size: 1.1em; /* Adjusted text size for the paragraph */
+    margin-bottom: 20px; /* Increased bottom margin for better spacing */
     color: #99aab5; /* Light grey color for the text */
 }
 
 .discord-button {
-    background-color: transparent; /* Make the button section background transparent */
-    padding: 10px;
+    padding: 15px 20px; /* Improved padding for better button size */
+    text-align: center;
 }
 
 .discord-button a {
     display: inline-block;
-    padding: 8px 16px;
+    padding: 12px 24px; /* Larger button padding */
     font-size: 1.2em; /* Larger text size for the button */
     background-color: #7289da; /* Discord's brand blue for the button */
     color: #ffffff; /* White text for the button */
-    border-radius: 5px;
+    border-radius: 6px; /* Slightly larger border-radius for the button */
     text-decoration: none;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition for hover effects */
 }
 
 .discord-button a:hover {
     background-color: #5b6eae; /* Slightly darker blue on hover */
+    transform: scale(1.05); /* Slightly scale up the button on hover */
 }
+
 
 
 
