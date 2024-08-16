@@ -441,6 +441,42 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             color: #ff4757;
             font-weight: bold;
         }
+        .discord-container {
+    background-color: #7289da;
+    color: #ffffff;
+    border: none;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    text-align: center;
+    margin: 20px auto; /* Center the Discord container */
+}
+
+.discord-container h2 {
+    margin-bottom: 20px;
+}
+
+.discord-container p {
+    margin-bottom: 30px;
+}
+
+.discord-container a {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #ffffff;
+    color: #7289da;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.discord-container a:hover {
+    background-color: #ffffff;
+    color: #4e5b93;
+}
+
     </style>
 </head>
 <body>
@@ -457,6 +493,12 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
             <button onclick="calculateDiceUpgrades()">Calculate Upgrades</button>
             <div id="diceResult">Enter values and click "Calculate Upgrades" to see the results.</div>
         </div>
+        <div class="discord-container">
+    <h2>Join Our Discord Community!</h2>
+    <p>Stay updated with the latest features, get support, and engage with other users.</p>
+    <a href="https://discord.gg/YOUR_INVITE_LINK" target="_blank">Join Now</a>
+</div>
+
 
         <!-- Rank Progression Calculator -->
         <div class="container">
