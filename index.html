@@ -986,8 +986,8 @@ body {
                 <button onclick="appendNumber('.')" class="operation">.</button>
                 <button onclick="chooseOperation('+')" class="operation">+</button>
 
-                <button onclick="appendOperator('sqrt(')" class="operation">√</button>
-                <button onclick="appendOperator('^')" class="operation">^</button>
+                <button onclick="appendOperator('Math.sqrt(')" class="operation">√</button>
+                <button onclick="appendOperator('**')" class="operation">^</button>
                 <button onclick="calculateResult()" class="operation wide">=</button>
 
                 <button onclick="memoryClear()" class="memory">MC</button>
@@ -1074,8 +1074,6 @@ body {
         }
 
         let currentInput = '';
-        let previousInput = '';
-        let operator = '';
         let memoryValue = 0;
 
         function appendNumber(number) {
@@ -1097,8 +1095,6 @@ body {
             try {
                 const result = evaluateExpression(currentInput);
                 currentInput = result.toString();
-                operator = '';
-                previousInput = '';
                 updateScreen();
             } catch (e) {
                 currentInput = 'Error';
@@ -1107,13 +1103,11 @@ body {
         }
 
         function evaluateExpression(expr) {
-            return Function('"use strict";return (' + expr.replace(/√/g, 'Math.sqrt') + ')')();
+            return Function('"use strict";return (' + expr.replace(/\^/g, '**') + ')')();
         }
 
         function clearScreen() {
             currentInput = '';
-            previousInput = '';
-            operator = '';
             updateScreen();
         }
 
@@ -1154,4 +1148,5 @@ body {
     </script>
 </body>
 </html>
+
 
