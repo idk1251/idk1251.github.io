@@ -762,7 +762,7 @@ body {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suggestion Box, Coins Dice Calculator, and Advanced Calculator</title>
+    <title>Advanced Calculator with Suggestion Box and Coins Dice Calculator</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -872,18 +872,25 @@ body {
             width: 100%;
             padding: 15px;
             margin-bottom: 20px;
-            font-size: 1.8em;
-            background-color: #22252A;
-            color: #ffffff;
+            font-size: 1.5em;
+            background-color: #1e1e1e;
+            color: white;
             border: 2px solid #555;
             border-radius: 10px;
             text-align: right;
             box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .calculator-screen span {
+            margin-right: 10px;
         }
 
         .calculator-keys {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 10px;
         }
 
@@ -902,31 +909,26 @@ body {
             background-color: #5a6377;
         }
 
-        .calculator-keys button.operator {
-            background-color: #f39c12;
-            color: #fff;
+        .calculator-keys button.operation {
+            background-color: #007bff;
+            border: 1px solid #0056b3;
         }
 
-        .calculator-keys button.operator:hover {
-            background-color: #e67e22;
+        .calculator-keys button.operation:hover {
+            background-color: #0056b3;
         }
 
-        .calculator-keys button.clear {
-            background-color: #e74c3c;
-            color: #fff;
+        .calculator-keys button.memory {
+            background-color: #ff4757;
+            border: 1px solid #d63031;
         }
 
-        .calculator-keys button.clear:hover {
-            background-color: #c0392b;
+        .calculator-keys button.memory:hover {
+            background-color: #d63031;
         }
 
-        .calculator-keys button.equal {
-            background-color: #27ae60;
-            color: #fff;
-        }
-
-        .calculator-keys button.equal:hover {
-            background-color: #2ecc71;
+        .calculator-keys button.wide {
+            grid-column: span 2;
         }
     </style>
 </head>
@@ -955,154 +957,201 @@ body {
 
         <div class="container">
             <h2>Advanced Calculator</h2>
-            <div class="calculator-screen" id="calcScreen">0</div>
+            <div class="calculator-screen">
+                <span id="memoryIndicator"></span>
+                <span id="calcScreen">0</span>
+            </div>
             <div class="calculator-keys">
-                <button onclick="clearScreen()" class="clear">C</button>
-                <button onclick="deleteDigit()">DEL</button>
-                <button onclick="appendOperation('%')" class="operator">%</button>
-                <button onclick="appendOperation('/')" class="operator">/</button>
-                <button onclick="appendFunction('sqrt')">√</button>
+                <button onclick="clearScreen()" class="operation">C</button>
+                <button onclick="deleteLast()" class="operation">DEL</button>
+                <button onclick="appendOperator('(')" class="operation">(</button>
+                <button onclick="appendOperator(')')" class="operation">)</button>
+
                 <button onclick="appendNumber('7')">7</button>
                 <button onclick="appendNumber('8')">8</button>
                 <button onclick="appendNumber('9')">9</button>
-                <button onclick="appendOperation('*')" class="operator">*</button>
-                <button onclick="appendFunction('pow')">x<sup>y</sup></button>
+                <button onclick="chooseOperation('/')" class="operation">/</button>
+
                 <button onclick="appendNumber('4')">4</button>
                 <button onclick="appendNumber('5')">5</button>
                 <button onclick="appendNumber('6')">6</button>
-                <button onclick="appendOperation('-')" class="operator">-</button>
-                <button onclick="appendFunction('sin')">sin</button>
+                <button onclick="chooseOperation('*')" class="operation">*</button>
+
                 <button onclick="appendNumber('1')">1</button>
                 <button onclick="appendNumber('2')">2</button>
                 <button onclick="appendNumber('3')">3</button>
-                <button onclick="appendOperation('+')" class="operator">+</button>
-                <button onclick="appendFunction('cos')">cos</button>
-                <button onclick="appendNumber('0')">0</button>
-                <button onclick="appendNumber('.')">.</button>
-                <button onclick="calculateResult()" class="equal">=</button>
-                <button onclick="appendFunction('tan')">tan</button>
+                <button onclick="chooseOperation('-')" class="operation">-</button>
+
+                <button onclick="appendNumber('0')" class="wide">0</button>
+                <button onclick="appendNumber('.')" class="operation">.</button>
+                <button onclick="chooseOperation('+')" class="operation">+</button>
+
+                <button onclick="appendOperator('sqrt(')" class="operation">√</button>
+                <button onclick="appendOperator('^')" class="operation">^</button>
+                <button onclick="calculateResult()" class="operation wide">=</button>
+
+                <button onclick="memoryClear()" class="memory">MC</button>
+                <button onclick="memoryRecall()" class="memory">MR</button>
+                <button onclick="memoryAdd()" class="memory">M+</button>
+                <button onclick="memorySubtract()" class="memory">M-</button>
             </div>
         </div>
     </div>
 
     <script>
-        let currentInput = '0';
+        let cooldownActive = false;
+        const cooldownDuration = 60000; // 1 minute in milliseconds
+
+        function submitSuggestion() {
+            if (cooldownActive) {
+                document.getElementById('suggestionResult').innerHTML = 'Please wait before submitting another suggestion.';
+                return;
+            }
+
+            const discordUser = document.getElementById('discordUser').value.trim();
+            const suggestionText = document.getElementById('suggestionText').value.trim();
+            const webhookUrl = "https://discord.com/api/webhooks/1274040797905551461/xvlEZF9Q3Nf0ulhXUIlIKc2fqANcxc7o5O_wT671bCPiZGl2UMbks3qffm0csWI4LNOL";
+
+            if (!discordUser || !suggestionText) {
+                document.getElementById('suggestionResult').innerHTML = 'Please fill in both fields.';
+                return;
+            }
+
+            const payload = {
+                content: `${discordUser} suggested: ${suggestionText}`
+            };
+
+            cooldownActive = true;
+            document.querySelector('.container button').disabled = true;
+
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('suggestionResult').innerHTML = 'Suggestion submitted successfully!';
+                } else {
+                    document.getElementById('suggestionResult').innerHTML = 'Failed to submit suggestion. Please try again.';
+                }
+            })
+            .catch(error => {
+                document.getElementById('suggestionResult').innerHTML = 'Error submitting suggestion.';
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    cooldownActive = false;
+                    document.querySelector('.container button').disabled = false;
+                    document.getElementById('suggestionResult').innerHTML = 'You can now submit another suggestion.';
+                }, cooldownDuration);
+            });
+        }
+
+        function parseInput(value) {
+            return parseFloat(value.replace(/,/g, '')) || 0;
+        }
+
+        function formatNumber(value) {
+            return parseFloat(value).toLocaleString('en-US');
+        }
+
+        function calculateCoinsDice() {
+            const coins = parseInput(document.getElementById('coinsForDice').value);
+            const megaDiceIICost = 609000;
+
+            const megaDiceIICount = Math.floor(coins / megaDiceIICost);
+            const remainingCoins = coins % megaDiceIICost;
+
+            document.getElementById('coinsResult').innerHTML = 
+                `With ${formatNumber(coins)} coins, you can afford:
+                <ul>
+                    <li><span class="highlight">${formatNumber(megaDiceIICount)}</span> Mega Dice II (costs ${formatNumber(megaDiceIICost)} coins each)</li>
+                </ul>
+                Coins left after upgrades: <span class="highlight">${formatNumber(remainingCoins)}</span>`;
+        }
+
+        let currentInput = '';
         let previousInput = '';
         let operator = '';
-        let isEvaluated = false;
+        let memoryValue = 0;
 
         function appendNumber(number) {
-            if (currentInput === '0' || isEvaluated) {
-                currentInput = number;
-                isEvaluated = false;
-            } else {
-                currentInput += number;
-            }
+            currentInput = currentInput === '0' ? number : currentInput + number;
             updateScreen();
         }
 
-        function appendOperation(op) {
-            if (isEvaluated) {
-                previousInput = currentInput;
-                currentInput = '';
-                isEvaluated = false;
-            }
-            if (currentInput === '' && previousInput !== '') {
-                operator = op;
-                return;
-            }
-            if (previousInput !== '') {
-                calculateResult();
-            }
-            operator = op;
-            previousInput = currentInput;
-            currentInput = '';
+        function appendOperator(op) {
+            currentInput += op;
+            updateScreen();
+        }
+
+        function chooseOperation(op) {
+            currentInput += ` ${op} `;
+            updateScreen();
         }
 
         function calculateResult() {
-            let result;
-            const prev = parseFloat(previousInput);
-            const current = parseFloat(currentInput);
-
-            if (isNaN(prev) || isNaN(current)) return;
-
-            switch (operator) {
-                case '+':
-                    result = prev + current;
-                    break;
-                case '-':
-                    result = prev - current;
-                    break;
-                case '*':
-                    result = prev * current;
-                    break;
-                case '/':
-                    result = prev / current;
-                    break;
-                case '%':
-                    result = prev % current;
-                    break;
-                default:
-                    return;
+            try {
+                const result = evaluateExpression(currentInput);
+                currentInput = result.toString();
+                operator = '';
+                previousInput = '';
+                updateScreen();
+            } catch (e) {
+                currentInput = 'Error';
+                updateScreen();
             }
+        }
 
-            currentInput = result.toString();
-            operator = '';
-            previousInput = '';
-            isEvaluated = true;
-            updateScreen();
+        function evaluateExpression(expr) {
+            return Function('"use strict";return (' + expr.replace(/√/g, 'Math.sqrt') + ')')();
         }
 
         function clearScreen() {
-            currentInput = '0';
+            currentInput = '';
             previousInput = '';
             operator = '';
-            isEvaluated = false;
             updateScreen();
         }
 
-        function deleteDigit() {
-            currentInput = currentInput.length > 1 ? currentInput.slice(0, -1) : '0';
-            updateScreen();
-        }
-
-        function appendFunction(func) {
-            const current = parseFloat(currentInput);
-
-            if (isNaN(current)) return;
-
-            switch (func) {
-                case 'sqrt':
-                    currentInput = Math.sqrt(current).toString();
-                    break;
-                case 'pow':
-                    currentInput = Math.pow(current, 2).toString();
-                    break;
-                case 'sin':
-                    currentInput = Math.sin(current * Math.PI / 180).toString();
-                    break;
-                case 'cos':
-                    currentInput = Math.cos(current * Math.PI / 180).toString();
-                    break;
-                case 'tan':
-                    currentInput = Math.tan(current * Math.PI / 180).toString();
-                    break;
-                default:
-                    return;
-            }
-
-            isEvaluated = true;
+        function deleteLast() {
+            currentInput = currentInput.slice(0, -1);
             updateScreen();
         }
 
         function updateScreen() {
-            document.getElementById('calcScreen').innerText = currentInput;
+            document.getElementById('calcScreen').innerText = currentInput || '0';
+        }
+
+        function memoryClear() {
+            memoryValue = 0;
+            updateMemoryIndicator();
+        }
+
+        function memoryRecall() {
+            currentInput += memoryValue;
+            updateScreen();
+        }
+
+        function memoryAdd() {
+            memoryValue += parseFloat(currentInput) || 0;
+            updateMemoryIndicator();
+        }
+
+        function memorySubtract() {
+            memoryValue -= parseFloat(currentInput) || 0;
+            updateMemoryIndicator();
+        }
+
+        function updateMemoryIndicator() {
+            document.getElementById('memoryIndicator').innerText = memoryValue ? 'M' : '';
         }
 
         clearScreen();
     </script>
 </body>
 </html>
-
-
 
