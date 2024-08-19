@@ -762,7 +762,7 @@ body {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suggestion Box and Coins Dice Calculator</title>
+    <title>Suggestion Box, Coins Dice Calculator, and Simple Calculator</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -845,7 +845,7 @@ body {
             background-color: #0056b3;
         }
 
-        #suggestionResult, #coinsResult {
+        #suggestionResult, #coinsResult, #calcResult {
             margin-top: 20px;
             font-size: 1.2em;
             text-align: left;
@@ -866,6 +866,42 @@ body {
                 width: 100%;
                 max-width: 400px;
             }
+        }
+
+        .calculator-keys button {
+            width: 22%;
+            padding: 20px;
+            margin: 5px;
+            font-size: 1.2em;
+            background-color: #444b58;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .calculator-keys button:hover {
+            background-color: #5a6377;
+        }
+
+        .calculator-keys {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .calculator-screen {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            background-color: #1e1e1e;
+            color: white;
+            border: 2px solid #555;
+            border-radius: 10px;
+            text-align: right;
+            box-sizing: border-box;
         }
     </style>
 </head>
@@ -890,6 +926,30 @@ body {
 
             <button onclick="calculateCoinsDice()">Calculate Dice</button>
             <div id="coinsResult">Enter coins and click "Calculate Dice" to see the results.</div>
+        </div>
+
+        <div class="container">
+            <h2>Simple Calculator</h2>
+            <div class="calculator-screen" id="calcScreen">0</div>
+            <div class="calculator-keys">
+                <button onclick="appendNumber('7')">7</button>
+                <button onclick="appendNumber('8')">8</button>
+                <button onclick="appendNumber('9')">9</button>
+                <button onclick="chooseOperation('/')">/</button>
+                <button onclick="appendNumber('4')">4</button>
+                <button onclick="appendNumber('5')">5</button>
+                <button onclick="appendNumber('6')">6</button>
+                <button onclick="chooseOperation('*')">*</button>
+                <button onclick="appendNumber('1')">1</button>
+                <button onclick="appendNumber('2')">2</button>
+                <button onclick="appendNumber('3')">3</button>
+                <button onclick="chooseOperation('-')">-</button>
+                <button onclick="appendNumber('0')">0</button>
+                <button onclick="appendNumber('.')">.</button>
+                <button onclick="calculateResult()">=</button>
+                <button onclick="chooseOperation('+')">+</button>
+                <button onclick="clearScreen()" style="width: 46%">C</button>
+            </div>
         </div>
     </div>
 
@@ -967,6 +1027,68 @@ body {
                 </ul>
                 Coins left after upgrades: <span class="highlight">${formatNumber(remainingCoins)}</span>`;
         }
+
+        let currentInput = '';
+        let previousInput = '';
+        let operator = '';
+
+        function appendNumber(number) {
+            currentInput = currentInput === '0' ? number : currentInput + number;
+            updateScreen();
+        }
+
+        function chooseOperation(op) {
+            if (currentInput === '') return;
+            if (previousInput !== '') {
+                calculateResult();
+            }
+            operator = op;
+            previousInput = currentInput;
+            currentInput = '';
+        }
+
+        function calculateResult() {
+            let result;
+            const prev = parseFloat(previousInput);
+            const current = parseFloat(currentInput);
+
+            if (isNaN(prev) || isNaN(current)) return;
+
+            switch (operator) {
+                case '+':
+                    result = prev + current;
+                    break;
+                case '-':
+                    result = prev - current;
+                    break;
+                case '*':
+                    result = prev * current;
+                    break;
+                case '/':
+                    result = prev / current;
+                    break;
+                default:
+                    return;
+            }
+
+            currentInput = result.toString();
+            operator = '';
+            previousInput = '';
+            updateScreen();
+        }
+
+        function clearScreen() {
+            currentInput = '0';
+            previousInput = '';
+            operator = '';
+            updateScreen();
+        }
+
+        function updateScreen() {
+            document.getElementById('calcScreen').innerText = currentInput;
+        }
+
+        clearScreen();
     </script>
 </body>
 </html>
