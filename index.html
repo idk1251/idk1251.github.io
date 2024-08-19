@@ -762,7 +762,7 @@ body {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suggestion Box, Coins Dice Calculator, and Simple Calculator</title>
+    <title>Suggestion Box, Coins Dice Calculator, and Advanced Calculator</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -868,10 +868,27 @@ body {
             }
         }
 
+        .calculator-screen {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            background-color: #22252A;
+            color: #ffffff;
+            border: 2px solid #555;
+            border-radius: 10px;
+            text-align: right;
+            box-sizing: border-box;
+        }
+
+        .calculator-keys {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
         .calculator-keys button {
-            width: 22%;
             padding: 20px;
-            margin: 5px;
             font-size: 1.2em;
             background-color: #444b58;
             color: white;
@@ -885,23 +902,31 @@ body {
             background-color: #5a6377;
         }
 
-        .calculator-keys {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+        .calculator-keys button.operator {
+            background-color: #f39c12;
+            color: #fff;
         }
 
-        .calculator-screen {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            font-size: 1.5em;
-            background-color: #1e1e1e;
-            color: white;
-            border: 2px solid #555;
-            border-radius: 10px;
-            text-align: right;
-            box-sizing: border-box;
+        .calculator-keys button.operator:hover {
+            background-color: #e67e22;
+        }
+
+        .calculator-keys button.clear {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+        .calculator-keys button.clear:hover {
+            background-color: #c0392b;
+        }
+
+        .calculator-keys button.equal {
+            background-color: #27ae60;
+            color: #fff;
+        }
+
+        .calculator-keys button.equal:hover {
+            background-color: #2ecc71;
         }
     </style>
 </head>
@@ -929,116 +954,63 @@ body {
         </div>
 
         <div class="container">
-            <h2>Simple Calculator</h2>
+            <h2>Advanced Calculator</h2>
             <div class="calculator-screen" id="calcScreen">0</div>
             <div class="calculator-keys">
+                <button onclick="clearScreen()" class="clear">C</button>
+                <button onclick="deleteDigit()">DEL</button>
+                <button onclick="appendOperation('%')" class="operator">%</button>
+                <button onclick="appendOperation('/')" class="operator">/</button>
+                <button onclick="appendFunction('sqrt')">√</button>
                 <button onclick="appendNumber('7')">7</button>
                 <button onclick="appendNumber('8')">8</button>
                 <button onclick="appendNumber('9')">9</button>
-                <button onclick="chooseOperation('/')">/</button>
+                <button onclick="appendOperation('*')" class="operator">*</button>
+                <button onclick="appendFunction('pow')">x<sup>y</sup></button>
                 <button onclick="appendNumber('4')">4</button>
                 <button onclick="appendNumber('5')">5</button>
                 <button onclick="appendNumber('6')">6</button>
-                <button onclick="chooseOperation('*')">*</button>
+                <button onclick="appendOperation('-')" class="operator">-</button>
+                <button onclick="appendFunction('sin')">sin</button>
                 <button onclick="appendNumber('1')">1</button>
                 <button onclick="appendNumber('2')">2</button>
                 <button onclick="appendNumber('3')">3</button>
-                <button onclick="chooseOperation('-')">-</button>
+                <button onclick="appendOperation('+')" class="operator">+</button>
+                <button onclick="appendFunction('cos')">cos</button>
                 <button onclick="appendNumber('0')">0</button>
                 <button onclick="appendNumber('.')">.</button>
-                <button onclick="calculateResult()">=</button>
-                <button onclick="chooseOperation('+')">+</button>
-                <button onclick="clearScreen()" style="width: 46%">C</button>
+                <button onclick="calculateResult()" class="equal">=</button>
+                <button onclick="appendFunction('tan')">tan</button>
             </div>
         </div>
     </div>
 
     <script>
-        let cooldownActive = false;
-        const cooldownDuration = 60000; // 1 minute in milliseconds
-
-        function submitSuggestion() {
-            if (cooldownActive) {
-                document.getElementById('suggestionResult').innerHTML = 'Please wait before submitting another suggestion.';
-                return;
-            }
-
-            const discordUser = document.getElementById('discordUser').value.trim();
-            const suggestionText = document.getElementById('suggestionText').value.trim();
-            const webhookUrl = "https://discord.com/api/webhooks/1274040797905551461/xvlEZF9Q3Nf0ulhXUIlIKc2fqANcxc7o5O_wT671bCPiZGl2UMbks3qffm0csWI4LNOL";
-
-            if (!discordUser || !suggestionText) {
-                document.getElementById('suggestionResult').innerHTML = 'Please fill in both fields.';
-                return;
-            }
-
-            const payload = {
-                content: `${discordUser} suggested: ${suggestionText}`
-            };
-
-            cooldownActive = true;
-            document.querySelector('.container button').disabled = true;
-
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            })
-            .then(response => {
-                if (response.ok) {
-                    document.getElementById('suggestionResult').innerHTML = 'Suggestion submitted successfully!';
-                } else {
-                    document.getElementById('suggestionResult').innerHTML = 'Failed to submit suggestion. Please try again.';
-                }
-            })
-            .catch(error => {
-                document.getElementById('suggestionResult').innerHTML = 'Error submitting suggestion.';
-            })
-            .finally(() => {
-                setTimeout(() => {
-                    cooldownActive = false;
-                    document.querySelector('.container button').disabled = false;
-                    document.getElementById('suggestionResult').innerHTML = 'You can now submit another suggestion.';
-                }, cooldownDuration);
-            });
-        }
-
-        function parseInput(value) {
-            return parseFloat(value.replace(/,/g, '')) || 0;
-        }
-
-        function formatNumber(value) {
-            return parseFloat(value).toLocaleString('en-US');
-        }
-
-        function calculateCoinsDice() {
-            const coins = parseInput(document.getElementById('coinsForDice').value);
-            const megaDiceIICost = 609000;
-
-            const megaDiceIICount = Math.floor(coins / megaDiceIICost);
-            const remainingCoins = coins % megaDiceIICost;
-
-            document.getElementById('coinsResult').innerHTML = 
-                `With ${formatNumber(coins)} coins, you can afford:
-                <ul>
-                    <li><span class="highlight">${formatNumber(megaDiceIICount)}</span> Mega Dice II (costs ${formatNumber(megaDiceIICost)} coins each)</li>
-                </ul>
-                Coins left after upgrades: <span class="highlight">${formatNumber(remainingCoins)}</span>`;
-        }
-
-        let currentInput = '';
+        let currentInput = '0';
         let previousInput = '';
         let operator = '';
+        let isEvaluated = false;
 
         function appendNumber(number) {
-            currentInput = currentInput === '0' ? number : currentInput + number;
+            if (currentInput === '0' || isEvaluated) {
+                currentInput = number;
+                isEvaluated = false;
+            } else {
+                currentInput += number;
+            }
             updateScreen();
         }
 
-        function chooseOperation(op) {
-            if (currentInput === '') return;
+        function appendOperation(op) {
+            if (isEvaluated) {
+                previousInput = currentInput;
+                currentInput = '';
+                isEvaluated = false;
+            }
+            if (currentInput === '' && previousInput !== '') {
+                operator = op;
+                return;
+            }
             if (previousInput !== '') {
                 calculateResult();
             }
@@ -1067,6 +1039,9 @@ body {
                 case '/':
                     result = prev / current;
                     break;
+                case '%':
+                    result = prev % current;
+                    break;
                 default:
                     return;
             }
@@ -1074,6 +1049,7 @@ body {
             currentInput = result.toString();
             operator = '';
             previousInput = '';
+            isEvaluated = true;
             updateScreen();
         }
 
@@ -1081,6 +1057,41 @@ body {
             currentInput = '0';
             previousInput = '';
             operator = '';
+            isEvaluated = false;
+            updateScreen();
+        }
+
+        function deleteDigit() {
+            currentInput = currentInput.length > 1 ? currentInput.slice(0, -1) : '0';
+            updateScreen();
+        }
+
+        function appendFunction(func) {
+            const current = parseFloat(currentInput);
+
+            if (isNaN(current)) return;
+
+            switch (func) {
+                case 'sqrt':
+                    currentInput = Math.sqrt(current).toString();
+                    break;
+                case 'pow':
+                    currentInput = Math.pow(current, 2).toString();
+                    break;
+                case 'sin':
+                    currentInput = Math.sin(current * Math.PI / 180).toString();
+                    break;
+                case 'cos':
+                    currentInput = Math.cos(current * Math.PI / 180).toString();
+                    break;
+                case 'tan':
+                    currentInput = Math.tan(current * Math.PI / 180).toString();
+                    break;
+                default:
+                    return;
+            }
+
+            isEvaluated = true;
             updateScreen();
         }
 
