@@ -356,6 +356,45 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
 
             document.getElementById('goalResult').innerHTML = `After ${timeValue} ${timeUnit}, your balance will be <span class="highlight">${formatNumber(balance)}</span> gems.`;
         }
+function parseInput(value) {
+    value = value.trim().toLowerCase();
+
+    let multiplier = 1;
+    if (value.endsWith('b')) {
+        multiplier = 1e9; // Billion
+        value = value.slice(0, -1);
+    } else if (value.endsWith('m')) {
+        multiplier = 1e6; // Million
+        value = value.slice(0, -1);
+    } else if (value.endsWith('k')) {
+        multiplier = 1e3; // Thousand
+        value = value.slice(0, -1);
+    }
+
+    // Replace commas and parse the numeric value
+    const numericValue = parseFloat(value.replace(/,/g, '')) || 0;
+
+    return numericValue * multiplier;
+}
+
+function formatNumber(value) {
+    return parseFloat(value).toLocaleString('en-US');
+}
+
+function calculateCoinsDice() {
+    const coins = parseInput(document.getElementById('coinsForDice').value);
+    const megaDiceIICost = 609000;
+
+    const megaDiceIICount = Math.floor(coins / megaDiceIICost);
+    const remainingCoins = coins % megaDiceIICost;
+
+    document.getElementById('coinsResult').innerHTML = 
+        `With ${formatNumber(coins)} coins, you can afford:
+        <ul>
+            <li><span class="highlight">${formatNumber(megaDiceIICount)}</span> Mega Dice II (costs ${formatNumber(megaDiceIICost)} coins each)</li>
+        </ul>
+        Coins left after upgrades: <span class="highlight">${formatNumber(remainingCoins)}</span>`;
+}
 
     </script>
 </body>
@@ -751,6 +790,45 @@ body {
                 One-Star Quests: <span class='highlight'>${oneStarQuests}</span>`;
         }
 
+function parseInput(value) {
+    value = value.trim().toLowerCase();
+
+    let multiplier = 1;
+    if (value.endsWith('b')) {
+        multiplier = 1e9; // Billion
+        value = value.slice(0, -1);
+    } else if (value.endsWith('m')) {
+        multiplier = 1e6; // Million
+        value = value.slice(0, -1);
+    } else if (value.endsWith('k')) {
+        multiplier = 1e3; // Thousand
+        value = value.slice(0, -1);
+    }
+
+    // Replace commas and parse the numeric value
+    const numericValue = parseFloat(value.replace(/,/g, '')) || 0;
+
+    return numericValue * multiplier;
+}
+
+function formatNumber(value) {
+    return parseFloat(value).toLocaleString('en-US');
+}
+
+function calculateCoinsDice() {
+    const coins = parseInput(document.getElementById('coinsForDice').value);
+    const megaDiceIICost = 609000;
+
+    const megaDiceIICount = Math.floor(coins / megaDiceIICost);
+    const remainingCoins = coins % megaDiceIICost;
+
+    document.getElementById('coinsResult').innerHTML = 
+        `With ${formatNumber(coins)} coins, you can afford:
+        <ul>
+            <li><span class="highlight">${formatNumber(megaDiceIICount)}</span> Mega Dice II (costs ${formatNumber(megaDiceIICost)} coins each)</li>
+        </ul>
+        Coins left after upgrades: <span class="highlight">${formatNumber(remainingCoins)}</span>`;
+}
 
 
     </script>
@@ -967,6 +1045,46 @@ body {
                 </ul>
                 Coins left after upgrades: <span class="highlight">${formatNumber(remainingCoins)}</span>;
         }
+        function parseInput(value) {
+    value = value.trim().toLowerCase();
+
+    let multiplier = 1;
+    if (value.endsWith('b')) {
+        multiplier = 1e9; // Billion
+        value = value.slice(0, -1);
+    } else if (value.endsWith('m')) {
+        multiplier = 1e6; // Million
+        value = value.slice(0, -1);
+    } else if (value.endsWith('k')) {
+        multiplier = 1e3; // Thousand
+        value = value.slice(0, -1);
+    }
+
+    // Replace commas and parse the numeric value
+    const numericValue = parseFloat(value.replace(/,/g, '')) || 0;
+
+    return numericValue * multiplier;
+}
+
+function formatNumber(value) {
+    return parseFloat(value).toLocaleString('en-US');
+}
+
+function calculateCoinsDice() {
+    const coins = parseInput(document.getElementById('coinsForDice').value);
+    const megaDiceIICost = 609000;
+
+    const megaDiceIICount = Math.floor(coins / megaDiceIICost);
+    const remainingCoins = coins % megaDiceIICost;
+
+    document.getElementById('coinsResult').innerHTML = 
+        `With ${formatNumber(coins)} coins, you can afford:
+        <ul>
+            <li><span class="highlight">${formatNumber(megaDiceIICount)}</span> Mega Dice II (costs ${formatNumber(megaDiceIICost)} coins each)</li>
+        </ul>
+        Coins left after upgrades: <span class="highlight">${formatNumber(remainingCoins)}</span>`;
+}
+
     </script>
 </body>
 </html>
