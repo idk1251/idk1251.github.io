@@ -840,7 +840,7 @@ function calculateCoinsDice() {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Calculator with Suggestion Box and Coins Dice Calculator</title>
+    <title>Suggestion Box and Coins Dice Calculator</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -923,7 +923,7 @@ function calculateCoinsDice() {
             background-color: #0056b3;
         }
 
-        #suggestionResult, #coinsResult, #calcResult {
+        #suggestionResult, #coinsResult {
             margin-top: 20px;
             font-size: 1.2em;
             text-align: left;
@@ -944,69 +944,6 @@ function calculateCoinsDice() {
                 width: 100%;
                 max-width: 400px;
             }
-        }
-
-        .calculator-screen {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 20px;
-            font-size: 1.5em;
-            background-color: #1e1e1e;
-            color: white;
-            border: 2px solid #555;
-            border-radius: 10px;
-            text-align: right;
-            box-sizing: border-box;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .calculator-screen span {
-            margin-right: 10px;
-        }
-
-        .calculator-keys {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-        }
-
-        .calculator-keys button {
-            padding: 20px;
-            font-size: 1.2em;
-            background-color: #444b58;
-            color: white;
-            border: 1px solid #555;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .calculator-keys button:hover {
-            background-color: #5a6377;
-        }
-
-        .calculator-keys button.operation {
-            background-color: #007bff;
-            border: 1px solid #0056b3;
-        }
-
-        .calculator-keys button.operation:hover {
-            background-color: #0056b3;
-        }
-
-        .calculator-keys button.memory {
-            background-color: #ff4757;
-            border: 1px solid #d63031;
-        }
-
-        .calculator-keys button.memory:hover {
-            background-color: #d63031;
-        }
-
-        .calculator-keys button.wide {
-            grid-column: span 2;
         }
     </style>
 </head>
@@ -1032,48 +969,6 @@ function calculateCoinsDice() {
             <button onclick="calculateCoinsDice()">Calculate Dice</button>
             <div id="coinsResult">Enter coins and click "Calculate Dice" to see the results.</div>
         </div>
-
-        <div class="container">
-            <h2>Advanced Calculator</h2>
-            <div class="calculator-screen">
-                <span id="memoryIndicator"></span>
-                <span id="calcScreen">0</span>
-            </div>
-            <div class="calculator-keys">
-                <button onclick="clearScreen()" class="operation">C</button>
-                <button onclick="deleteLast()" class="operation">DEL</button>
-                <button onclick="appendOperator('(')" class="operation">(</button>
-                <button onclick="appendOperator(')')" class="operation">)</button>
-
-                <button onclick="appendNumber('7')">7</button>
-                <button onclick="appendNumber('8')">8</button>
-                <button onclick="appendNumber('9')">9</button>
-                <button onclick="chooseOperation('/')" class="operation">/</button>
-
-                <button onclick="appendNumber('4')">4</button>
-                <button onclick="appendNumber('5')">5</button>
-                <button onclick="appendNumber('6')">6</button>
-                <button onclick="chooseOperation('*')" class="operation">*</button>
-
-                <button onclick="appendNumber('1')">1</button>
-                <button onclick="appendNumber('2')">2</button>
-                <button onclick="appendNumber('3')">3</button>
-                <button onclick="chooseOperation('-')" class="operation">-</button>
-
-                <button onclick="appendNumber('0')" class="wide">0</button>
-                <button onclick="appendNumber('.')" class="operation">.</button>
-                <button onclick="chooseOperation('+')" class="operation">+</button>
-
-                <button onclick="appendOperator('Math.sqrt(')" class="operation">√</button>
-                <button onclick="appendOperator('**')" class="operation">^</button>
-                <button onclick="calculateResult()" class="operation wide">=</button>
-
-                <button onclick="memoryClear()" class="memory">MC</button>
-                <button onclick="memoryRecall()" class="memory">MR</button>
-                <button onclick="memoryAdd()" class="memory">M+</button>
-                <button onclick="memorySubtract()" class="memory">M-</button>
-            </div>
-        </div>
     </div>
 
     <script>
@@ -1096,7 +991,7 @@ function calculateCoinsDice() {
             }
 
             const payload = {
-                content: ${discordUser} suggested: ${suggestionText}
+                content: `${discordUser} suggested: ${suggestionText}`
             };
 
             cooldownActive = true;
@@ -1144,84 +1039,13 @@ function calculateCoinsDice() {
             const remainingCoins = coins % megaDiceIICost;
 
             document.getElementById('coinsResult').innerHTML = 
-                With ${formatNumber(coins)} coins, you can afford:
+                `With ${formatNumber(coins)} coins, you can afford:
                 <ul>
                     <li><span class="highlight">${formatNumber(megaDiceIICount)}</span> Mega Dice II (costs ${formatNumber(megaDiceIICost)} coins each)</li>
                 </ul>
-                Coins left after upgrades: <span class="highlight">${formatNumber(remainingCoins)}</span>;
+                Coins left after upgrades: <span class="highlight">${formatNumber(remainingCoins)}</span>`;
         }
-
-        let currentInput = '';
-        let memoryValue = 0;
-
-        function appendNumber(number) {
-            currentInput = currentInput === '0' ? number : currentInput + number;
-            updateScreen();
-        }
-
-        function appendOperator(op) {
-            currentInput += op;
-            updateScreen();
-        }
-
-        function chooseOperation(op) {
-            currentInput +=  ${op} ;
-            updateScreen();
-        }
-
-        function calculateResult() {
-            try {
-                const result = evaluateExpression(currentInput);
-                currentInput = result.toString();
-                updateScreen();
-            } catch (e) {
-                currentInput = 'Error';
-                updateScreen();
-            }
-        }
-
-        function evaluateExpression(expr) {
-            return Function('"use strict";return (' + expr.replace(/\^/g, '**') + ')')();
-        }
-
-        function clearScreen() {
-            currentInput = '';
-            updateScreen();
-        }
-
-        function deleteLast() {
-            currentInput = currentInput.slice(0, -1);
-            updateScreen();
-        }
-
-        function updateScreen() {
-            document.getElementById('calcScreen').innerText = currentInput || '0';
-        }
-
-        function memoryClear() {
-            memoryValue = 0;
-            updateMemoryIndicator();
-        }
-
-        function memoryRecall() {
-            currentInput += memoryValue;
-            updateScreen();
-        }
-
-        function memoryAdd() {
-            memoryValue += parseFloat(currentInput) || 0;
-            updateMemoryIndicator();
-        }
-
-        function memorySubtract() {
-            memoryValue -= parseFloat(currentInput) || 0;
-            updateMemoryIndicator();
-        }
-
-        function updateMemoryIndicator() {
-            document.getElementById('memoryIndicator').innerText = memoryValue ? 'M' : '';
-        }
-function parseInput(value) {
+        function parseInput(value) {
     value = value.trim().toLowerCase();
 
     let multiplier = 1;
@@ -1261,11 +1085,9 @@ function calculateCoinsDice() {
         Coins left after upgrades: <span class="highlight">${formatNumber(remainingCoins)}</span>`;
 }
 
-        clearScreen();
     </script>
 </body>
 </html>
-
 
 
 
