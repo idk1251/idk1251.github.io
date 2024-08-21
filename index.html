@@ -762,7 +762,7 @@ body {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Calculator with Suggestion Box and Coins Dice Calculator</title>
+    <title>Suggestion Box and Coins Dice Calculator</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -845,7 +845,7 @@ body {
             background-color: #0056b3;
         }
 
-        #suggestionResult, #coinsResult, #calcResult {
+        #suggestionResult, #coinsResult {
             margin-top: 20px;
             font-size: 1.2em;
             text-align: left;
@@ -866,69 +866,6 @@ body {
                 width: 100%;
                 max-width: 400px;
             }
-        }
-
-        .calculator-screen {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 20px;
-            font-size: 1.5em;
-            background-color: #1e1e1e;
-            color: white;
-            border: 2px solid #555;
-            border-radius: 10px;
-            text-align: right;
-            box-sizing: border-box;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .calculator-screen span {
-            margin-right: 10px;
-        }
-
-        .calculator-keys {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-        }
-
-        .calculator-keys button {
-            padding: 20px;
-            font-size: 1.2em;
-            background-color: #444b58;
-            color: white;
-            border: 1px solid #555;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .calculator-keys button:hover {
-            background-color: #5a6377;
-        }
-
-        .calculator-keys button.operation {
-            background-color: #007bff;
-            border: 1px solid #0056b3;
-        }
-
-        .calculator-keys button.operation:hover {
-            background-color: #0056b3;
-        }
-
-        .calculator-keys button.memory {
-            background-color: #ff4757;
-            border: 1px solid #d63031;
-        }
-
-        .calculator-keys button.memory:hover {
-            background-color: #d63031;
-        }
-
-        .calculator-keys button.wide {
-            grid-column: span 2;
         }
     </style>
 </head>
@@ -954,48 +891,6 @@ body {
             <button onclick="calculateCoinsDice()">Calculate Dice</button>
             <div id="coinsResult">Enter coins and click "Calculate Dice" to see the results.</div>
         </div>
-
-        <div class="container">
-            <h2>Advanced Calculator</h2>
-            <div class="calculator-screen">
-                <span id="memoryIndicator"></span>
-                <span id="calcScreen">0</span>
-            </div>
-            <div class="calculator-keys">
-                <button onclick="clearScreen()" class="operation">C</button>
-                <button onclick="deleteLast()" class="operation">DEL</button>
-                <button onclick="appendOperator('(')" class="operation">(</button>
-                <button onclick="appendOperator(')')" class="operation">)</button>
-
-                <button onclick="appendNumber('7')">7</button>
-                <button onclick="appendNumber('8')">8</button>
-                <button onclick="appendNumber('9')">9</button>
-                <button onclick="chooseOperation('/')">/</button>
-
-                <button onclick="appendNumber('4')">4</button>
-                <button onclick="appendNumber('5')">5</button>
-                <button onclick="appendNumber('6')">6</button>
-                <button onclick="chooseOperation('*')">*</button>
-
-                <button onclick="appendNumber('1')">1</button>
-                <button onclick="appendNumber('2')">2</button>
-                <button onclick="appendNumber('3')">3</button>
-                <button onclick="chooseOperation('-')">-</button>
-
-                <button onclick="appendNumber('0')" class="wide">0</button>
-                <button onclick="appendNumber('.')" class="operation">.</button>
-                <button onclick="chooseOperation('+')">+</button>
-
-                <button onclick="appendOperator('Math.sqrt(')" class="operation">√</button>
-                <button onclick="appendOperator('**')" class="operation">^</button>
-                <button onclick="calculateResult()" class="operation wide">=</button>
-
-                <button onclick="memoryClear()" class="memory">MC</button>
-                <button onclick="memoryRecall()" class="memory">MR</button>
-                <button onclick="memoryAdd()" class="memory">M+</button>
-                <button onclick="memorySubtract()" class="memory">M-</button>
-            </div>
-        </div>
     </div>
 
     <script>
@@ -1018,7 +913,7 @@ body {
             }
 
             const payload = {
-                content: `${discordUser} suggested: ${suggestionText}`
+                content: ${discordUser} suggested: ${suggestionText}
             };
 
             cooldownActive = true;
@@ -1027,157 +922,50 @@ body {
             fetch(webhookUrl, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(payload),
+                body: JSON.stringify(payload)
             })
             .then(response => {
                 if (response.ok) {
                     document.getElementById('suggestionResult').innerHTML = 'Suggestion submitted successfully!';
-                    document.getElementById('discordUser').value = '';
-                    document.getElementById('suggestionText').value = '';
                 } else {
-                    document.getElementById('suggestionResult').innerHTML = 'Failed to submit suggestion.';
+                    document.getElementById('suggestionResult').innerHTML = 'Failed to submit suggestion. Please try again.';
                 }
             })
             .catch(error => {
-                document.getElementById('suggestionResult').innerHTML = 'Error occurred while submitting the suggestion.';
+                document.getElementById('suggestionResult').innerHTML = 'Error submitting suggestion.';
             })
             .finally(() => {
                 setTimeout(() => {
                     cooldownActive = false;
                     document.querySelector('.container button').disabled = false;
+                    document.getElementById('suggestionResult').innerHTML = 'You can now submit another suggestion.';
                 }, cooldownDuration);
             });
         }
 
+        function parseInput(value) {
+            return parseFloat(value.replace(/,/g, '')) || 0;
+        }
+
+        function formatNumber(value) {
+            return parseFloat(value).toLocaleString('en-US');
+        }
+
         function calculateCoinsDice() {
-            const coins = parseInt(document.getElementById('coinsForDice').value);
+            const coins = parseInput(document.getElementById('coinsForDice').value);
+            const megaDiceIICost = 609000;
 
-            if (isNaN(coins) || coins <= 0) {
-                document.getElementById('coinsResult').innerHTML = 'Please enter a valid number of coins.';
-                return;
-            }
+            const megaDiceIICount = Math.floor(coins / megaDiceIICost);
+            const remainingCoins = coins % megaDiceIICost;
 
-            let remainingCoins = coins;
-            const results = {};
-
-            if (remainingCoins >= 10) {
-                results['d10'] = Math.floor(remainingCoins / 10);
-                remainingCoins %= 10;
-            }
-            if (remainingCoins >= 8) {
-                results['d8'] = Math.floor(remainingCoins / 8);
-                remainingCoins %= 8;
-            }
-            if (remainingCoins >= 6) {
-                results['d6'] = Math.floor(remainingCoins / 6);
-                remainingCoins %= 6;
-            }
-            if (remainingCoins >= 4) {
-                results['d4'] = Math.floor(remainingCoins / 4);
-                remainingCoins %= 4;
-            }
-            if (remainingCoins >= 2) {
-                results['d2'] = Math.floor(remainingCoins / 2);
-                remainingCoins %= 2;
-            }
-
-            let resultString = '';
-
-            for (const dice in results) {
-                if (results[dice] > 0) {
-                    resultString += `${results[dice]} x ${dice} dice<br>`;
-                }
-            }
-
-            if (remainingCoins > 0) {
-                resultString += `<span class="highlight">Remaining Coins: ${remainingCoins}</span>`;
-            }
-
-            document.getElementById('coinsResult').innerHTML = resultString || 'No dice could be created with the given coins.';
-        }
-
-        let calcScreen = document.getElementById('calcScreen');
-        let currentOperand = '';
-        let memory = 0;
-        let resultCalculated = false;
-
-        function clearScreen() {
-            currentOperand = '';
-            calcScreen.innerText = '0';
-        }
-
-        function deleteLast() {
-            if (resultCalculated) return;
-            currentOperand = currentOperand.slice(0, -1);
-            calcScreen.innerText = currentOperand || '0';
-        }
-
-        function appendNumber(number) {
-            if (resultCalculated) {
-                currentOperand = '';
-                resultCalculated = false;
-            }
-            currentOperand += number;
-            calcScreen.innerText = currentOperand;
-        }
-
-        function appendOperator(operator) {
-            if (resultCalculated) {
-                resultCalculated = false;
-            }
-            currentOperand += operator;
-            calcScreen.innerText = currentOperand;
-        }
-
-        function chooseOperation(operation) {
-            if (resultCalculated) {
-                resultCalculated = false;
-            }
-            if (currentOperand !== '') {
-                appendOperator(operation);
-            }
-        }
-
-        function calculateResult() {
-            try {
-                currentOperand = eval(currentOperand).toString();
-                calcScreen.innerText = currentOperand;
-                resultCalculated = true;
-            } catch {
-                calcScreen.innerText = 'Error';
-                currentOperand = '';
-            }
-        }
-
-        function memoryClear() {
-            memory = 0;
-            document.getElementById('memoryIndicator').innerText = '';
-        }
-
-        function memoryRecall() {
-            appendNumber(memory.toString());
-        }
-
-        function memoryAdd() {
-            try {
-                memory += parseFloat(currentOperand);
-                document.getElementById('memoryIndicator').innerText = 'M';
-            } catch {
-                calcScreen.innerText = 'Error';
-                currentOperand = '';
-            }
-        }
-
-        function memorySubtract() {
-            try {
-                memory -= parseFloat(currentOperand);
-                document.getElementById('memoryIndicator').innerText = 'M';
-            } catch {
-                calcScreen.innerText = 'Error';
-                currentOperand = '';
-            }
+            document.getElementById('coinsResult').innerHTML = 
+                With ${formatNumber(coins)} coins, you can afford:
+                <ul>
+                    <li><span class="highlight">${formatNumber(megaDiceIICount)}</span> Mega Dice II (costs ${formatNumber(megaDiceIICost)} coins each)</li>
+                </ul>
+                Coins left after upgrades: <span class="highlight">${formatNumber(remainingCoins)}</span>;
         }
     </script>
 </body>
