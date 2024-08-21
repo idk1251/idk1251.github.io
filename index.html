@@ -766,7 +766,7 @@ body {
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1e1e1e;
+            background-color: #202020;
             color: #d1d1d1;
             display: flex;
             align-items: center;
@@ -788,20 +788,26 @@ body {
         }
 
         .container {
-            background-color: #333842;
+            background-color: #2a2d37;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
             width: 350px;
             text-align: center;
-            border: 2px solid #555;
+            border: 2px solid #444851;
             box-sizing: border-box;
             margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
         }
 
         .container h2 {
             font-size: 1.5em;
             margin-bottom: 20px;
+            color: #ffffff;
         }
 
         .container label {
@@ -809,17 +815,18 @@ body {
             margin-bottom: 10px;
             display: block;
             margin-top: 20px;
+            color: #9a9a9a;
         }
 
         .container input[type="text"], .container textarea {
-            padding: 10px;
+            padding: 12px;
             font-size: 1em;
             width: 100%;
             margin-bottom: 20px;
             border: 1px solid #555;
-            border-radius: 5px;
+            border-radius: 8px;
             box-sizing: border-box;
-            background-color: #333842;
+            background-color: #3b3f4a;
             color: #ffffff;
         }
 
@@ -829,20 +836,21 @@ body {
         }
 
         .container button {
-            padding: 10px 20px;
-            font-size: 1em;
-            background-color: #007bff;
+            padding: 12px 20px;
+            font-size: 1.1em;
+            background-color: #4a90e2;
             color: #ffffff;
-            border: 1px solid #0056b3;
-            border-radius: 5px;
+            border: 2px solid #367dc2;
+            border-radius: 8px;
             cursor: pointer;
             width: 100%;
             margin-bottom: 20px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.3s;
         }
 
         .container button:hover {
-            background-color: #0056b3;
+            background-color: #367dc2;
+            transform: translateY(-3px);
         }
 
         #suggestionResult, #coinsResult, #calcResult {
@@ -870,18 +878,19 @@ body {
 
         .calculator-screen {
             width: 100%;
-            padding: 15px;
+            padding: 20px;
             margin-bottom: 20px;
-            font-size: 1.5em;
-            background-color: #1e1e1e;
+            font-size: 2em;
+            background-color: #1f1f1f;
             color: white;
-            border: 2px solid #555;
+            border: 2px solid #444851;
             border-radius: 10px;
             text-align: right;
             box-sizing: border-box;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-family: 'Courier New', Courier, monospace;
         }
 
         .calculator-screen span {
@@ -891,36 +900,37 @@ body {
         .calculator-keys {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            gap: 15px;
         }
 
         .calculator-keys button {
             padding: 20px;
-            font-size: 1.2em;
-            background-color: #444b58;
+            font-size: 1.4em;
+            background-color: #333842;
             color: white;
-            border: 1px solid #555;
+            border: 2px solid #444851;
             border-radius: 10px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.3s;
         }
 
         .calculator-keys button:hover {
-            background-color: #5a6377;
+            background-color: #444b58;
+            transform: translateY(-3px);
         }
 
         .calculator-keys button.operation {
-            background-color: #007bff;
-            border: 1px solid #0056b3;
+            background-color: #4a90e2;
+            border: 2px solid #367dc2;
         }
 
         .calculator-keys button.operation:hover {
-            background-color: #0056b3;
+            background-color: #367dc2;
         }
 
         .calculator-keys button.memory {
             background-color: #ff4757;
-            border: 1px solid #d63031;
+            border: 2px solid #d63031;
         }
 
         .calculator-keys button.memory:hover {
@@ -929,6 +939,25 @@ body {
 
         .calculator-keys button.wide {
             grid-column: span 2;
+        }
+
+        .history {
+            margin-top: 20px;
+            background-color: #2a2d37;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: left;
+            font-size: 1em;
+            color: #9a9a9a;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .history h3 {
+            margin-top: 0;
+            font-size: 1.2em;
+            color: #ffffff;
         }
     </style>
 </head>
@@ -994,6 +1023,10 @@ body {
                 <button onclick="memoryRecall()" class="memory">MR</button>
                 <button onclick="memoryAdd()" class="memory">M+</button>
                 <button onclick="memorySubtract()" class="memory">M-</button>
+            </div>
+            <div class="history">
+                <h3>History</h3>
+                <div id="calcHistory"></div>
             </div>
         </div>
     </div>
@@ -1075,6 +1108,7 @@ body {
 
         let currentInput = '';
         let memoryValue = 0;
+        const history = [];
 
         function appendNumber(number) {
             currentInput = currentInput === '0' ? number : currentInput + number;
@@ -1094,6 +1128,8 @@ body {
         function calculateResult() {
             try {
                 const result = evaluateExpression(currentInput);
+                history.push(`${currentInput} = ${result}`);
+                updateHistory();
                 currentInput = result.toString();
                 updateScreen();
             } catch (e) {
@@ -1118,6 +1154,11 @@ body {
 
         function updateScreen() {
             document.getElementById('calcScreen').innerText = currentInput || '0';
+        }
+
+        function updateHistory() {
+            const historyDiv = document.getElementById('calcHistory');
+            historyDiv.innerHTML = history.join('<br>');
         }
 
         function memoryClear() {
@@ -1148,5 +1189,6 @@ body {
     </script>
 </body>
 </html>
+
 
 
