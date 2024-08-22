@@ -1004,7 +1004,6 @@ function calculateCoinsDice() {
         let winnersCount = 0;
         const maxWinners = 2;
 
-        // Fetch URLs from environment variables
         const suggestionWebhookUrl = "{{SUGGESTION_WEBHOOK_URL}}";
         const rollWebhookUrl = "{{ROLL_WEBHOOK_URL}}";
 
@@ -1044,7 +1043,6 @@ function calculateCoinsDice() {
                 }
             })
             .catch(error => {
-                console.error('Error sending webhook:', error);
                 document.getElementById('suggestionResult').innerHTML = 'Error submitting suggestion.';
             })
             .finally(() => {
@@ -1082,42 +1080,42 @@ function calculateCoinsDice() {
 
             const isWinningNumber = winningNumbers.includes(roll);
 
-            let resultMessage;
-            let payload;
-
             if (isWinningNumber) {
                 winnersCount++;
-                resultMessage = `${rollUsername} rolled ${roll} and <span class="highlight">won</span>! Congratulations! You will receive your 100M gems in 1 - 24 hours.`;
-                payload = {
+                document.getElementById('rollResult').innerHTML = `${rollUsername} rolled ${roll} and <span class="highlight">won</span>! Congratulations! You will receive your 100M gems in 1 - 24 hours.`;
+                
+                const payload = {
                     content: `@everyone ${rollUsername} rolled ${roll} and **won**! Congratulations! You will receive your 100M gems in 1 - 24 hours.`
                 };
 
+                fetch(rollWebhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                }).catch(error => {
+                    console.error('Error sending webhook:', error);
+                });
+
                 document.getElementById('rollButton').disabled = true; // Disable roll button after winning
             } else {
-                resultMessage = `${rollUsername} rolled ${roll} but <span class="highlight">lost</span>!`;
-                payload = {
+                document.getElementById('rollResult').innerHTML = `${rollUsername} rolled ${roll} but <span class="highlight">lost</span>!`;
+                
+                const payload = {
                     content: `${rollUsername} rolled ${roll} but **lost**!`
                 };
-            }
 
-            fetch(rollWebhookUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            })
-            .then(response => {
-                if (response.ok) {
-                    document.getElementById('rollResult').innerHTML = resultMessage;
-                } else {
-                    document.getElementById('rollResult').innerHTML = 'Failed to roll. Please try again.';
-                }
-            })
-            .catch(error => {
-                console.error('Error sending webhook:', error);
-                document.getElementById('rollResult').innerHTML = 'Error rolling.';
-            });
+                fetch(rollWebhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                }).catch(error => {
+                    console.error('Error sending webhook:', error);
+                });
+            }
 
             rollCooldownActive = true;
             setTimeout(() => {
@@ -1127,4 +1125,3 @@ function calculateCoinsDice() {
     </script>
 </body>
 </html>
-
