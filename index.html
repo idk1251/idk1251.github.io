@@ -838,12 +838,265 @@ function calculateCoinsDice() {
 
 
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suggestion Box & Event Roll</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1e1e1e;
+            color: #d1d1d1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
 
+        .flex-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            max-width: 800px;
+            width: 100%;
+        }
 
+        .container {
+            background-color: #333842;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+            border: 2px solid #555;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
 
+        .container h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
 
+        .container label {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            display: block;
+            margin-top: 20px;
+        }
 
+        .container input[type="text"], .container textarea {
+            padding: 10px;
+            font-size: 1em;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            box-sizing: border-box;
+            background-color: #333842;
+            color: #ffffff;
+        }
 
+        .container textarea {
+            height: 100px;
+            resize: vertical;
+        }
 
+        .container button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: #ffffff;
+            border: 1px solid #0056b3;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
 
+        .container button:hover {
+            background-color: #0056b3;
+        }
 
+        #suggestionResult, #rollResult {
+            margin-top: 20px;
+            font-size: 1.2em;
+            text-align: left;
+        }
+
+        .highlight {
+            color: #ff4757;
+            font-weight: bold;
+        }
+
+        .username-highlight {
+            color: #00ffdd;
+            font-weight: bold;
+        }
+
+        .explanation {
+            font-size: 0.9em;
+            margin-top: 15px;
+            color: #aaaaaa;
+            text-align: left;
+        }
+
+        @media (max-width: 768px) {
+            .flex-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .container {
+                width: 100%;
+                max-width: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="flex-container">
+        <!-- Suggestion Box GUI -->
+        <div class="container">
+            <h2>Suggestion Box</h2>
+            <label for="discordUser">Discord Username:</label>
+            <input type="text" id="discordUser" placeholder="Enter your Discord username">
+
+            <label for="suggestionText">Your Suggestion:</label>
+            <textarea id="suggestionText" placeholder="Enter your suggestion here"></textarea>
+
+            <button onclick="submitSuggestion()">Submit Suggestion</button>
+            <div id="suggestionResult">Enter your suggestion and click "Submit Suggestion".</div>
+        </div>
+
+        <!-- Event Roll GUI -->
+        <div class="container">
+            <h2>Event Roll for 100M Gems</h2>
+            <label for="rollUsername">Discord Username:</label>
+            <input type="text" id="rollUsername" placeholder="Enter your Discord username">
+
+            <button onclick="saveUsername()">Save Username</button>
+            <button id="rollButton" onclick="rollForEvent()" disabled>Roll for 100M</button>
+            <div id="rollResult">Save your username to start rolling.</div>
+            
+            <!-- Explanation of the Roll System -->
+            <div class="explanation">
+                <strong>Note:</strong> Each time you roll, a random number between 1 and 100,000 is generated. To win, you must roll one of the following numbers: 10,000; 20,000; 30,000; 40,000; 50,000; 60,000; 70,000; 80,000; 90,000; or 100,000. The odds are 1 in 10,000 for each winning number, and each roll is independent of the previous ones, meaning the number is randomly selected every time you roll. Only up to 2 winners are allowed.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cooldownActive = false;
+        let rollCooldownActive = false;
+        const cooldownDuration = 60000; // 1 minute in milliseconds
+        const rollCooldownDuration = 1000; // 1 second cooldown between rolls
+        let rollUsername = '';
+        let winnersCount = 0;
+        const maxWinners = 2;
+
+        function submitSuggestion() {
+            if (cooldownActive) {
+                document.getElementById('suggestionResult').innerHTML = 'Please wait before submitting another suggestion.';
+                return;
+            }
+
+            const discordUser = document.getElementById('discordUser').value.trim();
+            const suggestionText = document.getElementById('suggestionText').value.trim();
+            const webhookUrl = "/.netlify/functions/suggestion";
+
+            if (!discordUser || !suggestionText) {
+                document.getElementById('suggestionResult').innerHTML = 'Please fill in both fields.';
+                return;
+            }
+
+            const payload = {
+                discordUser: discordUser,
+                suggestionText: suggestionText
+            };
+
+            cooldownActive = true;
+            document.querySelector('.container button').disabled = true;
+
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('suggestionResult').innerHTML = data.message;
+            })
+            .catch(error => {
+                document.getElementById('suggestionResult').innerHTML = 'Error submitting suggestion.';
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    cooldownActive = false;
+                    document.querySelector('.container button').disabled = false;
+                    document.getElementById('suggestionResult').innerHTML = 'You can now submit another suggestion.';
+                }, cooldownDuration);
+            });
+        }
+
+        function saveUsername() {
+            rollUsername = document.getElementById('rollUsername').value.trim();
+            if (!rollUsername) {
+                document.getElementById('rollResult').innerHTML = 'Please enter your Discord username.';
+                return;
+            }
+
+            document.getElementById('rollResult').innerHTML = `Username saved: <span class="username-highlight">${rollUsername}</span>. You can now roll!`;
+            document.getElementById('rollButton').disabled = false;
+        }
+
+        function rollForEvent() {
+            if (rollCooldownActive) {
+                document.getElementById('rollResult').innerHTML = 'Please wait before rolling again.';
+                return;
+            }
+
+            const webhookUrl = "/.netlify/functions/roll";
+
+            if (winnersCount >= maxWinners) {
+                document.getElementById('rollResult').innerHTML = 'Maximum number of winners reached. No more rolls allowed.';
+                return;
+            }
+
+            const payload = {
+                rollUsername: rollUsername
+            };
+
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('rollResult').innerHTML = data.message;
+            })
+            .catch(error => {
+                document.getElementById('rollResult').innerHTML = 'Error processing roll.';
+            });
+
+            rollCooldownActive = true;
+            setTimeout(() => {
+                rollCooldownActive = false;
+            }, rollCooldownDuration); // 1 second cooldown between rolls
+        }
+    </script>
+</body>
+</html>
