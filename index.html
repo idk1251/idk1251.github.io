@@ -837,10 +837,11 @@ function calculateCoinsDice() {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suggestion Box and Coins Dice Calculator</title>
+    <title>Suggestion Box, Coins Dice Calculator, and Event Roll</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -889,7 +890,8 @@ function calculateCoinsDice() {
             margin-top: 20px;
         }
 
-        .container input[type="text"], .container textarea {
+        .container input[type="text"],
+        .container textarea {
             padding: 10px;
             font-size: 1em;
             width: 100%;
@@ -923,7 +925,9 @@ function calculateCoinsDice() {
             background-color: #0056b3;
         }
 
-        #suggestionResult, #coinsResult {
+        #suggestionResult,
+        #coinsResult,
+        #rollResult {
             margin-top: 20px;
             font-size: 1.2em;
             text-align: left;
@@ -947,6 +951,7 @@ function calculateCoinsDice() {
         }
     </style>
 </head>
+
 <body>
     <div class="flex-container">
         <div class="container">
@@ -968,6 +973,16 @@ function calculateCoinsDice() {
 
             <button onclick="calculateCoinsDice()">Calculate Dice</button>
             <div id="coinsResult">Enter coins and click "Calculate Dice" to see the results.</div>
+        </div>
+
+        <div class="container">
+            <h2>Event Roll for 100M</h2>
+            <label for="rollDiscordUser">Discord Username:</label>
+            <input type="text" id="rollDiscordUser" placeholder="Enter your Discord username">
+
+            <button onclick="saveRollUser()">Save Username</button>
+            <button id="rollButton" onclick="rollForEvent()" disabled>Roll for 100M</button>
+            <div id="rollResult">Enter your username and click "Save Username" to start rolling.</div>
         </div>
     </div>
 
@@ -998,33 +1013,50 @@ function calculateCoinsDice() {
             document.querySelector('.container button').disabled = true;
 
             fetch(webhookUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            })
-            .then(response => {
-                if (response.ok) {
-                    document.getElementById('suggestionResult').innerHTML = 'Suggestion submitted successfully!';
-                } else {
-                    document.getElementById('suggestionResult').innerHTML = 'Failed to submit suggestion. Please try again.';
-                }
-            })
-            .catch(error => {
-                document.getElementById('suggestionResult').innerHTML = 'Error submitting suggestion.';
-            })
-            .finally(() => {
-                setTimeout(() => {
-                    cooldownActive = false;
-                    document.querySelector('.container button').disabled = false;
-                    document.getElementById('suggestionResult').innerHTML = 'You can now submit another suggestion.';
-                }, cooldownDuration);
-            });
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById('suggestionResult').innerHTML = 'Suggestion submitted successfully!';
+                    } else {
+                        document.getElementById('suggestionResult').innerHTML = 'Failed to submit suggestion. Please try again.';
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('suggestionResult').innerHTML = 'Error submitting suggestion.';
+                })
+                .finally(() => {
+                    setTimeout(() => {
+                        cooldownActive = false;
+                        document.querySelector('.container button').disabled = false;
+                        document.getElementById('suggestionResult').innerHTML = 'You can now submit another suggestion.';
+                    }, cooldownDuration);
+                });
         }
 
         function parseInput(value) {
-            return parseFloat(value.replace(/,/g, '')) || 0;
+            value = value.trim().toLowerCase();
+
+            let multiplier = 1;
+            if (value.endsWith('b')) {
+                multiplier = 1e9; // Billion
+                value = value.slice(0, -1);
+            } else if (value.endsWith('m')) {
+                multiplier = 1e6; // Million
+                value = value.slice(0, -1);
+            } else if (value.endsWith('k')) {
+                multiplier = 1e3; // Thousand
+                value = value.slice(0, -1);
+            }
+
+            // Replace commas and parse the numeric value
+            const numericValue = parseFloat(value.replace(/,/g, '')) || 0;
+
+            return numericValue * multiplier;
         }
 
         function formatNumber(value) {
@@ -1038,56 +1070,84 @@ function calculateCoinsDice() {
             const megaDiceIICount = Math.floor(coins / megaDiceIICost);
             const remainingCoins = coins % megaDiceIICost;
 
-            document.getElementById('coinsResult').innerHTML = 
+            document.getElementById('coinsResult').innerHTML =
                 `With ${formatNumber(coins)} coins, you can afford:
-                <ul>
-                    <li><span class="highlight">${formatNumber(megaDiceIICount)}</span> Mega Dice II (costs ${formatNumber(megaDiceIICost)} coins each)</li>
-                </ul>
-                Coins left after upgrades: <span class="highlight">${formatNumber(remainingCoins)}</span>`;
-        }
-        function parseInput(value) {
-    value = value.trim().toLowerCase();
-
-    let multiplier = 1;
-    if (value.endsWith('b')) {
-        multiplier = 1e9; // Billion
-        value = value.slice(0, -1);
-    } else if (value.endsWith('m')) {
-        multiplier = 1e6; // Million
-        value = value.slice(0, -1);
-    } else if (value.endsWith('k')) {
-        multiplier = 1e3; // Thousand
-        value = value.slice(0, -1);
-    }
-
-    // Replace commas and parse the numeric value
-    const numericValue = parseFloat(value.replace(/,/g, '')) || 0;
-
-    return numericValue * multiplier;
-}
-
-function formatNumber(value) {
-    return parseFloat(value).toLocaleString('en-US');
-}
-
-function calculateCoinsDice() {
-    const coins = parseInput(document.getElementById('coinsForDice').value);
-    const megaDiceIICost = 609000;
-
-    const megaDiceIICount = Math.floor(coins / megaDiceIICost);
-    const remainingCoins = coins % megaDiceIICost;
-
-    document.getElementById('coinsResult').innerHTML = 
-        `With ${formatNumber(coins)} coins, you can afford:
         <ul>
             <li><span class="highlight">${formatNumber(megaDiceIICount)}</span> Mega Dice II (costs ${formatNumber(megaDiceIICost)} coins each)</li>
         </ul>
         Coins left after upgrades: <span class="highlight">${formatNumber(remainingCoins)}</span>`;
-}
+        }
 
+        let rollCooldownActive = false;
+        let rollUsername = '';
+
+        function saveRollUser() {
+            rollUsername = document.getElementById('rollDiscordUser').value.trim();
+
+            if (!rollUsername) {
+                document.getElementById('rollResult').innerHTML = 'Please enter your Discord username.';
+                return;
+            }
+
+            document.getElementById('rollResult').innerHTML = `Username saved: ${rollUsername}. You can now roll for 100M!`;
+            document.getElementById('rollButton').disabled = false;
+        }
+
+        function rollForEvent() {
+            if (rollCooldownActive) {
+                document.getElementById('rollResult').innerHTML = 'Please wait 1 second before rolling again.';
+                return;
+            }
+
+            const roll = Math.floor(Math.random() * 100000) + 1;
+
+            const webhookUrl = "https://discord.com/api/webhooks/1276109453044875274/a1ZexQjoAKKFNaQjJ4L7IMcNAulA95ZwdnKjn1bITQWnlgz0mF9xbrf5I-ZgI2Nliqxq";
+            const payload = {
+                content: `${rollUsername} rolled: ${roll} out of 100000`
+            };
+
+            rollCooldownActive = true;
+
+            fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(response => {
+                    if (roll === 1) {
+                        document.getElementById('rollResult').innerHTML = `Congratulations ${rollUsername}! You rolled a 1 and won 100M! You will receive your 100M gems in 1 - 24 hours.`;
+                        document.getElementById('rollButton').disabled = true;
+                        // Notify everyone about the win
+                        const winnerPayload = {
+                            content: `@everyone ${rollUsername} has won the 100M event roll!`
+                        };
+                        fetch(webhookUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(winnerPayload)
+                        });
+                    } else {
+                        document.getElementById('rollResult').innerHTML = `Sorry ${rollUsername}, you rolled a ${roll}. Try again!`;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('rollResult').innerHTML = 'Error processing your roll.';
+                })
+                .finally(() => {
+                    setTimeout(() => {
+                        rollCooldownActive = false;
+                    }, 1000); // 1 second cooldown between rolls
+                });
+        }
     </script>
 </body>
+
 </html>
+
 
 
 
