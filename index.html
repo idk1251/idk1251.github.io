@@ -995,108 +995,111 @@ function calculateCoinsDice() {
     </div>
 
     <script>
-        let cooldownActive = false;
-        let rollCooldownActive = false;
-        const cooldownDuration = 60000; // 1 minute in milliseconds
-        const rollCooldownDuration = 1000; // 1 second cooldown between rolls
-        let rollUsername = '';
-        let winnersCount = 0;
-        const maxWinners = 2;
+<script>
+    let cooldownActive = false;
+    let rollCooldownActive = false;
+    const cooldownDuration = 60000; // 1 minute in milliseconds
+    const rollCooldownDuration = 1000; // 1 second cooldown between rolls
+    let rollUsername = '';
+    let winnersCount = 0;
+    const maxWinners = 2;
 
-        function submitSuggestion() {
-            if (cooldownActive) {
-                document.getElementById('suggestionResult').innerHTML = 'Please wait before submitting another suggestion.';
-                return;
-            }
-
-            const discordUser = document.getElementById('discordUser').value.trim();
-            const suggestionText = document.getElementById('suggestionText').value.trim();
-            const webhookUrl = "/.netlify/functions/suggestion";
-
-            if (!discordUser || !suggestionText) {
-                document.getElementById('suggestionResult').innerHTML = 'Please fill in both fields.';
-                return;
-            }
-
-            const payload = {
-                discordUser: discordUser,
-                suggestionText: suggestionText
-            };
-
-            cooldownActive = true;
-            document.querySelector('.container button').disabled = true;
-
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('suggestionResult').innerHTML = data.message;
-            })
-            .catch(error => {
-                document.getElementById('suggestionResult').innerHTML = 'Error submitting suggestion.';
-            })
-            .finally(() => {
-                setTimeout(() => {
-                    cooldownActive = false;
-                    document.querySelector('.container button').disabled = false;
-                    document.getElementById('suggestionResult').innerHTML = 'You can now submit another suggestion.';
-                }, cooldownDuration);
-            });
+    function submitSuggestion() {
+        if (cooldownActive) {
+            document.getElementById('suggestionResult').innerHTML = 'Please wait before submitting another suggestion.';
+            return;
         }
 
-        function saveUsername() {
-            rollUsername = document.getElementById('rollUsername').value.trim();
-            if (!rollUsername) {
-                document.getElementById('rollResult').innerHTML = 'Please enter your Discord username.';
-                return;
-            }
+        const discordUser = document.getElementById('discordUser').value.trim();
+        const suggestionText = document.getElementById('suggestionText').value.trim();
+        const webhookUrl = "/.netlify/functions/suggestion";
 
-            document.getElementById('rollResult').innerHTML = `Username saved: <span class="username-highlight">${rollUsername}</span>. You can now roll!`;
-            document.getElementById('rollButton').disabled = false;
+        if (!discordUser || !suggestionText) {
+            document.getElementById('suggestionResult').innerHTML = 'Please fill in both fields.';
+            return;
         }
 
-        function rollForEvent() {
-            if (rollCooldownActive) {
-                document.getElementById('rollResult').innerHTML = 'Please wait before rolling again.';
-                return;
-            }
+        const payload = {
+            discordUser: discordUser,
+            suggestionText: suggestionText
+        };
 
-            const webhookUrl = "/.netlify/functions/roll";
+        cooldownActive = true;
+        document.querySelector('.container button').disabled = true;
 
-            if (winnersCount >= maxWinners) {
-                document.getElementById('rollResult').innerHTML = 'Maximum number of winners reached. No more rolls allowed.';
-                return;
-            }
-
-            const payload = {
-                rollUsername: rollUsername
-            };
-
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('rollResult').innerHTML = data.message;
-            })
-            .catch(error => {
-                document.getElementById('rollResult').innerHTML = 'Error processing roll.';
-            });
-
-            rollCooldownActive = true;
+        fetch(webhookUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('suggestionResult').innerHTML = data.message;
+        })
+        .catch(error => {
+            document.getElementById('suggestionResult').innerHTML = 'Error submitting suggestion.';
+        })
+        .finally(() => {
             setTimeout(() => {
-                rollCooldownActive = false;
-            }, rollCooldownDuration); // 1 second cooldown between rolls
+                cooldownActive = false;
+                document.querySelector('.container button').disabled = false;
+                document.getElementById('suggestionResult').innerHTML = 'You can now submit another suggestion.';
+            }, cooldownDuration);
+        });
+    }
+
+    function saveUsername() {
+        rollUsername = document.getElementById('rollUsername').value.trim();
+        if (!rollUsername) {
+            document.getElementById('rollResult').innerHTML = 'Please enter your Discord username.';
+            return;
         }
+
+        document.getElementById('rollResult').innerHTML = `Username saved: <span class="username-highlight">${rollUsername}</span>. You can now roll!`;
+        document.getElementById('rollButton').disabled = false;
+    }
+
+    function rollForEvent() {
+        if (rollCooldownActive) {
+            document.getElementById('rollResult').innerHTML = 'Please wait before rolling again.';
+            return;
+        }
+
+        const webhookUrl = "/.netlify/functions/roll";
+
+        if (winnersCount >= maxWinners) {
+            document.getElementById('rollResult').innerHTML = 'Maximum number of winners reached. No more rolls allowed.';
+            return;
+        }
+
+        const payload = {
+            rollUsername: rollUsername
+        };
+
+        fetch(webhookUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('rollResult').innerHTML = data.message;
+        })
+        .catch(error => {
+            document.getElementById('rollResult').innerHTML = 'Error processing roll.';
+        });
+
+        rollCooldownActive = true;
+        setTimeout(() => {
+            rollCooldownActive = false;
+        }, rollCooldownDuration); // 1 second cooldown between rolls
+    }
+</script>
+
     </script>
 </body>
 </html>
