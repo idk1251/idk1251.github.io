@@ -995,6 +995,12 @@ function calculateCoinsDice() {
     </div>
 
     <script>
+        // Inject environment variables into window.env
+        window.env = {
+            SUGGESTION_WEBHOOK_URL: "{{SUGGESTION_WEBHOOK_URL}}",
+            ROLL_WEBHOOK_URL: "{{ROLL_WEBHOOK_URL}}"
+        };
+
         let cooldownActive = false;
         let rollCooldownActive = false;
         const cooldownDuration = 60000; // 1 minute in milliseconds
@@ -1004,10 +1010,6 @@ function calculateCoinsDice() {
         let winnersCount = 0;
         const maxWinners = 2;
 
-        // Get environment variables from the injected script
-        const suggestionWebhookUrl = window.env.SUGGESTION_WEBHOOK_URL;
-        const rollWebhookUrl = window.env.ROLL_WEBHOOK_URL;
-
         function submitSuggestion() {
             if (cooldownActive) {
                 document.getElementById('suggestionResult').innerHTML = 'Please wait before submitting another suggestion.';
@@ -1016,6 +1018,7 @@ function calculateCoinsDice() {
 
             const discordUser = document.getElementById('discordUser').value.trim();
             const suggestionText = document.getElementById('suggestionText').value.trim();
+            const webhookUrl = window.env.SUGGESTION_WEBHOOK_URL;
 
             if (!discordUser || !suggestionText) {
                 document.getElementById('suggestionResult').innerHTML = 'Please fill in both fields.';
@@ -1029,7 +1032,7 @@ function calculateCoinsDice() {
             cooldownActive = true;
             document.querySelector('.container button').disabled = true;
 
-            fetch(suggestionWebhookUrl, {
+            fetch(webhookUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -1073,6 +1076,7 @@ function calculateCoinsDice() {
             }
 
             const roll = Math.floor(Math.random() * 100000) + 1;
+            const webhookUrl = window.env.ROLL_WEBHOOK_URL;
 
             if (winnersCount >= maxWinners) {
                 document.getElementById('rollResult').innerHTML = 'Maximum number of winners reached.';
@@ -1101,7 +1105,7 @@ function calculateCoinsDice() {
 
             document.getElementById('rollResult').innerHTML = resultMessage;
 
-            fetch(rollWebhookUrl, {
+            fetch(webhookUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -1116,14 +1120,6 @@ function calculateCoinsDice() {
                 rollCooldownActive = false;
             }, rollCooldownDuration); // 1 second cooldown between rolls
         }
-    </script>
-
-    <script>
-      // Inject environment variables
-      window.env = {
-        SUGGESTION_WEBHOOK_URL: "{{SUGGESTION_WEBHOOK_URL}}",
-        ROLL_WEBHOOK_URL: "{{ROLL_WEBHOOK_URL}}"
-      };
     </script>
 </body>
 </html>
