@@ -1,0 +1,6 @@
+[build]
+  functions = "functions"  # This points to the directory where your function files are located
+
+[build.environment]
+  DISCORD_SUGGESTION_WEBHOOK_URL = "your_suggestion_webhook_url"
+  DISCORD_ROLL_WEBHOOK_URL = "your_roll_webhook_url"
