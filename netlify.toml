@@ -1,6 +1,5 @@
 [build]
-  publish = "/"  # Specifies that the root directory should be used
-  # Remove `functions` line if not using serverless functions
+  publish = "/"  # Publish the root directory
 
 [build.environment]
   SUGGESTION_WEBHOOK_URL = "https://your-suggestion-webhook-url"
