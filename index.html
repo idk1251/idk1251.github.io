@@ -1005,7 +1005,6 @@ function calculateCoinsDice() {
 
     function submitSuggestion() {
         if (cooldownActive) {
-            document.getElementById('suggestionResult').innerHTML = 'Please wait before submitting another suggestion.';
             return;
         }
 
@@ -1014,7 +1013,6 @@ function calculateCoinsDice() {
         const webhookUrl = "/functions/suggestion";
 
         if (!discordUser || !suggestionText) {
-            document.getElementById('suggestionResult').innerHTML = 'Please fill in both fields.';
             return;
         }
 
@@ -1035,9 +1033,7 @@ function calculateCoinsDice() {
         })
         .then(response => {
             if (!response.ok) {
-                // Handle network response errors
-                document.getElementById('suggestionResult').innerHTML = 'Error submitting suggestion.';
-                return;
+                return; // Handle errors silently
             }
             return response.json();
         })
@@ -1056,7 +1052,6 @@ function calculateCoinsDice() {
     function saveUsername() {
         rollUsername = document.getElementById('rollUsername').value.trim();
         if (!rollUsername) {
-            document.getElementById('rollResult').innerHTML = 'Please enter your Discord username.';
             return;
         }
 
@@ -1066,14 +1061,12 @@ function calculateCoinsDice() {
 
     function rollForEvent() {
         if (rollCooldownActive) {
-            document.getElementById('rollResult').innerHTML = 'Please wait before rolling again.';
             return;
         }
 
         const webhookUrl = "/functions/roll";
 
         if (winnersCount >= maxWinners) {
-            document.getElementById('rollResult').innerHTML = 'Maximum number of winners reached. No more rolls allowed.';
             return;
         }
 
@@ -1090,9 +1083,7 @@ function calculateCoinsDice() {
         })
         .then(response => {
             if (!response.ok) {
-                // Handle network response errors
-                document.getElementById('rollResult').innerHTML = 'Error processing roll.';
-                return;
+                return; // Handle errors silently
             }
             return response.json();
         })
@@ -1106,6 +1097,7 @@ function calculateCoinsDice() {
         }, rollCooldownDuration); // 1 second cooldown between rolls
     }
 </script>
+
 
 </body>
 </html>
