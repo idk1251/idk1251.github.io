@@ -1,0 +1,22 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Build and Deploy
+      env:
+        SUGGESTION_WEBHOOK_URL: ${{ secrets.SUGGESTION_WEBHOOK_URL }}
+        ROLL_WEBHOOK_URL: ${{ secrets.ROLL_WEBHOOK_URL }}
+      run: |
+        echo "Environment variables are set."
+        # Here you can run your build or deploy commands
