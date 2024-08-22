@@ -238,7 +238,7 @@
             <h3>Top 10 Donators</h3>
              <h3>Dm me if I forgot you! :)</h3>
             <ul>
-                <li>1. None yet!</li>
+                <li>1. 1h59 | 50m</li>
                 <li>2. None yet!</li>
                 <li>3. None yet!</li>
                 <li>4. None yet!</li>
@@ -840,7 +840,7 @@ function calculateCoinsDice() {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suggestion Box, Coins Dice Calculator & Event Roll</title>
+    <title>Suggestion Box & Event Roll</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -861,7 +861,7 @@ function calculateCoinsDice() {
             flex-wrap: wrap;
             justify-content: center;
             align-items: flex-start;
-            max-width: 1200px;
+            max-width: 800px;
             width: 100%;
         }
 
@@ -923,7 +923,7 @@ function calculateCoinsDice() {
             background-color: #0056b3;
         }
 
-        #suggestionResult, #coinsResult, #rollResult {
+        #suggestionResult, #rollResult {
             margin-top: 20px;
             font-size: 1.2em;
             text-align: left;
@@ -972,16 +972,6 @@ function calculateCoinsDice() {
 
             <button onclick="submitSuggestion()">Submit Suggestion</button>
             <div id="suggestionResult">Enter your suggestion and click "Submit Suggestion".</div>
-        </div>
-
-        <!-- Coins Dice Calculator GUI -->
-        <div class="container">
-            <h2>Coins Dice Calculator</h2>
-            <label for="coinsForDice">Enter Coins:</label>
-            <input type="text" id="coinsForDice" placeholder="Enter the number of coins">
-
-            <button onclick="calculateCoinsDice()">Calculate Dice</button>
-            <div id="coinsResult">Enter coins and click "Calculate Dice" to see the results.</div>
         </div>
 
         <!-- Event Roll GUI -->
@@ -1076,7 +1066,7 @@ function calculateCoinsDice() {
             const webhookUrl = "https://discord.com/api/webhooks/1276109453044875274/a1ZexQjoAKKFNaQjJ4L7IMcNAulA95ZwdnKjn1bITQWnlgz0mF9xbrf5I-ZgI2Nliqxq";
 
             let payload = {
-                content: `${rollUsername} rolled ${roll} but **LOST**!`
+                content: `${rollUsername} rolled ${roll} but <span class="highlight">lost</span>!`
             };
 
             rollCooldownActive = true;
@@ -1113,23 +1103,13 @@ function calculateCoinsDice() {
             .finally(() => {
                 setTimeout(() => {
                     rollCooldownActive = false;
-                }, cooldownDuration);
+                }, 1000); // 1 second cooldown between rolls
             });
-        }
-
-        function calculateCoinsDice() {
-            const coins = parseInt(document.getElementById('coinsForDice').value.trim(), 10);
-            if (isNaN(coins) || coins <= 0) {
-                document.getElementById('coinsResult').innerHTML = 'Please enter a valid number of coins.';
-                return;
-            }
-            
-            const dice = Math.ceil(coins / 100);
-            document.getElementById('coinsResult').innerHTML = `With ${coins} coins, you get ${dice} dice rolls.`;
         }
     </script>
 </body>
 </html>
+
 
 
 
