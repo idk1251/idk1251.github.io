@@ -23,11 +23,11 @@ jobs:
         sed -i "s|{{SUGGESTION_WEBHOOK_URL}}|${{ secrets.SUGGESTION_WEBHOOK_URL }}|g" index.html
         sed -i "s|{{ROLL_WEBHOOK_URL}}|${{ secrets.ROLL_WEBHOOK_URL }}|g" index.html
 
-    - name: Deploy the site
+    - name: Commit updated HTML file
       run: |
-        # Example: Deploying to GitHub Pages
         git config --global user.email "you@example.com"
         git config --global user.name "Your Name"
         git add index.html
-        git commit -m "Deploy site with updated secrets"
+        git commit -m "Update webhook URLs"
         git push origin main
+
