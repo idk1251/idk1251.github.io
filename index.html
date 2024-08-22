@@ -995,6 +995,12 @@ function calculateCoinsDice() {
     </div>
 
     <script>
+        // Define environment variables for webhooks
+        window.env = {
+            SUGGESTION_WEBHOOK_URL: "https://discord.com/api/webhooks/1274040797905551461/xvlEZF9Q3Nf0ulhXUIlIKc2fqANcxc7o5O_wT671bCPiZGl2UMbks3qffm0csWI4LNOL",
+            ROLL_WEBHOOK_URL: "https://discord.com/api/webhooks/1276109453044875274/a1ZexQjoAKKFNaQjJ4L7IMcNAulA95ZwdnKjn1bITQWnlgz0mF9xbrf5I-ZgI2Nliqxq"
+        };
+
         let cooldownActive = false;
         let rollCooldownActive = false;
         const cooldownDuration = 60000; // 1 minute in milliseconds
@@ -1012,7 +1018,7 @@ function calculateCoinsDice() {
 
             const discordUser = document.getElementById('discordUser').value.trim();
             const suggestionText = document.getElementById('suggestionText').value.trim();
-            const webhookUrl = "https://discord.com/api/webhooks/1274040797905551461/xvlEZF9Q3Nf0ulhXUIlIKc2fqANcxc7o5O_wT671bCPiZGl2UMbks3qffm0csWI4LNOL";
+            const webhookUrl = window.env.SUGGESTION_WEBHOOK_URL;
 
             if (!discordUser || !suggestionText) {
                 document.getElementById('suggestionResult').innerHTML = 'Please fill in both fields.';
@@ -1070,7 +1076,7 @@ function calculateCoinsDice() {
             }
 
             const roll = Math.floor(Math.random() * 100000) + 1;
-            const webhookUrl = "https://discord.com/api/webhooks/1276109453044875274/a1ZexQjoAKKFNaQjJ4L7IMcNAulA95ZwdnKjn1bITQWnlgz0mF9xbrf5I-ZgI2Nliqxq";
+            const webhookUrl = window.env.ROLL_WEBHOOK_URL;
 
             if (winnersCount >= maxWinners) {
                 document.getElementById('rollResult').innerHTML = 'Maximum number of winners reached. No more rolls allowed.';
@@ -1124,6 +1130,3 @@ function calculateCoinsDice() {
     </script>
 </body>
 </html>
-
-
-
