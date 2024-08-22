@@ -1,4 +1,4 @@
-name: Deploy Static Site
+name: Deploy
 
 on:
   push:
@@ -6,28 +6,28 @@ on:
       - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up environment variables
-      run: |
-        echo "SUGGESTION_WEBHOOK_URL=${{ secrets.SUGGESTION_WEBHOOK_URL }}" >> $GITHUB_ENV
-        echo "ROLL_WEBHOOK_URL=${{ secrets.ROLL_WEBHOOK_URL }}" >> $GITHUB_ENV
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
 
-    - name: Replace placeholders
-      run: |
-        sed -i "s|{{SUGGESTION_WEBHOOK_URL}}|${{ secrets.SUGGESTION_WEBHOOK_URL }}|g" index.html
-        sed -i "s|{{ROLL_WEBHOOK_URL}}|${{ secrets.ROLL_WEBHOOK_URL }}|g" index.html
+      - name: Install dependencies
+        run: npm install
 
-    - name: Commit updated HTML file
-      run: |
-        git config --global user.email "you@example.com"
-        git config --global user.name "Your Name"
-        git add index.html
-        git commit -m "Update webhook URLs"
-        git push origin main
+      - name: Replace placeholders with secrets
+        run: |
+          sed -i 's|{{ROLL_WEBHOOK_URL}}|${{ secrets.ROLL_WEBHOOK_URL }}|g' public/index.html
+          sed -i 's|{{SUGGESTION_WEBHOOK_URL}}|${{ secrets.SUGGESTION_WEBHOOK_URL }}|g' public/index.html
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy
+        run: npm run deploy
 
