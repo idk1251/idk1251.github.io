@@ -1,6 +1,0 @@
-[build]
-  publish = "/"  # Publish the root directory
-
-[build.environment]
-  SUGGESTION_WEBHOOK_URL = "https://your-suggestion-webhook-url"
-  ROLL_WEBHOOK_URL = "https://your-roll-webhook-url"
