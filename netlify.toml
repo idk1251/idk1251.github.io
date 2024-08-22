@@ -1,8 +1,10 @@
 [build]
-  functions = "functions"  # Path to your functions directory
+  # Leave blank if you don't have a build command
+  command = ""
+  # Path to the directory where your build output is located
+  publish = "/"  # Use "/" if index.html is in the root directory
+  functions = "functions"  # Directory for serverless functions
 
-# Optional build environment variables (if not set in the Netlify dashboard)
 [build.environment]
-  # You can set environment variables here, but it's often better to set them in the Netlify dashboard
-  # DISCORD_SUGGESTION_WEBHOOK_URL = "your_suggestion_webhook_url"
-  # DISCORD_ROLL_WEBHOOK_URL = "your_roll_webhook_url"
+  DISCORD_SUGGESTION_WEBHOOK_URL = "your_suggestion_webhook_url"
+  DISCORD_ROLL_WEBHOOK_URL = "your_roll_webhook_url"
