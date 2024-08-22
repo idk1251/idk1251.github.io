@@ -1107,54 +1107,56 @@ function calculateCoinsDice() {
         }
 
         function rollForEvent() {
-            if (rollCooldownActive) {
-                document.getElementById('rollResult').innerHTML = 'Please wait before rolling again.';
-                return;
-            }
+    if (rollCooldownActive) {
+        document.getElementById('rollResult').innerHTML = 'Please wait before rolling again.';
+        return;
+    }
 
-            const roll = Math.floor(Math.random() * 100000) + 1;
-            const webhookUrl = "https://discord.com/api/webhooks/1276109453044875274/a1ZexQjoAKKFNaQjJ4L7IMcNAulA95ZwdnKjn1bITQWnlgz0mF9xbrf5I-ZgI2Nliqxq";
-            const payload = {
-                content: `${rollUsername} rolled ${roll} but <span class="highlight">lost</span>!`
+    const roll = Math.floor(Math.random() * 100000) + 1;
+    const webhookUrl = "https://discord.com/api/webhooks/1276109453044875274/a1ZexQjoAKKFNaQjJ4L7IMcNAulA95ZwdnKjn1bITQWnlgz0mF9xbrf5I-ZgI2Nliqxq";
+
+    let payload = {
+        content: `${rollUsername} rolled ${roll} but **LOST**!`
+    };
+
+    rollCooldownActive = true;
+
+    fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => {
+        if (roll === 1) {
+            document.getElementById('rollResult').innerHTML = `Congratulations <span class="username-highlight">${rollUsername}</span>! You rolled a 1 and won 100M! You will receive your 100M gems in 1 - 24 hours.`;
+            document.getElementById('rollButton').disabled = true;
+
+            const winnerPayload = {
+                content: `@everyone ${rollUsername} rolled ${roll} and WON! Congratulations!`
             };
-
-            rollCooldownActive = true;
-
             fetch(webhookUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                })
-                .then(response => {
-                    if (roll === 1) {
-                        document.getElementById('rollResult').innerHTML = `Congratulations <span class="username-highlight">${rollUsername}</span>! You rolled a 1 and won 100M! You will receive your 100M gems in 1 - 24 hours.`;
-                        document.getElementById('rollButton').disabled = true;
-
-                        const winnerPayload = {
-                            content: `@everyone ${rollUsername} rolled ${roll} and won! Congratulations!`
-                        };
-                        fetch(webhookUrl, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(winnerPayload)
-                        });
-                    } else {
-                        document.getElementById('rollResult').innerHTML = `Sorry <span class="username-highlight">${rollUsername}</span>, you rolled a ${roll}. Try again!`;
-                    }
-                })
-                .catch(error => {
-                    document.getElementById('rollResult').innerHTML = 'Error processing your roll.';
-                })
-                .finally(() => {
-                    setTimeout(() => {
-                        rollCooldownActive = false;
-                    }, 1000); // 1 second cooldown between rolls
-                });
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(winnerPayload)
+            });
+        } else {
+            document.getElementById('rollResult').innerHTML = `Sorry <span class="username-highlight">${rollUsername}</span>, you rolled a ${roll}. Try again!`;
         }
+    })
+    .catch(error => {
+        document.getElementById('rollResult').innerHTML = 'Error processing your roll.';
+    })
+    .finally(() => {
+        setTimeout(() => {
+            rollCooldownActive = false;
+        }, 1000); // 1 second cooldown between rolls
+    });
+}
+
     </script>
 </body>
 
