@@ -1,22 +1,30 @@
-name: Build and Deploy
+name: Deploy Static Site
 
 on:
   push:
     branches:
-      - main
+      - main  # Or your default branch
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Build and Deploy
-      env:
-        SUGGESTION_WEBHOOK_URL: ${{ secrets.SUGGESTION_WEBHOOK_URL }}
-        ROLL_WEBHOOK_URL: ${{ secrets.ROLL_WEBHOOK_URL }}
+    - name: Set up environment variables
       run: |
-        echo "Environment variables are set."
-        # Here you can run your build or deploy commands
+        echo "SUGGESTION_WEBHOOK_URL=${{ secrets.SUGGESTION_WEBHOOK_URL }}" >> $GITHUB_ENV
+        echo "ROLL_WEBHOOK_URL=${{ secrets.ROLL_WEBHOOK_URL }}" >> $GITHUB_ENV
+
+    - name: Replace placeholders and deploy
+      run: |
+        # Replace placeholders in index.html with actual secrets
+        sed -i "s|{{SUGGESTION_WEBHOOK_URL}}|${{ secrets.SUGGESTION_WEBHOOK_URL }}|g" index.html
+        sed -i "s|{{ROLL_WEBHOOK_URL}}|${{ secrets.ROLL_WEBHOOK_URL }}|g" index.html
+
+        # Deploy the site (this example assumes a Netlify deploy command)
+        # Adjust this step according to your deployment method
+        npm install -g netlify-cli
+        netlify deploy --prod --dir=public
