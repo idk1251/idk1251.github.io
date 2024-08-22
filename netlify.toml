@@ -1,6 +1,8 @@
 [build]
-  functions = "functions"  # This points to the directory where your function files are located
+  functions = "functions"  # Path to your functions directory
 
+# Optional build environment variables (if not set in the Netlify dashboard)
 [build.environment]
-  DISCORD_SUGGESTION_WEBHOOK_URL = "your_suggestion_webhook_url"
-  DISCORD_ROLL_WEBHOOK_URL = "your_roll_webhook_url"
+  # You can set environment variables here, but it's often better to set them in the Netlify dashboard
+  # DISCORD_SUGGESTION_WEBHOOK_URL = "your_suggestion_webhook_url"
+  # DISCORD_ROLL_WEBHOOK_URL = "your_roll_webhook_url"
