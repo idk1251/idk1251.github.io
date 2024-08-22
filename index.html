@@ -845,7 +845,121 @@ function calculateCoinsDice() {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suggestion Box & Event Roll</title>
     <style>
-        /* Your existing CSS styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1e1e1e;
+            color: #d1d1d1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .flex-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .container {
+            background-color: #333842;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+            border: 2px solid #555;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        .container h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .container label {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            display: block;
+            margin-top: 20px;
+        }
+
+        .container input[type="text"], .container textarea {
+            padding: 10px;
+            font-size: 1em;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            box-sizing: border-box;
+            background-color: #333842;
+            color: #ffffff;
+        }
+
+        .container textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .container button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: #ffffff;
+            border: 1px solid #0056b3;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .container button:hover {
+            background-color: #0056b3;
+        }
+
+        #suggestionResult, #rollResult {
+            margin-top: 20px;
+            font-size: 1.2em;
+            text-align: left;
+        }
+
+        .highlight {
+            color: #ff4757;
+            font-weight: bold;
+        }
+
+        .username-highlight {
+            color: #00ffdd;
+            font-weight: bold;
+        }
+
+        .explanation {
+            font-size: 0.9em;
+            margin-top: 15px;
+            color: #aaaaaa;
+            text-align: left;
+        }
+
+        @media (max-width: 768px) {
+            .flex-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .container {
+                width: 100%;
+                max-width: 400px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -890,8 +1004,9 @@ function calculateCoinsDice() {
         let winnersCount = 0;
         const maxWinners = 2;
 
-        const suggestionWebhookUrl = 'YOUR_SUGGESTION_WEBHOOK_URL'; // Replace with your environment variable placeholder
-        const rollWebhookUrl = 'YOUR_ROLL_WEBHOOK_URL'; // Replace with your environment variable placeholder
+        // Get environment variables from the injected script
+        const suggestionWebhookUrl = window.env.SUGGESTION_WEBHOOK_URL;
+        const rollWebhookUrl = window.env.ROLL_WEBHOOK_URL;
 
         function submitSuggestion() {
             if (cooldownActive) {
@@ -1002,7 +1117,16 @@ function calculateCoinsDice() {
             }, rollCooldownDuration); // 1 second cooldown between rolls
         }
     </script>
+
+    <script>
+      // Inject environment variables
+      window.env = {
+        SUGGESTION_WEBHOOK_URL: "{{SUGGESTION_WEBHOOK_URL}}",
+        ROLL_WEBHOOK_URL: "{{ROLL_WEBHOOK_URL}}"
+      };
+    </script>
 </body>
 </html>
+
 
 
