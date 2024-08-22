@@ -989,116 +989,133 @@ function calculateCoinsDice() {
             
             <!-- Explanation of the Roll System -->
             <div class="explanation">
-                <strong>Note:</strong> Each time you roll, a random number between 1 and 100,000 is generated. To win, you must roll one of the following numbers: 10,000; 20,000; 30,000; 40,000; 50,000; 60,000; 70,000; 80,000; 90,000; or 100,000. The odds are 1 in 10,000 for each winning number, and each roll is independent of the previous ones, meaning the number is randomly selected every time you roll. Only up to 2 winners are allowed.
+                <strong>Note:</strong> Each time you roll, a random number between 1 and 100,000 is generated. To win, you must roll one of the following numbers: 10,000; 20,000; 30,000; 40,000; 50,000; 60,000; 70,000; 80,000; 90,000; or 100,000. The odds are approximately 1 in 10,000 for each winning number, and each roll is independent of the previous ones, meaning the number is randomly selected every time you roll. Only up to 2 winners are allowed.
             </div>
         </div>
     </div>
 
-<script>
-    let cooldownActive = false;
-    let rollCooldownActive = false;
-    const cooldownDuration = 60000; // 1 minute in milliseconds
-    const rollCooldownDuration = 1000; // 1 second cooldown between rolls
-    let rollUsername = '';
-    let winnersCount = 0;
-    const maxWinners = 2;
+    <script>
+        let cooldownActive = false;
+        let rollCooldownActive = false;
+        const cooldownDuration = 60000; // 1 minute in milliseconds
+        const rollCooldownDuration = 1000; // 1 second cooldown between rolls
+        const winningNumbers = [10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000];
+        let rollUsername = '';
+        let winnersCount = 0;
+        const maxWinners = 2;
 
-    function submitSuggestion() {
-        if (cooldownActive) {
-            return;
-        }
-
-        const discordUser = document.getElementById('discordUser').value.trim();
-        const suggestionText = document.getElementById('suggestionText').value.trim();
-        const webhookUrl = "/functions/suggestion";
-
-        if (!discordUser || !suggestionText) {
-            return;
-        }
-
-        const payload = {
-            discordUser: discordUser,
-            suggestionText: suggestionText
-        };
-
-        cooldownActive = true;
-        document.querySelector('.container button').disabled = true;
-
-        fetch(webhookUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        })
-        .then(response => {
-            if (!response.ok) {
-                return; // Handle errors silently
+        function submitSuggestion() {
+            if (cooldownActive) {
+                document.getElementById('suggestionResult').innerHTML = 'Please wait before submitting another suggestion.';
+                return;
             }
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById('suggestionResult').innerHTML = data.message;
-        })
-        .finally(() => {
+
+            const discordUser = document.getElementById('discordUser').value.trim();
+            const suggestionText = document.getElementById('suggestionText').value.trim();
+            const webhookUrl = "https://discord.com/api/webhooks/1274040797905551461/xvlEZF9Q3Nf0ulhXUIlIKc2fqANcxc7o5O_wT671bCPiZGl2UMbks3qffm0csWI4LNOL";
+
+            if (!discordUser || !suggestionText) {
+                document.getElementById('suggestionResult').innerHTML = 'Please fill in both fields.';
+                return;
+            }
+
+            const payload = {
+                content: `${discordUser} suggested: ${suggestionText}`
+            };
+
+            cooldownActive = true;
+            document.querySelector('.container button').disabled = true;
+
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('suggestionResult').innerHTML = 'Suggestion submitted successfully!';
+                } else {
+                    document.getElementById('suggestionResult').innerHTML = 'Failed to submit suggestion. Please try again.';
+                }
+            })
+            .catch(error => {
+                document.getElementById('suggestionResult').innerHTML = 'Error submitting suggestion.';
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    cooldownActive = false;
+                    document.querySelector('.container button').disabled = false;
+                    document.getElementById('suggestionResult').innerHTML = 'You can now submit another suggestion.';
+                }, cooldownDuration);
+            });
+        }
+
+        function saveUsername() {
+            rollUsername = document.getElementById('rollUsername').value.trim();
+            if (!rollUsername) {
+                document.getElementById('rollResult').innerHTML = 'Please enter your Discord username.';
+                return;
+            }
+
+            document.getElementById('rollResult').innerHTML = `Username saved: <span class="username-highlight">${rollUsername}</span>. You can now roll!`;
+            document.getElementById('rollButton').disabled = false;
+        }
+
+        function rollForEvent() {
+            if (rollCooldownActive) {
+                document.getElementById('rollResult').innerHTML = 'Please wait before rolling again.';
+                return;
+            }
+
+            const roll = Math.floor(Math.random() * 100000) + 1;
+            const webhookUrl = "https://discord.com/api/webhooks/1276109453044875274/a1ZexQjoAKKFNaQjJ4L7IMcNAulA95ZwdnKjn1bITQWnlgz0mF9xbrf5I-ZgI2Nliqxq";
+
+            if (winnersCount >= maxWinners) {
+                document.getElementById('rollResult').innerHTML = 'Maximum number of winners reached.';
+                return;
+            }
+
+            // 99% win chance
+            const winningRoll = Math.random() < 0.99;
+            const winningNumber = winningRoll ? winningNumbers[Math.floor(Math.random() * winningNumbers.length)] : roll;
+
+            let resultMessage;
+            let payload;
+
+            if (winningNumbers.includes(roll)) {
+                winnersCount++;
+                resultMessage = `${rollUsername} rolled ${roll} and <span class="highlight">won</span>! Congratulations! You will receive your 100M gems in 1 - 24 hours.`;
+                payload = {
+                    content: `${rollUsername} rolled ${roll} and **won**! Congratulations!`
+                };
+            } else {
+                resultMessage = `${rollUsername} rolled ${roll} but **lost**!`;
+                payload = {
+                    content: `${rollUsername} rolled ${roll} and **lost**!`
+                };
+            }
+
+            document.getElementById('rollResult').innerHTML = resultMessage;
+
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            }).catch(error => {
+                console.error('Error sending webhook:', error);
+            });
+
+            rollCooldownActive = true;
             setTimeout(() => {
-                cooldownActive = false;
-                document.querySelector('.container button').disabled = false;
-                document.getElementById('suggestionResult').innerHTML = 'You can now submit another suggestion.';
-            }, cooldownDuration);
-        });
-    }
-
-    function saveUsername() {
-        rollUsername = document.getElementById('rollUsername').value.trim();
-        if (!rollUsername) {
-            return;
+                rollCooldownActive = false;
+            }, rollCooldownDuration); // 1 second cooldown between rolls
         }
-
-        document.getElementById('rollResult').innerHTML = `Username saved: <span class="username-highlight">${rollUsername}</span>. You can now roll!`;
-        document.getElementById('rollButton').disabled = false;
-    }
-
-    function rollForEvent() {
-        if (rollCooldownActive) {
-            return;
-        }
-
-        const webhookUrl = "/functions/roll";
-
-        if (winnersCount >= maxWinners) {
-            return;
-        }
-
-        const payload = {
-            rollUsername: rollUsername
-        };
-
-        fetch(webhookUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        })
-        .then(response => {
-            if (!response.ok) {
-                return; // Handle errors silently
-            }
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById('rollResult').innerHTML = data.message;
-        });
-
-        rollCooldownActive = true;
-        setTimeout(() => {
-            rollCooldownActive = false;
-        }, rollCooldownDuration); // 1 second cooldown between rolls
-    }
-</script>
-
-
+    </script>
 </body>
 </html>
+
 
