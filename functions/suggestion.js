@@ -19,27 +19,16 @@ exports.handler = async (event) => {
 
     const webhookUrl = process.env.DISCORD_SUGGESTION_WEBHOOK_URL;
 
-    try {
-        const payload = { content: `${discordUser} suggested: ${suggestionText}` };
-        const response = await fetch(webhookUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
+    const payload = { content: `${discordUser} suggested: ${suggestionText}` };
+    
+    await fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
 
-        if (!response.ok) {
-            throw new Error(`Failed to send suggestion: ${response.statusText}`);
-        }
-
-        return {
-            statusCode: 200,
-            body: JSON.stringify({ message: 'Suggestion submitted successfully!' })
-        };
-    } catch (error) {
-        console.error('Error submitting suggestion:', error);
-        return {
-            statusCode: 500,
-            body: JSON.stringify({ message: 'Error submitting suggestion' })
-        };
-    }
+    return {
+        statusCode: 200,
+        body: JSON.stringify({ message: 'Suggestion submitted successfully!' })
+    };
 };
