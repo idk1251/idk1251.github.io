@@ -1,9 +1,6 @@
 [build]
-  # Leave blank if you don't have a build command
-  command = ""
-  # Path to the directory where your build output is located
-  publish = "/"  # Use "/" if index.html is in the root directory
-  functions = "functions"  # Directory for serverless functions
+  publish = "."
+  functions = "functions"
 
 [build.environment]
   DISCORD_SUGGESTION_WEBHOOK_URL = "your_suggestion_webhook_url"
