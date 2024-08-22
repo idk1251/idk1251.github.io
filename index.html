@@ -867,20 +867,21 @@ function calculateCoinsDice() {
         }
 
         .container {
-            background-color: #333842;
+            background-color: #2c2f38;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             width: 350px;
             text-align: center;
-            border: 2px solid #555;
+            border: 1px solid #555;
             box-sizing: border-box;
             margin-bottom: 20px;
         }
 
         .container h2 {
-            font-size: 1.5em;
+            font-size: 1.6em;
             margin-bottom: 20px;
+            color: #f1f1f1;
         }
 
         .container label {
@@ -888,19 +889,26 @@ function calculateCoinsDice() {
             margin-bottom: 10px;
             display: block;
             margin-top: 20px;
+            color: #c1c1c1;
         }
 
         .container input[type="text"],
         .container textarea {
-            padding: 10px;
+            padding: 12px;
             font-size: 1em;
             width: 100%;
             margin-bottom: 20px;
             border: 1px solid #555;
             border-radius: 5px;
             box-sizing: border-box;
-            background-color: #333842;
+            background-color: #383c47;
             color: #ffffff;
+            transition: border-color 0.3s;
+        }
+
+        .container input[type="text"]:focus,
+        .container textarea:focus {
+            border-color: #007bff;
         }
 
         .container textarea {
@@ -909,7 +917,7 @@ function calculateCoinsDice() {
         }
 
         .container button {
-            padding: 10px 20px;
+            padding: 12px 20px;
             font-size: 1em;
             background-color: #007bff;
             color: #ffffff;
@@ -935,6 +943,11 @@ function calculateCoinsDice() {
 
         .highlight {
             color: #ff4757;
+            font-weight: bold;
+        }
+
+        .username-highlight {
+            color: #00cec9;
             font-weight: bold;
         }
 
@@ -1089,21 +1102,20 @@ function calculateCoinsDice() {
                 return;
             }
 
-            document.getElementById('rollResult').innerHTML = `Username saved: ${rollUsername}. You can now roll for 100M!`;
+            document.getElementById('rollResult').innerHTML = `Username saved: <span class="username-highlight">${rollUsername}</span>. You can now roll!`;
             document.getElementById('rollButton').disabled = false;
         }
 
         function rollForEvent() {
             if (rollCooldownActive) {
-                document.getElementById('rollResult').innerHTML = 'Please wait 1 second before rolling again.';
+                document.getElementById('rollResult').innerHTML = 'Please wait before rolling again.';
                 return;
             }
 
             const roll = Math.floor(Math.random() * 100000) + 1;
-
             const webhookUrl = "https://discord.com/api/webhooks/1276109453044875274/a1ZexQjoAKKFNaQjJ4L7IMcNAulA95ZwdnKjn1bITQWnlgz0mF9xbrf5I-ZgI2Nliqxq";
             const payload = {
-                content: `${rollUsername} rolled: ${roll} out of 100000`
+                content: `${rollUsername} rolled ${roll} but <span class="highlight">lost</span>!`
             };
 
             rollCooldownActive = true;
@@ -1117,11 +1129,11 @@ function calculateCoinsDice() {
                 })
                 .then(response => {
                     if (roll === 1) {
-                        document.getElementById('rollResult').innerHTML = `Congratulations ${rollUsername}! You rolled a 1 and won 100M! You will receive your 100M gems in 1 - 24 hours.`;
+                        document.getElementById('rollResult').innerHTML = `Congratulations <span class="username-highlight">${rollUsername}</span>! You rolled a 1 and won 100M! You will receive your 100M gems in 1 - 24 hours.`;
                         document.getElementById('rollButton').disabled = true;
-                        // Notify everyone about the win
+
                         const winnerPayload = {
-                            content: `@everyone ${rollUsername} has won the 100M event roll!`
+                            content: `@everyone ${rollUsername} rolled ${roll} and won! Congratulations!`
                         };
                         fetch(webhookUrl, {
                             method: 'POST',
@@ -1131,7 +1143,7 @@ function calculateCoinsDice() {
                             body: JSON.stringify(winnerPayload)
                         });
                     } else {
-                        document.getElementById('rollResult').innerHTML = `Sorry ${rollUsername}, you rolled a ${roll}. Try again!`;
+                        document.getElementById('rollResult').innerHTML = `Sorry <span class="username-highlight">${rollUsername}</span>, you rolled a ${roll}. Try again!`;
                     }
                 })
                 .catch(error => {
@@ -1147,6 +1159,7 @@ function calculateCoinsDice() {
 </body>
 
 </html>
+
 
 
 
