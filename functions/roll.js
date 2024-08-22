@@ -25,26 +25,14 @@ exports.handler = async (event) => {
         ? `${rollUsername} rolled ${roll} and won! Congratulations! You will receive your 100M gems in 1 - 24 hours.`
         : `${rollUsername} rolled ${roll} but lost!`;
 
-    try {
-        const response = await fetch(webhookUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ content: message })
-        });
+    await fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: message })
+    });
 
-        if (!response.ok) {
-            throw new Error(`Failed to process roll: ${response.statusText}`);
-        }
-
-        return {
-            statusCode: 200,
-            body: JSON.stringify({ message })
-        };
-    } catch (error) {
-        console.error('Error processing roll:', error);
-        return {
-            statusCode: 500,
-            body: JSON.stringify({ message: 'Error processing roll' })
-        };
-    }
+    return {
+        statusCode: 200,
+        body: JSON.stringify({ message })
+    };
 };
