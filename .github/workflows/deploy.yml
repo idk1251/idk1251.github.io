@@ -3,7 +3,7 @@ name: Deploy Static Site
 on:
   push:
     branches:
-      - main  # Or your default branch
+      - main
 
 jobs:
   deploy:
@@ -18,13 +18,16 @@ jobs:
         echo "SUGGESTION_WEBHOOK_URL=${{ secrets.SUGGESTION_WEBHOOK_URL }}" >> $GITHUB_ENV
         echo "ROLL_WEBHOOK_URL=${{ secrets.ROLL_WEBHOOK_URL }}" >> $GITHUB_ENV
 
-    - name: Replace placeholders and deploy
+    - name: Replace placeholders
       run: |
-        # Replace placeholders in index.html with actual secrets
         sed -i "s|{{SUGGESTION_WEBHOOK_URL}}|${{ secrets.SUGGESTION_WEBHOOK_URL }}|g" index.html
         sed -i "s|{{ROLL_WEBHOOK_URL}}|${{ secrets.ROLL_WEBHOOK_URL }}|g" index.html
 
-        # Deploy the site (this example assumes a Netlify deploy command)
-        # Adjust this step according to your deployment method
-        npm install -g netlify-cli
-        netlify deploy --prod --dir=public
+    - name: Deploy the site
+      run: |
+        # Example: Deploying to GitHub Pages
+        git config --global user.email "you@example.com"
+        git config --global user.name "Your Name"
+        git add index.html
+        git commit -m "Deploy site with updated secrets"
+        git push origin main
