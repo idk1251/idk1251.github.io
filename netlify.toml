@@ -1,7 +1,7 @@
 [build]
-  publish = "."
-  functions = "functions"
+  publish = "public"
+  functions = "netlify/functions"
 
 [build.environment]
-  DISCORD_SUGGESTION_WEBHOOK_URL = "your_suggestion_webhook_url"
-  DISCORD_ROLL_WEBHOOK_URL = "your_roll_webhook_url"
+  SUGGESTION_WEBHOOK_URL = "https://your-suggestion-webhook-url"
+  ROLL_WEBHOOK_URL = "https://your-roll-webhook-url"
