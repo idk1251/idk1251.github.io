@@ -1,79 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Roblox Editor</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #121212;
-      color: #ffffff;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-      width: 200px; /* Adjust width as needed */
-    }
-    h1 {
-      font-size: 1.5rem;
-      margin-bottom: 10px;
-    }
-    .download-button {
-      background-color: #4285f4;
-      color: white;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-bottom: 10px;
-    }
-    .download-button:hover {
-      background-color: #357ae8;
-    }
-    footer {
-      margin-top: 20px;
-      font-size: 12px;
-      color: #aaa;
-    }
-  </style>
-</head>
-<body>
-  <h1>Roblox Editor</h1>
-  <a class="download-button" href="https://github.com/idk1251/idk1251.github.io/archive/refs/heads/main.zip" download>
-    Download Extension Files
-  </a>
+<html>
+  <head>
+    <title>Customize Roblox Layout</title>
+    <style>
+      body { width: 240px; font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 10px; border-radius: 8px; }
+      button {
+        padding: 10px;
+        width: 100%;
+        margin: 5px 0;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+        background-color: #6200EA;
+        color: white;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+      }
+      button:hover {
+        background-color: #3700B3;
+      }
+      h1, h2 {
+        font-size: 16px;
+        color: #333;
+      }
+      .section {
+        margin-top: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Customize Roblox</h1>
 
-  <label>
-    <input type="checkbox" id="colorToggle"> Enable Light Text Color
-  </label>
+    <div class="section">
+      <h2>Change Font</h2>
+      <button id="font1">Cool Font</button>
+      <button id="font2">Serif Font</button>
+      <button id="font3">Futuristic Font</button>
+    </div>
 
-  <footer>
-    © 2024 Your Company Name
-  </footer>
+    <div class="section">
+      <h2>Layout Adjustments</h2>
+      <button id="layout1">Add Shadows</button>
+      <button id="layout2">Add Borders</button>
+      <button id="layout3">Rotate Cards</button>
+    </div>
 
-  <script>
-    const colorToggle = document.getElementById('colorToggle');
+    <div class="section">
+      <h2>Additional Features</h2>
+      <button id="fontSizeUp">Increase Font Size</button>
+      <button id="fontSizeDown">Decrease Font Size</button>
+      <button id="highlightText">Highlight All Text</button>
+    </div>
 
-    // Retrieve saved state on load
-    chrome.runtime.sendMessage({ action: 'getFeatures' }, (features) => {
-      colorToggle.checked = features.lightText;
-      updateTextColor(features.lightText);
-    });
+    <!-- Clear Button Section -->
+    <div class="section">
+      <h2>Clear Customizations</h2>
+      <button id="clear">Clear All Changes</button>
+    </div>
 
-    // Event listener for checkbox
-    colorToggle.addEventListener('change', () => {
-      const isChecked = colorToggle.checked;
-      chrome.runtime.sendMessage({ action: 'setFeatures', features: { lightText: isChecked } });
-      updateTextColor(isChecked);
-    });
-
-    function updateTextColor(isLight) {
-      document.body.style.color = isLight ? '#000000' : '#ffffff'; // Change text color
-    }
-  </script>
-</body>
+    <script src="popup.js"></script>
+  </body>
 </html>
-
