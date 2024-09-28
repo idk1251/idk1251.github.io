@@ -1,1 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Customize Roblox Layout</title>
+    <style>
+      body { width: 240px; font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 10px; border-radius: 8px; }
+      button {
+        padding: 10px;
+        width: 100%;
+        margin: 5px 0;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+        background-color: #6200EA;
+        color: white;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+      }
+      button:hover {
+        background-color: #3700B3;
+      }
+      h1, h2 {
+        font-size: 16px;
+        color: #333;
+      }
+      .section {
+        margin-top: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Customize Roblox</h1>
 
+    <div class="section">
+      <h2>Change Font</h2>
+      <button id="font1">Cool Font</button>
+      <button id="font2">Serif Font</button>
+      <button id="font3">Futuristic Font</button>
+    </div>
+
+    <div class="section">
+      <h2>Layout Adjustments</h2>
+      <button id="layout1">Add Shadows</button>
+      <button id="layout2">Add Borders</button>
+      <button id="layout3">Rotate Cards</button>
+    </div>
+
+    <div class="section">
+      <h2>Additional Features</h2>
+      <button id="fontSizeUp">Increase Font Size</button>
+      <button id="fontSizeDown">Decrease Font Size</button>
+      <button id="highlightText">Highlight All Text</button>
+    </div>
+
+    <!-- Clear Button Section -->
+    <div class="section">
+      <h2>Clear Customizations</h2>
+      <button id="clear">Clear All Changes</button>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
