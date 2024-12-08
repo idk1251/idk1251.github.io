@@ -1,0 +1,288 @@
+/* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #1b1b1b;
+  color: #ffffff;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2c2c2c;
+  padding: 10px 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+header .logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #66bb6a;
+  cursor: pointer;
+  text-shadow: 0px 0px 15px rgba(102, 187, 106, 0.8); /* Glowing effect */
+}
+
+header nav {
+  display: flex;
+  justify-content: center;
+  width: 60%;
+}
+
+header .nav-button {
+  margin: 0 15px;
+  background-color: #66bb6a;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+header .nav-button:hover {
+  box-shadow: 0 0 10px #66bb6a; /* Glowing effect on hover */
+}
+
+#user-profile {
+  display: flex;
+  align-items: center;
+}
+
+#user-profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+#sign-in-button {
+  background-color: #66bb6a;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+#sign-in-button:hover {
+  box-shadow: 0 0 10px #66bb6a; /* Glowing effect */
+}
+
+/* Page Styles */
+.page {
+  display: none;
+  padding: 20px;
+  text-align: center;
+  min-height: calc(100vh - 60px);
+}
+
+.page.active {
+  display: block;
+}
+
+.content {
+  margin-top: 100px;
+}
+
+.highlight {
+  color: #66bb6a;
+}
+
+/* Home Page Styles */
+#home-page {
+  background: url('https://img.freepik.com/premium-photo/dark-night-jungle-with-black-saturated-plants_960396-368680.jpg') no-repeat center center fixed;
+  background-size: cover;
+  padding: 60px;
+  color: #fff;
+  text-align: center;
+  border-radius: 10px;
+}
+
+#home-page h1 {
+  font-size: 40px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+#sign-in-btn-home {
+  background-color: #66bb6a;
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+#sign-in-btn-home:hover {
+  box-shadow: 0 0 15px #66bb6a;
+}
+
+/* Leaderboard Styles */
+#leaderboard-page {
+  background: url('https://w0.peakpx.com/wallpaper/599/203/HD-wallpaper-black-forest-full-dark-green-jungle.jpg') no-repeat center center fixed;
+  background-size: cover;
+  padding: 40px;
+}
+
+.leaderboard-rewards {
+  margin-bottom: 30px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.reward-banner {
+  display: flex;
+  justify-content: space-between;
+  color: #66bb6a;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.reward-values span {
+  font-size: 16px;
+}
+
+/* Leaderboard Items */
+.leaderboard-item {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  color: #fff;
+}
+
+.top-spot {
+  background-color: #66bb6a;
+  color: white;
+}
+
+.leaderboard-item span {
+  font-weight: bold;
+}
+
+.leaderboard-item:nth-child(odd) {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Rewards Page */
+#rewards-page {
+  background: url('https://w0.peakpx.com/wallpaper/279/42/HD-wallpaper-dark-green-forest-dark-green-jungle.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
+  padding: 60px;
+}
+
+
+/* Rewards Page */
+#rewards-page {
+  background: url('https://st5.depositphotos.com/13684278/67441/i/450/depositphotos_674417410-stock-photo-fern-leaves-forest-texture-background.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
+  padding: 60px;
+}
+
+#rewards-page h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+  color: #66bb6a;
+}
+
+#rewards-page p {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+#rewards-page strong {
+  color: #66bb6a;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #2c2c2c;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.7);
+}
+
+input[type="text"] {
+  width: 80%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+button {
+  padding: 10px 20px;
+  margin-top: 20px;
+  background-color: #66bb6a;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+  box-shadow: 0 0 10px #66bb6a;
+}
+/* Discord Button Styling */
+.discord-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  margin-top: 20px;
+  background-color: #7289da;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center;
+}
+
+.discord-button:hover {
+  background-color: #5a6cb0;
+}
+
+.discord-icon {
+  width: 20px; /* Reduced the size of the icon */
+  height: 20px;
+  margin-right: 10px;
+  margin-left: 0; /* Adjusted margin to center the icon with text */
+}
+
+/* Align Discord button under the main text */
+#home-page .content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
