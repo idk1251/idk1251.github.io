@@ -286,3 +286,73 @@ button:hover {
   flex-direction: column;
   align-items: center;
 }
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  header nav {
+    flex-wrap: wrap; /* Wrap navigation buttons */
+    justify-content: center;
+    gap: 10px; /* Add spacing between buttons */
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    flex-direction: column; /* Stack header elements vertically */
+    align-items: center; /* Center align */
+  }
+
+  #user-profile {
+    margin-top: 10px; /* Add space between profile and nav */
+  }
+
+  #home-page h1 {
+    font-size: 30px; /* Adjust headline size for smaller screens */
+  }
+
+  #sign-in-btn-home {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+
+  .leaderboard-item {
+    font-size: 16px; /* Smaller text for leaderboard items */
+  }
+
+  .discord-button {
+    font-size: 14px;
+    padding: 10px 15px; /* Adjust padding for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  header .logo {
+    font-size: 18px; /* Reduce logo size further */
+  }
+
+  header nav {
+    flex-direction: column; /* Stack buttons vertically */
+  }
+
+  header .nav-button {
+    margin: 5px 0; /* Add vertical margin for stacked buttons */
+  }
+
+  #sign-in-btn-home {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  #home-page h1 {
+    font-size: 24px; /* Adjust headline size for very small screens */
+  }
+
+  .leaderboard-item {
+    font-size: 14px; /* Smaller leaderboard text */
+  }
+
+  .discord-button {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+}
