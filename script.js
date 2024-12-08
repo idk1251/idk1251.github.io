@@ -41,7 +41,7 @@ closeModal.addEventListener("click", () => {
 submitSignIn.addEventListener("click", () => {
   const username = usernameInput.value.trim();
   if (!allowedUsers.includes(username)) {
-    alert("You are not the code inhxle yet!");
+    alert("You are not under the code inhxle!");
     return;
   }
 
