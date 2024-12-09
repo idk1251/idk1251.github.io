@@ -95,8 +95,8 @@ header .nav-button:hover {
 
 /* Home Page Styles */
 #home-page {
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-              url('https://images.wallpapersden.com/image/download/purple-landscape-twilight-hd-dreamscape_bmZta26UmZqaraWkpJRoam1prWdlaW0.jpg') 
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), 
+              url('https://cdn.discordapp.com/attachments/1297311871212327004/1315698416843751454/image.png?ex=67585b23&is=675709a3&hm=269fc6530c3501c80d8354efd97d139f0cf45d00e54a92584cfe03748d878385&') 
               no-repeat center center fixed;
   background-size: cover;
   padding: 60px;
@@ -104,6 +104,7 @@ header .nav-button:hover {
   text-align: center;
   border-radius: 10px;
 }
+
 
 
 #home-page h1 {
