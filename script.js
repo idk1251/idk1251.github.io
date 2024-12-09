@@ -1,4 +1,4 @@
-const allowedUsers = ["inhxle", "zirjagor", "test1", "test2", "test3", "tests"];
+const allowedUsers = ["sorhex", "zirjagor", "test1", "test2", "test3", "tests"];
 const rewardedUsers = [];
 const signInButton = document.getElementById("sign-in-button");
 const modal = document.getElementById("sign-in-modal");
@@ -41,7 +41,7 @@ closeModal.addEventListener("click", () => {
 submitSignIn.addEventListener("click", () => {
   const username = usernameInput.value.trim();
   if (!allowedUsers.includes(username)) {
-    alert("You are not under the code inhxle!");
+    alert("You are not under the code sorhex!");
     return;
   }
 
@@ -61,10 +61,10 @@ claimButton.addEventListener("click", () => {
   }
 
   rewardedUsers.push(username);
-  alert("You will receive your 500 tokens very soon, thank you for signing up on code inhxle!");
+  alert("You will receive your 500 tokens very soon, thank you for signing up on code sorhex!");
 });
 
 // Redirect to rbxgold when "Sign In Now" button is clicked
 signInBtnHome.addEventListener("click", () => {
-  window.location.href = 'https://rbxgold.com/r/inhxle';
+  window.location.href = 'https://rbxgold.com/r/sorhex';
 });
