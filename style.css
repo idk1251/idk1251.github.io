@@ -17,9 +17,9 @@ header {
 }
 
 header .logo {
-  font-size: 24px;
+  font-size: 30px;
   font-weight: bold;
-  color: #66bb6a;
+  color: #A020F0;
   cursor: pointer;
   text-shadow: 0px 0px 15px rgba(102, 187, 106, 0.8); /* Glowing effect */
 }
@@ -32,7 +32,7 @@ header nav {
 
 header .nav-button {
   margin: 0 15px;
-  background-color: #66bb6a;
+  background-color: #A020F0;
   color: #ffffff;
   border: none;
   border-radius: 5px;
@@ -43,7 +43,7 @@ header .nav-button {
 }
 
 header .nav-button:hover {
-  box-shadow: 0 0 10px #66bb6a; /* Glowing effect on hover */
+  box-shadow: 0 0 10px #A020F0; /* Glowing effect on hover */
 }
 
 #user-profile {
@@ -59,7 +59,7 @@ header .nav-button:hover {
 }
 
 #sign-in-button {
-  background-color: #66bb6a;
+  background-color: #A020F0;
   color: #ffffff;
   border: none;
   border-radius: 5px;
@@ -70,7 +70,7 @@ header .nav-button:hover {
 }
 
 #sign-in-button:hover {
-  box-shadow: 0 0 10px #66bb6a; /* Glowing effect */
+  box-shadow: 0 0 10px #A020F0; /* Glowing effect */
 }
 
 /* Page Styles */
@@ -90,12 +90,14 @@ header .nav-button:hover {
 }
 
 .highlight {
-  color: #66bb6a;
+  color: #A020F0;
 }
 
 /* Home Page Styles */
 #home-page {
-  background: url('https://img.freepik.com/premium-photo/dark-night-jungle-with-black-saturated-plants_960396-368680.jpg') no-repeat center center fixed;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+              url('https://images.wallpapersden.com/image/download/purple-landscape-twilight-hd-dreamscape_bmZta26UmZqaraWkpJRoam1prWdlaW0.jpg') 
+              no-repeat center center fixed;
   background-size: cover;
   padding: 60px;
   color: #fff;
@@ -110,7 +112,7 @@ header .nav-button:hover {
 }
 
 #sign-in-btn-home {
-  background-color: #66bb6a;
+  background-color: #A020F0;
   color: white;
   padding: 15px 30px;
   border: none;
@@ -122,12 +124,12 @@ header .nav-button:hover {
 }
 
 #sign-in-btn-home:hover {
-  box-shadow: 0 0 15px #66bb6a;
+  box-shadow: 0 0 15px #A020F0;
 }
 
 /* Leaderboard Styles */
 #leaderboard-page {
-  background: url('https://w0.peakpx.com/wallpaper/599/203/HD-wallpaper-black-forest-full-dark-green-jungle.jpg') no-repeat center center fixed;
+  background: url('https://wallpapercave.com/wp/wp3028481.png') no-repeat center center fixed;
   background-size: cover;
   padding: 40px;
 }
@@ -143,7 +145,7 @@ header .nav-button:hover {
 .reward-banner {
   display: flex;
   justify-content: space-between;
-  color: #66bb6a;
+  color: #A020F0;
   font-size: 18px;
   font-weight: bold;
 }
@@ -165,7 +167,7 @@ header .nav-button:hover {
 }
 
 .top-spot {
-  background-color: #66bb6a;
+  background-color: #A020F0;
   color: white;
 }
 
@@ -188,16 +190,19 @@ header .nav-button:hover {
 
 /* Rewards Page */
 #rewards-page {
-  background: url('https://st5.depositphotos.com/13684278/67441/i/450/depositphotos_674417410-stock-photo-fern-leaves-forest-texture-background.jpg') no-repeat center center fixed;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+              url('https://wallpaper-mania.com/wp-content/uploads/2018/09/High_resolution_wallpaper_background_ID_77701889300.jpg') 
+              no-repeat center center fixed;
   background-size: cover;
   color: #fff;
   padding: 60px;
 }
 
+
 #rewards-page h1 {
-  font-size: 36px;
-  margin-bottom: 20px;
-  color: #66bb6a;
+  font-size: 50px;
+  margin-bottom: 15px;
+  color: #A020F0;
 }
 
 #rewards-page p {
@@ -206,7 +211,7 @@ header .nav-button:hover {
 }
 
 #rewards-page strong {
-  color: #66bb6a;
+  color: #A020F0;
 }
 
 /* Modal Styles */
@@ -241,7 +246,7 @@ input[type="text"] {
 button {
   padding: 10px 20px;
   margin-top: 20px;
-  background-color: #66bb6a;
+  background-color: #A020F0;
   border: none;
   color: white;
   border-radius: 5px;
@@ -251,7 +256,7 @@ button {
 }
 
 button:hover {
-  box-shadow: 0 0 10px #66bb6a;
+  box-shadow: 0 0 10px #A020F0;
 }
 /* Discord Button Styling */
 .discord-button {
